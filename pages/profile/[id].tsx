@@ -47,7 +47,7 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href='/profile' passHref>
+    <Link href='/profile' passHref legacyBehavior>
       <Button color='primary' sx={{ px: 4, bgcolor: 'primary.light' }}>
         Back to Profile
       </Button>

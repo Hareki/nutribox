@@ -36,7 +36,7 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href='/address' passHref>
+    <Link href='/address' passHref legacyBehavior>
       <Button color='primary' sx={{ bgcolor: 'primary.light', px: 4 }}>
         Back to Address
       </Button>

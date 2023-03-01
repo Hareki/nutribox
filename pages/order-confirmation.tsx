@@ -42,7 +42,7 @@ const OrderConfirmation: NextPage = () => {
             You will be receiving confirmation email with order details.
           </Paragraph>
 
-          <Link href='/market-1' passHref>
+          <Link href='/market-1' passHref legacyBehavior>
             <StyledButton
               color='primary'
               disableElevation

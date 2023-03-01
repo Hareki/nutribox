@@ -57,7 +57,7 @@ const AddressList: NextPage<AddressListProps> = ({ addressList }) => {
           </Typography>
 
           <Typography whiteSpace='pre' textAlign='center' color='grey.600'>
-            <Link href={`/address/${address.id}`} passHref>
+            <Link href={`/address/${address.id}`} passHref legacyBehavior>
               <IconButton>
                 <Edit fontSize='small' color='inherit' />
               </IconButton>

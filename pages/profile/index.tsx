@@ -32,7 +32,7 @@ const Profile: NextPage<ProfileProps> = ({ user }) => {
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href={`/profile/${user.id}`} passHref>
+    <Link href={`/profile/${user.id}`} passHref legacyBehavior>
       <Button color='primary' sx={{ px: 4, bgcolor: 'primary.light' }}>
         Edit Profile
       </Button>
