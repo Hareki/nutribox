@@ -33,14 +33,19 @@ const Footer2: FC = () => {
       <Box
         sx={{
           p: '40px',
-          bgcolor: '#141850',
+          bgcolor: '#efefef',
           color: 'white',
           borderRadius: '8px',
         }}
       >
         <Link href='/'>
           <a>
-            <BazaarImage mb={2.5} src='/assets/images/logo.svg' alt='logo' />
+            <BazaarImage
+              height={50}
+              mb={2.5}
+              src='/assets/images/logo.svg'
+              alt='logo'
+            />
           </a>
         </Link>
 

@@ -49,7 +49,12 @@ const Footer3: FC<Props> = ({ sx, id, bgcolor }) => {
       <Container>
         <Link href='/'>
           <a>
-            <BazaarImage mb={2.5} src='/assets/images/logo.svg' alt='logo' />
+            <BazaarImage
+              height={50}
+              mb={2.5}
+              src='/assets/images/logo.svg'
+              alt='logo'
+            />
           </a>
         </Link>
 
