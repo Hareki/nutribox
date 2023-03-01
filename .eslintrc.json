@@ -1,7 +1,30 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "plugin:import/recommended",
+    "eslint:recommended"
+  ],
   "rules": {
     "import/no-anonymous-default-export": 0,
-    "@next/next/no-img-element": 0
+    "@next/next/no-img-element": 0,
+    "spaced-comment": "error",
+    "no-undef": "error",
+    "no-unused-vars": "off",
+    "import/named": "off",
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "newlines-between": "always"
+      }
+    ]
+  },
+  "plugins": ["@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "globals": {
+    "Promise": true,
+    "JSX": true
   }
 }
