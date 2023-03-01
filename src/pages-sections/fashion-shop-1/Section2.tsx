@@ -1,11 +1,13 @@
-import { FC, useEffect, useState } from "react";
-import Light from "components/icons/Light";
-import Carousel from "components/carousel/Carousel";
-import ProductCard3 from "components/product-cards/ProductCard3";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import useWindowSize from "hooks/useWindowSize";
-import Product from "models/Product.model";
-import { arrowButtonStyle } from "./style";
+import { FC, useEffect, useState } from 'react';
+
+import { arrowButtonStyle } from './style';
+
+import Carousel from 'components/carousel/Carousel';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import Light from 'components/icons/Light';
+import ProductCard3 from 'components/product-cards/ProductCard3';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // =================================================
 type Props = { flashDeals: Product[] };
@@ -24,8 +26,8 @@ const Section2: FC<Props> = ({ flashDeals }) => {
 
   return (
     <CategorySectionCreator
-      icon={<Light color="primary" />}
-      title="Flash Deals"
+      icon={<Light color='primary' />}
+      title='Flash Deals'
     >
       <Carousel
         infinite={true}

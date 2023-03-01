@@ -1,10 +1,10 @@
-import { CSSProperties, FC, Fragment, ReactNode, Children } from "react";
-import { SxProps } from "@mui/material";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
-import clsx from "clsx";
-import useSettings from "hooks/useSettings";
-import { Slide } from "pure-react-carousel";
-import "pure-react-carousel/dist/react-carousel.es.css";
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import { SxProps } from '@mui/material';
+import clsx from 'clsx';
+import { Slide } from 'pure-react-carousel';
+import { CSSProperties, FC, Fragment, ReactNode, Children } from 'react';
+
+import 'pure-react-carousel/dist/react-carousel.es.css';
 import {
   StyledDot,
   StyledSlider,
@@ -12,7 +12,9 @@ import {
   StyledArrowBackButton,
   StyledArrowNextButton,
   StyledCarouselProvider,
-} from "./styles";
+} from './styles';
+
+import useSettings from 'hooks/useSettings';
 
 // ===================================================================
 export interface CarouselProps {
@@ -41,7 +43,7 @@ export interface CarouselProps {
   rightButtonClass?: string;
   leftButtonStyle?: CSSProperties;
   rightButtonStyle?: CSSProperties;
-  arrowButtonColor?: "primary" | "secondary" | "inherit";
+  arrowButtonColor?: 'primary' | 'secondary' | 'inherit';
 }
 // ===================================================================
 
@@ -107,28 +109,28 @@ const Carousel: FC<CarouselProps> = ({
       {showArrow && (
         <Fragment>
           <StyledArrowBackButton
-            id="backArrowButton"
-            sx={{ left: "-20px" }}
+            id='backArrowButton'
+            sx={{ left: '-20px' }}
             style={leftButtonStyle || {}}
             className={clsx(leftButtonClass, arrowButtonClass)}
           >
-            {settings.direction === "ltr" ? (
-              <ArrowBack fontSize="small" color="inherit" />
+            {settings.direction === 'ltr' ? (
+              <ArrowBack fontSize='small' color='inherit' />
             ) : (
-              <ArrowForward fontSize="small" color="inherit" />
+              <ArrowForward fontSize='small' color='inherit' />
             )}
           </StyledArrowBackButton>
 
           <StyledArrowNextButton
-            id="backForwardButton"
-            sx={{ right: "-20px" }}
+            id='backForwardButton'
+            sx={{ right: '-20px' }}
             style={rightButtonStyle || {}}
             className={clsx(arrowButtonClass, rightButtonClass)}
           >
-            {settings.direction === "ltr" ? (
-              <ArrowForward fontSize="small" color="inherit" />
+            {settings.direction === 'ltr' ? (
+              <ArrowForward fontSize='small' color='inherit' />
             ) : (
-              <ArrowBack fontSize="small" color="inherit" />
+              <ArrowBack fontSize='small' color='inherit' />
             )}
           </StyledArrowNextButton>
         </Fragment>
@@ -162,7 +164,7 @@ const renderDots = ({
         onClick={() => handleClick(i, false)}
         dot_active={currentSlide === i ? i + 1 : 0}
         key={(Math.random() * i + Date.now()).toString()}
-      />
+      />,
     );
 
     if (total - (i + 1) < step && total - (i + 1) !== 0) {
@@ -172,7 +174,7 @@ const renderDots = ({
           dot_active={totalSlides - visibleSlides}
           key={(Math.random() * i + Date.now()).toString()}
           onClick={() => handleClick(totalSlides - visibleSlides, false)}
-        />
+        />,
       );
     }
   }
@@ -189,13 +191,13 @@ Carousel.defaultProps = {
   infinite: false,
   totalSlides: 10,
   visibleSlides: 5,
-  spacing: "1.5rem",
+  spacing: '1.5rem',
   naturalSlideWidth: 100,
   naturalSlideHeight: 125,
   hasMasterSpinner: false,
   isIntrinsicHeight: true,
-  dotGroupMarginTop: "2rem",
-  arrowButtonColor: "secondary",
+  dotGroupMarginTop: '2rem',
+  arrowButtonColor: 'secondary',
 };
 
 export default Carousel;

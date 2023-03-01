@@ -1,40 +1,41 @@
-import { Avatar, Box, Container, Button, Grid } from "@mui/material";
-import { FlexBox } from "components/flex-box";
-import { H2, Paragraph } from "components/Typography";
-import Router from "next/router";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Avatar, Box, Container, Button, Grid } from '@mui/material';
+import Router from 'next/router';
+import { Dispatch, FC, SetStateAction } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import { H2, Paragraph } from 'components/Typography';
 
 const list = [
   {
-    title: "Niche Demos",
-    thumbnail: "/assets/images/landing/niche-demos.png",
+    title: 'Niche Demos',
+    thumbnail: '/assets/images/landing/niche-demos.png',
     subTitle:
-      "9 Niche shop demos for online store. Super store, Fashion, Electronic, Grocery and etc",
-    category: "homepage",
-    buttonText: "Browse Demos",
+      '9 Niche shop demos for online store. Super store, Fashion, Electronic, Grocery and etc',
+    category: 'homepage',
+    buttonText: 'Browse Demos',
   },
   {
-    title: "Shop Pages",
-    thumbnail: "/assets/images/landing/inner-pages.png",
+    title: 'Shop Pages',
+    thumbnail: '/assets/images/landing/inner-pages.png',
     subTitle:
-      "Clean Shop inner pages. Vendor shop, Sale/discount pages, checkout, cart and etc.",
-    category: "shop",
-    buttonText: "Browse Pages",
+      'Clean Shop inner pages. Vendor shop, Sale/discount pages, checkout, cart and etc.',
+    category: 'shop',
+    buttonText: 'Browse Pages',
   },
   {
-    title: "User Dashboard",
-    thumbnail: "/assets/images/landing/user-dashboard.png",
+    title: 'User Dashboard',
+    thumbnail: '/assets/images/landing/user-dashboard.png',
     subTitle:
-      "Structured user dashboard for managing user account, orders, address and etc.",
-    category: "user",
-    buttonText: "Browse User Dashboard",
+      'Structured user dashboard for managing user account, orders, address and etc.',
+    category: 'user',
+    buttonText: 'Browse User Dashboard',
   },
   {
-    title: "Admin Dashboard",
-    thumbnail: "/assets/images/landing/admin-dashboard.png",
-    subTitle: "30+ Super admin and vendor dashboard interfaces.",
-    category: "admin",
-    buttonText: "Browse Admin Dashboard",
+    title: 'Admin Dashboard',
+    thumbnail: '/assets/images/landing/admin-dashboard.png',
+    subTitle: '30+ Super admin and vendor dashboard interfaces.',
+    category: 'admin',
+    buttonText: 'Browse Admin Dashboard',
   },
 ];
 
@@ -44,20 +45,20 @@ type Props = { setFilterDemo: Dispatch<SetStateAction<string>> };
 
 const Section6: FC<Props> = ({ setFilterDemo }) => {
   const handleNavigate = (active: string) => () => {
-    Router.push("#section-3");
+    Router.push('#section-3');
     setFilterDemo(active);
   };
 
   return (
-    <Box id="get" sx={{ backgroundColor: "grey.100" }}>
+    <Box id='get' sx={{ backgroundColor: 'grey.100' }}>
       <Container sx={{ py: 18 }}>
         <H2
           fontSize={28}
-          textAlign="center"
-          fontWeight="700"
-          color="secondary.main"
+          textAlign='center'
+          fontWeight='700'
+          color='secondary.main'
           mb={8}
-          textTransform="uppercase"
+          textTransform='uppercase'
         >
           What You Get?
         </H2>
@@ -68,29 +69,29 @@ const Section6: FC<Props> = ({ setFilterDemo }) => {
               <FlexBox
                 gap={3}
                 sx={{
-                  flexDirection: { sm: "row", xs: "column" },
+                  flexDirection: { sm: 'row', xs: 'column' },
                 }}
               >
                 <Avatar
                   src={item.thumbnail}
                   sx={{
                     boxShadow: 1,
-                    borderRadius: "10px",
-                    height: "auto",
-                    width: { sm: 250, xs: "100%" },
+                    borderRadius: '10px',
+                    height: 'auto',
+                    width: { sm: 250, xs: '100%' },
                   }}
                 />
 
-                <FlexBox flexDirection="column" alignItems="flex-start">
+                <FlexBox flexDirection='column' alignItems='flex-start'>
                   <H2 fontSize={22} mb={1}>
                     {item.title}
                   </H2>
                   <Paragraph mb={2}>{item.subTitle}</Paragraph>
-                  <Box m="auto"></Box>
+                  <Box m='auto'></Box>
                   <Button
                     onClick={handleNavigate(item.category)}
-                    variant="outlined"
-                    color="primary"
+                    variant='outlined'
+                    color='primary'
                   >
                     {item.buttonText}
                   </Button>

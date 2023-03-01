@@ -1,17 +1,19 @@
-import { FC } from "react";
-import { Container, Grid } from "@mui/material";
-import Spacer from "components/Spacer";
-import FeedbackThumbsUpIcon from "components/icons/FeedbackThumbsUp";
-import CreditCardVerifiedIcon from "components/icons/CreditCardVerified";
-import ShowcaseCard1 from "./showcase-cards/ShowcaseCard1";
-import ShowcaseCard2 from "./showcase-cards/ShowcaseCard2";
-import ShowcaseCard3 from "./showcase-cards/ShowcaseCard3";
-import ShowcaseCard4 from "./showcase-cards/ShowcaseCard4";
-import ShowcaseCard5 from "./showcase-cards/ShowcaseCard5";
+import { Container, Grid } from '@mui/material';
+import { FC } from 'react';
+
+import ShowcaseCard1 from './showcase-cards/ShowcaseCard1';
+import ShowcaseCard2 from './showcase-cards/ShowcaseCard2';
+import ShowcaseCard3 from './showcase-cards/ShowcaseCard3';
+import ShowcaseCard4 from './showcase-cards/ShowcaseCard4';
+import ShowcaseCard5 from './showcase-cards/ShowcaseCard5';
+
+import CreditCardVerifiedIcon from 'components/icons/CreditCardVerified';
+import FeedbackThumbsUpIcon from 'components/icons/FeedbackThumbsUp';
+import Spacer from 'components/Spacer';
 
 const Section1: FC = () => {
   return (
-    <Container sx={{ pt: "1rem", mb: "4rem" }}>
+    <Container sx={{ pt: '1rem', mb: '4rem' }}>
       {/* GRIDS */}
       <Grid container spacing={1.5}>
         <Grid item lg={4} md={5} xs={12}>
@@ -20,30 +22,30 @@ const Section1: FC = () => {
 
         <Grid item lg={8} md={7} xs={12}>
           <ShowcaseCard2 />
-          <Spacer mt=".75rem" />
+          <Spacer mt='.75rem' />
           <ShowcaseCard3 />
         </Grid>
       </Grid>
       {/* END GRIDS */}
 
-      <Spacer mb="1.5rem" />
+      <Spacer mb='1.5rem' />
 
       <Grid container spacing={3}>
         <Grid item md={3} sm={6} xs={12}>
           {/* SERVICE CARD */}
           <ShowcaseCard4
-            title="Secure Payment"
+            title='Secure Payment'
             Icon={CreditCardVerifiedIcon}
-            body="100% secured payment & privacy"
+            body='100% secured payment & privacy'
           />
         </Grid>
 
         <Grid item md={3} sm={6} xs={12}>
           {/* SERVICE CARD */}
           <ShowcaseCard4
-            title="Great Feedback"
+            title='Great Feedback'
             Icon={FeedbackThumbsUpIcon}
-            body="More than 97% positive & happy customers"
+            body='More than 97% positive & happy customers'
           />
         </Grid>
 

@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Container, Grid } from "@mui/material";
-import { H2 } from "components/Typography";
-import { BlogCard2 } from "components/blog-cards";
-import Blog from "models/Blog.model";
+import { Container, Grid } from '@mui/material';
+import { FC } from 'react';
+
+import { BlogCard2 } from 'components/blog-cards';
+import { H2 } from 'components/Typography';
+import Blog from 'models/Blog.model';
 
 // =======================================
 type Section8Props = { blogs: Blog[] };
@@ -11,7 +12,7 @@ type Section8Props = { blogs: Blog[] };
 const Section8: FC<Section8Props> = ({ blogs }) => {
   return (
     <Container sx={{ mt: 8 }}>
-      <H2 textAlign="center" mb={4}>
+      <H2 textAlign='center' mb={4}>
         Latest Articles
       </H2>
 

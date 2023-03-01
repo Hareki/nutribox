@@ -1,6 +1,7 @@
-import { FC } from "react";
-import { Container, Grid } from "@mui/material";
-import HomeFourCard3 from "./homeFour-cards/HomeFourCard3";
+import { Container, Grid } from '@mui/material';
+import { FC } from 'react';
+
+import HomeFourCard3 from './homeFour-cards/HomeFourCard3';
 
 // ===================================================
 type Props = { bannerData: any[] };
@@ -11,7 +12,7 @@ const Section3: FC<Props> = ({ bannerData }) => {
   const secondItem = bannerData[1];
 
   return (
-    <Container sx={{ mb: "4rem" }}>
+    <Container sx={{ mb: '4rem' }}>
       <Grid container spacing={4}>
         <Grid item md={6} xs={12}>
           <HomeFourCard3
@@ -23,8 +24,8 @@ const Section3: FC<Props> = ({ bannerData }) => {
 
         <Grid item md={6} xs={12}>
           <HomeFourCard3
-            color="white"
-            bgColor="grey.600"
+            color='white'
+            bgColor='grey.600'
             title={secondItem.title}
             body={secondItem.description}
             imgUrl={secondItem.thumbnail}

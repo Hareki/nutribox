@@ -1,16 +1,17 @@
-import Link from "next/link";
-import { NextPage } from "next";
-import { Button, Card, Divider, Grid, TextField } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import MenuItem from "@mui/material/MenuItem";
-import SEO from "components/SEO";
-import { Span } from "components/Typography";
-import { FlexBetween, FlexBox } from "components/flex-box";
-import ProductCard7 from "components/product-cards/ProductCard7";
-import CheckoutNavLayout from "components/layouts/CheckoutNavLayout";
-import { CartItem, useAppContext } from "contexts/AppContext";
-import countryList from "data/countryList";
-import { currency } from "lib";
+import { Button, Card, Divider, Grid, TextField } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import MenuItem from '@mui/material/MenuItem';
+import { NextPage } from 'next';
+import Link from 'next/link';
+
+import { FlexBetween, FlexBox } from 'components/flex-box';
+import CheckoutNavLayout from 'components/layouts/CheckoutNavLayout';
+import ProductCard7 from 'components/product-cards/ProductCard7';
+import SEO from 'components/SEO';
+import { Span } from 'components/Typography';
+import { CartItem, useAppContext } from 'contexts/AppContext';
+import countryList from 'data/countryList';
+import { currency } from 'lib';
 
 const Cart: NextPage = () => {
   const { state } = useAppContext();
@@ -21,7 +22,7 @@ const Cart: NextPage = () => {
 
   return (
     <CheckoutNavLayout>
-      <SEO title="Cart" />
+      <SEO title='Cart' />
 
       <Grid container spacing={3}>
         {/* CART PRODUCT LIST */}
@@ -35,32 +36,32 @@ const Cart: NextPage = () => {
         <Grid item md={4} xs={12}>
           <Card sx={{ padding: 3 }}>
             <FlexBetween mb={2}>
-              <Span color="grey.600">Total:</Span>
+              <Span color='grey.600'>Total:</Span>
 
-              <Span fontSize={18} fontWeight={600} lineHeight="1">
+              <Span fontSize={18} fontWeight={600} lineHeight='1'>
                 {currency(getTotalPrice())}
               </Span>
             </FlexBetween>
 
             <Divider sx={{ mb: 2 }} />
 
-            <FlexBox alignItems="center" columnGap={1} mb={2}>
-              <Span fontWeight="600">Additional Comments</Span>
+            <FlexBox alignItems='center' columnGap={1} mb={2}>
+              <Span fontWeight='600'>Additional Comments</Span>
 
               <Span
-                p="6px 10px"
+                p='6px 10px'
                 fontSize={12}
-                lineHeight="1"
-                borderRadius="3px"
-                color="primary.main"
-                bgcolor="primary.light"
+                lineHeight='1'
+                borderRadius='3px'
+                color='primary.main'
+                bgcolor='primary.light'
               >
                 Note
               </Span>
             </FlexBox>
 
             <TextField
-              variant="outlined"
+              variant='outlined'
               rows={6}
               fullWidth
               multiline
@@ -71,15 +72,15 @@ const Cart: NextPage = () => {
 
             <TextField
               fullWidth
-              size="small"
-              label="Voucher"
-              variant="outlined"
-              placeholder="Voucher"
+              size='small'
+              label='Voucher'
+              variant='outlined'
+              placeholder='Voucher'
             />
 
             <Button
-              variant="outlined"
-              color="primary"
+              variant='outlined'
+              color='primary'
               fullWidth
               sx={{ mt: 2, mb: 4 }}
             >
@@ -88,7 +89,7 @@ const Cart: NextPage = () => {
 
             <Divider sx={{ mb: 2 }} />
 
-            <Span fontWeight={600} mb={2} display="block">
+            <Span fontWeight={600} mb={2} display='block'>
               Shipping Estimates
             </Span>
 
@@ -100,10 +101,10 @@ const Cart: NextPage = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  size="small"
-                  label="Country"
-                  variant="outlined"
-                  placeholder="Select Country"
+                  size='small'
+                  label='Country'
+                  variant='outlined'
+                  placeholder='Select Country'
                 />
               )}
             />
@@ -111,11 +112,11 @@ const Cart: NextPage = () => {
             <TextField
               select
               fullWidth
-              size="small"
-              label="State"
-              variant="outlined"
-              placeholder="Select State"
-              defaultValue="new-york"
+              size='small'
+              label='State'
+              variant='outlined'
+              placeholder='Select State'
+              defaultValue='new-york'
             >
               {stateList.map((item) => (
                 <MenuItem value={item.value} key={item.label}>
@@ -126,19 +127,19 @@ const Cart: NextPage = () => {
 
             <TextField
               fullWidth
-              size="small"
-              label="Zip Code"
-              placeholder="3100"
-              variant="outlined"
+              size='small'
+              label='Zip Code'
+              placeholder='3100'
+              variant='outlined'
               sx={{ mt: 2 }}
             />
 
-            <Button variant="outlined" color="primary" fullWidth sx={{ my: 2 }}>
+            <Button variant='outlined' color='primary' fullWidth sx={{ my: 2 }}>
               Calculate Shipping
             </Button>
 
-            <Link href="/checkout" passHref legacyBehavior>
-              <Button variant="contained" color="primary" fullWidth>
+            <Link href='/checkout' passHref legacyBehavior>
+              <Button variant='contained' color='primary' fullWidth>
                 Checkout Now
               </Button>
             </Link>
@@ -150,8 +151,8 @@ const Cart: NextPage = () => {
 };
 
 const stateList = [
-  { value: "new-york", label: "New York" },
-  { value: "chicago", label: "Chicago" },
+  { value: 'new-york', label: 'New York' },
+  { value: 'chicago', label: 'Chicago' },
 ];
 
 export default Cart;

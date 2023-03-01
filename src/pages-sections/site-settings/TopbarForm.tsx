@@ -1,17 +1,18 @@
-import { FC, Fragment } from "react";
-import { Delete } from "@mui/icons-material";
-import { FieldArray, Formik } from "formik";
-import { Button, Divider, Grid, IconButton, TextField } from "@mui/material";
-import { H4 } from "components/Typography";
-import { FlexBox } from "components/flex-box";
+import { Delete } from '@mui/icons-material';
+import { Button, Divider, Grid, IconButton, TextField } from '@mui/material';
+import { FieldArray, Formik } from 'formik';
+import { FC, Fragment } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import { H4 } from 'components/Typography';
 
 const TopbarForm: FC = () => {
   const initialValues = {
-    phone: "12345678910",
-    email: "ui.lib.drive@gmail.com",
+    phone: '12345678910',
+    email: 'ui.lib.drive@gmail.com',
     links: [
-      { id: 1, name: "Theme FAQ's", link: "https://www.themefaqs.com" },
-      { id: 2, name: "Help", link: "https://www.help.com" },
+      { id: 1, name: "Theme FAQ's", link: 'https://www.themefaqs.com' },
+      { id: 2, name: 'Help', link: 'https://www.help.com' },
     ],
   };
 
@@ -31,28 +32,28 @@ const TopbarForm: FC = () => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                name="phone"
-                color="info"
-                size="medium"
-                label="Phone"
+                name='phone'
+                color='info'
+                size='medium'
+                label='Phone'
                 onBlur={handleBlur}
                 value={values.phone}
                 onChange={handleChange}
-                placeholder="0000000000"
+                placeholder='0000000000'
               />
             </Grid>
 
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                color="info"
-                name="email"
-                size="medium"
-                label="Email"
+                color='info'
+                name='email'
+                size='medium'
+                label='Email'
                 onBlur={handleBlur}
                 value={values.email}
                 onChange={handleChange}
-                placeholder="email@example.com"
+                placeholder='email@example.com'
               />
             </Grid>
 
@@ -61,21 +62,21 @@ const TopbarForm: FC = () => {
             </Grid>
 
             <FieldArray
-              name="links"
+              name='links'
               render={(arrayHelper) => (
                 <Fragment>
                   <Grid item xs={12}>
-                    <FlexBox alignItems="center" justifyContent="space-between">
+                    <FlexBox alignItems='center' justifyContent='space-between'>
                       <H4>Top Bar Right</H4>
 
                       <Button
-                        color="info"
-                        variant="contained"
+                        color='info'
+                        variant='contained'
                         onClick={() => {
                           arrayHelper.push({
                             id: Date.now(),
-                            name: "",
-                            link: "",
+                            name: '',
+                            link: '',
                           });
                         }}
                       >
@@ -89,9 +90,9 @@ const TopbarForm: FC = () => {
                       <Grid item xs={5}>
                         <TextField
                           fullWidth
-                          color="info"
-                          size="medium"
-                          label="Name"
+                          color='info'
+                          size='medium'
+                          label='Name'
                           value={item.name}
                           onBlur={handleBlur}
                           onChange={handleChange}
@@ -102,9 +103,9 @@ const TopbarForm: FC = () => {
                       <Grid item xs={5}>
                         <TextField
                           fullWidth
-                          color="info"
-                          size="medium"
-                          label="Link"
+                          color='info'
+                          size='medium'
+                          label='Link'
                           value={item.link}
                           onBlur={handleBlur}
                           onChange={handleChange}
@@ -124,7 +125,7 @@ const TopbarForm: FC = () => {
             />
           </Grid>
 
-          <Button type="submit" color="info" variant="contained" sx={{ mt: 4 }}>
+          <Button type='submit' color='info' variant='contained' sx={{ mt: 4 }}>
             Save Changes
           </Button>
         </form>

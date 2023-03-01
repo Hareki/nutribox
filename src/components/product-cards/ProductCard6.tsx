@@ -1,16 +1,17 @@
-import { FC } from "react";
-import { Card, Chip, styled } from "@mui/material";
-import HoverBox from "components/HoverBox";
-import LazyImage from "components/LazyImage";
+import { Card, Chip, styled } from '@mui/material';
+import { FC } from 'react';
+
+import HoverBox from 'components/HoverBox';
+import LazyImage from 'components/LazyImage';
 
 // styled components
 const StyledChip = styled(Chip)({
   zIndex: 2,
-  top: "0.875rem",
-  fontSize: "10px",
-  padding: "0 8px",
-  fontWeight: "600",
-  position: "absolute",
+  top: '0.875rem',
+  fontSize: '10px',
+  padding: '0 8px',
+  fontWeight: '600',
+  position: 'absolute',
 });
 
 // ========================================================
@@ -23,22 +24,22 @@ type ProductCardProps = {
 
 const ProductCard6: FC<ProductCardProps> = ({ title, subtitle, imgUrl }) => {
   return (
-    <Card sx={{ position: "relative" }}>
+    <Card sx={{ position: 'relative' }}>
       <StyledChip
-        color="secondary"
+        color='secondary'
         label={title}
-        size="small"
-        sx={{ left: "0.875rem" }}
+        size='small'
+        sx={{ left: '0.875rem' }}
       />
 
-      <StyledChip label={subtitle} size="small" sx={{ right: "0.875rem" }} />
+      <StyledChip label={subtitle} size='small' sx={{ right: '0.875rem' }} />
 
-      <HoverBox position="relative" height="120px" borderRadius="8px">
+      <HoverBox position='relative' height='120px' borderRadius='8px'>
         <LazyImage
           src={imgUrl}
-          layout="fill"
-          objectFit="cover"
-          borderRadius="8px"
+          layout='fill'
+          objectFit='cover'
+          borderRadius='8px'
           alt={title}
         />
       </HoverBox>

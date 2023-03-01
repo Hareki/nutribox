@@ -1,35 +1,37 @@
-import { FC, useState } from "react";
-import { Box, Container, Grid } from "@mui/material";
-import BazaarCard from "components/BazaarCard";
-import { FlexBox } from "components/flex-box";
-import ProductCategoryItem from "./ProductCategoryItem";
-import ProductCard1 from "components/product-cards/ProductCard1";
-import CategorySectionHeader from "components/CategorySectionHeader";
-import Brand from "models/Brand.model";
-import Product from "models/Product.model";
+import { Box, Container, Grid } from '@mui/material';
+import { FC, useState } from 'react';
+
+import ProductCategoryItem from './ProductCategoryItem';
+
+import BazaarCard from 'components/BazaarCard';
+import CategorySectionHeader from 'components/CategorySectionHeader';
+import { FlexBox } from 'components/flex-box';
+import ProductCard1 from 'components/product-cards/ProductCard1';
+import Brand from 'models/Brand.model';
+import Product from 'models/Product.model';
 
 // ==============================================================
 type Props = { carList: Product[]; carBrands: Brand[] };
 // ==============================================================
 
 const Section6: FC<Props> = ({ carList, carBrands }) => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState('');
 
   const handleCategoryClick = (brand: Brand) => () => {
-    if (selected === brand.slug) setSelected("");
+    if (selected === brand.slug) setSelected('');
     else setSelected(brand.slug);
   };
 
   return (
-    <Container sx={{ mb: "80px" }}>
-      <FlexBox gap="1.75rem">
+    <Container sx={{ mb: '80px' }}>
+      <FlexBox gap='1.75rem'>
         <BazaarCard
           sx={{
-            height: "100%",
-            minWidth: "240px",
-            padding: "1.25rem",
-            borderRadius: "10px",
-            display: { xs: "none", md: "block" },
+            height: '100%',
+            minWidth: '240px',
+            padding: '1.25rem',
+            borderRadius: '10px',
+            display: { xs: 'none', md: 'block' },
           }}
         >
           {carBrands.map((brand) => (
@@ -38,22 +40,22 @@ const Section6: FC<Props> = ({ carList, carBrands }) => {
               key={brand.id}
               title={brand.name}
               imgUrl={brand.image}
-              sx={{ mb: "0.75rem" }}
+              sx={{ mb: '0.75rem' }}
               onClick={handleCategoryClick(brand)}
               isSelected={selected === brand.slug}
             />
           ))}
 
           <ProductCategoryItem
-            id="all"
-            title="View All Brands"
-            isSelected={selected === "all"}
-            sx={{ mt: 8, height: 44, justifyContent: "center" }}
+            id='all'
+            title='View All Brands'
+            isSelected={selected === 'all'}
+            sx={{ mt: 8, height: 44, justifyContent: 'center' }}
           />
         </BazaarCard>
 
-        <Box flex="1 1 0" minWidth="0px">
-          <CategorySectionHeader title="Cars" seeMoreLink="#" />
+        <Box flex='1 1 0' minWidth='0px'>
+          <CategorySectionHeader title='Cars' seeMoreLink='#' />
 
           <Grid container spacing={3}>
             {carList.map((item) => (

@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Button, ButtonProps } from "@mui/material";
+import { Button, ButtonProps } from '@mui/material';
+import { FC } from 'react';
 
 // ==================================================
 type WhiteButtonProps = { children: any };
@@ -11,12 +11,12 @@ const WhiteButton: FC<WhiteButtonProps & ButtonProps> = ({
 }) => {
   return (
     <Button
-      color="dark"
-      variant="contained"
+      color='dark'
+      variant='contained'
       sx={{
-        color: "dark.main",
-        backgroundColor: "white",
-        ":hover": { backgroundColor: "dark.main", color: "#fff" },
+        color: 'dark.main',
+        backgroundColor: 'white',
+        ':hover': { backgroundColor: 'dark.main', color: '#fff' },
       }}
       {...props}
     >

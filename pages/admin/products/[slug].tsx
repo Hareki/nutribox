@@ -1,10 +1,11 @@
-import { ReactElement, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Box } from "@mui/material";
-import * as yup from "yup";
-import { H3 } from "components/Typography";
-import { ProductForm } from "pages-sections/admin";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
+import { ReactElement, useEffect, useState } from 'react';
+import * as yup from 'yup';
+
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import { H3 } from 'components/Typography';
+import { ProductForm } from 'pages-sections/admin';
 // import api from "utils/__api__/products";
 
 // =============================================================================
@@ -14,24 +15,24 @@ EditProduct.getLayout = function getLayout(page: ReactElement) {
 // =============================================================================
 
 const INITIAL_VALUES = {
-  name: "",
-  tags: "",
-  stock: "",
+  name: '',
+  tags: '',
+  stock: '',
   price: 0,
   category: [],
-  sale_price: "",
-  description: "",
+  sale_price: '',
+  description: '',
 };
 
 // form field validation schema
 const validationSchema = yup.object().shape({
-  name: yup.string().required("required"),
-  category: yup.array().min(1).required("required"),
-  description: yup.string().required("required"),
-  stock: yup.number().required("required"),
-  price: yup.number().required("required"),
-  sale_price: yup.number().required("required"),
-  tags: yup.string().required("required"),
+  name: yup.string().required('required'),
+  category: yup.array().min(1).required('required'),
+  description: yup.string().required('required'),
+  stock: yup.number().required('required'),
+  price: yup.number().required('required'),
+  sale_price: yup.number().required('required'),
+  tags: yup.string().required('required'),
 });
 
 export default function EditProduct() {

@@ -1,6 +1,4 @@
-import { FC } from "react";
-import Link from "next/link";
-import { Call, East, Place } from "@mui/icons-material";
+import { Call, East, Place } from '@mui/icons-material';
 import {
   alpha,
   Avatar,
@@ -9,23 +7,26 @@ import {
   IconButton,
   Rating,
   styled,
-} from "@mui/material";
-import { FlexBetween, FlexBox } from "components/flex-box";
-import { H3, Span } from "components/Typography";
-import Shop from "models/Shop.model";
+} from '@mui/material';
+import Link from 'next/link';
+import { FC } from 'react';
+
+import { FlexBetween, FlexBox } from 'components/flex-box';
+import { H3, Span } from 'components/Typography';
+import Shop from 'models/Shop.model';
 
 // styled components
 const ContentWrapper = styled(Box)<{ img: string }>(({ theme, img }) => ({
-  color: "white",
-  backgroundSize: "cover",
-  padding: "17px 30px 56px",
-  backgroundPosition: "center",
+  color: 'white',
+  backgroundSize: 'cover',
+  padding: '17px 30px 56px',
+  backgroundPosition: 'center',
   backgroundImage: `linear-gradient(to bottom,
     ${alpha(theme.palette.grey[900], 0.8)}, ${alpha(
     theme.palette.grey[900],
-    0.8
+    0.8,
   )}), 
-    url(${img || "/assets/images/banners/cycle.png"})`,
+    url(${img || '/assets/images/banners/cycle.png'})`,
 }));
 
 const ShopCard1: FC<Partial<Shop>> = (props) => {
@@ -35,26 +36,26 @@ const ShopCard1: FC<Partial<Shop>> = (props) => {
   return (
     <Card>
       <ContentWrapper img={coverPicture}>
-        <H3 fontWeight="600" mb={1}>
+        <H3 fontWeight='600' mb={1}>
           {name}
         </H3>
 
         <Rating
           value={rating || 0}
-          color="warn"
-          size="small"
+          color='warn'
+          size='small'
           readOnly
-          sx={{ mb: "0.75rem" }}
+          sx={{ mb: '0.75rem' }}
         />
 
         <FlexBox mb={1} gap={1}>
-          <Place fontSize="small" sx={{ fontSize: 17, mt: "3px" }} />
-          <Span color="white">{address}</Span>
+          <Place fontSize='small' sx={{ fontSize: 17, mt: '3px' }} />
+          <Span color='white'>{address}</Span>
         </FlexBox>
 
-        <FlexBox alignItems="center" gap={1}>
-          <Call fontSize="small" sx={{ fontSize: 17 }} />
-          <Span color="white">{phone}</Span>
+        <FlexBox alignItems='center' gap={1}>
+          <Call fontSize='small' sx={{ fontSize: 17 }} />
+          <Span color='white'>{phone}</Span>
         </FlexBox>
       </ContentWrapper>
 
@@ -64,9 +65,9 @@ const ShopCard1: FC<Partial<Shop>> = (props) => {
           sx={{
             width: 64,
             height: 64,
-            mt: "-32px",
-            border: "3px solid",
-            borderColor: "grey.100",
+            mt: '-32px',
+            border: '3px solid',
+            borderColor: 'grey.100',
           }}
         />
         <Link href={`/shops/${slug}`}>
@@ -76,7 +77,7 @@ const ShopCard1: FC<Partial<Shop>> = (props) => {
                 sx={{
                   fontSize: 19,
                   transform: ({ direction }) =>
-                    `rotate(${direction === "rtl" ? "180deg" : "0deg"})`,
+                    `rotate(${direction === 'rtl' ? '180deg' : '0deg'})`,
                 }}
               />
             </IconButton>

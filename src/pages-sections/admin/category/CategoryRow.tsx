@@ -1,14 +1,16 @@
-import { FC, useState } from "react";
-import { Avatar } from "@mui/material";
-import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
-import BazaarSwitch from "components/BazaarSwitch";
+import { Delete, Edit, RemoveRedEye } from '@mui/icons-material';
+import { Avatar } from '@mui/material';
+import { useRouter } from 'next/router';
+import { FC, useState } from 'react';
+
 import {
   StyledTableRow,
   CategoryWrapper,
   StyledIconButton,
   StyledTableCell,
-} from "../StyledComponents";
-import { useRouter } from "next/router";
+} from '../StyledComponents';
+
+import BazaarSwitch from 'components/BazaarSwitch';
 
 // ========================================================================
 type CategoryRowProps = {
@@ -27,28 +29,28 @@ const CategoryRow: FC<CategoryRowProps> = ({ item, selected }) => {
   const handleNavigate = () => router.push(`/admin/categories/${slug}`);
 
   return (
-    <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
-      <StyledTableCell align="left">#{id.split("-")[0]}</StyledTableCell>
+    <StyledTableRow tabIndex={-1} role='checkbox' selected={isItemSelected}>
+      <StyledTableCell align='left'>#{id.split('-')[0]}</StyledTableCell>
 
-      <StyledTableCell align="left">
+      <StyledTableCell align='left'>
         <CategoryWrapper>{name}</CategoryWrapper>
       </StyledTableCell>
 
-      <StyledTableCell align="left">
-        <Avatar src={image} sx={{ borderRadius: "8px" }} />
+      <StyledTableCell align='left'>
+        <Avatar src={image} sx={{ borderRadius: '8px' }} />
       </StyledTableCell>
 
-      <StyledTableCell align="left">{level}</StyledTableCell>
+      <StyledTableCell align='left'>{level}</StyledTableCell>
 
-      <StyledTableCell align="left">
+      <StyledTableCell align='left'>
         <BazaarSwitch
-          color="info"
+          color='info'
           checked={featuredCategory}
           onChange={() => setFeaturedCategory((state: boolean) => !state)}
         />
       </StyledTableCell>
 
-      <StyledTableCell align="center">
+      <StyledTableCell align='center'>
         <StyledIconButton onClick={handleNavigate}>
           <Edit />
         </StyledIconButton>

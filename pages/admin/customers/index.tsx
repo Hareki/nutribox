@@ -1,25 +1,26 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import { H3 } from "components/Typography";
-import Scrollbar from "components/Scrollbar";
-import SearchArea from "components/dashboard/SearchArea";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import useMuiTable from "hooks/useMuiTable";
-import { CustomerRow } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import SearchArea from 'components/dashboard/SearchArea';
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import { CustomerRow } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // table column list
 const tableHeading = [
-  { id: "name", label: "Name", align: "left" },
-  { id: "phone", label: "Phone", align: "left" },
-  { id: "email", label: "Email", align: "left" },
-  { id: "balance", label: "Wallet Balance", align: "left" },
-  { id: "orders", label: "No Of Orders", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'name', label: 'Name', align: 'left' },
+  { id: 'phone', label: 'Phone', align: 'left' },
+  { id: 'email', label: 'Email', align: 'left' },
+  { id: 'balance', label: 'Wallet Balance', align: 'left' },
+  { id: 'orders', label: 'No Of Orders', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -49,9 +50,9 @@ export default function CustomerList({ customers }: CustomerListProps) {
 
       <SearchArea
         handleSearch={() => {}}
-        buttonText="Add Customer"
+        buttonText='Add Customer'
         handleBtnClick={() => {}}
-        searchPlaceholder="Search Customer..."
+        searchPlaceholder='Search Customer...'
       />
 
       <Card>
@@ -77,7 +78,7 @@ export default function CustomerList({ customers }: CustomerListProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(filteredList.length / rowsPerPage)}

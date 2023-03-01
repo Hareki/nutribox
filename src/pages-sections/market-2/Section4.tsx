@@ -1,13 +1,14 @@
-import { FC, useEffect, useState } from "react";
-import { Container } from "@mui/material";
-import useWindowSize from "hooks/useWindowSize";
-import { H2 } from "components/Typography";
-import { NavLink3 } from "components/nav-link";
-import { FlexBetween } from "components/flex-box";
-import Carousel from "components/carousel/Carousel";
-import ProductCard20 from "components/product-cards/ProductCard20";
-import { carouselStyled } from "components/carousel/styles";
-import Product from "models/Product.model";
+import { Container } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import { carouselStyled } from 'components/carousel/styles';
+import { FlexBetween } from 'components/flex-box';
+import { NavLink3 } from 'components/nav-link';
+import ProductCard20 from 'components/product-cards/ProductCard20';
+import { H2 } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // ======================================================================
 type Section4Props = { products: Product[] };
@@ -29,7 +30,7 @@ const Section4: FC<Section4Props> = ({ products }) => {
     <Container sx={{ py: 8 }}>
       <FlexBetween mb={3}>
         <H2 fontSize={20}>Deals Of The Day</H2>
-        <NavLink3 text="More Products" href="#" hoverColor="dark.main" />
+        <NavLink3 text='More Products' href='#' hoverColor='dark.main' />
       </FlexBetween>
 
       <Carousel

@@ -1,39 +1,40 @@
-import { FC } from "react";
-import { KeyboardArrowDown } from "@mui/icons-material";
-import { Box, Grid, List, ListItem, styled } from "@mui/material";
-import { H6 } from "components/Typography";
-import { NavLink } from "components/nav-link";
-import BazaarCard from "components/BazaarCard";
-import { FlexRowCenter } from "components/flex-box";
+import { KeyboardArrowDown } from '@mui/icons-material';
+import { Box, Grid, List, ListItem, styled } from '@mui/material';
+import { FC } from 'react';
+
+import BazaarCard from 'components/BazaarCard';
+import { FlexRowCenter } from 'components/flex-box';
+import { NavLink } from 'components/nav-link';
+import { H6 } from 'components/Typography';
 
 // style components
 const Wrapper = styled(Box)(({ theme }) => ({
-  cursor: "pointer",
-  position: "relative",
-  transition: "color 150ms ease-in-out",
-  ":hover": {
+  cursor: 'pointer',
+  position: 'relative',
+  transition: 'color 150ms ease-in-out',
+  ':hover': {
     color: theme.palette.primary.main,
-    "& .menu-list": { display: "block" },
+    '& .menu-list': { display: 'block' },
   },
 }));
 
 const MenusContainer = styled(ListItem)(({ theme }) => ({
   zIndex: 2,
-  top: "100%",
+  top: '100%',
   minWidth: 1000,
-  display: "none",
-  position: "absolute",
+  display: 'none',
+  position: 'absolute',
   transform: `translate(-50%, 0%)`,
   [theme.breakpoints.down(1070)]: { minWidth: 800 },
 }));
 
 const MenuListItem = styled(ListItem)(({ theme }) => ({
-  padding: ".5rem 2rem",
-  ":hover": { backgroundColor: theme.palette.action.hover },
+  padding: '.5rem 2rem',
+  ':hover': { backgroundColor: theme.palette.action.hover },
 }));
 
 const StyledNavLink = styled(NavLink)({
-  transition: "all 0.3s",
+  transition: 'all 0.3s',
 });
 
 // ===============================================================
@@ -57,13 +58,13 @@ const MegaMenu: FC<MegaMenuProps> = ({ title, menuList }) => {
 
   return (
     <Wrapper>
-      <FlexRowCenter alignItems="flex-end" gap={0.3}>
-        {title}{" "}
-        <KeyboardArrowDown sx={{ color: "grey.500", fontSize: "1.1rem" }} />
+      <FlexRowCenter alignItems='flex-end' gap={0.3}>
+        {title}{' '}
+        <KeyboardArrowDown sx={{ color: 'grey.500', fontSize: '1.1rem' }} />
       </FlexRowCenter>
 
-      <MenusContainer className="menu-list">
-        <BazaarCard elevation={3} sx={{ mt: 1.5, overflow: "hidden" }}>
+      <MenusContainer className='menu-list'>
+        <BazaarCard elevation={3} sx={{ mt: 1.5, overflow: 'hidden' }}>
           <Grid container>
             {menuList.slice(0, 4).map((category, key) => (
               <Grid
@@ -72,7 +73,7 @@ const MegaMenu: FC<MegaMenuProps> = ({ title, menuList }) => {
                 key={key}
                 sx={{
                   py: 2,
-                  ":nth-of-type(odd)": { backgroundColor: "grey.100" },
+                  ':nth-of-type(odd)': { backgroundColor: 'grey.100' },
                 }}
               >
                 {category.map((item) => {

@@ -1,9 +1,11 @@
-import { FC } from "react";
-import { Pagination } from "@mui/material";
-import { FlexBetween } from "components/flex-box";
-import ProductCard9 from "components/product-cards/ProductCard9";
-import { Span } from "../Typography";
-import Product from "models/Product.model";
+import { Pagination } from '@mui/material';
+import { FC } from 'react';
+
+import { Span } from '../Typography';
+
+import { FlexBetween } from 'components/flex-box';
+import ProductCard9 from 'components/product-cards/ProductCard9';
+import Product from 'models/Product.model';
 
 // ==========================================================
 type ProductCard9ListProps = { products: Product[] };
@@ -25,9 +27,9 @@ const ProductCard9List: FC<ProductCard9ListProps> = ({ products }) => {
         />
       ))}
 
-      <FlexBetween flexWrap="wrap" mt={4}>
-        <Span color="grey.600">Showing 1-9 of 1.3k Products</Span>
-        <Pagination count={10} variant="outlined" color="primary" />
+      <FlexBetween flexWrap='wrap' mt={4}>
+        <Span color='grey.600'>Showing 1-9 of 1.3k Products</Span>
+        <Pagination count={10} variant='outlined' color='primary' />
       </FlexBetween>
     </div>
   );

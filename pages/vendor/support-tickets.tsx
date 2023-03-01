@@ -1,29 +1,30 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Delete, Edit } from "@mui/icons-material";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import Scrollbar from "components/Scrollbar";
-import SearchInput from "components/SearchInput";
-import useMuiTable from "hooks/useMuiTable";
+import { Delete, Edit } from '@mui/icons-material';
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import SearchInput from 'components/SearchInput';
+import useMuiTable from 'hooks/useMuiTable';
+import Ticket from 'models/Ticket.model';
 import {
   StatusWrapper,
   StyledTableRow,
   StyledTableCell,
   StyledIconButton,
-} from "pages-sections/admin";
-import Ticket from "models/Ticket.model";
-import api from "utils/__api__/ticket";
+} from 'pages-sections/admin';
+import api from 'utils/__api__/ticket';
 
 const tableHeading = [
-  { id: "title", label: "Information", align: "left" },
-  { id: "type", label: "Type", align: "left" },
-  { id: "date", label: "Ticket Date", align: "left" },
-  { id: "category", label: "Problem Title", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'title', label: 'Information', align: 'left' },
+  { id: 'type', label: 'Type', align: 'left' },
+  { id: 'date', label: 'Ticket Date', align: 'left' },
+  { id: 'category', label: 'Problem Title', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -43,11 +44,11 @@ export default function SupportTickets({ ticketList }: SupportTicketsProps) {
     filteredList,
     handleChangePage,
     handleRequestSort,
-  } = useMuiTable({ listData: ticketList, defaultSort: "date" });
+  } = useMuiTable({ listData: ticketList, defaultSort: 'date' });
 
   return (
     <Box py={4}>
-      <SearchInput placeholder="Search Ticket.." sx={{ mb: 4 }} />
+      <SearchInput placeholder='Search Ticket..' sx={{ mb: 4 }} />
 
       <Card>
         <Scrollbar>
@@ -65,25 +66,25 @@ export default function SupportTickets({ ticketList }: SupportTicketsProps) {
 
               <TableBody>
                 {filteredList.map((ticket, index) => (
-                  <StyledTableRow role="checkbox" key={index}>
-                    <StyledTableCell align="left">
+                  <StyledTableRow role='checkbox' key={index}>
+                    <StyledTableCell align='left'>
                       {ticket.title}
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       <StatusWrapper status={ticket.type}>
                         {ticket.type}
                       </StatusWrapper>
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {ticket.date}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {ticket.category}
                     </StyledTableCell>
 
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <StyledIconButton>
                         <Edit />
                       </StyledIconButton>
@@ -98,7 +99,7 @@ export default function SupportTickets({ ticketList }: SupportTicketsProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(ticketList.length / rowsPerPage)}

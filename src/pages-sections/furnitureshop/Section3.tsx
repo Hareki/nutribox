@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from "react";
-import { Box, useTheme } from "@mui/material";
-import useWindowSize from "hooks/useWindowSize";
-import Carousel from "components/carousel/Carousel";
-import { H1, Paragraph } from "components/Typography";
-import ProductCard17 from "components/product-cards/ProductCard17";
-import Product from "models/Product.model";
+import { Box, useTheme } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import ProductCard17 from 'components/product-cards/ProductCard17';
+import { H1, Paragraph } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // ====================================================
 type Props = {
@@ -29,8 +30,8 @@ const Section3: FC<Props> = ({ products, heading, description }) => {
   return (
     <Box>
       <Box my={2}>
-        <H1 mb="4px">{heading}</H1>
-        <Paragraph color="grey.600">{description}</Paragraph>
+        <H1 mb='4px'>{heading}</H1>
+        <Paragraph color='grey.600'>{description}</Paragraph>
       </Box>
 
       <Carousel
@@ -38,14 +39,14 @@ const Section3: FC<Props> = ({ products, heading, description }) => {
         visibleSlides={visibleSlides}
         infinite={true}
         sx={{
-          "& #backArrowButton, #backForwardButton": {
+          '& #backArrowButton, #backForwardButton': {
             width: 40,
             height: 40,
             borderRadius: 0,
             boxShadow: theme.shadows[2],
             color: theme.palette.primary.main,
             background: theme.palette.primary[50],
-            "&:hover": { background: theme.palette.primary[100] },
+            '&:hover': { background: theme.palette.primary[100] },
           },
         }}
       >

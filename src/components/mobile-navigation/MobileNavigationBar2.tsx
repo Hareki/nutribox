@@ -1,19 +1,21 @@
-import { FC, ReactNode, useEffect, useState } from "react";
-import { Badge, Box } from "@mui/material";
-import Home from "components/icons/Home";
-import User2 from "components/icons/User2";
-import CategoryOutlined from "components/icons/CategoryOutline";
-import ShoppingBagOutlined from "components/icons/ShoppingBagOutlined";
-import useWindowSize from "hooks/useWindowSize";
-import { layoutConstant } from "utils/constants";
-import { useAppContext } from "contexts/AppContext";
+import { Badge, Box } from '@mui/material';
+import { FC, ReactNode, useEffect, useState } from 'react';
+
 import {
   iconStyle,
   StyledBox,
   StyledDrawer,
   StyledNavLink,
   Wrapper,
-} from "./styles";
+} from './styles';
+
+import CategoryOutlined from 'components/icons/CategoryOutline';
+import Home from 'components/icons/Home';
+import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
+import User2 from 'components/icons/User2';
+import { useAppContext } from 'contexts/AppContext';
+import useWindowSize from 'hooks/useWindowSize';
+import { layoutConstant } from 'utils/constants';
 
 // ===================================================
 type Props = { children?: ReactNode };
@@ -43,15 +45,15 @@ const MobileNavigationBar2: FC<Props> = ({ children }) => {
       else setTotalHeight(total);
     };
 
-    window.addEventListener("scroll", listner);
-    return () => window.removeEventListener("scroll", listner);
+    window.addEventListener('scroll', listner);
+    return () => window.removeEventListener('scroll', listner);
   }, [mobileNavHeight, total]);
 
   return width <= 900 ? (
-    <Box position="relative" display="flex" flexDirection="column">
+    <Box position='relative' display='flex' flexDirection='column'>
       <StyledDrawer
         open={open}
-        anchor="left"
+        anchor='left'
         totalheight={totalHeight}
         onClose={handleDrawerClose}
       >
@@ -63,14 +65,14 @@ const MobileNavigationBar2: FC<Props> = ({ children }) => {
           if (item.href) {
             return (
               <StyledNavLink href={item.href} key={item.title}>
-                {item.title === "Cart" && (
-                  <Badge badgeContent={state.cart.length} color="primary">
-                    <item.icon fontSize="small" sx={iconStyle} />
+                {item.title === 'Cart' && (
+                  <Badge badgeContent={state.cart.length} color='primary'>
+                    <item.icon fontSize='small' sx={iconStyle} />
                   </Badge>
                 )}
 
-                {item.title !== "Cart" && (
-                  <item.icon sx={iconStyle} fontSize="small" />
+                {item.title !== 'Cart' && (
+                  <item.icon sx={iconStyle} fontSize='small' />
                 )}
                 {item.title}
               </StyledNavLink>
@@ -81,14 +83,14 @@ const MobileNavigationBar2: FC<Props> = ({ children }) => {
                 onClick={open ? handleDrawerClose : handleDrawerOpen}
                 key={item.title}
               >
-                {item.title === "Cart" && (
-                  <Badge badgeContent={state.cart.length} color="primary">
-                    <item.icon fontSize="small" sx={iconStyle} />
+                {item.title === 'Cart' && (
+                  <Badge badgeContent={state.cart.length} color='primary'>
+                    <item.icon fontSize='small' sx={iconStyle} />
                   </Badge>
                 )}
 
-                {item.title !== "Cart" && (
-                  <item.icon sx={iconStyle} fontSize="small" />
+                {item.title !== 'Cart' && (
+                  <item.icon sx={iconStyle} fontSize='small' />
                 )}
                 {item.title}
               </StyledBox>
@@ -101,10 +103,10 @@ const MobileNavigationBar2: FC<Props> = ({ children }) => {
 };
 
 const list = [
-  { title: "Home", icon: Home, href: "/" },
-  { title: "Category", icon: CategoryOutlined },
-  { title: "Cart", icon: ShoppingBagOutlined, href: "/cart" },
-  { title: "Account", icon: User2, href: "/profile" },
+  { title: 'Home', icon: Home, href: '/' },
+  { title: 'Category', icon: CategoryOutlined },
+  { title: 'Cart', icon: ShoppingBagOutlined, href: '/cart' },
+  { title: 'Account', icon: User2, href: '/profile' },
 ];
 
 export default MobileNavigationBar2;

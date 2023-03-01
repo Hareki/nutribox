@@ -1,8 +1,10 @@
-import { FC, ReactNode, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Box, Container, Grid } from "@mui/material";
-import Stepper from "components/Stepper";
-import ShopLayout1 from "./ShopLayout1";
+import { Box, Container, Grid } from '@mui/material';
+import { useRouter } from 'next/router';
+import { FC, ReactNode, useEffect, useState } from 'react';
+
+import ShopLayout1 from './ShopLayout1';
+
+import Stepper from 'components/Stepper';
 
 /**
  *  Used:
@@ -24,16 +26,16 @@ const CheckoutNavLayout: FC<CheckoutNavLayoutProps> = ({ children }) => {
   const handleStepChange = (step: number) => {
     switch (step) {
       case 0:
-        router.push("/cart");
+        router.push('/cart');
         break;
       case 1:
-        router.push("/checkout");
+        router.push('/checkout');
         break;
       case 2:
-        router.push("/payment");
+        router.push('/payment');
         break;
       case 3:
-        router.push("/orders");
+        router.push('/orders');
         break;
       default:
         break;
@@ -42,13 +44,13 @@ const CheckoutNavLayout: FC<CheckoutNavLayoutProps> = ({ children }) => {
 
   useEffect(() => {
     switch (pathname) {
-      case "/cart":
+      case '/cart':
         setSelectedStep(1);
         break;
-      case "/checkout":
+      case '/checkout':
         setSelectedStep(2);
         break;
-      case "/payment":
+      case '/payment':
         setSelectedStep(3);
         break;
       default:
@@ -59,7 +61,7 @@ const CheckoutNavLayout: FC<CheckoutNavLayoutProps> = ({ children }) => {
   return (
     <ShopLayout1>
       <Container sx={{ my: 4 }}>
-        <Box mb={3} display={{ sm: "block", xs: "none" }}>
+        <Box mb={3} display={{ sm: 'block', xs: 'none' }}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Stepper
@@ -78,10 +80,10 @@ const CheckoutNavLayout: FC<CheckoutNavLayoutProps> = ({ children }) => {
 };
 
 const stepperList = [
-  { title: "Cart", disabled: false },
-  { title: "Details", disabled: false },
-  { title: "Payment", disabled: false },
-  { title: "Review", disabled: true },
+  { title: 'Cart', disabled: false },
+  { title: 'Details', disabled: false },
+  { title: 'Payment', disabled: false },
+  { title: 'Review', disabled: true },
 ];
 
 export default CheckoutNavLayout;

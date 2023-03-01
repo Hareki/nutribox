@@ -1,6 +1,7 @@
-import { FC, Fragment, useEffect, useState } from "react";
-import { Box, Chip } from "@mui/material";
-import { FlexRowCenter } from "components/flex-box";
+import { Box, Chip } from '@mui/material';
+import { FC, Fragment, useEffect, useState } from 'react';
+
+import { FlexRowCenter } from 'components/flex-box';
 
 // ========================================================
 type Step = { title: string; disabled: boolean };
@@ -30,7 +31,7 @@ const Stepper: FC<StepperProps> = ({
   }, [selectedStep]);
 
   return (
-    <FlexRowCenter flexWrap="wrap" my="-4px">
+    <FlexRowCenter flexWrap='wrap' my='-4px'>
       {stepperList.map((step, ind) => (
         <Fragment key={step.title}>
           <Chip
@@ -39,23 +40,23 @@ const Stepper: FC<StepperProps> = ({
             onClick={handleStepClick(step, ind)}
             sx={{
               backgroundColor:
-                ind <= selected ? "primary.main" : "primary.light",
-              color: ind <= selected ? "primary.contrastText" : "primary.main",
-              p: "0.5rem 1rem",
-              fontSize: "14px",
-              fontWeight: "600",
-              my: "4px",
-              "&:hover:not(:disabled)": {
-                backgroundColor: "primary.main",
-                color: "primary.contrastText",
+                ind <= selected ? 'primary.main' : 'primary.light',
+              color: ind <= selected ? 'primary.contrastText' : 'primary.main',
+              p: '0.5rem 1rem',
+              fontSize: '14px',
+              fontWeight: '600',
+              my: '4px',
+              '&:hover:not(:disabled)': {
+                backgroundColor: 'primary.main',
+                color: 'primary.contrastText',
               },
             }}
           />
           {ind < stepperList.length - 1 && (
             <Box
-              width="50px"
-              height="4px"
-              bgcolor={ind < selected ? "primary.main" : "primary.light"}
+              width='50px'
+              height='4px'
+              bgcolor={ind < selected ? 'primary.main' : 'primary.light'}
             />
           )}
         </Fragment>

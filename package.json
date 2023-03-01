@@ -1,6 +1,6 @@
 {
-  "name": "bazaar",
-  "version": "3.4.0",
+  "name": "nutribox",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,10 @@
     "start": "next start",
     "size": "node --max_old_space_size=4096",
     "fix:prettier": "prettier --write . '!.next' '!.node_modules'",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pretty": "prettier --write . --ignore-path .gitignore",
+    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx . --ignore-path .gitignore",
+    "formatter": "npm-run-all pretty lint:fix"
   },
   "lint-staged": {
     "*.+(js|jsx)": [
@@ -36,7 +39,6 @@
     "axios": "^0.27.2",
     "axios-mock-adapter": "^1.21.1",
     "bcryptjs": "^2.4.3",
-    "classnames": "^2.3.2",
     "clsx": "^1.2.1",
     "date-fns": "^2.28.0",
     "formik": "^2.2.9",

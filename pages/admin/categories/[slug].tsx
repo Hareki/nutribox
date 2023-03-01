@@ -1,10 +1,11 @@
-import { ReactElement, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Box } from "@mui/material";
-import * as yup from "yup";
-import { H3 } from "components/Typography";
-import { CategoryForm } from "pages-sections/admin";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
+import { ReactElement, useEffect, useState } from 'react';
+import * as yup from 'yup';
+
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import { H3 } from 'components/Typography';
+import { CategoryForm } from 'pages-sections/admin';
 // import api from "utils/__api__/products";
 
 // =============================================================================
@@ -14,14 +15,14 @@ EditCategory.getLayout = function getLayout(page: ReactElement) {
 // =============================================================================
 
 const INITIAL_VALUES = {
-  name: "",
+  name: '',
   parent: [],
   featured: false,
 };
 
 // form field validation schema
 const validationSchema = yup.object().shape({
-  name: yup.string().required("required"),
+  name: yup.string().required('required'),
 });
 
 export default function EditCategory() {

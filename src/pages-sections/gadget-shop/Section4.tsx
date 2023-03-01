@@ -1,13 +1,14 @@
-import { FC, useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import Carousel from "components/carousel/Carousel";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import ProductCard3 from "components/product-cards/ProductCard3";
-import useWindowSize from "hooks/useWindowSize";
-import Product from "models/Product.model";
+import { Box } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import ProductCard3 from 'components/product-cards/ProductCard3';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // common arrow button for slider
-const arrowButtonStyle = { backgroundColor: "white", color: "#2B3445" };
+const arrowButtonStyle = { backgroundColor: 'white', color: '#2B3445' };
 
 // =============================================
 type Props = { mostViewedList: Product[] };
@@ -25,7 +26,7 @@ const Section4: FC<Props> = ({ mostViewedList }) => {
   }, [width]);
 
   return (
-    <CategorySectionCreator title="Most Viewed">
+    <CategorySectionCreator title='Most Viewed'>
       <Box mt={-0.5} mb={-0.5}>
         <Carousel
           infinite={true}
@@ -54,28 +55,28 @@ const Section4: FC<Props> = ({ mostViewedList }) => {
 
 const productList = [
   {
-    imgUrl: "/assets/images/products/gaming-gear.png",
+    imgUrl: '/assets/images/products/gaming-gear.png',
   },
   {
-    imgUrl: "/assets/images/products/t-shirt6.png",
+    imgUrl: '/assets/images/products/t-shirt6.png',
   },
   {
-    imgUrl: "/assets/images/products/t-shirt7.png",
+    imgUrl: '/assets/images/products/t-shirt7.png',
   },
   {
-    imgUrl: "/assets/images/products/ladies-dress2.png",
+    imgUrl: '/assets/images/products/ladies-dress2.png',
   },
   {
-    imgUrl: "/assets/images/products/gaming-gear.png",
+    imgUrl: '/assets/images/products/gaming-gear.png',
   },
   {
-    imgUrl: "/assets/images/products/t-shirt6.png",
+    imgUrl: '/assets/images/products/t-shirt6.png',
   },
   {
-    imgUrl: "/assets/images/products/t-shirt7.png",
+    imgUrl: '/assets/images/products/t-shirt7.png',
   },
   {
-    imgUrl: "/assets/images/products/ladies-dress2.png",
+    imgUrl: '/assets/images/products/ladies-dress2.png',
   },
 ];
 

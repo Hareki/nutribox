@@ -1,6 +1,7 @@
-import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
-import { Box, styled } from "@mui/material";
+import { Box, styled } from '@mui/material';
+import { useRouter } from 'next/router';
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+
 import {
   BadgeValue,
   BulletIcon,
@@ -8,16 +9,16 @@ import {
   NavItemButton,
   ListIconWrapper,
   ChevronRightIcon,
-} from "./LayoutStyledComponents";
+} from './LayoutStyledComponents';
 
 // styled component
 const NavExpandRoot = styled(Box)({
-  "& .subMenu": { padding: 0 },
-  "& .navItem": { background: "transparent" },
-  "& .expansion-panel": {
-    "& .expansion-panel": { paddingLeft: 8 },
-    overflow: "hidden",
-    transition: "max-height 0.3s cubic-bezier(0, 0, 0.2, 1)",
+  '& .subMenu': { padding: 0 },
+  '& .navItem': { background: 'transparent' },
+  '& .expansion-panel': {
+    '& .expansion-panel': { paddingLeft: 8 },
+    overflow: 'hidden',
+    transition: 'max-height 0.3s cubic-bezier(0, 0, 0.2, 1)',
   },
 });
 
@@ -46,14 +47,14 @@ const SidebarAccordion: FC<SidebarAccordionProps> = (props) => {
   };
 
   const calcaulateHeight = useCallback((node) => {
-    if (node.name !== "child") {
-      for (let child of node.children) {
+    if (node.name !== 'child') {
+      for (const child of node.children) {
         calcaulateHeight(child);
       }
     }
 
-    if (node.name === "child") componentHeight.current += node.scrollHeight;
-    else componentHeight.current += 44; //here 44 is node height
+    if (node.name === 'child') componentHeight.current += node.scrollHeight;
+    else componentHeight.current += 44; // here 44 is node height
     return;
   }, []);
 
@@ -62,7 +63,7 @@ const SidebarAccordion: FC<SidebarAccordionProps> = (props) => {
     calcaulateHeight(elementRef.current);
 
     // OPEN DROPDOWN IF CHILD IS ACTIVE
-    for (let child of item.children) {
+    for (const child of item.children) {
       if (child.path === router.pathname) {
         setCollapsed(true);
         setHasActive(true);
@@ -76,13 +77,13 @@ const SidebarAccordion: FC<SidebarAccordionProps> = (props) => {
   }, [calcaulateHeight, item.children, router.pathname]);
 
   return (
-    <NavExpandRoot className="subMenu">
+    <NavExpandRoot className='subMenu'>
       <NavItemButton
         onClick={handleClick}
         active={hasActive ? 1 : 0}
-        sx={{ justifyContent: "space-between" }}
+        sx={{ justifyContent: 'space-between' }}
       >
-        <Box display="flex" alignItems="center">
+        <Box display='flex' alignItems='center'>
           {/* //@ts-ignore */}
           {icon && (
             <ListIconWrapper>
@@ -94,27 +95,27 @@ const SidebarAccordion: FC<SidebarAccordionProps> = (props) => {
         </Box>
 
         {badge && (
-          <BadgeValue compact={sidebarCompact} className="itemIcon">
+          <BadgeValue compact={sidebarCompact} className='itemIcon'>
             {badge.value}
           </BadgeValue>
         )}
 
         <ChevronRightIcon
-          color="disabled"
+          color='disabled'
           compact={sidebarCompact}
-          className="accordionArrow"
+          className='accordionArrow'
           collapsed={collapsed ? 1 : 0}
         />
       </NavItemButton>
 
       <div
         ref={elementRef}
-        className="expansion-panel"
+        className='expansion-panel'
         style={{
           maxHeight:
             !collapsed || sidebarCompact
-              ? "0px"
-              : componentHeight.current + "px",
+              ? '0px'
+              : componentHeight.current + 'px',
         }}
       >
         {children}

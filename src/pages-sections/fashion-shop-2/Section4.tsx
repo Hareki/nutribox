@@ -1,11 +1,12 @@
-import { FC, useEffect, useState } from "react";
-import { Container } from "@mui/material";
-import { H2 } from "components/Typography";
-import useWindowSize from "hooks/useWindowSize";
-import Carousel from "components/carousel/Carousel";
-import ProductCard18 from "components/product-cards/ProductCard18";
-import { carouselStyled } from "components/carousel/styles";
-import Product from "models/Product.model";
+import { Container } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import { carouselStyled } from 'components/carousel/styles';
+import ProductCard18 from 'components/product-cards/ProductCard18';
+import { H2 } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // ======================================================================
 type Section4Props = { products: Product[] };
@@ -24,7 +25,7 @@ const Section4: FC<Section4Props> = ({ products }) => {
 
   return (
     <Container sx={{ mt: 8 }}>
-      <H2 textAlign="center" mb={4}>
+      <H2 textAlign='center' mb={4}>
         Best Selling Product
       </H2>
 

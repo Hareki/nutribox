@@ -1,4 +1,3 @@
-import { ChangeEvent, FC } from "react";
 import {
   Checkbox,
   styled,
@@ -6,13 +5,15 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-} from "@mui/material";
-import UpDown from "components/icons/UpDown";
+} from '@mui/material';
+import { ChangeEvent, FC } from 'react';
+
+import UpDown from 'components/icons/UpDown';
 
 // styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: 600,
-  padding: "16px 20px",
+  padding: '16px 20px',
   color: theme.palette.grey[900],
 }));
 
@@ -22,7 +23,7 @@ type TableHeaderProps = {
   orderBy: string;
   rowCount: number;
   numSelected: number;
-  order: "asc" | "desc";
+  order: 'asc' | 'desc';
   hideSelectBtn?: boolean;
   onRequestSort: (id: string) => void;
   onSelectAllClick?: (checked: boolean, defaulSelect: string) => void;
@@ -42,15 +43,15 @@ const TableHeader: FC<TableHeaderProps> = (props) => {
   } = props;
 
   return (
-    <TableHead sx={{ backgroundColor: "grey.200" }}>
+    <TableHead sx={{ backgroundColor: 'grey.200' }}>
       <TableRow>
         {!hideSelectBtn && (
-          <StyledTableCell align="left">
+          <StyledTableCell align='left'>
             <Checkbox
-              color="info"
+              color='info'
               checked={rowCount > 0 && numSelected === rowCount}
               onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                onSelectAllClick(event.target.checked, "product")
+                onSelectAllClick(event.target.checked, 'product')
               }
             />
           </StyledTableCell>
@@ -65,10 +66,10 @@ const TableHeader: FC<TableHeaderProps> = (props) => {
             <TableSortLabel
               active={orderBy === headCell.id}
               onClick={() => onRequestSort(headCell.id)}
-              direction={orderBy === headCell.id ? order : "asc"}
-              sx={{ "& .MuiTableSortLabel-icon": { opacity: 1 } }}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              sx={{ '& .MuiTableSortLabel-icon': { opacity: 1 } }}
               IconComponent={() => (
-                <UpDown sx={{ fontSize: 14, ml: 1, color: "grey.600" }} />
+                <UpDown sx={{ fontSize: 14, ml: 1, color: 'grey.600' }} />
               )}
             >
               {headCell.label}

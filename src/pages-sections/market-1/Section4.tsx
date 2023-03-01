@@ -1,14 +1,15 @@
-import { FC } from "react";
-import Link from "next/link";
-import { Box, Container, Grid } from "@mui/material";
-import BazaarCard from "components/BazaarCard";
-import RankBadge from "components/icons/RankBadge";
-import DottedStar from "components/icons/DottedStar";
-import ProductCard4 from "components/product-cards/ProductCard4";
-import ProductCard5 from "components/product-cards/ProductCard5";
-import CategorySectionHeader from "components/CategorySectionHeader";
-import Brand from "models/Brand.model";
-import Product from "models/Product.model";
+import { Box, Container, Grid } from '@mui/material';
+import Link from 'next/link';
+import { FC } from 'react';
+
+import BazaarCard from 'components/BazaarCard';
+import CategorySectionHeader from 'components/CategorySectionHeader';
+import DottedStar from 'components/icons/DottedStar';
+import RankBadge from 'components/icons/RankBadge';
+import ProductCard4 from 'components/product-cards/ProductCard4';
+import ProductCard5 from 'components/product-cards/ProductCard5';
+import Brand from 'models/Brand.model';
+import Product from 'models/Product.model';
 
 // ==========================================================
 type Props = {
@@ -26,8 +27,8 @@ const Section4: FC<Props> = ({ topRatedBrands, topRatedList }) => {
           <Grid item lg={6} xs={12}>
             <CategorySectionHeader
               icon={<RankBadge />}
-              title="Top Ratings"
-              seeMoreLink="#"
+              title='Top Ratings'
+              seeMoreLink='#'
             />
 
             <BazaarCard sx={{ p: 2 }}>
@@ -55,8 +56,8 @@ const Section4: FC<Props> = ({ topRatedBrands, topRatedList }) => {
           <Grid item md={6} xs={12}>
             <CategorySectionHeader
               icon={<DottedStar />}
-              title="Featured Brands"
-              seeMoreLink="#"
+              title='Featured Brands'
+              seeMoreLink='#'
             />
 
             <BazaarCard sx={{ p: 2 }}>

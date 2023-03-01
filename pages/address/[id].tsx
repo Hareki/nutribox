@@ -1,15 +1,16 @@
-import Link from "next/link";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { Formik } from "formik";
-import * as yup from "yup";
-import { Place } from "@mui/icons-material";
-import { Box, Button, Grid, TextField } from "@mui/material";
-import Card1 from "components/Card1";
-import UserDashboardHeader from "components/header/UserDashboardHeader";
-import CustomerDashboardLayout from "components/layouts/customer-dashboard";
-import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
-import Address from "models/Address.model";
-import api from "utils/__api__/address";
+import { Place } from '@mui/icons-material';
+import { Box, Button, Grid, TextField } from '@mui/material';
+import { Formik } from 'formik';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import Link from 'next/link';
+import * as yup from 'yup';
+
+import Card1 from 'components/Card1';
+import UserDashboardHeader from 'components/header/UserDashboardHeader';
+import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
+import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import Address from 'models/Address.model';
+import api from 'utils/__api__/address';
 
 // =============================================================
 type Props = { address: Address };
@@ -17,15 +18,15 @@ type Props = { address: Address };
 
 const AddressEditor: NextPage<Props> = ({ address }) => {
   const INITIAL_VALUES = {
-    name: address.title || "",
-    address: address.street || "",
-    contact: address.phone || "",
+    name: address.title || '',
+    address: address.street || '',
+    contact: address.phone || '',
   };
 
   const checkoutSchema = yup.object().shape({
-    name: yup.string().required("required"),
-    address: yup.string().required("required"),
-    contact: yup.string().required("required"),
+    name: yup.string().required('required'),
+    address: yup.string().required('required'),
+    contact: yup.string().required('required'),
   });
 
   // handle form submit
@@ -35,8 +36,8 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href="/address" passHref>
-      <Button color="primary" sx={{ bgcolor: "primary.light", px: 4 }}>
+    <Link href='/address' passHref>
+      <Button color='primary' sx={{ bgcolor: 'primary.light', px: 4 }}>
         Back to Address
       </Button>
     </Link>
@@ -48,7 +49,7 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
       <UserDashboardHeader
         icon={Place}
         button={HEADER_LINK}
-        title="Edit Address"
+        title='Edit Address'
         navigation={<CustomerDashboardNavigation />}
       />
 
@@ -73,8 +74,8 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      name="name"
-                      label="Name"
+                      name='name'
+                      label='Name'
                       onBlur={handleBlur}
                       value={values.name}
                       onChange={handleChange}
@@ -86,9 +87,9 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      name="address"
+                      name='address'
                       onBlur={handleBlur}
-                      label="Address Line"
+                      label='Address Line'
                       value={values.address}
                       onChange={handleChange}
                       error={!!touched.address && !!errors.address}
@@ -99,8 +100,8 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Phone"
-                      name="contact"
+                      label='Phone'
+                      name='contact'
                       onBlur={handleBlur}
                       value={values.contact}
                       onChange={handleChange}
@@ -111,7 +112,7 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
                 </Grid>
               </Box>
 
-              <Button type="submit" variant="contained" color="primary">
+              <Button type='submit' variant='contained' color='primary'>
                 Save Changes
               </Button>
             </form>
@@ -126,8 +127,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await api.getIds();
 
   return {
-    paths: paths, //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    paths: paths, // indicates that no page needs be created at build time
+    fallback: 'blocking', // indicates the type of fallback
   };
 };
 

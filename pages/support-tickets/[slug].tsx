@@ -1,17 +1,18 @@
-import Link from "next/link";
-import { FormEvent } from "react";
-import { useRouter } from "next/router";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { format } from "date-fns";
-import { Avatar, Box, Button, Divider, TextField } from "@mui/material";
-import { FlexBox } from "components/flex-box";
-import { H5, Span } from "components/Typography";
-import CustomerService from "components/icons/CustomerService";
-import UserDashboardHeader from "components/header/UserDashboardHeader";
-import CustomerDashboardLayout from "components/layouts/customer-dashboard";
-import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
-import api from "utils/__api__/ticket";
-import Ticket from "models/Ticket.model";
+import { Avatar, Box, Button, Divider, TextField } from '@mui/material';
+import { format } from 'date-fns';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { FormEvent } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import UserDashboardHeader from 'components/header/UserDashboardHeader';
+import CustomerService from 'components/icons/CustomerService';
+import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
+import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import { H5, Span } from 'components/Typography';
+import Ticket from 'models/Ticket.model';
+import api from 'utils/__api__/ticket';
 
 // ==========================================================
 type Props = { ticket: Ticket };
@@ -28,8 +29,8 @@ const SupportTicketDetails: NextPage<Props> = ({ ticket }) => {
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href="/support-tickets" passHref>
-      <Button color="primary" sx={{ px: 4, bgcolor: "primary.light" }}>
+    <Link href='/support-tickets' passHref>
+      <Button color='primary' sx={{ px: 4, bgcolor: 'primary.light' }}>
         Back to Support Ticket
       </Button>
     </Link>
@@ -46,7 +47,7 @@ const SupportTicketDetails: NextPage<Props> = ({ ticket }) => {
       <UserDashboardHeader
         button={HEADER_LINK}
         icon={CustomerService}
-        title="Support Ticket"
+        title='Support Ticket'
         navigation={<CustomerDashboardNavigation />}
       />
 
@@ -56,22 +57,22 @@ const SupportTicketDetails: NextPage<Props> = ({ ticket }) => {
           <Avatar src={item.imgUrl} />
 
           <Box>
-            <H5 fontWeight="600" mt={0} mb={0}>
+            <H5 fontWeight='600' mt={0} mb={0}>
               {item.name}
             </H5>
 
-            <Span color="grey.600">
-              {format(new Date(item.date), "hh:mm:a | dd MMM yyyy")}
+            <Span color='grey.600'>
+              {format(new Date(item.date), 'hh:mm:a | dd MMM yyyy')}
             </Span>
 
-            <Box borderRadius="10px" bgcolor="grey.200" p={2} mt={2}>
+            <Box borderRadius='10px' bgcolor='grey.200' p={2} mt={2}>
               {item.text}
             </Box>
           </Box>
         </FlexBox>
       ))}
 
-      <Divider sx={{ mb: 4, borderColor: "grey.300" }} />
+      <Divider sx={{ mb: 4, borderColor: 'grey.300' }} />
 
       {/* FORM AREA */}
       <form onSubmit={handleFormSubmit}>
@@ -80,14 +81,14 @@ const SupportTicketDetails: NextPage<Props> = ({ ticket }) => {
           fullWidth
           multiline
           sx={{ mb: 3 }}
-          placeholder="Write your message here..."
+          placeholder='Write your message here...'
         />
 
         <Button
-          type="submit"
-          color="primary"
-          variant="contained"
-          sx={{ ml: "auto", display: "block" }}
+          type='submit'
+          color='primary'
+          variant='contained'
+          sx={{ ml: 'auto', display: 'block' }}
         >
           Post message
         </Button>
@@ -100,8 +101,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await api.getSlugs();
 
   return {
-    paths: paths, //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    paths: paths, // indicates that no page needs be created at build time
+    fallback: 'blocking', // indicates the type of fallback
   };
 };
 

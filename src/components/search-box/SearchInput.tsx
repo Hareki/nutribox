@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Box, Button, MenuItem, TextField } from '@mui/material';
+import Link from 'next/link';
 import {
   ChangeEvent,
   FC,
@@ -6,10 +7,11 @@ import {
   useRef,
   useState,
   useTransition,
-} from "react";
-import { Box, Button, MenuItem, TextField } from "@mui/material";
-import { SearchOutlinedIcon, SearchResultCard } from "./styled";
-import api from "utils/__api__/products";
+} from 'react';
+
+import { SearchOutlinedIcon, SearchResultCard } from './styled';
+
+import api from 'utils/__api__/products';
 
 const SearchInput: FC = () => {
   const parentRef = useRef();
@@ -33,49 +35,49 @@ const SearchInput: FC = () => {
   const handleDocumentClick = () => setResultList([]);
 
   useEffect(() => {
-    window.addEventListener("click", handleDocumentClick);
-    return () => window.removeEventListener("click", null);
+    window.addEventListener('click', handleDocumentClick);
+    return () => window.removeEventListener('click', null);
   }, []);
 
   return (
     <Box
-      position="relative"
-      flex="1 1 0"
-      maxWidth="670px"
-      mx="auto"
+      position='relative'
+      flex='1 1 0'
+      maxWidth='670px'
+      mx='auto'
       {...{ ref: parentRef }}
     >
       <TextField
         fullWidth
-        variant="outlined"
-        placeholder="Searching for..."
+        variant='outlined'
+        placeholder='Searching for...'
         onChange={handleSearch}
         InputProps={{
           sx: {
             height: 44,
             paddingRight: 0,
             borderRadius: 300,
-            color: "grey.700",
-            overflow: "hidden",
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.main",
+            color: 'grey.700',
+            overflow: 'hidden',
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'primary.main',
             },
           },
           endAdornment: (
             <Button
-              color="primary"
+              color='primary'
               disableElevation
-              variant="contained"
+              variant='contained'
               sx={{
-                px: "3rem",
-                height: "100%",
-                borderRadius: "0 300px 300px 0",
+                px: '3rem',
+                height: '100%',
+                borderRadius: '0 300px 300px 0',
               }}
             >
               Search
             </Button>
           ),
-          startAdornment: <SearchOutlinedIcon fontSize="small" />,
+          startAdornment: <SearchOutlinedIcon fontSize='small' />,
         }}
       />
 

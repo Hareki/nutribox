@@ -1,35 +1,36 @@
-import { FC, Fragment, ReactElement } from "react";
-import { Visibility } from "@mui/icons-material";
-import { Box, Card, IconButton, styled } from "@mui/material";
-import LazyImage from "components/LazyImage";
-import { FlexBox } from "components/flex-box";
-import { H3, Span } from "components/Typography";
-import Link from "next/link";
+import { Visibility } from '@mui/icons-material';
+import { Box, Card, IconButton, styled } from '@mui/material';
+import Link from 'next/link';
+import { FC, Fragment, ReactElement } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import LazyImage from 'components/LazyImage';
+import { H3, Span } from 'components/Typography';
 
 // styled components
 const Wrapper = styled(Box)(({ theme }) => ({
-  cursor: "pointer",
-  position: "relative",
-  borderRadius: "0.5rem",
-  marginTop: "1rem",
+  cursor: 'pointer',
+  position: 'relative',
+  borderRadius: '0.5rem',
+  marginTop: '1rem',
   backgroundColor: theme.palette.grey[200],
   border: `1px solid ${theme.palette.grey[300]}`,
-  "& .overlay": { transition: "0.3s ease-in-out" },
-  "&:hover": { ".overlay": { opacity: 1 } },
+  '& .overlay': { transition: '0.3s ease-in-out' },
+  '&:hover': { '.overlay': { opacity: 1 } },
 }));
 
 const StatusChip = styled(Box)(({ theme }) => ({
-  position: "absolute",
-  top: "10px",
+  position: 'absolute',
+  top: '10px',
   zIndex: 11,
-  right: "8px",
+  right: '8px',
   width: 44,
   height: 44,
-  color: "#fff",
-  fontSize: "13px",
+  color: '#fff',
+  fontSize: '13px',
   fontWeight: 700,
   background: theme.palette.dark.main,
-  padding: "11px 7px",
+  padding: '11px 7px',
   borderRadius: 36,
   boxShadow: theme.shadows[2],
 }));
@@ -40,10 +41,10 @@ const StyledFlex = styled(FlexBox)({
   right: 0,
   bottom: 0,
   opacity: 0,
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundColor: "rgba(0,0,0, 0.54)",
+  position: 'absolute',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'rgba(0,0,0, 0.54)',
 });
 
 // =========================================================
@@ -61,7 +62,7 @@ const PageCard: FC<PageCardProps> = (props) => {
 
   return (
     <Fragment>
-      <Wrapper mb={3} p="6% 6% 0px" overflow="hidden">
+      <Wrapper mb={3} p='6% 6% 0px' overflow='hidden'>
         <Card
           elevation={3}
           sx={{
@@ -72,13 +73,13 @@ const PageCard: FC<PageCardProps> = (props) => {
           }}
         >
           <LazyImage
-            alt="cover"
+            alt='cover'
             width={470}
             height={397}
             src={imgUrl}
-            objectFit="cover"
-            layout="responsive"
-            objectPosition="top center"
+            objectFit='cover'
+            layout='responsive'
+            objectPosition='top center'
           />
         </Card>
 
@@ -86,12 +87,12 @@ const PageCard: FC<PageCardProps> = (props) => {
 
         {!disabled && (
           <Link href={previewUrl} passHref legacyBehavior>
-            <a target="_blank" rel="noopener noreferrer">
-              <StyledFlex className="overlay">
+            <a target='_blank' rel='noopener noreferrer'>
+              <StyledFlex className='overlay'>
                 <IconButton
-                  sx={{ bgcolor: "white", "&:hover": { bgcolor: "white" } }}
+                  sx={{ bgcolor: 'white', '&:hover': { bgcolor: 'white' } }}
                 >
-                  <Visibility fontSize="small" />
+                  <Visibility fontSize='small' />
                 </IconButton>
               </StyledFlex>
             </a>
@@ -99,7 +100,7 @@ const PageCard: FC<PageCardProps> = (props) => {
         )}
       </Wrapper>
 
-      <H3 textAlign="center" lineHeight="1" fontSize="14px">
+      <H3 textAlign='center' lineHeight='1' fontSize='14px'>
         {title}
       </H3>
     </Fragment>

@@ -1,26 +1,27 @@
-import NextImage from "next/image";
-import { FC, useState } from "react";
-import { Clear } from "@mui/icons-material";
-import { Box, Button, Grid, styled } from "@mui/material";
-import DropZone from "components/DropZone";
-import { FlexBox } from "components/flex-box";
+import { Clear } from '@mui/icons-material';
+import { Box, Button, Grid, styled } from '@mui/material';
+import NextImage from 'next/image';
+import { FC, useState } from 'react';
+
+import DropZone from 'components/DropZone';
+import { FlexBox } from 'components/flex-box';
 
 // styled components
 const UploadBox = styled(Box)({
   width: 170,
-  height: "auto",
-  overflow: "hidden",
-  borderRadius: "8px",
-  position: "relative",
+  height: 'auto',
+  overflow: 'hidden',
+  borderRadius: '8px',
+  position: 'relative',
 });
 
 const StyledClear = styled(Clear)({
   top: 5,
   right: 5,
   fontSize: 14,
-  color: "red",
-  cursor: "pointer",
-  position: "absolute",
+  color: 'red',
+  cursor: 'pointer',
+  position: 'absolute',
 });
 
 interface FileType extends File {
@@ -41,12 +42,12 @@ const BannerSlider: FC = () => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit} encType="multipart/form-data">
+    <form onSubmit={handleFormSubmit} encType='multipart/form-data'>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <DropZone
-            title="Drag and Drop slide image here"
-            imageSize="upload landscape photo"
+            title='Drag and Drop slide image here'
+            imageSize='upload landscape photo'
             onChange={(files) => console.log(files)}
           />
 
@@ -56,9 +57,9 @@ const BannerSlider: FC = () => {
                 <NextImage
                   width={240}
                   height={100}
-                  objectFit="cover"
+                  objectFit='cover'
                   src={file.preview}
-                  layout="responsive"
+                  layout='responsive'
                 />
                 <StyledClear onClick={() => deleteNewImage(file.name)} />
               </UploadBox>
@@ -67,7 +68,7 @@ const BannerSlider: FC = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <Button type="submit" color="info" variant="contained">
+          <Button type='submit' color='info' variant='contained'>
             Save Changes
           </Button>
         </Grid>

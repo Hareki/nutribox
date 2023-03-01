@@ -1,9 +1,10 @@
-import { ReactElement } from "react";
-import { Box } from "@mui/material";
-import * as yup from "yup";
-import { H3 } from "components/Typography";
-import { ProductForm } from "pages-sections/admin";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+import { Box } from '@mui/material';
+import { ReactElement } from 'react';
+import * as yup from 'yup';
+
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import { H3 } from 'components/Typography';
+import { ProductForm } from 'pages-sections/admin';
 
 // =============================================================================
 CreateProduct.getLayout = function getLayout(page: ReactElement) {
@@ -13,23 +14,23 @@ CreateProduct.getLayout = function getLayout(page: ReactElement) {
 
 export default function CreateProduct() {
   const INITIAL_VALUES = {
-    name: "",
-    tags: "",
-    stock: "",
-    price: "",
+    name: '',
+    tags: '',
+    stock: '',
+    price: '',
     category: [],
-    sale_price: "",
-    description: "",
+    sale_price: '',
+    description: '',
   };
 
   const validationSchema = yup.object().shape({
-    name: yup.string().required("required"),
-    category: yup.array().min(1).required("required"),
-    description: yup.string().required("required"),
-    stock: yup.number().required("required"),
-    price: yup.number().required("required"),
-    sale_price: yup.number().required("required"),
-    tags: yup.string().required("required"),
+    name: yup.string().required('required'),
+    category: yup.array().min(1).required('required'),
+    description: yup.string().required('required'),
+    stock: yup.number().required('required'),
+    price: yup.number().required('required'),
+    sale_price: yup.number().required('required'),
+    tags: yup.string().required('required'),
   });
 
   const handleFormSubmit = (values: typeof INITIAL_VALUES) => {

@@ -1,13 +1,15 @@
-import { FC, useState } from "react";
-import { Avatar } from "@mui/material";
-import { useRouter } from "next/router";
-import { Delete, RemoveRedEye } from "@mui/icons-material";
-import BazaarSwitch from "components/BazaarSwitch";
+import { Delete, RemoveRedEye } from '@mui/icons-material';
+import { Avatar } from '@mui/material';
+import { useRouter } from 'next/router';
+import { FC, useState } from 'react';
+
 import {
   StyledIconButton,
   StyledTableCell,
   StyledTableRow,
-} from "../StyledComponents";
+} from '../StyledComponents';
+
+import BazaarSwitch from 'components/BazaarSwitch';
 
 // ========================================================================
 type BrandRowProps = { brand: any; selected: any[] };
@@ -23,27 +25,27 @@ const BrandRow: FC<BrandRowProps> = ({ brand, selected }) => {
   const handleNavigate = () => router.push(`/admin/categories/${slug}`);
 
   return (
-    <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
-      <StyledTableCell align="center">#{id.split("-")[0]}</StyledTableCell>
+    <StyledTableRow tabIndex={-1} role='checkbox' selected={isItemSelected}>
+      <StyledTableCell align='center'>#{id.split('-')[0]}</StyledTableCell>
 
-      <StyledTableCell align="center">{name}</StyledTableCell>
+      <StyledTableCell align='center'>{name}</StyledTableCell>
 
-      <StyledTableCell align="center">
+      <StyledTableCell align='center'>
         <Avatar
           src={logo}
-          sx={{ width: 55, height: "auto", margin: "auto", borderRadius: 0 }}
+          sx={{ width: 55, height: 'auto', margin: 'auto', borderRadius: 0 }}
         />
       </StyledTableCell>
 
-      <StyledTableCell align="center">
+      <StyledTableCell align='center'>
         <BazaarSwitch
-          color="info"
+          color='info'
           checked={featuredCategory}
           onChange={() => setFeaturedCategory((state: boolean) => !state)}
         />
       </StyledTableCell>
 
-      <StyledTableCell align="center">
+      <StyledTableCell align='center'>
         <StyledIconButton onClick={handleNavigate}>
           <RemoveRedEye />
         </StyledIconButton>

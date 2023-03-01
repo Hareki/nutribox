@@ -1,3 +1,5 @@
+import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 import {
   ReactElement,
   useCallback,
@@ -6,10 +8,9 @@ import {
   useState,
   ReactNode,
   FC,
-} from "react";
-import { styled } from "@mui/material/styles";
-import { slideDown } from "animations/keyframes";
-import clsx from "clsx";
+} from 'react';
+
+import { slideDown } from 'animations/keyframes';
 
 // ============================================================
 type StickyProps = {
@@ -33,25 +34,25 @@ type StyledBoxProps = {
 export const StyledBox = styled<FC<StyledBoxProps>>(
   ({ children, componentHeight, fixedOn, fixed, ...rest }) => (
     <div {...rest}>{children}</div>
-  )
+  ),
 )<StyledBoxProps>(({ theme, componentHeight, fixedOn, fixed }) => ({
-  "& .hold": {
+  '& .hold': {
     zIndex: 5,
-    boxShadow: "none",
-    position: "relative",
+    boxShadow: 'none',
+    position: 'relative',
   },
 
-  "& .fixed": {
+  '& .fixed': {
     left: 0,
     right: 0,
     zIndex: 1500,
-    position: "fixed",
+    position: 'fixed',
     top: `${fixedOn}px`,
     boxShadow: theme.shadows[2],
-    transition: "all 350ms ease-in-out",
+    transition: 'all 350ms ease-in-out',
     animation: `${slideDown} 400ms ${theme.transitions.easing.easeInOut}`,
   },
-  "& + .section-after-sticky": { paddingTop: fixed ? componentHeight : 0 },
+  '& + .section-after-sticky': { paddingTop: fixed ? componentHeight : 0 },
 }));
 
 const Sticky: FC<StickyProps> = ({
@@ -72,17 +73,17 @@ const Sticky: FC<StickyProps> = ({
     if (!window) return;
 
     // Distance of element from window top (-) minus value
-    let distance = window.pageYOffset - positionRef.current;
+    const distance = window.pageYOffset - positionRef.current;
 
     if (containerRef?.current) {
-      let containerDistance =
+      const containerDistance =
         containerRef.current.offsetTop +
         containerRef.current?.offsetHeight -
         window.pageYOffset;
 
       if (notifyPosition && notifyOnScroll) {
         notifyOnScroll(
-          distance <= notifyPosition && containerDistance > notifyPosition
+          distance <= notifyPosition && containerDistance > notifyPosition,
         );
       }
 
@@ -106,11 +107,11 @@ const Sticky: FC<StickyProps> = ({
   useEffect(() => {
     if (!window) return;
 
-    window.addEventListener("scroll", scrollListener);
-    window.addEventListener("resize", scrollListener);
+    window.addEventListener('scroll', scrollListener);
+    window.addEventListener('resize', scrollListener);
     return () => {
-      window.removeEventListener("scroll", scrollListener);
-      window.removeEventListener("resize", scrollListener);
+      window.removeEventListener('scroll', scrollListener);
+      window.removeEventListener('resize', scrollListener);
     };
   }, [scrollListener]);
 

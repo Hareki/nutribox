@@ -1,10 +1,12 @@
-import { FC } from "react";
-import Link from "next/link";
-import { Box, Card, Grid } from "@mui/material";
-import StyledMegaMenu from "./StyledMegaMenu";
-import LazyImage from "components/LazyImage";
-import { FlexBox } from "components/flex-box";
-import { NavLink } from "components/nav-link";
+import { Box, Card, Grid } from '@mui/material';
+import Link from 'next/link';
+import { FC } from 'react';
+
+import StyledMegaMenu from './StyledMegaMenu';
+
+import { FlexBox } from 'components/flex-box';
+import LazyImage from 'components/LazyImage';
+import { NavLink } from 'components/nav-link';
 
 // =========================================================
 
@@ -35,21 +37,21 @@ const MegaMenu1: FC<MegaMenuProps> = ({
 }) => {
   return categories ? (
     <StyledMegaMenu>
-      <Card elevation={2} sx={{ ml: "1rem", minWidth }}>
-        <FlexBox px={2.5} py={1.75} alignItems="unset">
-          <Box flex="1 1 0">
+      <Card elevation={2} sx={{ ml: '1rem', minWidth }}>
+        <FlexBox px={2.5} py={1.75} alignItems='unset'>
+          <Box flex='1 1 0'>
             <Grid container spacing={4}>
               {categories?.map((item, ind) => (
                 <Grid item md={3} key={ind}>
                   {item.href ? (
-                    <NavLink className="title-link" href={item.href}>
+                    <NavLink className='title-link' href={item.href}>
                       {item.title}
                     </NavLink>
                   ) : (
-                    <Box className="title-link">{item.title}</Box>
+                    <Box className='title-link'>{item.title}</Box>
                   )}
                   {item.subCategories?.map((sub, ind) => (
-                    <NavLink className="child-link" href={sub.href} key={ind}>
+                    <NavLink className='child-link' href={sub.href} key={ind}>
                       {sub.title}
                     </NavLink>
                   ))}
@@ -64,10 +66,10 @@ const MegaMenu1: FC<MegaMenuProps> = ({
                 <a>
                   <LazyImage
                     src={rightImage.imgUrl}
-                    objectFit="contain"
+                    objectFit='contain'
                     width={137}
                     height={318}
-                    alt="banner"
+                    alt='banner'
                   />
                 </a>
               </Link>
@@ -78,12 +80,12 @@ const MegaMenu1: FC<MegaMenuProps> = ({
         {bottomImage && (
           <Link href={bottomImage.href}>
             <a>
-              <Box position="relative" height="170px">
+              <Box position='relative' height='170px'>
                 <LazyImage
                   src={bottomImage.imgUrl}
-                  layout="fill"
-                  objectFit="cover"
-                  alt="banner"
+                  layout='fill'
+                  objectFit='cover'
+                  alt='banner'
                 />
               </Box>
             </a>
@@ -95,7 +97,7 @@ const MegaMenu1: FC<MegaMenuProps> = ({
 };
 
 MegaMenu1.defaultProps = {
-  minWidth: "760px",
+  minWidth: '760px',
 };
 
 export default MegaMenu1;

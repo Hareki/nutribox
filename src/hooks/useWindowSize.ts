@@ -1,5 +1,5 @@
-import { debounce } from "@mui/material";
-import { useEffect, useState } from "react";
+import { debounce } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 const useWindowSize = () => {
   const [width, setWidth] = useState(0);
@@ -11,12 +11,12 @@ const useWindowSize = () => {
   useEffect(() => {
     if (window) {
       setWidth(window.innerWidth);
-      window.addEventListener("resize", windowListener);
+      window.addEventListener('resize', windowListener);
     }
 
     return () => {
       windowListener.clear();
-      window && window.removeEventListener("resize", windowListener);
+      window && window.removeEventListener('resize', windowListener);
     };
   }, [windowListener]);
 

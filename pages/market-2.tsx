@@ -1,25 +1,26 @@
-import { GetStaticProps, NextPage } from "next";
-import { Box, useTheme } from "@mui/material";
-import SEO from "components/SEO";
-import Setting from "components/Setting";
-import Newsletter from "components/Newsletter";
-import Offers from "pages-sections/market-2/Offers";
-import Section1 from "pages-sections/market-2/Section1";
-import Section2 from "pages-sections/market-2/Section2";
-import Section3 from "pages-sections/market-2/Section3";
-import Section4 from "pages-sections/market-2/Section4";
-import Section5 from "pages-sections/market-2/Section5";
-import Section6 from "pages-sections/market-2/Section6";
-import Section7 from "pages-sections/market-2/Section7";
-import Section8 from "pages-sections/market-2/Section8";
-import Section9 from "pages-sections/market-2/Section9";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import Brand from "models/Brand.model";
-import Product from "models/Product.model";
-import Service from "models/Service.model";
-import Category from "models/Category.model";
-import { CategoryBasedProducts, MainCarouselItem } from "models/Market-2.model";
-import api from "utils/__api__/market-2";
+import { Box, useTheme } from '@mui/material';
+import { GetStaticProps, NextPage } from 'next';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import Newsletter from 'components/Newsletter';
+import SEO from 'components/SEO';
+import Setting from 'components/Setting';
+import Brand from 'models/Brand.model';
+import Category from 'models/Category.model';
+import { CategoryBasedProducts, MainCarouselItem } from 'models/Market-2.model';
+import Product from 'models/Product.model';
+import Service from 'models/Service.model';
+import Offers from 'pages-sections/market-2/Offers';
+import Section1 from 'pages-sections/market-2/Section1';
+import Section2 from 'pages-sections/market-2/Section2';
+import Section3 from 'pages-sections/market-2/Section3';
+import Section4 from 'pages-sections/market-2/Section4';
+import Section5 from 'pages-sections/market-2/Section5';
+import Section6 from 'pages-sections/market-2/Section6';
+import Section7 from 'pages-sections/market-2/Section7';
+import Section8 from 'pages-sections/market-2/Section8';
+import Section9 from 'pages-sections/market-2/Section9';
+import api from 'utils/__api__/market-2';
 
 // =======================================================
 type MarketProps = {
@@ -39,8 +40,8 @@ const Market: NextPage<MarketProps> = (props) => {
 
   return (
     <ShopLayout1 topbarBgColor={theme.palette.grey[900]}>
-      <SEO title="Market v2" />
-      <Box bgcolor="#F6F6F6">
+      <SEO title='Market v2' />
+      <Box bgcolor='#F6F6F6'>
         {/* HERO SLIDER AND GRID */}
         <Section1 carouselData={props.mainCarouselData} />
 

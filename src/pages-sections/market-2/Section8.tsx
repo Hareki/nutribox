@@ -1,11 +1,12 @@
-import { useEffect, useState, FC } from "react";
-import { Box, Container } from "@mui/material";
-import { H2 } from "components/Typography";
-import useWindowSize from "hooks/useWindowSize";
-import BazaarImage from "components/BazaarImage";
-import Carousel from "components/carousel/Carousel";
-import { FlexRowCenter } from "components/flex-box";
-import Brand from "models/Brand.model";
+import { Box, Container } from '@mui/material';
+import { useEffect, useState, FC } from 'react';
+
+import BazaarImage from 'components/BazaarImage';
+import Carousel from 'components/carousel/Carousel';
+import { FlexRowCenter } from 'components/flex-box';
+import { H2 } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Brand from 'models/Brand.model';
 
 // ==========================================================
 type Props = { brands: Brand[] };
@@ -28,21 +29,21 @@ const Section8: FC<Props> = ({ brands }) => {
         Featured Brands
       </H2>
 
-      <Box padding={4} bgcolor="white">
+      <Box padding={4} bgcolor='white'>
         <Carousel
           autoPlay
           showArrow={false}
           totalSlides={brands.length}
           visibleSlides={visibleSlides}
-          sx={{ ":hover": { cursor: "grab" } }}
+          sx={{ ':hover': { cursor: 'grab' } }}
         >
           {brands.map(({ id, image }) => (
-            <FlexRowCenter maxWidth={110} height="100%" margin="auto" key={id}>
+            <FlexRowCenter maxWidth={110} height='100%' margin='auto' key={id}>
               <BazaarImage
-                alt="brand"
-                width="100%"
+                alt='brand'
+                width='100%'
                 src={image}
-                sx={{ filter: "grayscale(1)" }}
+                sx={{ filter: 'grayscale(1)' }}
               />
             </FlexRowCenter>
           ))}

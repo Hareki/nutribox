@@ -1,11 +1,12 @@
-import { FC, useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import Light from "components/icons/Light";
-import Product from "models/Product.model";
-import useWindowSize from "hooks/useWindowSize";
-import Carousel from "components/carousel/Carousel";
-import ProductCard1 from "components/product-cards/ProductCard1";
-import CategorySectionCreator from "components/CategorySectionCreator";
+import { Box } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import Light from 'components/icons/Light';
+import ProductCard1 from 'components/product-cards/ProductCard1';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // =============================================================
 type Props = { flashDeals: Product[] };
@@ -24,9 +25,9 @@ const Section2: FC<Props> = ({ flashDeals }) => {
 
   return (
     <CategorySectionCreator
-      icon={<Light color="primary" />}
-      title="Flash Deals"
-      seeMoreLink="#"
+      icon={<Light color='primary' />}
+      title='Flash Deals'
+      seeMoreLink='#'
     >
       <Carousel
         totalSlides={flashDeals.length}

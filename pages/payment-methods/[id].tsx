@@ -1,29 +1,30 @@
-import Link from "next/link";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import * as yup from "yup";
-import { Formik } from "formik";
-import { CreditCard } from "@mui/icons-material";
-import { Box, Button, Grid, TextField } from "@mui/material";
-import Card1 from "components/Card1";
-import UserDashboardHeader from "components/header/UserDashboardHeader";
-import CustomerDashboardLayout from "components/layouts/customer-dashboard";
+import { CreditCard } from '@mui/icons-material';
+import { Box, Button, Grid, TextField } from '@mui/material';
+import { Formik } from 'formik';
+import { NextPage } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import * as yup from 'yup';
+
+import Card1 from 'components/Card1';
+import UserDashboardHeader from 'components/header/UserDashboardHeader';
+import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 
 const PaymentMethodEditor: NextPage = () => {
   const { query } = useRouter();
 
   const INITIAL_VALUES = {
-    exp: "",
-    cvc: "",
-    name: "",
-    card_no: "",
+    exp: '',
+    cvc: '',
+    name: '',
+    card_no: '',
   };
 
   const checkoutSchema = yup.object().shape({
-    name: yup.string().required("required"),
-    card_no: yup.string().required("required"),
-    exp: yup.string().required("required"),
-    cvc: yup.string().required("required"),
+    name: yup.string().required('required'),
+    card_no: yup.string().required('required'),
+    exp: yup.string().required('required'),
+    cvc: yup.string().required('required'),
   });
 
   const handleFormSubmit = async (values: any) => {
@@ -32,8 +33,8 @@ const PaymentMethodEditor: NextPage = () => {
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href="/payment-methods" passHref>
-      <Button color="primary" sx={{ bgcolor: "primary.light", px: "2rem" }}>
+    <Link href='/payment-methods' passHref>
+      <Button color='primary' sx={{ bgcolor: 'primary.light', px: '2rem' }}>
         Back to Payment Methods
       </Button>
     </Link>
@@ -45,7 +46,7 @@ const PaymentMethodEditor: NextPage = () => {
       <UserDashboardHeader
         icon={CreditCard}
         button={HEADER_LINK}
-        title={`${query.id === "add" ? "Add New" : "Edit"} Payment Method`}
+        title={`${query.id === 'add' ? 'Add New' : 'Edit'} Payment Method`}
       />
 
       {/* PAYMENT DETAILS EDIT FORM */}
@@ -68,48 +69,48 @@ const PaymentMethodEditor: NextPage = () => {
                 <Grid container spacing={3}>
                   <Grid item md={6} xs={12}>
                     <TextField
-                      name="card_no"
-                      label="Card Number"
+                      name='card_no'
+                      label='Card Number'
                       fullWidth
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.card_no || ""}
+                      value={values.card_no || ''}
                       error={!!touched.card_no && !!errors.card_no}
                       helperText={(touched.card_no && errors.card_no) as string}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
-                      name="name"
-                      label="Name on Card"
+                      name='name'
+                      label='Name on Card'
                       fullWidth
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.name || ""}
+                      value={values.name || ''}
                       error={!!touched.name && !!errors.name}
                       helperText={(touched.name && errors.name) as string}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
-                      name="exp"
-                      label="Exp. Date"
+                      name='exp'
+                      label='Exp. Date'
                       fullWidth
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.exp || ""}
+                      value={values.exp || ''}
                       error={!!touched.exp && !!errors.exp}
                       helperText={(touched.exp && errors.exp) as string}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
-                      name="cvc"
-                      label="CVC"
+                      name='cvc'
+                      label='CVC'
                       fullWidth
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.cvc || ""}
+                      value={values.cvc || ''}
                       error={!!touched.cvc && !!errors.cvc}
                       helperText={(touched.cvc && errors.cvc) as string}
                     />
@@ -117,7 +118,7 @@ const PaymentMethodEditor: NextPage = () => {
                 </Grid>
               </Box>
 
-              <Button type="submit" variant="contained" color="primary">
+              <Button type='submit' variant='contained' color='primary'>
                 Save Changes
               </Button>
             </form>

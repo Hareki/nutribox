@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled } from '@mui/material';
 import {
   Children,
   cloneElement,
@@ -7,7 +7,7 @@ import {
   useEffect,
   useRef,
   useState,
-} from "react";
+} from 'react';
 
 // styled component props type
 type StyledWrapperProps = {
@@ -17,10 +17,10 @@ type StyledWrapperProps = {
 };
 
 // styled component
-const Wrapper = styled("div")<StyledWrapperProps>((props) => ({
-  cursor: "pointer",
-  overflow: "hidden",
-  transition: "height 250ms ease-in-out",
+const Wrapper = styled('div')<StyledWrapperProps>((props) => ({
+  cursor: 'pointer',
+  overflow: 'hidden',
+  transition: 'height 250ms ease-in-out',
   height: props.open ? props.parent_height : props.header_height,
 }));
 
@@ -40,7 +40,7 @@ const Accordion: FC<AccordionProps> = ({ expanded = false, children }) => {
   const toggle = () => setOpen(!open);
 
   useEffect(() => {
-    let parent = ref.current;
+    const parent = ref.current;
     if (parent) {
       setHeaderHeight(parent.children[0].scrollHeight);
       setParentHeight(parent.scrollHeight);

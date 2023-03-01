@@ -1,27 +1,28 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import { H3 } from "components/Typography";
-import Scrollbar from "components/Scrollbar";
-import SearchArea from "components/dashboard/SearchArea";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import useMuiTable from "hooks/useMuiTable";
-import { OrderRow } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
-import Order from "models/Order.model";
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import SearchArea from 'components/dashboard/SearchArea';
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import Order from 'models/Order.model';
+import { OrderRow } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
-  { id: "id", label: "Order ID", align: "left" },
-  { id: "qty", label: "Qty", align: "left" },
-  { id: "purchaseDate", label: "Purchase Date", align: "left" },
-  { id: "billingAddress", label: "Billing Address", align: "left" },
-  { id: "amount", label: "Amount", align: "left" },
-  { id: "status", label: "Status", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'id', label: 'Order ID', align: 'left' },
+  { id: 'qty', label: 'Qty', align: 'left' },
+  { id: 'purchaseDate', label: 'Purchase Date', align: 'left' },
+  { id: 'billingAddress', label: 'Billing Address', align: 'left' },
+  { id: 'amount', label: 'Amount', align: 'left' },
+  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -53,8 +54,8 @@ export default function OrderList({ orders }: OrderListProps) {
     handleRequestSort,
   } = useMuiTable({
     listData: filteredOrders,
-    defaultSort: "purchaseDate",
-    defaultOrder: "desc",
+    defaultSort: 'purchaseDate',
+    defaultOrder: 'desc',
   });
 
   return (
@@ -63,9 +64,9 @@ export default function OrderList({ orders }: OrderListProps) {
 
       <SearchArea
         handleSearch={() => {}}
-        buttonText="Create Order"
+        buttonText='Create Order'
         handleBtnClick={() => {}}
-        searchPlaceholder="Search Order..."
+        searchPlaceholder='Search Order...'
       />
 
       <Card>
@@ -91,7 +92,7 @@ export default function OrderList({ orders }: OrderListProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(filteredList.length / rowsPerPage)}

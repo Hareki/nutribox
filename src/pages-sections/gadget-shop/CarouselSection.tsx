@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import Carousel from "components/carousel/Carousel";
-import ProductCard3 from "components/product-cards/ProductCard3";
-import useWindowSize from "hooks/useWindowSize";
-import Product from "models/Product.model";
+import { Box } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import ProductCard3 from 'components/product-cards/ProductCard3';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // ===============================================================
 type CarouselProps = { productList: Product[] };
@@ -22,9 +23,9 @@ const CarouselSection: FC<CarouselProps> = ({ productList }) => {
 
   // common arrow button style for slider
   const arrowButtonStyle = {
-    backgroundColor: "white",
-    color: "#2B3445",
-    top: "35%",
+    backgroundColor: 'white',
+    color: '#2B3445',
+    top: '35%',
   };
 
   return (

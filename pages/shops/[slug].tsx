@@ -1,20 +1,21 @@
-import { useRouter } from "next/router";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import FilterList from '@mui/icons-material/FilterList';
 import {
   Container,
   Grid,
   IconButton,
   useMediaQuery,
   Theme,
-} from "@mui/material";
-import FilterList from "@mui/icons-material/FilterList";
-import Sidenav from "components/Sidenav";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import ShopIntroCard from "components/shop/ShopIntroCard";
-import ProductCardList from "components/products/ProductCard1List";
-import ProductFilterCard from "components/products/ProductFilterCard";
-import Shop from "models/Shop.model";
-import api from "utils/__api__/shop";
+} from '@mui/material';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import ProductCardList from 'components/products/ProductCard1List';
+import ProductFilterCard from 'components/products/ProductFilterCard';
+import ShopIntroCard from 'components/shop/ShopIntroCard';
+import Sidenav from 'components/Sidenav';
+import Shop from 'models/Shop.model';
+import api from 'utils/__api__/shop';
 
 // ============================================================
 type ShopDetailsProps = { shop: Shop };
@@ -23,7 +24,7 @@ type ShopDetailsProps = { shop: Shop };
 const ShopDetails: NextPage<ShopDetailsProps> = ({ shop }) => {
   const router = useRouter();
   const isDownMd = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("md")
+    theme.breakpoints.down('md'),
   );
 
   // Show a loading state when the fallback is rendered
@@ -32,8 +33,8 @@ const ShopDetails: NextPage<ShopDetailsProps> = ({ shop }) => {
   }
 
   const ICON_BUTTON = (
-    <IconButton sx={{ float: "right" }}>
-      <FilterList fontSize="small" />
+    <IconButton sx={{ float: 'right' }}>
+      <FilterList fontSize='small' />
     </IconButton>
   );
 
@@ -55,7 +56,7 @@ const ShopDetails: NextPage<ShopDetailsProps> = ({ shop }) => {
             item
             md={3}
             xs={12}
-            sx={{ display: { md: "block", xs: "none" } }}
+            sx={{ display: { md: 'block', xs: 'none' } }}
           >
             <ProductFilterCard />
           </Grid>
@@ -63,7 +64,7 @@ const ShopDetails: NextPage<ShopDetailsProps> = ({ shop }) => {
           <Grid item md={9} xs={12}>
             {/* SMALL DEVICE SIDEBAR AREA */}
             {isDownMd && (
-              <Sidenav position="left" handle={ICON_BUTTON}>
+              <Sidenav position='left' handle={ICON_BUTTON}>
                 <ProductFilterCard />
               </Sidenav>
             )}
@@ -81,8 +82,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await api.getSlugs();
 
   return {
-    paths: paths, //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    paths: paths, // indicates that no page needs be created at build time
+    fallback: 'blocking', // indicates the type of fallback
   };
 };
 

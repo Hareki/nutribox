@@ -1,31 +1,32 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Delete, RemoveRedEye } from "@mui/icons-material";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import Scrollbar from "components/Scrollbar";
-import { H3 } from "components/Typography";
-import useMuiTable from "hooks/useMuiTable";
+import { Delete, RemoveRedEye } from '@mui/icons-material';
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import { currency } from 'lib';
 import {
   StyledIconButton,
   StyledTableCell,
   StyledTableRow,
-} from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
-import { currency } from "lib";
+} from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // table column list
 const tableHeading = [
-  { id: "no", label: "No", align: "left" },
-  { id: "seller", label: "Seller", align: "left" },
-  { id: "package", label: "Package", align: "left" },
-  { id: "amount", label: "Amount", align: "left" },
-  { id: "payment", label: "Payment Method", align: "left" },
-  { id: "date", label: "Date", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'no', label: 'No', align: 'left' },
+  { id: 'seller', label: 'Seller', align: 'left' },
+  { id: 'package', label: 'Package', align: 'left' },
+  { id: 'amount', label: 'Amount', align: 'left' },
+  { id: 'payment', label: 'Payment Method', align: 'left' },
+  { id: 'date', label: 'Date', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -43,7 +44,7 @@ export default function PackagePayment({ payments }) {
     filteredList,
     handleChangePage,
     handleRequestSort,
-  } = useMuiTable({ listData: payments, defaultSort: "no" });
+  } = useMuiTable({ listData: payments, defaultSort: 'no' });
 
   return (
     <Box py={4}>
@@ -65,25 +66,25 @@ export default function PackagePayment({ payments }) {
 
               <TableBody>
                 {filteredList.map((item, index) => (
-                  <StyledTableRow role="checkbox" key={index}>
-                    <StyledTableCell align="left">{item.no}</StyledTableCell>
-                    <StyledTableCell align="left">
+                  <StyledTableRow role='checkbox' key={index}>
+                    <StyledTableCell align='left'>{item.no}</StyledTableCell>
+                    <StyledTableCell align='left'>
                       {item.seller}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {item.package}
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {currency(item.amount)}
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {item.payment}
                     </StyledTableCell>
-                    <StyledTableCell align="left">{item.date}</StyledTableCell>
+                    <StyledTableCell align='left'>{item.date}</StyledTableCell>
 
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <StyledIconButton>
                         <RemoveRedEye />
                       </StyledIconButton>
@@ -99,7 +100,7 @@ export default function PackagePayment({ payments }) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(payments.length / rowsPerPage)}

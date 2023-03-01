@@ -1,20 +1,21 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { Formik } from "formik";
-import * as yup from "yup";
-import { CameraEnhance, Person } from "@mui/icons-material";
-import { Avatar, Box, Button, Grid, TextField } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import Card1 from "components/Card1";
-import { FlexBox } from "components/flex-box";
-import UserDashboardHeader from "components/header/UserDashboardHeader";
-import CustomerDashboardLayout from "components/layouts/customer-dashboard";
-import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
-import api from "utils/__api__/users";
-import User from "models/User.model";
+import { CameraEnhance, Person } from '@mui/icons-material';
+import { Avatar, Box, Button, Grid, TextField } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Formik } from 'formik';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import * as yup from 'yup';
+
+import Card1 from 'components/Card1';
+import { FlexBox } from 'components/flex-box';
+import UserDashboardHeader from 'components/header/UserDashboardHeader';
+import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
+import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import User from 'models/User.model';
+import api from 'utils/__api__/users';
 
 // ===========================================================
 type Props = { user: User };
@@ -24,19 +25,19 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
   const router = useRouter();
 
   const INITIAL_VALUES = {
-    email: user.email || "",
-    contact: user.phone || "",
-    last_name: user.name.lastName || "",
-    first_name: user.name.firstName || "",
+    email: user.email || '',
+    contact: user.phone || '',
+    last_name: user.name.lastName || '',
+    first_name: user.name.firstName || '',
     birth_date: user.dateOfBirth || new Date(),
   };
 
   const checkoutSchema = yup.object().shape({
-    first_name: yup.string().required("required"),
-    last_name: yup.string().required("required"),
-    email: yup.string().email("invalid email").required("required"),
-    contact: yup.string().required("required"),
-    birth_date: yup.date().required("invalid date"),
+    first_name: yup.string().required('required'),
+    last_name: yup.string().required('required'),
+    email: yup.string().email('invalid email').required('required'),
+    contact: yup.string().required('required'),
+    birth_date: yup.date().required('invalid date'),
   });
 
   const handleFormSubmit = async (values: any) => {
@@ -45,8 +46,8 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
-    <Link href="/profile" passHref>
-      <Button color="primary" sx={{ px: 4, bgcolor: "primary.light" }}>
+    <Link href='/profile' passHref>
+      <Button color='primary' sx={{ px: 4, bgcolor: 'primary.light' }}>
         Back to Profile
       </Button>
     </Link>
@@ -62,42 +63,42 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
       {/* TITLE HEADER AREA */}
       <UserDashboardHeader
         icon={Person}
-        title="Edit Profile"
+        title='Edit Profile'
         button={HEADER_LINK}
         navigation={<CustomerDashboardNavigation />}
       />
 
       {/* PROFILE EDITOR FORM */}
       <Card1>
-        <FlexBox alignItems="flex-end" mb={3}>
+        <FlexBox alignItems='flex-end' mb={3}>
           <Avatar
-            src="/assets/images/faces/ralph.png"
+            src='/assets/images/faces/ralph.png'
             sx={{ height: 64, width: 64 }}
           />
 
           <Box ml={-2.5}>
-            <label htmlFor="profile-image">
+            <label htmlFor='profile-image'>
               <Button
-                component="span"
-                color="secondary"
+                component='span'
+                color='secondary'
                 sx={{
-                  p: "8px",
-                  height: "auto",
-                  bgcolor: "grey.300",
-                  borderRadius: "50%",
+                  p: '8px',
+                  height: 'auto',
+                  bgcolor: 'grey.300',
+                  borderRadius: '50%',
                 }}
               >
-                <CameraEnhance fontSize="small" />
+                <CameraEnhance fontSize='small' />
               </Button>
             </label>
           </Box>
 
-          <Box display="none">
+          <Box display='none'>
             <input
               onChange={(e) => console.log(e.target.files)}
-              id="profile-image"
-              accept="image/*"
-              type="file"
+              id='profile-image'
+              accept='image/*'
+              type='file'
             />
           </Box>
         </FlexBox>
@@ -122,8 +123,8 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      name="first_name"
-                      label="First Name"
+                      name='first_name'
+                      label='First Name'
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.first_name}
@@ -137,8 +138,8 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      name="last_name"
-                      label="Last Name"
+                      name='last_name'
+                      label='Last Name'
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.last_name}
@@ -152,9 +153,9 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      name="email"
-                      type="email"
-                      label="Email"
+                      name='email'
+                      type='email'
+                      label='Email'
                       onBlur={handleBlur}
                       value={values.email}
                       onChange={handleChange}
@@ -166,8 +167,8 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Phone"
-                      name="contact"
+                      label='Phone'
+                      name='contact'
                       onBlur={handleBlur}
                       value={values.contact}
                       onChange={handleChange}
@@ -179,14 +180,14 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
                   <Grid item md={6} xs={12}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DatePicker
-                        label="Birth Date"
+                        label='Birth Date'
                         maxDate={new Date()}
                         value={values.birth_date}
-                        inputFormat="dd MMMM, yyyy"
+                        inputFormat='dd MMMM, yyyy'
                         renderInput={(props) => (
                           <TextField
                             fullWidth
-                            size="small"
+                            size='small'
                             helperText={
                               (touched.birth_date &&
                                 errors.birth_date) as string
@@ -199,7 +200,7 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
                           />
                         )}
                         onChange={(newValue) =>
-                          setFieldValue("birth_date", newValue)
+                          setFieldValue('birth_date', newValue)
                         }
                       />
                     </LocalizationProvider>
@@ -207,7 +208,7 @@ const ProfileEditor: NextPage<Props> = ({ user }) => {
                 </Grid>
               </Box>
 
-              <Button type="submit" variant="contained" color="primary">
+              <Button type='submit' variant='contained' color='primary'>
                 Save Changes
               </Button>
             </form>
@@ -222,8 +223,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await api.getUserIds();
 
   return {
-    paths: paths, //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    paths: paths, // indicates that no page needs be created at build time
+    fallback: 'blocking', // indicates the type of fallback
   };
 };
 

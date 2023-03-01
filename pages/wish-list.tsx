@@ -1,16 +1,17 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { GetServerSideProps, NextPage } from "next";
-import { Favorite } from "@mui/icons-material";
-import { Button, Grid, Pagination } from "@mui/material";
-import SEO from "components/SEO";
-import { FlexBox } from "components/flex-box";
-import ProductCard1 from "components/product-cards/ProductCard1";
-import UserDashboardHeader from "components/header/UserDashboardHeader";
-import CustomerDashboardLayout from "components/layouts/customer-dashboard";
-import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
-import productDatabase from "data/product-database";
-import Product from "models/Product.model";
+import { Favorite } from '@mui/icons-material';
+import { Button, Grid, Pagination } from '@mui/material';
+import { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import UserDashboardHeader from 'components/header/UserDashboardHeader';
+import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
+import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import ProductCard1 from 'components/product-cards/ProductCard1';
+import SEO from 'components/SEO';
+import productDatabase from 'data/product-database';
+import Product from 'models/Product.model';
 
 // ==================================================================
 type WishListProps = { totalProducts: number; products: Product[] };
@@ -30,19 +31,19 @@ const WishList: NextPage<WishListProps> = (props) => {
 
   // SECTION HEADER TITLE LINK
   const HEADER_BUTTON = (
-    <Button color="primary" sx={{ px: 4, bgcolor: "primary.light" }}>
+    <Button color='primary' sx={{ px: 4, bgcolor: 'primary.light' }}>
       Add All to Cart
     </Button>
   );
 
   return (
     <CustomerDashboardLayout>
-      <SEO title="Wishlist" />
+      <SEO title='Wishlist' />
 
       {/* TOP HEADER AREA */}
       <UserDashboardHeader
         icon={Favorite}
-        title="My Wish List"
+        title='My Wish List'
         button={HEADER_BUTTON}
         navigation={<CustomerDashboardNavigation />}
       />
@@ -65,10 +66,10 @@ const WishList: NextPage<WishListProps> = (props) => {
       </Grid>
 
       {/* PAGINATION AREA */}
-      <FlexBox justifyContent="center" mt={5}>
+      <FlexBox justifyContent='center' mt={5}>
         <Pagination
-          color="primary"
-          variant="outlined"
+          color='primary'
+          variant='outlined'
           page={currentPage}
           count={Math.ceil(totalProducts / 6)}
           onChange={(_, page) => handleChangePage(page)}
@@ -86,7 +87,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const currentProducts = products.slice(
     (PAGE_NUMBER - 1) * PAGE_SIZE,
-    PAGE_NUMBER * PAGE_SIZE
+    PAGE_NUMBER * PAGE_SIZE,
   );
 
   return {

@@ -1,8 +1,8 @@
-import { styled } from "@mui/material";
-import clsx from "clsx";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { AnchorHTMLAttributes, CSSProperties, FC } from "react";
+import { styled } from '@mui/material';
+import clsx from 'clsx';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { AnchorHTMLAttributes, CSSProperties, FC } from 'react';
 
 // component props interface
 export interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -11,13 +11,13 @@ export interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   className?: string;
 }
 // styled component
-const StyledLink = styled("a")<{ active_route?: string }>(
+const StyledLink = styled('a')<{ active_route?: string }>(
   ({ theme, active_route }) => ({
-    position: "relative",
-    transition: "color 150ms ease-in-out",
-    color: active_route === "active" ? theme.palette.primary.main : "inherit",
-    "&:hover": { color: `${theme.palette.primary.main} !important` },
-  })
+    position: 'relative',
+    transition: 'color 150ms ease-in-out',
+    color: active_route === 'active' ? theme.palette.primary.main : 'inherit',
+    '&:hover': { color: `${theme.palette.primary.main} !important` },
+  }),
 );
 
 const NavLink: FC<NavLinkProps> = ({
@@ -30,7 +30,7 @@ const NavLink: FC<NavLinkProps> = ({
   const { pathname } = useRouter();
 
   const checkRouteMatch = () => {
-    if (href === "/") return pathname === href;
+    if (href === '/') return pathname === href;
     return pathname.includes(href);
   };
   // active route
@@ -42,7 +42,7 @@ const NavLink: FC<NavLinkProps> = ({
         href={href}
         style={style}
         className={clsx(className)}
-        active_route={currentRoute ? "active" : ""}
+        active_route={currentRoute ? 'active' : ''}
         {...props}
       >
         {children}

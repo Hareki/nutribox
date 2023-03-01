@@ -1,11 +1,8 @@
-import Link from "next/link";
-import { FC, useState } from "react";
-import { ChevronRight, KeyboardArrowDown } from "@mui/icons-material";
-import { Avatar, Box, SvgIconProps } from "@mui/material";
-import { H6 } from "components/Typography";
-import useSettings from "hooks/useSettings";
-import Scrollbar from "components/Scrollbar";
-import { FlexRowCenter } from "components/flex-box";
+import { ChevronRight, KeyboardArrowDown } from '@mui/icons-material';
+import { Avatar, Box, SvgIconProps } from '@mui/material';
+import Link from 'next/link';
+import { FC, useState } from 'react';
+
 import {
   Wrapper,
   StyledCard,
@@ -14,7 +11,12 @@ import {
   SubCategoryList,
   CategoryListItem,
   SubCategoryListItem,
-} from "./styles";
+} from './styles';
+
+import { FlexRowCenter } from 'components/flex-box';
+import Scrollbar from 'components/Scrollbar';
+import { H6 } from 'components/Typography';
+import useSettings from 'hooks/useSettings';
 
 // ===============================================================
 
@@ -22,7 +24,7 @@ type NavLink = {
   url: string;
   img?: string;
   title: string;
-  Icon?: (props: SvgIconProps<"svg", {}>) => JSX.Element;
+  Icon?: (props: SvgIconProps<'svg', {}>) => JSX.Element;
 };
 
 type MenuItem = { title: string; child: NavLink[] };
@@ -40,12 +42,12 @@ const MegaMenu2: FC<MegaMenuProps> = ({ title, menuList }) => {
 
   return (
     <Wrapper>
-      <FlexRowCenter alignItems="flex-end" gap={0.3}>
-        {title}{" "}
-        <KeyboardArrowDown sx={{ color: "grey.500", fontSize: "1.1rem" }} />
+      <FlexRowCenter alignItems='flex-end' gap={0.3}>
+        {title}{' '}
+        <KeyboardArrowDown sx={{ color: 'grey.500', fontSize: '1.1rem' }} />
       </FlexRowCenter>
 
-      <MenusContainer className="menu-list">
+      <MenusContainer className='menu-list'>
         <StyledCard>
           <CategoryList>
             {categories.map((item) => (
@@ -56,10 +58,10 @@ const MegaMenu2: FC<MegaMenuProps> = ({ title, menuList }) => {
               >
                 {item}
                 <ChevronRight
-                  fontSize="small"
+                  fontSize='small'
                   sx={{
                     transform: `rotate(${
-                      settings.direction === "rtl" ? "180deg" : "0"
+                      settings.direction === 'rtl' ? '180deg' : '0'
                     })`,
                   }}
                 />
@@ -67,8 +69,8 @@ const MegaMenu2: FC<MegaMenuProps> = ({ title, menuList }) => {
             ))}
           </CategoryList>
 
-          <Scrollbar autoHide={false} sx={{ width: "100%" }}>
-            <Box px={6} py={2} height="100%">
+          <Scrollbar autoHide={false} sx={{ width: '100%' }}>
+            <Box px={6} py={2} height='100%'>
               {subMenus.child.map((item, key) => {
                 return (
                   <Box key={key}>
@@ -79,14 +81,14 @@ const MegaMenu2: FC<MegaMenuProps> = ({ title, menuList }) => {
                     <SubCategoryList>
                       {item.child.map((sub, key) => {
                         return (
-                          <Link href="/" key={key} passHref>
+                          <Link href='/' key={key} passHref>
                             <a>
                               <SubCategoryListItem>
                                 {sub.img && (
                                   <Avatar
                                     src={sub.img}
                                     sx={{
-                                      backgroundColor: "grey.100",
+                                      backgroundColor: 'grey.100',
                                       borderRadius: 1,
                                     }}
                                   />

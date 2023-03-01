@@ -1,49 +1,50 @@
-import { GetStaticProps, NextPage } from "next";
-import { useEffect, useRef, useState } from "react";
-import { Box, Container, styled } from "@mui/material";
-import { layoutConstant } from "utils/constants";
-import SEO from "components/SEO";
-import Setting from "components/Setting";
-import Newsletter from "components/Newsletter";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import SideNavbar from "components/page-sidenav/SideNavbar";
-import { MobileNavigationBar2 } from "components/mobile-navigation";
-import Section1 from "pages-sections/giftshop/Section1";
-import Section2 from "pages-sections/giftshop/Section2";
-import Section3 from "pages-sections/giftshop/Section3";
-import Section4 from "pages-sections/giftshop/Section4";
-import Section5 from "pages-sections/giftshop/Section5";
-import Section6 from "pages-sections/giftshop/Section6";
-import Section7 from "pages-sections/giftshop/Section7";
-import Product from "models/Product.model";
-import Service from "models/Service.model";
-import Category from "models/Category.model";
-import { GiftCarouselItem } from "models/Carousel.model";
-import CategoryNavList from "models/CategoryNavList.model";
-import api from "utils/__api__/gift-shop";
+import { Box, Container, styled } from '@mui/material';
+import { GetStaticProps, NextPage } from 'next';
+import { useEffect, useRef, useState } from 'react';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import { MobileNavigationBar2 } from 'components/mobile-navigation';
+import Newsletter from 'components/Newsletter';
+import SideNavbar from 'components/page-sidenav/SideNavbar';
+import SEO from 'components/SEO';
+import Setting from 'components/Setting';
+import { GiftCarouselItem } from 'models/Carousel.model';
+import Category from 'models/Category.model';
+import CategoryNavList from 'models/CategoryNavList.model';
+import Product from 'models/Product.model';
+import Service from 'models/Service.model';
+import Section1 from 'pages-sections/giftshop/Section1';
+import Section2 from 'pages-sections/giftshop/Section2';
+import Section3 from 'pages-sections/giftshop/Section3';
+import Section4 from 'pages-sections/giftshop/Section4';
+import Section5 from 'pages-sections/giftshop/Section5';
+import Section6 from 'pages-sections/giftshop/Section6';
+import Section7 from 'pages-sections/giftshop/Section7';
+import api from 'utils/__api__/gift-shop';
+import { layoutConstant } from 'utils/constants';
 
 // styled component
 const StyledContainer = styled(Container)(({ theme }) => ({
-  display: "flex",
-  ".sidenav": {
+  display: 'flex',
+  '.sidenav': {
     top: 0,
     bottom: 0,
-    position: "relative",
-    transition: "all 350ms ease-in-out",
+    position: 'relative',
+    transition: 'all 350ms ease-in-out',
     width: layoutConstant.grocerySidenavWidth,
     minWidth: layoutConstant.grocerySidenavWidth,
-    "& .MuiPaper-root": { borderRadius: 0 },
-    [theme.breakpoints.down("md")]: { display: "none" },
+    '& .MuiPaper-root': { borderRadius: 0 },
+    [theme.breakpoints.down('md')]: { display: 'none' },
   },
-  ".pageContent": {
-    left: "unset",
-    position: "relative",
-    marginLeft: "1.75rem",
+  '.pageContent': {
+    left: 'unset',
+    position: 'relative',
+    marginLeft: '1.75rem',
     width: `calc(100% - 2.5rem - ${layoutConstant.grocerySidenavWidth}px)`,
-    [theme.breakpoints.down("md")]: {
-      width: "100%",
-      "& .MuiGrid-item": { paddingLeft: 0 },
-      "& .categories": { marginLeft: "-1.75rem" },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      '& .MuiGrid-item': { paddingLeft: 0 },
+      '& .categories': { marginLeft: '-1.75rem' },
     },
   },
 }));
@@ -68,23 +69,23 @@ const GiftShop: NextPage<GiftShopProps> = (props) => {
 
   return (
     <ShopLayout1 showTopbar={false}>
-      <SEO title="Gift shop template" />
+      <SEO title='Gift shop template' />
 
       {/* TOP HERO AREA */}
       <Section1 carouselData={props.carouselData} />
 
       <StyledContainer sx={{ mb: 6 }}>
         {/* SIDE NAV BAR */}
-        <Box className="sidenav">
+        <Box className='sidenav'>
           <SideNavbar
-            lineStyle="dash"
-            sidebarStyle="style2"
+            lineStyle='dash'
+            sidebarStyle='style2'
             navList={props.categoryNavigation}
-            sidebarHeight={sidebarHeight || "85vh"}
+            sidebarHeight={sidebarHeight || '85vh'}
           />
         </Box>
 
-        <Box className="pageContent" ref={pageContentRef}>
+        <Box className='pageContent' ref={pageContentRef}>
           {/* SERVICE LIST AREA */}
           <Section2 serviceList={props.serviceList} />
 
@@ -92,7 +93,7 @@ const GiftShop: NextPage<GiftShopProps> = (props) => {
           <Section3 />
 
           {/* TOP CATEGORY AREA */}
-          <Box my={6} className="categories">
+          <Box my={6} className='categories'>
             <Section4 categoryList={props.topCategories} />
           </Box>
         </Box>
@@ -111,14 +112,14 @@ const GiftShop: NextPage<GiftShopProps> = (props) => {
       <Setting />
 
       {/* POPUP NEWSLETTER FORM */}
-      <Newsletter image="/assets/images/newsletter/bg-5.png" />
+      <Newsletter image='/assets/images/newsletter/bg-5.png' />
 
       {/* MOBILE NAVIGATION WITH SIDE NAVABAR */}
       <MobileNavigationBar2>
         <SideNavbar
           navList={props.categoryNavigation}
-          lineStyle="dash"
-          sidebarStyle="style2"
+          lineStyle='dash'
+          sidebarStyle='style2'
         />
       </MobileNavigationBar2>
     </ShopLayout1>

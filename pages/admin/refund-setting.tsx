@@ -1,16 +1,17 @@
-import { Delete } from "@mui/icons-material";
-import { Box, Button, Card, IconButton, TextField } from "@mui/material";
-import { FlexBetween, FlexBox } from "components/flex-box";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import { H3, H4, H5 } from "components/Typography";
-import React, { ReactElement, useState } from "react";
+import { Delete } from '@mui/icons-material';
+import { Box, Button, Card, IconButton, TextField } from '@mui/material';
+import React, { ReactElement, useState } from 'react';
+
+import { FlexBetween, FlexBox } from 'components/flex-box';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import { H3, H4, H5 } from 'components/Typography';
 
 const reasonList = [
-  { id: 1, title: "Ordered the wrong product" },
-  { id: 2, title: "The merchant shipped the wrong product" },
-  { id: 3, title: "The product is damaged or defective" },
-  { id: 4, title: "The product arrived too late" },
-  { id: 5, title: "The product do not match the description" },
+  { id: 1, title: 'Ordered the wrong product' },
+  { id: 2, title: 'The merchant shipped the wrong product' },
+  { id: 3, title: 'The product is damaged or defective' },
+  { id: 4, title: 'The product arrived too late' },
+  { id: 5, title: 'The product do not match the description' },
 ];
 
 // =============================================================================
@@ -20,8 +21,8 @@ RefundSetting.getLayout = function getLayout(page: ReactElement) {
 // =============================================================================
 
 export default function RefundSetting() {
-  const [refundReq, setRefundReq] = useState("Confirm");
-  const [refundTime, setRefundTime] = useState("120 Days");
+  const [refundReq, setRefundReq] = useState('Confirm');
+  const [refundTime, setRefundTime] = useState('120 Days');
   const [reasonTypeList, setReasonTypeList] = useState(reasonList);
 
   const handleDeleteReason = (id: string | number) => () => {
@@ -37,16 +38,16 @@ export default function RefundSetting() {
 
         <TextField
           fullWidth
-          color="info"
-          size="medium"
+          color='info'
+          size='medium'
           value={refundTime}
-          variant="outlined"
-          label="Refund Request Generation Time"
+          variant='outlined'
+          label='Refund Request Generation Time'
           onChange={(e) => setRefundTime(e.target.value)}
           sx={{ fontSize: 14, fontWeight: 600, mb: 2 }}
         />
 
-        <Button color="info" variant="contained">
+        <Button color='info' variant='contained'>
           Update
         </Button>
 
@@ -56,16 +57,16 @@ export default function RefundSetting() {
 
         <TextField
           fullWidth
-          color="info"
-          size="medium"
+          color='info'
+          size='medium'
           value={refundReq}
-          variant="outlined"
-          label="Enabling Refund Request"
+          variant='outlined'
+          label='Enabling Refund Request'
           onChange={(e) => setRefundReq(e.target.value)}
           sx={{ fontSize: 14, fontWeight: 600, mb: 2 }}
         />
 
-        <Button color="info" variant="contained">
+        <Button color='info' variant='contained'>
           Update
         </Button>
 
@@ -74,17 +75,17 @@ export default function RefundSetting() {
         </H4>
         <H5 mb={2}>Reason Type</H5>
 
-        <Box width={{ lg: "90%", xs: "100%" }}>
+        <Box width={{ lg: '90%', xs: '100%' }}>
           {reasonTypeList.map((reason) => (
-            <FlexBox mb={2} gap={3} key={reason.id} alignItems="center">
+            <FlexBox mb={2} gap={3} key={reason.id} alignItems='center'>
               <Box
                 sx={{
                   flexGrow: 1,
                   fontWeight: 600,
-                  border: "1px solid",
-                  borderRadius: "8px",
-                  padding: "10px 16px",
-                  borderColor: "grey.300",
+                  border: '1px solid',
+                  borderRadius: '8px',
+                  padding: '10px 16px',
+                  borderColor: 'grey.300',
                 }}
               >
                 {reason.title}
@@ -92,19 +93,19 @@ export default function RefundSetting() {
 
               <IconButton
                 onClick={handleDeleteReason(reason.id)}
-                sx={{ backgroundColor: "grey.200" }}
+                sx={{ backgroundColor: 'grey.200' }}
               >
-                <Delete sx={{ fontSize: 19, color: "grey.600" }} />
+                <Delete sx={{ fontSize: 19, color: 'grey.600' }} />
               </IconButton>
             </FlexBox>
           ))}
 
           <FlexBetween mt={4}>
-            <Button color="info" variant="contained">
+            <Button color='info' variant='contained'>
               Update
             </Button>
 
-            <Button color="info" variant="outlined">
+            <Button color='info' variant='outlined'>
               Add New
             </Button>
           </FlexBetween>

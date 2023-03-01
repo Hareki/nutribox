@@ -1,11 +1,12 @@
-import { ReactElement, useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import { useRouter } from "next/router";
-import { H3 } from "components/Typography";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import { OrderDetails } from "pages-sections/admin";
-import Order from "models/Order.model";
-import api from "utils/__api__/dashboard";
+import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
+import { ReactElement, useEffect, useState } from 'react';
+
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import { H3 } from 'components/Typography';
+import Order from 'models/Order.model';
+import { OrderDetails } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // =============================================================================
 OrderEdit.getLayout = function getLayout(page: ReactElement) {

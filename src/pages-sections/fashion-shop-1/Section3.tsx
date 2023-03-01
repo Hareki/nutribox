@@ -1,10 +1,12 @@
-import { FC, useEffect, useState } from "react";
-import Carousel from "components/carousel/Carousel";
-import ProductCard3 from "components/product-cards/ProductCard3";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import useWindowSize from "hooks/useWindowSize";
-import { arrowButtonStyle } from "./style";
-import Product from "models/Product.model";
+import { FC, useEffect, useState } from 'react';
+
+import { arrowButtonStyle } from './style';
+
+import Carousel from 'components/carousel/Carousel';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import ProductCard3 from 'components/product-cards/ProductCard3';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // ==========================================================
 type Props = { newArrivals: Product[] };
@@ -22,7 +24,7 @@ const Section3: FC<Props> = ({ newArrivals }) => {
   }, [width]);
 
   return (
-    <CategorySectionCreator title="New Arrivals" seeMoreLink="#">
+    <CategorySectionCreator title='New Arrivals' seeMoreLink='#'>
       <Carousel
         infinite={true}
         visibleSlides={visibleSlides}

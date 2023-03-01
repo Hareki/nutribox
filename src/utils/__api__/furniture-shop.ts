@@ -1,32 +1,33 @@
-import axios from "axios";
-import Product from "models/Product.model";
-import CategoryNavList from "models/CategoryNavList.model";
-import { FurnitureCarouselItem } from "models/Carousel.model";
+import axios from 'axios';
+
+import { FurnitureCarouselItem } from 'models/Carousel.model';
+import CategoryNavList from 'models/CategoryNavList.model';
+import Product from 'models/Product.model';
 
 const getTopNewProducts = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/furniture-shop/products?tag=new");
+  const response = await axios.get('/api/furniture-shop/products?tag=new');
   return response.data;
 };
 
 const getTopSellingProducts = async (): Promise<Product[]> => {
   const response = await axios.get(
-    "/api/furniture-shop/products?tag=top-selling"
+    '/api/furniture-shop/products?tag=top-selling',
   );
   return response.data;
 };
 
 const getFurnitureProducts = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/furniture-shop/all-products");
+  const response = await axios.get('/api/furniture-shop/all-products');
   return response.data;
 };
 
 const getFurnitureShopNavList = async (): Promise<CategoryNavList[]> => {
-  const response = await axios.get("/api/furniture-shop/navigation");
+  const response = await axios.get('/api/furniture-shop/navigation');
   return response.data;
 };
 
 const getMainCarouselData = async (): Promise<FurnitureCarouselItem[]> => {
-  const response = await axios.get("/api/furniture-shop/main-carousel");
+  const response = await axios.get('/api/furniture-shop/main-carousel');
   return response.data;
 };
 

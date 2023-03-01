@@ -1,27 +1,28 @@
-import Router from "next/router";
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import SearchArea from "components/dashboard/SearchArea";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import { H3 } from "components/Typography";
-import useMuiTable from "hooks/useMuiTable";
-import Scrollbar from "components/Scrollbar";
-import { ProductRow } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
-import Product from "models/Product.model";
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import Router from 'next/router';
+import { ReactElement } from 'react';
+
+import SearchArea from 'components/dashboard/SearchArea';
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import Product from 'models/Product.model';
+import { ProductRow } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
-  { id: "name", label: "Name", align: "left" },
-  { id: "category", label: "Category", align: "left" },
-  { id: "brand", label: "Brand", align: "left" },
-  { id: "price", label: "Price", align: "left" },
-  { id: "published", label: "Published", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'name', label: 'Name', align: 'left' },
+  { id: 'category', label: 'Category', align: 'left' },
+  { id: 'brand', label: 'Brand', align: 'left' },
+  { id: 'price', label: 'Price', align: 'left' },
+  { id: 'published', label: 'Published', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -64,9 +65,9 @@ export default function ProductList(props: ProductListProps) {
 
       <SearchArea
         handleSearch={() => {}}
-        buttonText="Add Product"
-        searchPlaceholder="Search Product..."
-        handleBtnClick={() => Router.push("/admin/products/create")}
+        buttonText='Add Product'
+        searchPlaceholder='Search Product...'
+        handleBtnClick={() => Router.push('/admin/products/create')}
       />
 
       <Card>
@@ -92,7 +93,7 @@ export default function ProductList(props: ProductListProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(products.length / rowsPerPage)}

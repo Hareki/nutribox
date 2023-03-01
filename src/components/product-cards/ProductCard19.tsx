@@ -1,11 +1,12 @@
-import { FC } from "react";
-import Link from "next/link";
-import { Box, Rating } from "@mui/material";
-import { FlexBox } from "components/flex-box";
-import { NavLink } from "components/nav-link";
-import BazaarImage from "components/BazaarImage";
-import { Paragraph } from "components/Typography";
-import { currency } from "lib";
+import { Box, Rating } from '@mui/material';
+import Link from 'next/link';
+import { FC } from 'react';
+
+import BazaarImage from 'components/BazaarImage';
+import { FlexBox } from 'components/flex-box';
+import { NavLink } from 'components/nav-link';
+import { Paragraph } from 'components/Typography';
+import { currency } from 'lib';
 
 // ===========================================
 type ProductCard19Props = {
@@ -27,24 +28,24 @@ const ProductCard19: FC<ProductCard19Props> = ({
     <FlexBox
       mb={2}
       gap={2}
-      alignItems="center"
+      alignItems='center'
       sx={{
-        " & a": { flexShrink: 0 },
-        ":last-of-type": { mb: 0 },
-        "& img": { transition: "0.3s" },
-        ":hover": { img: { transform: "scale(1.1)" } },
+        ' & a': { flexShrink: 0 },
+        ':last-of-type': { mb: 0 },
+        '& img': { transition: '0.3s' },
+        ':hover': { img: { transform: 'scale(1.1)' } },
       }}
     >
       <Link href={`/product/${slug}`}>
         <a>
-          <Box maxWidth={100} bgcolor="grey.300">
-            <BazaarImage width="100%" alt="product" src={image} />
+          <Box maxWidth={100} bgcolor='grey.300'>
+            <BazaarImage width='100%' alt='product' src={image} />
           </Box>
         </a>
       </Link>
 
       <Box>
-        <NavLink href="#">
+        <NavLink href='#'>
           <Paragraph fontSize={16}>{title}</Paragraph>
         </NavLink>
         <Paragraph fontWeight={700}>{currency(price)}</Paragraph>

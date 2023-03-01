@@ -1,5 +1,5 @@
-import { FC } from "react";
-import Head from "next/head";
+import Head from 'next/head';
+import { FC } from 'react';
 
 // ====================================================================
 type SEOProps = {
@@ -12,12 +12,12 @@ type SEOProps = {
 const SEO: FC<SEOProps> = ({
   title,
   description,
-  sitename = "Bazaar Next.js Ecommerce",
+  sitename = 'Bazaar Next.js Ecommerce',
 }) => {
   return (
     <Head>
       <title>{`${title} | ${sitename}`}</title>
-      <meta name="description" content={description} />
+      <meta name='description' content={description} />
     </Head>
   );
 };

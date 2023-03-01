@@ -1,6 +1,7 @@
-import { Small } from "components/Typography";
-import Link from "next/link";
-import { FC } from "react";
+import Link from 'next/link';
+import { FC } from 'react';
+
+import { Small } from 'components/Typography';
 
 // ==============================================================
 type NavLinkProps = {
@@ -13,15 +14,15 @@ type NavLinkProps = {
 
 const NavLink2: FC<NavLinkProps> = ({
   url,
-  title = "SHOP NOW",
+  title = 'SHOP NOW',
   color,
-  borderColor = "primary.600",
+  borderColor = 'primary.600',
 }) => {
   return url ? (
     <Link href={url}>
       <a>
         <Small
-          fontWeight="900"
+          fontWeight='900'
           borderBottom={2}
           color={color}
           borderColor={borderColor}
@@ -32,7 +33,7 @@ const NavLink2: FC<NavLinkProps> = ({
     </Link>
   ) : (
     <Small
-      fontWeight="900"
+      fontWeight='900'
       borderBottom={2}
       color={color}
       borderColor={borderColor}

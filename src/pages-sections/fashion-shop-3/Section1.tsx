@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Box, Container } from "@mui/material";
-import Carousel from "components/carousel/Carousel";
-import { CarouselCard4 } from "components/carousel-cards";
-import { MainCarouselItem } from "models/Market-2.model";
+import { Box, Container } from '@mui/material';
+import { FC } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import { CarouselCard4 } from 'components/carousel-cards';
+import { MainCarouselItem } from 'models/Market-2.model';
 
 // ======================================================
 type Props = { carouselData: MainCarouselItem[] };
@@ -13,7 +14,7 @@ const Section1: FC<Props> = ({ carouselData }) => {
     <Box pt={3}>
       <Container>
         <Carousel
-          spacing="0px"
+          spacing='0px'
           totalSlides={2}
           infinite={true}
           showDots={true}
@@ -22,16 +23,16 @@ const Section1: FC<Props> = ({ carouselData }) => {
           showArrow={false}
           sx={{
             mb: 3,
-            overflow: "hidden",
-            "& .carousel__dot-group": {
+            overflow: 'hidden',
+            '& .carousel__dot-group': {
               mt: 0,
               left: 0,
               right: 0,
               bottom: 10,
-              position: "absolute",
-              "& div": {
-                borderColor: "#fff",
-                "::after": { backgroundColor: "#fff" },
+              position: 'absolute',
+              '& div': {
+                borderColor: '#fff',
+                '::after': { backgroundColor: '#fff' },
               },
             },
           }}
@@ -39,7 +40,7 @@ const Section1: FC<Props> = ({ carouselData }) => {
           {carouselData.map((item, ind) => (
             <CarouselCard4
               key={ind}
-              mode="dark"
+              mode='dark'
               title={item.title}
               bgImage={item.imgUrl}
               discount={item.discount}

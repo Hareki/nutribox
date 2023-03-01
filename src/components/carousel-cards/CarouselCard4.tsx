@@ -1,32 +1,33 @@
-import { FC } from "react";
-import { useRouter } from "next/router";
-import { Box, styled, Button } from "@mui/material";
-import { H1, H4, Paragraph, Span } from "components/Typography";
+import { Box, styled, Button } from '@mui/material';
+import { useRouter } from 'next/router';
+import { FC } from 'react';
+
+import { H1, H4, Paragraph, Span } from 'components/Typography';
 
 // custom styled components
 const CardWrapper = styled(Box)<{ img: string; mode: string }>(
   ({ theme, img, mode }) => ({
     minHeight: 500,
-    display: "flex",
-    alignItems: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
+    display: 'flex',
+    alignItems: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
     backgroundImage: `url(${img})`,
-    backgroundColor: mode === "dark" ? "#000" : "#fff",
-    color: mode === "light" ? theme.palette.dark.main : "#fff",
-    ...(theme.direction === "rtl" && {
-      textAlign: "right",
-      paddingRight: "5rem",
-      justifyContent: "flex-end",
-      "& > .MuiBox-root": { padding: 0 },
+    backgroundColor: mode === 'dark' ? '#000' : '#fff',
+    color: mode === 'light' ? theme.palette.dark.main : '#fff',
+    ...(theme.direction === 'rtl' && {
+      textAlign: 'right',
+      paddingRight: '5rem',
+      justifyContent: 'flex-end',
+      '& > .MuiBox-root': { padding: 0 },
     }),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       padding: 24,
-      textAlign: "center",
-      backgroundImage: "none",
-      justifyContent: "center",
+      textAlign: 'center',
+      backgroundImage: 'none',
+      justifyContent: 'center',
     },
-  })
+  }),
 );
 
 // ===============================================================
@@ -38,7 +39,7 @@ type CarouselCard4Props = {
   buttonLink?: string;
   buttonText?: string;
   description?: string;
-  mode?: "dark" | "light";
+  mode?: 'dark' | 'light';
 };
 // ===============================================================
 
@@ -50,7 +51,7 @@ const CarouselCard4: FC<CarouselCard4Props> = ({
   buttonLink,
   buttonText,
   description,
-  mode = "dark",
+  mode = 'dark',
 }) => {
   const { push } = useRouter();
 
@@ -61,7 +62,7 @@ const CarouselCard4: FC<CarouselCard4Props> = ({
           mb={1}
           lineHeight={1}
           fontWeight={400}
-          textTransform="uppercase"
+          textTransform='uppercase'
           fontSize={{ sm: 30, xs: 24 }}
         >
           {title}
@@ -70,7 +71,7 @@ const CarouselCard4: FC<CarouselCard4Props> = ({
         <H1
           fontSize={{ sm: 60, xs: 44 }}
           lineHeight={1}
-          textTransform="uppercase"
+          textTransform='uppercase'
         >
           {category}
         </H1>
@@ -79,9 +80,9 @@ const CarouselCard4: FC<CarouselCard4Props> = ({
           fontSize={{ sm: 30, xs: 24 }}
           lineHeight={1}
           mt={1.5}
-          textTransform="uppercase"
+          textTransform='uppercase'
         >
-          SALE UP TO <Span color="primary.main">{discount}% OFF</Span>
+          SALE UP TO <Span color='primary.main'>{discount}% OFF</Span>
         </H4>
 
         <Paragraph fontSize={{ sm: 18, xs: 14 }} mb={4}>
@@ -89,9 +90,9 @@ const CarouselCard4: FC<CarouselCard4Props> = ({
         </Paragraph>
 
         <Button
-          variant="contained"
-          size="large"
-          color="dark"
+          variant='contained'
+          size='large'
+          color='dark'
           onClick={() => push(buttonLink)}
         >
           {buttonText}

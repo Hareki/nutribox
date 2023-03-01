@@ -1,6 +1,7 @@
-import { FC } from "react";
-import { Box, BoxProps, TextField, TextFieldProps } from "@mui/material";
-import { Small } from "./Typography";
+import { Box, BoxProps, TextField, TextFieldProps } from '@mui/material';
+import { FC } from 'react';
+
+import { Small } from './Typography';
 
 type Props = TextFieldProps & BoxProps;
 
@@ -18,11 +19,11 @@ const BazaarTextField: FC<Props> = ({ label, InputProps, ...props }) => {
     <Box {...boxProps}>
       {label && (
         <Small
-          display="block"
+          display='block'
           mb={1}
-          textAlign="left"
-          fontWeight="600"
-          color="grey.700"
+          textAlign='left'
+          fontWeight='600'
+          color='grey.700'
         >
           {label}
         </Small>
@@ -40,34 +41,34 @@ const BazaarTextField: FC<Props> = ({ label, InputProps, ...props }) => {
 };
 
 const spacePropList = [
-  "m",
-  "mt",
-  "mr",
-  "mb",
-  "ml",
-  "mx",
-  "my",
-  "p",
-  "pt",
-  "pr",
-  "pb",
-  "pl",
-  "px",
-  "py",
-  "margin",
-  "marginTop",
-  "marginRight",
-  "marginBottom",
-  "marginLeft",
-  "marginX",
-  "marginY",
-  "padding",
-  "paddingTop",
-  "paddingRight",
-  "paddingBottom",
-  "paddingLeft",
-  "paddingX",
-  "paddingY",
+  'm',
+  'mt',
+  'mr',
+  'mb',
+  'ml',
+  'mx',
+  'my',
+  'p',
+  'pt',
+  'pr',
+  'pb',
+  'pl',
+  'px',
+  'py',
+  'margin',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'marginX',
+  'marginY',
+  'padding',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'paddingX',
+  'paddingY',
 ];
 
 export default BazaarTextField;

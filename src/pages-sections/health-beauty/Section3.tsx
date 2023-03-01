@@ -1,17 +1,18 @@
-import { FC, useEffect, useState } from "react";
-import { Box, styled, useTheme } from "@mui/material";
-import { Paragraph } from "components/Typography";
-import Carousel from "components/carousel/Carousel";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import ProductCard14 from "components/product-cards/ProductCard14";
-import useWindowSize from "hooks/useWindowSize";
-import Product from "models/Product.model";
+import { Box, styled, useTheme } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import ProductCard14 from 'components/product-cards/ProductCard14';
+import { Paragraph } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // styled components
 const SubTitle = styled(Paragraph)(({ theme }) => ({
   fontSize: 12,
-  marginTop: "-20px",
-  marginBottom: "20px",
+  marginTop: '-20px',
+  marginBottom: '20px',
   color: theme.palette.grey[600],
 }));
 
@@ -33,14 +34,14 @@ const Section3: FC<Props> = ({ products }) => {
 
   // CUSTOM STYLE FOR ARROW BUTTONS
   const CAROUSEL_STYLE = {
-    "& #backArrowButton, #backForwardButton": {
+    '& #backArrowButton, #backForwardButton': {
       color: palette.primary.main,
       background: palette.primary[50],
-      "&:hover": { background: palette.primary[100] },
+      '&:hover': { background: palette.primary[100] },
     },
   };
   return (
-    <CategorySectionCreator title="Top New Products" seeMoreLink="#" mb={0}>
+    <CategorySectionCreator title='Top New Products' seeMoreLink='#' mb={0}>
       <SubTitle>Best deal with medical and beauty items</SubTitle>
       <Carousel
         infinite={true}

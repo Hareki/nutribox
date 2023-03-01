@@ -1,13 +1,14 @@
-import { NextPage } from "next";
-import { Grid } from "@mui/material";
-import PaymentForm from "pages-sections/payment/PaymentForm";
-import PaymentSummary from "pages-sections/payment/PaymentSummary";
-import CheckoutNavLayout from "components/layouts/CheckoutNavLayout";
+import { Grid } from '@mui/material';
+import { NextPage } from 'next';
+
+import CheckoutNavLayout from 'components/layouts/CheckoutNavLayout';
+import PaymentForm from 'pages-sections/payment/PaymentForm';
+import PaymentSummary from 'pages-sections/payment/PaymentSummary';
 
 const Checkout: NextPage = () => {
   return (
     <CheckoutNavLayout>
-      <Grid container flexWrap="wrap-reverse" spacing={3}>
+      <Grid container flexWrap='wrap-reverse' spacing={3}>
         <Grid item lg={8} md={8} xs={12}>
           <PaymentForm />
         </Grid>

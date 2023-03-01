@@ -1,20 +1,21 @@
-import { FC, useEffect, useState } from "react";
-import { Card, Container, Grid, List, ListItem, styled } from "@mui/material";
-import { H3 } from "components/Typography";
-import { NavLink3 } from "components/nav-link";
-import useWindowSize from "hooks/useWindowSize";
-import Carousel from "components/carousel/Carousel";
-import ProductCard20 from "components/product-cards/ProductCard20";
-import { carouselStyled } from "components/carousel/styles";
-import { CategoryBasedProducts } from "models/Market-2.model";
+import { Card, Container, Grid, List, ListItem, styled } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import { carouselStyled } from 'components/carousel/styles';
+import { NavLink3 } from 'components/nav-link';
+import ProductCard20 from 'components/product-cards/ProductCard20';
+import { H3 } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import { CategoryBasedProducts } from 'models/Market-2.model';
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   fontSize: 13,
   fontWeight: 500,
-  cursor: "pointer",
-  padding: "10px 0 0 0",
-  transition: "all 0.3s",
-  ":hover": { color: theme.palette.primary.main },
+  cursor: 'pointer',
+  padding: '10px 0 0 0',
+  transition: 'all 0.3s',
+  ':hover': { color: theme.palette.primary.main },
 }));
 
 // ======================================================================
@@ -42,9 +43,9 @@ const Section5: FC<Section5Props> = ({ data }) => {
             elevation={0}
             sx={{
               px: 4,
-              height: "100%",
+              height: '100%',
               py: 2,
-              borderRadius: "3px",
+              borderRadius: '3px',
               border: 0,
             }}
           >
@@ -59,10 +60,10 @@ const Section5: FC<Section5Props> = ({ data }) => {
             </List>
 
             <NavLink3
-              href="#"
-              text="Browse All"
-              color="dark.main"
-              hoverColor="dark.main"
+              href='#'
+              text='Browse All'
+              color='dark.main'
+              hoverColor='dark.main'
             />
           </Card>
         </Grid>

@@ -1,23 +1,24 @@
-import axios from "axios";
-import { FC, useEffect, useState } from "react";
-import { Box, Button, Container } from "@mui/material";
-import useWindowSize from "hooks/useWindowSize";
-import Carousel from "components/carousel/Carousel";
-import { H2, Paragraph } from "components/Typography";
-import { FlexBetween, FlexBox } from "components/flex-box";
-import ProductCard20 from "components/product-cards/ProductCard20";
-import { carouselStyled } from "components/carousel/styles";
-import Product from "models/Product.model";
+import { Box, Button, Container } from '@mui/material';
+import axios from 'axios';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import { carouselStyled } from 'components/carousel/styles';
+import { FlexBetween, FlexBox } from 'components/flex-box';
+import ProductCard20 from 'components/product-cards/ProductCard20';
+import { H2, Paragraph } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 const Section9: FC = () => {
   const width = useWindowSize();
-  const [selected, setSelected] = useState("new");
+  const [selected, setSelected] = useState('new');
   const [visibleSlides, setVisibleSlides] = useState(4);
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     axios
-      .get("/api/market-2/products", { params: { type: selected } })
+      .get('/api/market-2/products', { params: { type: selected } })
       .then(({ data }) => setProducts(data));
   }, [selected]);
 
@@ -30,11 +31,11 @@ const Section9: FC = () => {
   }, [width]);
 
   const handleSelected = (item: string) => () => setSelected(item);
-  const activeColor = (item: string) => (item === selected ? "error" : "dark");
+  const activeColor = (item: string) => (item === selected ? 'error' : 'dark');
 
   return (
     <Container sx={{ pb: 8 }}>
-      <FlexBetween gap={2} flexWrap="wrap" mb={3}>
+      <FlexBetween gap={2} flexWrap='wrap' mb={3}>
         {/* SECTION TITLE */}
         <Box>
           <H2 fontSize={20}>Selected Products</H2>
@@ -44,35 +45,35 @@ const Section9: FC = () => {
         </Box>
 
         {/* FILTERED BUTTON LIST */}
-        <FlexBox flexWrap="wrap" gap={1} sx={{ "& button": { flexGrow: 1 } }}>
+        <FlexBox flexWrap='wrap' gap={1} sx={{ '& button': { flexGrow: 1 } }}>
           <Button
-            variant="outlined"
-            color={activeColor("new")}
-            onClick={handleSelected("new")}
+            variant='outlined'
+            color={activeColor('new')}
+            onClick={handleSelected('new')}
           >
             New Arrivals
           </Button>
 
           <Button
-            variant="outlined"
-            color={activeColor("best")}
-            onClick={handleSelected("best")}
+            variant='outlined'
+            color={activeColor('best')}
+            onClick={handleSelected('best')}
           >
             Best Seller
           </Button>
 
           <Button
-            variant="outlined"
-            color={activeColor("popular")}
-            onClick={handleSelected("popular")}
+            variant='outlined'
+            color={activeColor('popular')}
+            onClick={handleSelected('popular')}
           >
             Most Popular
           </Button>
 
           <Button
-            variant="outlined"
-            color={activeColor("view")}
-            onClick={handleSelected("view")}
+            variant='outlined'
+            color={activeColor('view')}
+            onClick={handleSelected('view')}
           >
             View All
           </Button>
@@ -83,7 +84,7 @@ const Section9: FC = () => {
       <Carousel
         visibleSlides={visibleSlides}
         totalSlides={products.length}
-        sx={{ ...carouselStyled, "& .carousel__inner-slide": { pb: 0.5 } }}
+        sx={{ ...carouselStyled, '& .carousel__inner-slide': { pb: 0.5 } }}
       >
         {products.map((product) => (
           <ProductCard20 product={product} key={product.id} />

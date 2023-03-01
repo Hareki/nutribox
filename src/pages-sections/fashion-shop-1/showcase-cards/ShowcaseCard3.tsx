@@ -1,23 +1,24 @@
-import { FC } from "react";
-import { Grid, styled } from "@mui/material";
-import { NavLink2 } from "components/nav-link";
-import BazaarImage from "components/BazaarImage";
-import { H1, Paragraph, Span } from "components/Typography";
+import { Grid, styled } from '@mui/material';
+import { FC } from 'react';
+
+import BazaarImage from 'components/BazaarImage';
+import { NavLink2 } from 'components/nav-link';
+import { H1, Paragraph, Span } from 'components/Typography';
 
 // styled component
 const StyledGrid = styled(Grid)(({ theme }) => ({
   borderRadius: 4,
-  alignItems: "center",
+  alignItems: 'center',
   boxShadow: theme.shadows[4],
-  transition: "all 250ms ease-in-out",
-  backgroundColor: "#fff",
+  transition: 'all 250ms ease-in-out',
+  backgroundColor: '#fff',
   border: `1px solid ${theme.palette.grey[200]}`,
-  "&:hover": { boxShadow: theme.shadows[3], borderColor: "transparent" },
-  [theme.breakpoints.down("sm")]: {
-    "&": { padding: "2rem", paddingBottom: 0 },
+  '&:hover': { boxShadow: theme.shadows[3], borderColor: 'transparent' },
+  [theme.breakpoints.down('sm')]: {
+    '&': { padding: '2rem', paddingBottom: 0 },
   },
-  [theme.breakpoints.between("md", "lg")]: {
-    "& .css-1eqr9bp": { paddingRight: "1rem" },
+  [theme.breakpoints.between('md', 'lg')]: {
+    '& .css-1eqr9bp': { paddingRight: '1rem' },
   },
 }));
 
@@ -26,9 +27,9 @@ const ShowcaseCard3: FC = () => {
     <StyledGrid container>
       <Grid item sm={6} xs={12}>
         <BazaarImage
-          alt="apple-watch-1"
-          src="/assets/images/products/t-shirt2.png"
-          sx={{ mx: "auto", maxWidth: "100%", maxHeight: "225px" }}
+          alt='apple-watch-1'
+          src='/assets/images/products/t-shirt2.png'
+          sx={{ mx: 'auto', maxWidth: '100%', maxHeight: '225px' }}
         />
       </Grid>
 
@@ -45,9 +46,9 @@ const ShowcaseCard3: FC = () => {
         </Paragraph>
 
         <NavLink2
-          url="/shops/scarlett-beauty"
-          title="SHOP NOW"
-          borderColor="grey.100"
+          url='/shops/scarlett-beauty'
+          title='SHOP NOW'
+          borderColor='grey.100'
         />
       </Grid>
     </StyledGrid>

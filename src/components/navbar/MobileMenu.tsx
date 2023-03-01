@@ -1,16 +1,17 @@
-import { FC, Fragment, useState } from "react";
-import { Clear, ExpandMore, Menu } from "@mui/icons-material";
+import { Clear, ExpandMore, Menu } from '@mui/icons-material';
 import {
   Accordion,
   AccordionSummary,
   Box,
   Drawer,
   IconButton,
-} from "@mui/material";
-import { H6 } from "components/Typography";
-import Scrollbar from "components/Scrollbar";
-import { NavLink } from "components/nav-link";
-import navbarNavigations from "data/navbarNavigations";
+} from '@mui/material';
+import { FC, Fragment, useState } from 'react';
+
+import { NavLink } from 'components/nav-link';
+import Scrollbar from 'components/Scrollbar';
+import { H6 } from 'components/Typography';
+import navbarNavigations from 'data/navbarNavigations';
 
 const MobileMenu: FC = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -41,8 +42,8 @@ const MobileMenu: FC = () => {
             elevation={0}
             disableGutters
             sx={{
-              "&:not(:last-child)": { borderBottom: 0 },
-              "&:before": { display: "none" },
+              '&:not(:last-child)': { borderBottom: 0 },
+              '&:before': { display: 'none' },
             }}
           >
             <AccordionSummary
@@ -50,11 +51,11 @@ const MobileMenu: FC = () => {
               sx={{
                 padding: 0,
                 minHeight: 48,
-                boxShadow: "none",
-                "& .Mui-expanded": { color: "primary.main", margin: 0 },
-                "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                boxShadow: 'none',
+                '& .Mui-expanded': { color: 'primary.main', margin: 0 },
+                '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
                   margin: 0,
-                  "& .MuiSvgIcon-root": { color: "primary.main" },
+                  '& .MuiSvgIcon-root': { color: 'primary.main' },
                 },
               }}
             >
@@ -86,32 +87,32 @@ const MobileMenu: FC = () => {
     <Fragment>
       <IconButton
         onClick={() => setOpenDrawer(true)}
-        sx={{ flexShrink: 0, color: "grey.600" }}
+        sx={{ flexShrink: 0, color: 'grey.600' }}
       >
         <Menu />
       </IconButton>
 
       <Drawer
-        anchor="left"
+        anchor='left'
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         sx={{ zIndex: 15001 }}
       >
-        <Box sx={{ width: "100vw", height: "100%", position: "relative" }}>
-          <Scrollbar autoHide={false} sx={{ height: "100vh" }}>
+        <Box sx={{ width: '100vw', height: '100%', position: 'relative' }}>
+          <Scrollbar autoHide={false} sx={{ height: '100vh' }}>
             <Box
               maxWidth={500}
-              margin="auto"
-              position="relative"
-              height="100%"
+              margin='auto'
+              position='relative'
+              height='100%'
               px={5}
               py={8}
             >
               <IconButton
                 onClick={() => setOpenDrawer(false)}
-                sx={{ position: "absolute", right: 30, top: 15 }}
+                sx={{ position: 'absolute', right: 30, top: 15 }}
               >
-                <Clear fontSize="small" />
+                <Clear fontSize='small' />
               </IconButton>
 
               {renderLevels(updateNavigations)}

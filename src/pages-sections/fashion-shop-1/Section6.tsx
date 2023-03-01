@@ -1,9 +1,10 @@
-import { FC } from "react";
-import { Grid } from "@mui/material";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import ProductCard12 from "components/product-cards/ProductCard12";
-import ProductCard3 from "components/product-cards/ProductCard3";
-import Product from "models/Product.model";
+import { Grid } from '@mui/material';
+import { FC } from 'react';
+
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import ProductCard12 from 'components/product-cards/ProductCard12';
+import ProductCard3 from 'components/product-cards/ProductCard3';
+import Product from 'models/Product.model';
 
 // =============================================================
 type Props = { products: Product[] };
@@ -13,7 +14,7 @@ const Section6: FC<Props> = ({ products }) => {
   const trendings = products.slice(1, products.length);
 
   return (
-    <CategorySectionCreator title="Trending Items">
+    <CategorySectionCreator title='Trending Items'>
       <Grid container spacing={4}>
         <Grid item md={3} xs={12}>
           <ProductCard12

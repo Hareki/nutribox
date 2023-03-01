@@ -1,11 +1,12 @@
-import { FC, Fragment, ReactNode, useCallback, useState } from "react";
-import Sticky from "components/Sticky";
-import Topbar from "components/Topbar";
-import { Footer1 } from "components/footer";
-import Header from "components/header/Header";
-import Navbar from "components/navbar/Navbar";
-import { MobileNavigationBar } from "components/mobile-navigation";
-import SearchInputWithCategory from "components/search-box/SearchInputWithCategory";
+import { FC, Fragment, ReactNode, useCallback, useState } from 'react';
+
+import { Footer1 } from 'components/footer';
+import Header from 'components/header/Header';
+import { MobileNavigationBar } from 'components/mobile-navigation';
+import Navbar from 'components/navbar/Navbar';
+import SearchInputWithCategory from 'components/search-box/SearchInputWithCategory';
+import Sticky from 'components/Sticky';
+import Topbar from 'components/Topbar';
 
 /**
  *  Used in:
@@ -46,7 +47,7 @@ const ShopLayout1: FC<ShopLayout1Props> = ({
         <Header isFixed={isFixed} searchInput={<SearchInputWithCategory />} />
       </Sticky>
 
-      <div className="section-after-sticky">
+      <div className='section-after-sticky'>
         {/* NAVIGATION BAR */}
         {showNavbar && <Navbar elevation={0} border={1} />}
 

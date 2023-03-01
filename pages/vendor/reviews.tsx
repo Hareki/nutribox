@@ -1,6 +1,4 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { RemoveRedEye } from "@mui/icons-material";
+import { RemoveRedEye } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -9,28 +7,31 @@ import {
   Stack,
   Table,
   TableContainer,
-} from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import Scrollbar from "components/Scrollbar";
-import { FlexBox } from "components/flex-box";
-import TableHeader from "components/data-table/TableHeader";
-import { H3, Paragraph, Small } from "components/Typography";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import useMuiTable from "hooks/useMuiTable";
+} from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import { FlexBox } from 'components/flex-box';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3, Paragraph, Small } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
 import {
   StyledIconButton,
   StyledTableCell,
   StyledTableRow,
-} from "pages-sections/admin";
-import api from "utils/__api__/vendor";
+} from 'pages-sections/admin';
+import api from 'utils/__api__/vendor';
 
 const tableHeading = [
-  { id: "name", label: "Name", align: "left" },
-  { id: "customer", label: "Customer", align: "left" },
-  { id: "comment", label: "Comment", align: "left" },
-  { id: "rating", label: "Rating", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'name', label: 'Name', align: 'left' },
+  { id: 'customer', label: 'Customer', align: 'left' },
+  { id: 'comment', label: 'Comment', align: 'left' },
+  { id: 'rating', label: 'Rating', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -72,35 +73,35 @@ export default function Reviews({ reviews }: ReviewsProps) {
 
               <TableBody>
                 {filteredList.map((review, index) => (
-                  <StyledTableRow tabIndex={-1} role="checkbox" key={index}>
-                    <StyledTableCell align="left">
-                      <FlexBox alignItems="center" gap={1.5}>
+                  <StyledTableRow tabIndex={-1} role='checkbox' key={index}>
+                    <StyledTableCell align='left'>
+                      <FlexBox alignItems='center' gap={1.5}>
                         <Avatar
                           src={review.image}
-                          sx={{ borderRadius: "8px" }}
+                          sx={{ borderRadius: '8px' }}
                         />
                         <Paragraph>{review.name}</Paragraph>
                       </FlexBox>
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {review.customer}
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       <Small>{review.comment}</Small>
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       <Rating
                         value={review.rating}
-                        size="small"
-                        color="warning"
+                        size='small'
+                        color='warning'
                         readOnly
                       />
                     </StyledTableCell>
 
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <StyledIconButton>
                         <RemoveRedEye />
                       </StyledIconButton>
@@ -112,7 +113,7 @@ export default function Reviews({ reviews }: ReviewsProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(reviews.length / rowsPerPage)}

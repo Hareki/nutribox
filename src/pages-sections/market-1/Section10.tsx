@@ -1,19 +1,20 @@
-import { FC } from "react";
-import Link from "next/link";
-import { Box, Container, Grid, styled } from "@mui/material";
-import LazyImage from "components/LazyImage";
-import BazaarCard from "components/BazaarCard";
-import CategoryIcon from "components/icons/Category";
-import CategorySectionHeader from "components/CategorySectionHeader";
-import Category from "models/Category.model";
+import { Box, Container, Grid, styled } from '@mui/material';
+import Link from 'next/link';
+import { FC } from 'react';
+
+import BazaarCard from 'components/BazaarCard';
+import CategorySectionHeader from 'components/CategorySectionHeader';
+import CategoryIcon from 'components/icons/Category';
+import LazyImage from 'components/LazyImage';
+import Category from 'models/Category.model';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
-  display: "flex",
+  display: 'flex',
   borderRadius: 8,
-  padding: "0.75rem",
-  alignItems: "center",
-  transition: "all 250ms ease-in-out",
-  "&:hover": { boxShadow: theme.shadows[3] },
+  padding: '0.75rem',
+  alignItems: 'center',
+  transition: 'all 250ms ease-in-out',
+  '&:hover': { boxShadow: theme.shadows[3] },
 }));
 
 // ============================================================
@@ -22,11 +23,11 @@ type Props = { categories: Category[] };
 
 const Section10: FC<Props> = ({ categories }) => {
   return (
-    <Container sx={{ mb: "70px" }}>
+    <Container sx={{ mb: '70px' }}>
       <CategorySectionHeader
-        seeMoreLink="#"
-        title="Categories"
-        icon={<CategoryIcon color="primary" />}
+        seeMoreLink='#'
+        title='Categories'
+        icon={<CategoryIcon color='primary' />}
       />
 
       <Grid container spacing={3}>
@@ -38,12 +39,12 @@ const Section10: FC<Props> = ({ categories }) => {
                   <LazyImage
                     width={52}
                     height={52}
-                    alt="fashion"
+                    alt='fashion'
                     src={item.image}
-                    objectFit="contain"
-                    borderRadius="8px"
+                    objectFit='contain'
+                    borderRadius='8px'
                   />
-                  <Box fontWeight="600" ml={1.25}>
+                  <Box fontWeight='600' ml={1.25}>
                     {item.name}
                   </Box>
                 </StyledBazaarCard>

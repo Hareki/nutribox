@@ -1,31 +1,31 @@
-import { Pagination, PaginationProps, styled } from "@mui/material";
+import { Pagination, PaginationProps, styled } from '@mui/material';
 
 export const StyledPagination = styled(Pagination)(({ theme }) => ({
-  "& .MuiPaginationItem-root": {
+  '& .MuiPaginationItem-root': {
     fontSize: 14,
     fontWeight: 500,
     color: theme.palette.grey[900],
     border: `1px solid transparent`,
   },
-  "& .MuiPaginationItem-page:hover": {
+  '& .MuiPaginationItem-page:hover': {
     borderRadius: 20,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     color: theme.palette.info.main,
     border: `1px solid ${theme.palette.info.main}`,
   },
-  "& .MuiPaginationItem-page.Mui-selected": {
+  '& .MuiPaginationItem-page.Mui-selected': {
     borderRadius: 20,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     color: theme.palette.info.main,
     border: `1px solid ${theme.palette.info.main}`,
-    ":hover": { backgroundColor: "transparent" },
+    ':hover': { backgroundColor: 'transparent' },
   },
-  "& .MuiPaginationItem-previousNext": {
+  '& .MuiPaginationItem-previousNext': {
     margin: 10,
     borderRadius: 20,
     color: theme.palette.info.main,
     border: `1px solid ${theme.palette.info.main}`,
-    "&:hover": { backgroundColor: "transparent" },
+    '&:hover': { backgroundColor: 'transparent' },
   },
 }));
 

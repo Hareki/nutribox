@@ -1,24 +1,26 @@
-import { FC } from "react";
-import Image from "next/image";
-import { Box, Container, styled } from "@mui/material";
-import Carousel from "components/carousel/Carousel";
-import { CarouselCard2 } from "components/carousel-cards";
-import { arrowButtonStyle } from "./style";
+import { Box, Container, styled } from '@mui/material';
+import Image from 'next/image';
+import { FC } from 'react';
+
+import { arrowButtonStyle } from './style';
+
+import Carousel from 'components/carousel/Carousel';
+import { CarouselCard2 } from 'components/carousel-cards';
 
 // styled components
 const ContentWrapper = styled(Box)(({ theme }) => ({
-  borderRadius: "8px",
-  position: "relative",
-  backgroundColor: "#F3F6F9",
+  borderRadius: '8px',
+  position: 'relative',
+  backgroundColor: '#F3F6F9',
   boxShadow: theme.shadows[1],
 }));
 
 const BadgeBox = styled(Box)(({ theme }) => ({
   top: 0,
-  right: "3rem",
-  position: "absolute",
-  [theme.breakpoints.down("sm")]: {
-    "&": { width: "85px", right: "1rem" },
+  right: '3rem',
+  position: 'absolute',
+  [theme.breakpoints.down('sm')]: {
+    '&': { width: '85px', right: '1rem' },
   },
 }));
 
@@ -52,10 +54,10 @@ const Section5: FC<Props> = ({ hotDealList }) => {
 
         <BadgeBox>
           <Image
-            src="/assets/images/badges/hot.svg"
+            src='/assets/images/badges/hot.svg'
             width={110}
             height={130}
-            alt="New"
+            alt='New'
           />
         </BadgeBox>
       </ContentWrapper>

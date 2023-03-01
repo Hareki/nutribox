@@ -1,28 +1,23 @@
-import ReviewRow from "./ReviewRow";
-import CustomerRow from "./CustomerRow";
-import RefundRequestRow from "./RefundRequestRow";
-
-import BrandRow from "./brand/BrandRow";
-import BrandForm from "./brand/BrandForm";
-
-import CategoryRow from "./category/CategoryRow";
-import CategoryForm from "./category/CategoryForm";
-import ProductRow from "./products/ProductRow";
-import ProductForm from "./products/ProductForm";
-
-import OrderRow from "./orders/OrderRow";
-import OrderDetails from "./orders/OrderDetails";
-
-import SellerRow from "./sellers/SellerRow";
-import SellerPackageCard from "./sellers/SellerPackageCard";
-
+import BrandForm from './brand/BrandForm';
+import BrandRow from './brand/BrandRow';
+import CategoryForm from './category/CategoryForm';
+import CategoryRow from './category/CategoryRow';
+import CustomerRow from './CustomerRow';
+import OrderDetails from './orders/OrderDetails';
+import OrderRow from './orders/OrderRow';
+import ProductForm from './products/ProductForm';
+import ProductRow from './products/ProductRow';
+import RefundRequestRow from './RefundRequestRow';
+import ReviewRow from './ReviewRow';
+import SellerPackageCard from './sellers/SellerPackageCard';
+import SellerRow from './sellers/SellerRow';
 import {
   StatusWrapper,
   StyledTableRow,
   CategoryWrapper,
   StyledTableCell,
   StyledIconButton,
-} from "./StyledComponents";
+} from './StyledComponents';
 
 export {
   OrderRow,

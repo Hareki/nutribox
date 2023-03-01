@@ -1,10 +1,11 @@
-import { FC } from "react";
-import { Grid } from "@mui/material";
-import BazaarCard from "components/BazaarCard";
-import NewArrival from "components/icons/NewArrival";
-import ProductCard2 from "components/product-cards/ProductCard2";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import Product from "models/Product.model";
+import { Grid } from '@mui/material';
+import { FC } from 'react';
+
+import BazaarCard from 'components/BazaarCard';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import NewArrival from 'components/icons/NewArrival';
+import ProductCard2 from 'components/product-cards/ProductCard2';
+import Product from 'models/Product.model';
 
 // =======================================================
 type Props = { newArrivalsList: Product[] };
@@ -14,8 +15,8 @@ const Section5: FC<Props> = ({ newArrivalsList }) => {
   return (
     <CategorySectionCreator
       icon={<NewArrival />}
-      title="New Arrivals"
-      seeMoreLink="#"
+      title='New Arrivals'
+      seeMoreLink='#'
     >
       <BazaarCard sx={{ p: 2 }}>
         <Grid container spacing={3}>

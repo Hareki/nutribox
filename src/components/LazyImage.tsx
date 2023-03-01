@@ -1,5 +1,3 @@
-import { FC } from "react";
-import NextImage, { ImageProps } from "next/image";
 import {
   styled,
   bgcolor,
@@ -8,7 +6,9 @@ import {
   borderRadius,
   SpacingProps,
   BordersProps,
-} from "@mui/system";
+} from '@mui/system';
+import NextImage, { ImageProps } from 'next/image';
+import { FC } from 'react';
 
 type Props = ImageProps & BordersProps & SpacingProps;
 
