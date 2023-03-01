@@ -1,6 +1,6 @@
 import { Favorite, FavoriteBorder, RemoveRedEye } from '@mui/icons-material';
 import { Box, Button, IconButton, Rating, styled } from '@mui/material';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import Link from 'next/link';
 import { useSnackbar } from 'notistack';
 import { FC, useState } from 'react';

@@ -1,6 +1,6 @@
 import { Clear } from '@mui/icons-material';
 import { Box, Button, Grid, styled } from '@mui/material';
-import NextImage from 'next/image';
+import NextImage from "next/legacy/image";
 import { FC, useState } from 'react';
 
 import DropZone from 'components/DropZone';

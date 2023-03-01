@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Stack, styled } from '@mui/material';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { FC } from 'react';
 
 import { FlexBox } from 'components/flex-box';

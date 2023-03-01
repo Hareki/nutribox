@@ -1,6 +1,6 @@
 import { Instagram } from '@mui/icons-material';
 import { Box, Container, Grid, styled } from '@mui/material';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { FC } from 'react';
 
 import { H2 } from 'components/Typography';
