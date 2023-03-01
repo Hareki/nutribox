@@ -1,27 +1,28 @@
-import Router from "next/router";
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import SearchArea from "components/dashboard/SearchArea";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import { H3 } from "components/Typography";
-import useMuiTable from "hooks/useMuiTable";
-import Scrollbar from "components/Scrollbar";
-import { CategoryRow } from "pages-sections/admin";
-import Category from "models/Category.model";
-import api from "utils/__api__/dashboard";
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import Router from 'next/router';
+import { ReactElement } from 'react';
+
+import SearchArea from 'components/dashboard/SearchArea';
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import Category from 'models/Category.model';
+import { CategoryRow } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
-  { id: "id", label: "ID", align: "left" },
-  { id: "name", label: "Name", align: "left" },
-  { id: "image", label: "Image", align: "left" },
-  { id: "level", label: "Level", align: "left" },
-  { id: "featured", label: "Featured", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'id', label: 'ID', align: 'left' },
+  { id: 'name', label: 'Name', align: 'left' },
+  { id: 'image', label: 'Image', align: 'left' },
+  { id: 'level', label: 'Level', align: 'left' },
+  { id: 'featured', label: 'Featured', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -61,9 +62,9 @@ export default function CategoryList(props: CategoryListProps) {
 
       <SearchArea
         handleSearch={() => {}}
-        buttonText="Add Category"
-        searchPlaceholder="Search Category..."
-        handleBtnClick={() => Router.push("/admin/categories/create")}
+        buttonText='Add Category'
+        searchPlaceholder='Search Category...'
+        handleBtnClick={() => Router.push('/admin/categories/create')}
       />
 
       <Card>
@@ -93,7 +94,7 @@ export default function CategoryList(props: CategoryListProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(categories.length / rowsPerPage)}

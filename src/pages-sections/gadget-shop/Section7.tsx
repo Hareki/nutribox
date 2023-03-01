@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Container, Grid } from "@mui/material";
-import { BlogCard1 } from "components/blog-cards";
-import CategorySectionHeader from "components/CategorySectionHeader";
-import Blog from "models/Blog.model";
+import { Container, Grid } from '@mui/material';
+import { FC } from 'react';
+
+import { BlogCard1 } from 'components/blog-cards';
+import CategorySectionHeader from 'components/CategorySectionHeader';
+import Blog from 'models/Blog.model';
 
 // ================================================
 type Props = { blogLists: Blog[] };
@@ -10,8 +11,8 @@ type Props = { blogLists: Blog[] };
 
 const Section7: FC<Props> = ({ blogLists }) => {
   return (
-    <Container sx={{ mb: "4rem" }}>
-      <CategorySectionHeader title="Get Ideas from our Blog" />
+    <Container sx={{ mb: '4rem' }}>
+      <CategorySectionHeader title='Get Ideas from our Blog' />
 
       <Grid container spacing={3}>
         {blogLists.map((blog, index) => (

@@ -1,34 +1,34 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { RemoveRedEye } from "@mui/icons-material";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import Scrollbar from "components/Scrollbar";
-import { H3 } from "components/Typography";
-import useMuiTable from "hooks/useMuiTable";
+import { RemoveRedEye } from '@mui/icons-material';
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import { currency } from 'lib';
 import {
   StatusWrapper,
   StyledTableRow,
   StyledTableCell,
   StyledIconButton,
-} from "pages-sections/admin";
-
-import api from "utils/__api__/dashboard";
-import { currency } from "lib";
+} from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // table column list
 const tableHeading = [
-  { id: "no", label: "No", align: "left" },
-  { id: "seller", label: "Seller Info", align: "left" },
-  { id: "shopName", label: "Shop Name", align: "left" },
-  { id: "totalAmount", label: "Total Amount", align: "left" },
-  { id: "requestAmount", label: "Req. Amount", align: "left" },
-  { id: "date", label: "Date", align: "left" },
-  { id: "status", label: "Status", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'no', label: 'No', align: 'left' },
+  { id: 'seller', label: 'Seller Info', align: 'left' },
+  { id: 'shopName', label: 'Shop Name', align: 'left' },
+  { id: 'totalAmount', label: 'Total Amount', align: 'left' },
+  { id: 'requestAmount', label: 'Req. Amount', align: 'left' },
+  { id: 'date', label: 'Date', align: 'left' },
+  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -50,7 +50,7 @@ export default function PayoutRequests({ requests }: PayoutRequestsProps) {
     filteredList,
     handleChangePage,
     handleRequestSort,
-  } = useMuiTable({ listData: requests, defaultSort: "no" });
+  } = useMuiTable({ listData: requests, defaultSort: 'no' });
 
   return (
     <Box py={4}>
@@ -72,33 +72,33 @@ export default function PayoutRequests({ requests }: PayoutRequestsProps) {
 
               <TableBody>
                 {filteredList.map((request, index) => (
-                  <StyledTableRow role="checkbox" key={index}>
-                    <StyledTableCell align="left">{request.no}</StyledTableCell>
-                    <StyledTableCell align="left">
+                  <StyledTableRow role='checkbox' key={index}>
+                    <StyledTableCell align='left'>{request.no}</StyledTableCell>
+                    <StyledTableCell align='left'>
                       {request.seller}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {request.shopName}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {currency(request.totalAmount)}
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {currency(request.requestAmount)}
                     </StyledTableCell>
 
-                    <StyledTableCell align="left">
+                    <StyledTableCell align='left'>
                       {request.date}
                     </StyledTableCell>
 
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <StatusWrapper status={request.status}>
                         {request.status}
                       </StatusWrapper>
                     </StyledTableCell>
 
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <StyledIconButton>
                         <RemoveRedEye />
                       </StyledIconButton>
@@ -110,7 +110,7 @@ export default function PayoutRequests({ requests }: PayoutRequestsProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(requests.length / rowsPerPage)}

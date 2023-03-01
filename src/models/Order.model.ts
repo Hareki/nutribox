@@ -1,4 +1,4 @@
-import User from "./User.model";
+import User from './User.model';
 
 type Item = {
   product_img: string;
@@ -18,7 +18,7 @@ interface Order {
   totalPrice: number;
   isDelivered: boolean;
   shippingAddress: string;
-  status: "Pending" | "Processing" | "Delivered" | "Cancelled";
+  status: 'Pending' | 'Processing' | 'Delivered' | 'Cancelled';
 }
 
 export default Order;

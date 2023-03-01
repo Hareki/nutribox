@@ -1,17 +1,18 @@
-import { GetStaticProps, NextPage } from "next";
-import { Container } from "@mui/material";
-import SEO from "components/SEO";
-import Setting from "components/Setting";
-import Newsletter from "components/Newsletter";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import { MobileNavigationBar } from "components/mobile-navigation";
-import Section1 from "pages-sections/grocery3/Section1";
-import Section2 from "pages-sections/grocery3/Section2";
-import Section3 from "pages-sections/grocery3/Section3";
-import Section4 from "pages-sections/grocery3/Section4";
-import api from "utils/__api__/grocery3-shop";
-import Product from "models/Product.model";
-import { MainCarouselItem, OfferCard } from "models/Grocery-3.model";
+import { Container } from '@mui/material';
+import { GetStaticProps, NextPage } from 'next';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import { MobileNavigationBar } from 'components/mobile-navigation';
+import Newsletter from 'components/Newsletter';
+import SEO from 'components/SEO';
+import Setting from 'components/Setting';
+import { MainCarouselItem, OfferCard } from 'models/Grocery-3.model';
+import Product from 'models/Product.model';
+import Section1 from 'pages-sections/grocery3/Section1';
+import Section2 from 'pages-sections/grocery3/Section2';
+import Section3 from 'pages-sections/grocery3/Section3';
+import Section4 from 'pages-sections/grocery3/Section4';
+import api from 'utils/__api__/grocery3-shop';
 
 // ======================================================
 type Grocery3Props = {
@@ -25,7 +26,7 @@ type Grocery3Props = {
 const Grocery3: NextPage<Grocery3Props> = (props) => {
   return (
     <ShopLayout1 showNavbar={false}>
-      <SEO title="Grocery store template v3" />
+      <SEO title='Grocery store template v3' />
       {/* TOP HERO CAROUSEL AREA */}
       <Section1 mainCarouselData={props.mainCarouselData} />
 
@@ -41,7 +42,7 @@ const Grocery3: NextPage<Grocery3Props> = (props) => {
       </Container>
 
       {/* POPUP NEWSLETTER FORM */}
-      <Newsletter image="/assets/images/newsletter/bg-2.png" />
+      <Newsletter image='/assets/images/newsletter/bg-2.png' />
 
       {/* SETTINGS IS USED ONLY FOR DEMO, YOU CAN REMOVE THIS */}
       <Setting />

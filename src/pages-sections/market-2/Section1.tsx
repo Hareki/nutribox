@@ -1,11 +1,12 @@
-import { FC } from "react";
-import { Box, Container, CSSObject, Grid, Stack } from "@mui/material";
-import { NavLink3 } from "components/nav-link";
-import { BannerCard3 } from "components/banners";
-import Carousel from "components/carousel/Carousel";
-import { H4, Paragraph } from "components/Typography";
-import { CarouselCard4 } from "components/carousel-cards";
-import { MainCarouselItem } from "models/Market-2.model";
+import { Box, Container, CSSObject, Grid, Stack } from '@mui/material';
+import { FC } from 'react';
+
+import { BannerCard3 } from 'components/banners';
+import Carousel from 'components/carousel/Carousel';
+import { CarouselCard4 } from 'components/carousel-cards';
+import { NavLink3 } from 'components/nav-link';
+import { H4, Paragraph } from 'components/Typography';
+import { MainCarouselItem } from 'models/Market-2.model';
 
 // ======================================================
 type Props = { carouselData: MainCarouselItem[] };
@@ -14,17 +15,17 @@ type Props = { carouselData: MainCarouselItem[] };
 const Section1: FC<Props> = ({ carouselData }) => {
   // custom css
   const carouselStyles: CSSObject = {
-    overflow: "hidden",
-    borderRadius: "3px",
-    "& .carousel__dot-group": {
+    overflow: 'hidden',
+    borderRadius: '3px',
+    '& .carousel__dot-group': {
       mt: 0,
       left: 0,
       right: 0,
       bottom: 10,
-      position: "absolute",
-      "& div": {
-        borderColor: "dark.main",
-        "::after": { backgroundColor: "dark.main" },
+      position: 'absolute',
+      '& div': {
+        borderColor: 'dark.main',
+        '::after': { backgroundColor: 'dark.main' },
       },
     },
   };
@@ -35,7 +36,7 @@ const Section1: FC<Props> = ({ carouselData }) => {
         <Grid container spacing={2}>
           <Grid item md={9} xs={12}>
             <Carousel
-              spacing="0px"
+              spacing='0px'
               infinite={true}
               showDots={true}
               autoPlay={false}
@@ -47,7 +48,7 @@ const Section1: FC<Props> = ({ carouselData }) => {
               {carouselData.map((item, ind) => (
                 <CarouselCard4
                   key={ind}
-                  mode="light"
+                  mode='light'
                   title={item.title}
                   bgImage={item.imgUrl}
                   discount={item.discount}
@@ -62,11 +63,11 @@ const Section1: FC<Props> = ({ carouselData }) => {
 
           <Grid item md={3} xs={12}>
             <Stack
-              height="100%"
-              direction={{ md: "column", sm: "row", xs: "column" }}
+              height='100%'
+              direction={{ md: 'column', sm: 'row', xs: 'column' }}
               spacing={2}
             >
-              <BannerCard3 flex={1} img="/assets/images/banners/banner-17.jpg">
+              <BannerCard3 flex={1} img='/assets/images/banners/banner-17.jpg'>
                 <Paragraph fontSize={13} letterSpacing={1.2}>
                   NEW ARRIVALS
                 </Paragraph>
@@ -77,10 +78,10 @@ const Section1: FC<Props> = ({ carouselData }) => {
                   SALE 20% OFF
                 </H4>
 
-                <NavLink3 href="#" text="Shop Now" color="dark.main" />
+                <NavLink3 href='#' text='Shop Now' color='dark.main' />
               </BannerCard3>
 
-              <BannerCard3 flex={1} img="/assets/images/banners/banner-16.jpg">
+              <BannerCard3 flex={1} img='/assets/images/banners/banner-16.jpg'>
                 <Paragraph fontSize={13} letterSpacing={1.2}>
                   GAMING 4K
                 </Paragraph>
@@ -91,7 +92,7 @@ const Section1: FC<Props> = ({ carouselData }) => {
                   LAPTOPS
                 </H4>
 
-                <NavLink3 href="#" text="Shop Now" color="dark.main" />
+                <NavLink3 href='#' text='Shop Now' color='dark.main' />
               </BannerCard3>
             </Stack>
           </Grid>

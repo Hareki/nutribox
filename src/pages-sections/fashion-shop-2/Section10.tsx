@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Container, Grid } from "@mui/material";
-import { H3 } from "components/Typography";
-import ProductCard19 from "components/product-cards/ProductCard19";
-import Product from "models/Product.model";
+import { Container, Grid } from '@mui/material';
+import { FC } from 'react';
+
+import ProductCard19 from 'components/product-cards/ProductCard19';
+import { H3 } from 'components/Typography';
+import Product from 'models/Product.model';
 
 // ======================================================================
 type Section8Props = {
@@ -20,10 +21,10 @@ const Section8: FC<Section8Props> = (props) => {
   return (
     <Container sx={{ py: 10 }}>
       <Grid container spacing={3}>
-        <ListBlock title="Sale Products" products={saleProducts} />
-        <ListBlock title="Latest Products" products={latestProducts} />
-        <ListBlock title="Best of the Week" products={bestWeekProducts} />
-        <ListBlock title="Popular Products" products={popularProducts} />
+        <ListBlock title='Sale Products' products={saleProducts} />
+        <ListBlock title='Latest Products' products={latestProducts} />
+        <ListBlock title='Best of the Week' products={bestWeekProducts} />
+        <ListBlock title='Popular Products' products={popularProducts} />
       </Grid>
     </Container>
   );

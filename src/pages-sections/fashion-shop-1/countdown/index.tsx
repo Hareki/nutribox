@@ -1,6 +1,8 @@
-import { FlexBox } from "components/flex-box";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import CountBox from "./CountBox";
+import React, { FC, useCallback, useEffect, useState } from 'react';
+
+import CountBox from './CountBox';
+
+import { FlexBox } from 'components/flex-box';
 
 // component props interface
 interface CountDownProps {
@@ -41,16 +43,16 @@ const Countdown: FC<CountDownProps> = ({ expireDate }) => {
   return (
     <FlexBox
       sx={{
-        display: "flex",
-        width: "90%",
-        justifyContent: "space-between",
-        height: "auto",
+        display: 'flex',
+        width: '90%',
+        justifyContent: 'space-between',
+        height: 'auto',
       }}
     >
-      <CountBox digit={timeLeft.days} title="DAYS" />
-      <CountBox digit={timeLeft.hours} title="HOURS" />
-      <CountBox digit={timeLeft.minutes} title="MINS" />
-      <CountBox digit={timeLeft.seconds} title="SECS" />
+      <CountBox digit={timeLeft.days} title='DAYS' />
+      <CountBox digit={timeLeft.hours} title='HOURS' />
+      <CountBox digit={timeLeft.minutes} title='MINS' />
+      <CountBox digit={timeLeft.seconds} title='SECS' />
     </FlexBox>
   );
 };

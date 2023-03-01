@@ -1,5 +1,4 @@
-import { FC } from "react";
-import { Add, Close, Remove } from "@mui/icons-material";
+import { Add, Close, Remove } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -9,36 +8,38 @@ import {
   Grid,
   IconButton,
   styled,
-} from "@mui/material";
-import { FlexBox } from "components/flex-box";
-import BazaarImage from "components/BazaarImage";
-import BazaarRating from "components/BazaarRating";
-import Carousel from "components/carousel/Carousel";
-import { H1, H2, H3, H6, Paragraph } from "components/Typography";
-import { useAppContext } from "contexts/AppContext";
-import { currency } from "lib";
+} from '@mui/material';
+import { FC } from 'react';
+
+import BazaarImage from 'components/BazaarImage';
+import BazaarRating from 'components/BazaarRating';
+import Carousel from 'components/carousel/Carousel';
+import { FlexBox } from 'components/flex-box';
+import { H1, H2, H3, H6, Paragraph } from 'components/Typography';
+import { useAppContext } from 'contexts/AppContext';
+import { currency } from 'lib';
 
 // styled components
 const ContentWrapper = styled(Box)(({ theme }) => ({
-  "& .carousel:hover": {
-    cursor: "pointer",
-    "& .carousel__back-button": { opacity: 1, left: 10 },
-    "& .carousel__next-button": { opacity: 1, right: 10 },
+  '& .carousel:hover': {
+    cursor: 'pointer',
+    '& .carousel__back-button': { opacity: 1, left: 10 },
+    '& .carousel__next-button': { opacity: 1, right: 10 },
   },
-  "& .carousel__next-button, & .carousel__back-button": {
+  '& .carousel__next-button, & .carousel__back-button': {
     opacity: 0,
-    boxShadow: "none",
-    transition: "all 0.3s",
-    background: "transparent",
+    boxShadow: 'none',
+    transition: 'all 0.3s',
+    background: 'transparent',
     color: theme.palette.primary.main,
-    ":disabled": { color: theme.palette.grey[500] },
-    ":hover": {
+    ':disabled': { color: theme.palette.grey[500] },
+    ':hover': {
       color: theme.palette.primary.main,
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
     },
   },
-  "& .carousel__back-button": { left: 0 },
-  "& .carousel__next-button": { right: 0 },
+  '& .carousel__back-button': { left: 0 },
+  '& .carousel__next-button': { right: 0 },
 }));
 
 // =====================================================
@@ -57,7 +58,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
 
   const handleCartAmountChange = (amount: number) => () => {
     dispatch({
-      type: "CHANGE_CART_AMOUNT",
+      type: 'CHANGE_CART_AMOUNT',
       payload: {
         ...product,
         qty: amount,
@@ -74,7 +75,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
       onClose={handleCloseDialog}
       sx={{ zIndex: 1501 }}
     >
-      <DialogContent sx={{ maxWidth: 900, width: "100%" }}>
+      <DialogContent sx={{ maxWidth: 900, width: '100%' }}>
         <ContentWrapper>
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
@@ -84,9 +85,9 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                     key={index}
                     src={item}
                     sx={{
-                      mx: "auto",
-                      width: "100%",
-                      objectFit: "contain",
+                      mx: 'auto',
+                      width: '100%',
+                      objectFit: 'contain',
                       height: { sm: 400, xs: 250 },
                     }}
                   />
@@ -94,23 +95,23 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
               </Carousel>
             </Grid>
 
-            <Grid item md={6} xs={12} alignSelf="center">
+            <Grid item md={6} xs={12} alignSelf='center'>
               <H2>{product.title}</H2>
 
-              <Paragraph py={1} color="grey.500" fontWeight={600} fontSize={13}>
+              <Paragraph py={1} color='grey.500' fontWeight={600} fontSize={13}>
                 CATEGORY: Cosmetic
               </Paragraph>
 
-              <H1 color="primary.main">{currency(product.price)}</H1>
+              <H1 color='primary.main'>{currency(product.price)}</H1>
 
-              <FlexBox alignItems="center" gap={1}>
+              <FlexBox alignItems='center' gap={1}>
                 <BazaarRating
-                  color="warn"
-                  fontSize="1.25rem"
+                  color='warn'
+                  fontSize='1.25rem'
                   value={4}
                   readOnly
                 />
-                <H6 lineHeight="1">(50)</H6>
+                <H6 lineHeight='1'>(50)</H6>
               </FlexBox>
 
               <Paragraph my={2}>
@@ -123,38 +124,38 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
 
               {!cartItem?.qty ? (
                 <Button
-                  size="large"
-                  color="primary"
-                  variant="contained"
+                  size='large'
+                  color='primary'
+                  variant='contained'
                   onClick={handleCartAmountChange(1)}
                   sx={{ height: 45 }}
                 >
                   Add to Cart
                 </Button>
               ) : (
-                <FlexBox alignItems="center">
+                <FlexBox alignItems='center'>
                   <Button
-                    size="small"
-                    color="primary"
-                    variant="outlined"
-                    sx={{ p: ".6rem", height: 45 }}
+                    size='small'
+                    color='primary'
+                    variant='outlined'
+                    sx={{ p: '.6rem', height: 45 }}
                     onClick={handleCartAmountChange(cartItem?.qty - 1)}
                   >
-                    <Remove fontSize="small" />
+                    <Remove fontSize='small' />
                   </Button>
 
-                  <H3 fontWeight="600" mx={2.5}>
-                    {cartItem?.qty.toString().padStart(2, "0")}
+                  <H3 fontWeight='600' mx={2.5}>
+                    {cartItem?.qty.toString().padStart(2, '0')}
                   </H3>
 
                   <Button
-                    size="small"
-                    color="primary"
-                    variant="outlined"
-                    sx={{ p: ".6rem", height: 45 }}
+                    size='small'
+                    color='primary'
+                    variant='outlined'
+                    sx={{ p: '.6rem', height: 45 }}
                     onClick={handleCartAmountChange(cartItem?.qty + 1)}
                   >
-                    <Add fontSize="small" />
+                    <Add fontSize='small' />
                   </Button>
                 </FlexBox>
               )}
@@ -163,10 +164,10 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
         </ContentWrapper>
 
         <IconButton
-          sx={{ position: "absolute", top: 3, right: 3 }}
+          sx={{ position: 'absolute', top: 3, right: 3 }}
           onClick={handleCloseDialog}
         >
-          <Close fontSize="small" color="secondary" />
+          <Close fontSize='small' color='secondary' />
         </IconButton>
       </DialogContent>
     </Dialog>

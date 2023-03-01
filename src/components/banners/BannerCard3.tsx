@@ -1,26 +1,27 @@
-import { FC, ReactNode } from "react";
-import { Box, BoxProps, styled } from "@mui/material";
-import BazaarImage from "components/BazaarImage";
+import { Box, BoxProps, styled } from '@mui/material';
+import { FC, ReactNode } from 'react';
+
+import BazaarImage from 'components/BazaarImage';
 
 // custom styled components
 const CardWrapper = styled(Box)({
-  overflow: "hidden",
-  position: "relative",
+  overflow: 'hidden',
+  position: 'relative',
 });
 
 const CardContent = styled(Box)(({ theme }) => ({
   top: 0,
   left: 32,
   zIndex: 1,
-  height: "100%",
-  display: "flex",
-  position: "absolute",
-  flexDirection: "column",
-  justifyContent: "center",
-  ...(theme.direction === "rtl" && {
-    left: "auto",
+  height: '100%',
+  display: 'flex',
+  position: 'absolute',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  ...(theme.direction === 'rtl' && {
+    left: 'auto',
     right: 32,
-    textAlign: "right",
+    textAlign: 'right',
   }),
 }));
 
@@ -35,7 +36,7 @@ const BannerCard3: FC<BannerCard1Props & BoxProps> = ({
 }) => {
   return (
     <CardWrapper {...props}>
-      <BazaarImage alt="category" height="100%" width="100%" src={img} />
+      <BazaarImage alt='category' height='100%' width='100%' src={img} />
 
       <CardContent>{children}</CardContent>
     </CardWrapper>

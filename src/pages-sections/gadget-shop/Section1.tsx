@@ -1,12 +1,14 @@
-import { FC } from "react";
-import { Box, Container, Grid } from "@mui/material";
-import Carousel from "components/carousel/Carousel";
-import { CarouselCard3 } from "components/carousel-cards";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import useSettings from "hooks/useSettings";
-import CarouselSection from "./CarouselSection";
-import HomeFourCard1 from "./homeFour-cards/HomeFourCard1";
-import Product from "models/Product.model";
+import { Box, Container, Grid } from '@mui/material';
+import { FC } from 'react';
+
+import CarouselSection from './CarouselSection';
+import HomeFourCard1 from './homeFour-cards/HomeFourCard1';
+
+import Carousel from 'components/carousel/Carousel';
+import { CarouselCard3 } from 'components/carousel-cards';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import useSettings from 'hooks/useSettings';
+import Product from 'models/Product.model';
 
 // =================================================================
 type Props = { topPickList: Product[]; mainCarousel: Product[] };
@@ -16,17 +18,17 @@ const Section1: FC<Props> = ({ topPickList, mainCarousel }) => {
   const { settings } = useSettings();
 
   const arrowButtonStyle = {
-    color: "#7D879C",
-    boxShadow: "none",
-    background: "transparent",
+    color: '#7D879C',
+    boxShadow: 'none',
+    background: 'transparent',
   };
 
   // dynamically change arrow icon
-  const left = settings.direction === "ltr" ? "left" : "right";
-  const right = settings.direction === "ltr" ? "right" : "left";
+  const left = settings.direction === 'ltr' ? 'left' : 'right';
+  const right = settings.direction === 'ltr' ? 'right' : 'left';
 
   return (
-    <Container sx={{ pt: "3rem" }}>
+    <Container sx={{ pt: '3rem' }}>
       <Grid container spacing={5}>
         <Grid item md={5} xs={12}>
           <Carousel
@@ -42,16 +44,16 @@ const Section1: FC<Props> = ({ topPickList, mainCarousel }) => {
         </Grid>
 
         <Grid item md={7} xs={12}>
-          <CategorySectionCreator title="Top Picks">
+          <CategorySectionCreator title='Top Picks'>
             {/* TOP PICK LIST PRODUCT */}
             <CarouselSection productList={topPickList} />
 
             {/* MIDDLE BANNER AREA */}
-            <Box my="3rem">
+            <Box my='3rem'>
               <HomeFourCard1
-                title="Converse Collecitons"
-                body="Get the most exciting deals. Starting at $59"
-                imgUrl="/assets/images/products/red-shoe.png"
+                title='Converse Collecitons'
+                body='Get the most exciting deals. Starting at $59'
+                imgUrl='/assets/images/products/red-shoe.png'
               />
             </Box>
 

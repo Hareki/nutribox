@@ -1,24 +1,25 @@
-import { Done } from "@mui/icons-material";
-import { Box, Container, Grid, styled } from "@mui/material";
-import { FlexBox } from "components/flex-box";
-import LazyImage from "components/LazyImage";
-import { H2, Paragraph, Span } from "components/Typography";
+import { Done } from '@mui/icons-material';
+import { Box, Container, Grid, styled } from '@mui/material';
+
+import { FlexBox } from 'components/flex-box';
+import LazyImage from 'components/LazyImage';
+import { H2, Paragraph, Span } from 'components/Typography';
 
 const ImageBox = styled(Box)(({ theme }) => ({
   padding: 32,
-  display: "flex",
+  display: 'flex',
   borderRadius: 16,
-  justifyContent: "center",
+  justifyContent: 'center',
   backgroundColor: theme.palette.grey[300],
 }));
 
 const model = [
-  "Product model",
-  "User model",
-  "Shop model",
-  "Order model",
-  "Address model",
-  "20+ more models",
+  'Product model',
+  'User model',
+  'Shop model',
+  'Order model',
+  'Address model',
+  '20+ more models',
 ];
 
 const Section5 = () => {
@@ -29,15 +30,15 @@ const Section5 = () => {
           <Grid
             container
             spacing={{ md: 8, xs: 4 }}
-            alignItems="center"
-            justifyContent="center"
+            alignItems='center'
+            justifyContent='center'
           >
             <Grid item lg={4} md={5} sm={6} xs={10}>
               <ImageBox>
                 <LazyImage
                   width={413}
                   height={660}
-                  src="/assets/images/landing/product-model.png"
+                  src='/assets/images/landing/product-model.png'
                 />
               </ImageBox>
             </Grid>
@@ -54,10 +55,10 @@ const Section5 = () => {
                     gap={1}
                     key={item}
                     fontWeight={500}
-                    color="grey.900"
-                    alignItems="center"
+                    color='grey.900'
+                    alignItems='center'
                   >
-                    <Done color="success" />
+                    <Done color='success' />
                     <Span fontSize={16}>{item}</Span>
                   </FlexBox>
                 ))}
@@ -70,15 +71,15 @@ const Section5 = () => {
           <Grid
             container
             spacing={{ md: 8, xs: 4 }}
-            alignItems="center"
-            justifyContent="center"
+            alignItems='center'
+            justifyContent='center'
           >
             <Grid
               item
               lg={4}
               md={5}
               xs={10}
-              textAlign={{ xs: "center", md: "start" }}
+              textAlign={{ xs: 'center', md: 'start' }}
             >
               <H2 fontSize={28}>REST API endpoints</H2>
 
@@ -93,7 +94,7 @@ const Section5 = () => {
                 <LazyImage
                   width={634}
                   height={312}
-                  src="/assets/images/landing/rest-api-endpoint.png"
+                  src='/assets/images/landing/rest-api-endpoint.png'
                 />
               </ImageBox>
             </Grid>

@@ -1,20 +1,21 @@
-import { GetStaticProps, NextPage } from "next";
-import SEO from "components/SEO";
-import { Box } from "@mui/material";
-import Setting from "components/Setting";
-import Newsletter from "components/Newsletter";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import Section1 from "pages-sections/fashion-shop-1/Section1";
-import Section2 from "pages-sections/fashion-shop-1/Section2";
-import Section3 from "pages-sections/fashion-shop-1/Section3";
-import Section4 from "pages-sections/fashion-shop-1/Section4";
-import Section5 from "pages-sections/fashion-shop-1/Section5";
-import Section6 from "pages-sections/fashion-shop-1/Section6";
-import Section7 from "pages-sections/fashion-shop-1/Section7";
-import Section8 from "pages-sections/fashion-shop-1/Section8";
-import api from "utils/__api__/fashion-shop";
-import Service from "models/Service.model";
-import Product from "models/Product.model";
+import { Box } from '@mui/material';
+import { GetStaticProps, NextPage } from 'next';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import Newsletter from 'components/Newsletter';
+import SEO from 'components/SEO';
+import Setting from 'components/Setting';
+import Product from 'models/Product.model';
+import Service from 'models/Service.model';
+import Section1 from 'pages-sections/fashion-shop-1/Section1';
+import Section2 from 'pages-sections/fashion-shop-1/Section2';
+import Section3 from 'pages-sections/fashion-shop-1/Section3';
+import Section4 from 'pages-sections/fashion-shop-1/Section4';
+import Section5 from 'pages-sections/fashion-shop-1/Section5';
+import Section6 from 'pages-sections/fashion-shop-1/Section6';
+import Section7 from 'pages-sections/fashion-shop-1/Section7';
+import Section8 from 'pages-sections/fashion-shop-1/Section8';
+import api from 'utils/__api__/fashion-shop';
 
 // =======================================================
 type FashionShop1Props = {
@@ -30,8 +31,8 @@ type FashionShop1Props = {
 const FashionShop1: NextPage<FashionShop1Props> = (props) => {
   return (
     <ShopLayout1 showTopbar={false}>
-      <SEO title="Fashion shop template v1" />
-      <Box sx={{ backgroundColor: "#ffffff", overFlow: "hidden" }}>
+      <SEO title='Fashion shop template v1' />
+      <Box sx={{ backgroundColor: '#ffffff', overFlow: 'hidden' }}>
         {/* HERO SECTION AND SERCIVE CARDS */}
         <Section1 />
 

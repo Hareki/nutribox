@@ -1,49 +1,50 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Container, styled } from "@mui/material";
-import clsx from "clsx";
-import { FC, ReactNode, useCallback, useEffect, useState } from "react";
-import { layoutConstant } from "utils/constants";
+import { Box, Container, styled } from '@mui/material';
+import clsx from 'clsx';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+
+import { layoutConstant } from 'utils/constants';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
   paddingTop: 24,
-  display: "flex",
-  position: "relative",
-  ".sidenav": {
+  display: 'flex',
+  position: 'relative',
+  '.sidenav': {
     top: 0,
     bottom: 0,
-    position: "relative",
+    position: 'relative',
     width: layoutConstant.grocerySidenavWidth,
     minWidth: layoutConstant.grocerySidenavWidth,
     height: `calc(100vh - ${layoutConstant.headerHeight}px)`,
-    "& .MuiPaper-root": { borderRadius: 5 },
+    '& .MuiPaper-root': { borderRadius: 5 },
   },
-  ".fixed": {
-    position: "fixed",
-    scrollBehavior: "unset",
+  '.fixed': {
+    position: 'fixed',
+    scrollBehavior: 'unset',
     top: layoutConstant.headerHeight,
   },
 
-  ".pageContent": {
-    left: "unset",
-    position: "relative",
-    marginLeft: "1.75rem",
+  '.pageContent': {
+    left: 'unset',
+    position: 'relative',
+    marginLeft: '1.75rem',
     width: `calc(100% - 2rem - ${layoutConstant.grocerySidenavWidth}px)`,
   },
 
-  ".pageContentShifted": { left: layoutConstant.grocerySidenavWidth },
+  '.pageContentShifted': { left: layoutConstant.grocerySidenavWidth },
 
-  ".section1": { marginBottom: "3rem", marginTop: "1.75rem" },
-  "@keyframes slideDown": {
-    "0%": { opacity: 0, transform: "translateY(0)" },
-    "100%": { opacity: 1, transform: "translateY(0)" },
+  '.section1': { marginBottom: '3rem', marginTop: '1.75rem' },
+  '@keyframes slideDown': {
+    '0%': { opacity: 0, transform: 'translateY(0)' },
+    '100%': { opacity: 1, transform: 'translateY(0)' },
   },
-  [theme.breakpoints.down("md")]: {
-    ".sidenav": { display: "none" },
-    ".pageContent": {
-      left: "0px !important",
-      width: "100% !important",
-      marginLeft: "auto !important",
-      marginRight: "auto !important",
+  [theme.breakpoints.down('md')]: {
+    '.sidenav': { display: 'none' },
+    '.pageContent': {
+      left: '0px !important',
+      width: '100% !important',
+      marginLeft: 'auto !important',
+      marginRight: 'auto !important',
     },
   },
 }));
@@ -71,8 +72,8 @@ const SidenavContainer: FC<SidenavContainerProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", scrollListener);
-    return () => window.removeEventListener("scroll", scrollListener);
+    window.addEventListener('scroll', scrollListener);
+    return () => window.removeEventListener('scroll', scrollListener);
   }, []);
 
   return (

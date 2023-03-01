@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { IconButton } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { FC } from 'react';
 
 // ===============================================================
 type EyeToggleButtonProps = { show: boolean; click: () => void };
@@ -8,11 +8,11 @@ type EyeToggleButtonProps = { show: boolean; click: () => void };
 
 const EyeToggleButton: FC<EyeToggleButtonProps> = ({ show, click }) => {
   return (
-    <IconButton size="small" type="button" onClick={click}>
+    <IconButton size='small' type='button' onClick={click}>
       {show ? (
-        <Visibility className="passwordEye" fontSize="small" />
+        <Visibility className='passwordEye' fontSize='small' />
       ) : (
-        <VisibilityOff className="passwordEye" fontSize="small" />
+        <VisibilityOff className='passwordEye' fontSize='small' />
       )}
     </IconButton>
   );

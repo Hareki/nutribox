@@ -1,5 +1,6 @@
-import { H3, Span } from "components/Typography";
-import React, { FC } from "react";
+import React, { FC } from 'react';
+
+import { H3, Span } from 'components/Typography';
 
 // component props interface
 interface CountBoxProps {
@@ -10,8 +11,8 @@ interface CountBoxProps {
 const CountBox: FC<CountBoxProps> = ({ digit, title }) => {
   return (
     <H3>
-      {digit}{" "}
-      <Span color="grey.600" fontSize="14px" fontWeight="600">
+      {digit}{' '}
+      <Span color='grey.600' fontSize='14px' fontWeight='600'>
         {title}
       </Span>
     </H3>
@@ -22,5 +23,5 @@ export default CountBox;
 
 CountBox.defaultProps = {
   digit: 365,
-  title: "DAYS",
+  title: 'DAYS',
 };

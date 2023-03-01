@@ -1,19 +1,20 @@
-import { FC, ReactNode } from "react";
-import { BoxProps, styled, SxProps } from "@mui/material";
-import { ChevronRight } from "@mui/icons-material";
-import { FlexBox } from "components/flex-box";
+import { ChevronRight } from '@mui/icons-material';
+import { BoxProps, styled, SxProps } from '@mui/material';
+import { FC, ReactNode } from 'react';
+
+import { FlexBox } from 'components/flex-box';
 
 // styled components
 const StyledFlexBox = styled<FC<AccordionHeaderProps>>(
-  ({ children, open, ...rest }) => <FlexBox {...rest}>{children}</FlexBox>
+  ({ children, open, ...rest }) => <FlexBox {...rest}>{children}</FlexBox>,
 )<AccordionHeaderProps>(({ open, theme }) => ({
-  alignItems: "center",
-  justifyContent: "space-between",
-  ".caretIcon": {
-    transition: "transform 250ms ease-in-out",
-    ...(theme.direction === "rtl"
-      ? { transform: open ? "rotate(90deg)" : "rotate(180deg)" }
-      : { transform: open ? "rotate(90deg)" : "rotate(0deg)" }),
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  '.caretIcon': {
+    transition: 'transform 250ms ease-in-out',
+    ...(theme.direction === 'rtl'
+      ? { transform: open ? 'rotate(90deg)' : 'rotate(180deg)' }
+      : { transform: open ? 'rotate(90deg)' : 'rotate(0deg)' }),
   },
 }));
 
@@ -32,15 +33,15 @@ const AccordionHeader: FC<AccordionHeaderProps & BoxProps> = (props) => {
   return (
     <StyledFlexBox open={open} sx={sx} {...others}>
       {children}
-      {showIcon && <ChevronRight className="caretIcon" fontSize="small" />}
+      {showIcon && <ChevronRight className='caretIcon' fontSize='small' />}
     </StyledFlexBox>
   );
 };
 
 //  set default props data
 AccordionHeader.defaultProps = {
-  px: "1rem",
-  py: "0.5rem",
+  px: '1rem',
+  py: '0.5rem',
   showIcon: true,
 };
 

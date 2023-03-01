@@ -1,21 +1,22 @@
-import { FC, useState } from "react";
-import { useRouter } from "next/router";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { Box, Container, styled, Tab, Tabs } from "@mui/material";
-import { H2 } from "components/Typography";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import ProductIntro from "components/products/ProductIntro";
-import ProductReview from "components/products/ProductReview";
-import AvailableShops from "components/products/AvailableShops";
-import RelatedProducts from "components/products/RelatedProducts";
-import FrequentlyBought from "components/products/FrequentlyBought";
-import ProductDescription from "components/products/ProductDescription";
+import { Box, Container, styled, Tab, Tabs } from '@mui/material';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import { FC, useState } from 'react';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import AvailableShops from 'components/products/AvailableShops';
+import FrequentlyBought from 'components/products/FrequentlyBought';
+import ProductDescription from 'components/products/ProductDescription';
+import ProductIntro from 'components/products/ProductIntro';
+import ProductReview from 'components/products/ProductReview';
+import RelatedProducts from 'components/products/RelatedProducts';
+import { H2 } from 'components/Typography';
+import Product from 'models/Product.model';
+import api from 'utils/__api__/products';
 import {
   getFrequentlyBought,
   getRelatedProducts,
-} from "utils/__api__/related-products";
-import Product from "models/Product.model";
-import api from "utils/__api__/products";
+} from 'utils/__api__/related-products';
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -23,10 +24,10 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   marginTop: 80,
   marginBottom: 24,
   borderBottom: `1px solid ${theme.palette.text.disabled}`,
-  "& .inner-tab": {
+  '& .inner-tab': {
     minHeight: 40,
     fontWeight: 600,
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
 }));
 
@@ -59,13 +60,13 @@ const ProductDetails: FC<ProductDetailsProps> = (props) => {
 
         {/* PRODUCT DESCRIPTION AND REVIEW */}
         <StyledTabs
-          textColor="primary"
+          textColor='primary'
           value={selectedOption}
-          indicatorColor="primary"
+          indicatorColor='primary'
           onChange={handleOptionClick}
         >
-          <Tab className="inner-tab" label="Description" />
-          <Tab className="inner-tab" label="Review (3)" />
+          <Tab className='inner-tab' label='Description' />
+          <Tab className='inner-tab' label='Review (3)' />
         </StyledTabs>
 
         <Box mb={6}>
@@ -89,8 +90,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await api.getSlugs();
 
   return {
-    paths: paths, //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    paths: paths, // indicates that no page needs be created at build time
+    fallback: 'blocking', // indicates the type of fallback
   };
 };
 

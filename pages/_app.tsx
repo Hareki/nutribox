@@ -1,20 +1,22 @@
-import { Fragment, ReactElement, ReactNode } from "react";
-import Head from "next/head";
-import { NextPage } from "next";
-import Router from "next/router";
-import { AppProps } from "next/app";
-import nProgress from "nprogress";
-import { appWithTranslation } from "next-i18next";
-import RTL from "components/RTL";
-import MuiTheme from "theme/MuiTheme";
-import OpenGraphTags from "utils/OpenGraphTags";
-import { AppProvider } from "contexts/AppContext";
-import SettingsProvider from "contexts/SettingContext";
-import SnackbarProvider from "components/SnackbarProvider";
-import nextI18NextConfig from "../next-i18next.config";
-import "nprogress/nprogress.css";
-import "simplebar/dist/simplebar.min.css";
-import "../src/__server__";
+import { NextPage } from 'next';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import Router from 'next/router';
+import { appWithTranslation } from 'next-i18next';
+import nProgress from 'nprogress';
+import { Fragment, ReactElement, ReactNode } from 'react';
+
+import nextI18NextConfig from '../next-i18next.config';
+
+import RTL from 'components/RTL';
+import SnackbarProvider from 'components/SnackbarProvider';
+import { AppProvider } from 'contexts/AppContext';
+import SettingsProvider from 'contexts/SettingContext';
+import MuiTheme from 'theme/MuiTheme';
+import OpenGraphTags from 'utils/OpenGraphTags';
+import 'nprogress/nprogress.css';
+import 'simplebar/dist/simplebar.min.css';
+import '../src/__server__';
 
 type MyAppProps = AppProps & {
   Component: NextPage & {
@@ -22,10 +24,10 @@ type MyAppProps = AppProps & {
   };
 };
 
-//Binding events.
-Router.events.on("routeChangeStart", () => nProgress.start());
-Router.events.on("routeChangeComplete", () => nProgress.done());
-Router.events.on("routeChangeError", () => nProgress.done());
+// Binding events.
+Router.events.on('routeChangeStart', () => nProgress.start());
+Router.events.on('routeChangeComplete', () => nProgress.done());
+Router.events.on('routeChangeError', () => nProgress.done());
 // small change
 nProgress.configure({ showSpinner: false });
 
@@ -36,13 +38,13 @@ const App = ({ Component, pageProps }: MyAppProps) => {
   return (
     <Fragment>
       <Head>
-        <meta charSet="utf-8" />
+        <meta charSet='utf-8' />
         <meta
-          name="description"
-          content="React Next.js ecommerce template. Build SEO friendly Online store, delivery app and Multivendor store"
+          name='description'
+          content='React Next.js ecommerce template. Build SEO friendly Online store, delivery app and Multivendor store'
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <meta httpEquiv='Content-Type' content='text/html; charset=utf-8' />
         <OpenGraphTags />
         <title>Bazaar - Next.js Ecommerce Template</title>
       </Head>

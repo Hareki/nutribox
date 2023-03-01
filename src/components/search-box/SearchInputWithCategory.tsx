@@ -1,4 +1,7 @@
-import Link from "next/link";
+import { KeyboardArrowDownOutlined } from '@mui/icons-material';
+import { Box, MenuItem, TextField, styled, useTheme } from '@mui/material';
+import TouchRipple from '@mui/material/ButtonBase';
+import Link from 'next/link';
 import {
   ChangeEvent,
   FC,
@@ -6,30 +9,29 @@ import {
   useRef,
   useState,
   useTransition,
-} from "react";
-import { Box, MenuItem, TextField, styled, useTheme } from "@mui/material";
-import { KeyboardArrowDownOutlined } from "@mui/icons-material";
-import TouchRipple from "@mui/material/ButtonBase";
-import BazaarMenu from "components/BazaarMenu";
-import { FlexBox } from "components/flex-box";
-import { SearchOutlinedIcon, SearchResultCard } from "./styled";
-import api from "utils/__api__/products";
+} from 'react';
+
+import { SearchOutlinedIcon, SearchResultCard } from './styled';
+
+import BazaarMenu from 'components/BazaarMenu';
+import { FlexBox } from 'components/flex-box';
+import api from 'utils/__api__/products';
 
 const DropDownHandler = styled(FlexBox)(({ theme }) => ({
-  whiteSpace: "pre",
+  whiteSpace: 'pre',
   borderTopRightRadius: 300,
   borderBottomRightRadius: 300,
   borderLeft: `1px solid ${theme.palette.text.disabled}`,
-  [theme.breakpoints.down("xs")]: { display: "none" },
+  [theme.breakpoints.down('xs')]: { display: 'none' },
 }));
 
 const SearchInputWithCategory: FC = () => {
   const parentRef = useRef();
   const { breakpoints } = useTheme();
   const [_, startTransition] = useTransition();
-  const [category, setCategory] = useState("*");
+  const [category, setCategory] = useState('*');
   const [resultList, setResultList] = useState<string[]>([]);
-  const [categoryTitle, setCategoryTitle] = useState("All Categories");
+  const [categoryTitle, setCategoryTitle] = useState('All Categories');
 
   // HANDLE CHANGE THE CATEGORY
   const handleCategoryChange =
@@ -49,7 +51,7 @@ const SearchInputWithCategory: FC = () => {
       const value = e.target?.value;
 
       if (!value) setResultList([]);
-      else if (value && category !== "*") getProducts(value, category);
+      else if (value && category !== '*') getProducts(value, category);
       else getProducts(value);
     });
   };
@@ -57,27 +59,27 @@ const SearchInputWithCategory: FC = () => {
   const handleDocumentClick = () => setResultList([]);
 
   useEffect(() => {
-    window.addEventListener("click", handleDocumentClick);
-    return () => window.removeEventListener("click", null);
+    window.addEventListener('click', handleDocumentClick);
+    return () => window.removeEventListener('click', null);
   }, []);
 
   // CATEGORY MENU DROPDOWN
   const categoryDropdown = (
     <BazaarMenu
-      direction="left"
-      sx={{ zIndex: breakpoints.down("md") ? 99999 : 1502 }}
+      direction='left'
+      sx={{ zIndex: breakpoints.down('md') ? 99999 : 1502 }}
       handler={
         <DropDownHandler
           px={3}
           gap={0.5}
-          height="100%"
-          color="grey.700"
-          bgcolor="grey.100"
-          alignItems="center"
+          height='100%'
+          color='grey.700'
+          bgcolor='grey.100'
+          alignItems='center'
           component={TouchRipple}
         >
           {categoryTitle}
-          <KeyboardArrowDownOutlined fontSize="small" color="inherit" />
+          <KeyboardArrowDownOutlined fontSize='small' color='inherit' />
         </DropDownHandler>
       }
     >
@@ -91,30 +93,30 @@ const SearchInputWithCategory: FC = () => {
 
   return (
     <Box
-      position="relative"
-      flex="1 1 0"
-      maxWidth="670px"
-      mx="auto"
+      position='relative'
+      flex='1 1 0'
+      maxWidth='670px'
+      mx='auto'
       {...{ ref: parentRef }}
     >
       <TextField
         fullWidth
-        variant="outlined"
-        placeholder="Searching for..."
+        variant='outlined'
+        placeholder='Searching for...'
         onChange={handleSearch}
         InputProps={{
           sx: {
             height: 44,
             paddingRight: 0,
             borderRadius: 300,
-            color: "grey.700",
-            overflow: "hidden",
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.main",
+            color: 'grey.700',
+            overflow: 'hidden',
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'primary.main',
             },
           },
           endAdornment: categoryDropdown,
-          startAdornment: <SearchOutlinedIcon fontSize="small" />,
+          startAdornment: <SearchOutlinedIcon fontSize='small' />,
         }}
       />
 
@@ -132,14 +134,14 @@ const SearchInputWithCategory: FC = () => {
 };
 
 const categories = [
-  { title: "All Categories", value: "*" },
-  { title: "Car", value: "car" },
-  { title: "Clothes", value: "clothes" },
-  { title: "Electronics", value: "electronics" },
-  { title: "Laptop", value: "laptop" },
-  { title: "Desktop", value: "desktop" },
-  { title: "Camera", value: "camera" },
-  { title: "Toys", value: "toys" },
+  { title: 'All Categories', value: '*' },
+  { title: 'Car', value: 'car' },
+  { title: 'Clothes', value: 'clothes' },
+  { title: 'Electronics', value: 'electronics' },
+  { title: 'Laptop', value: 'laptop' },
+  { title: 'Desktop', value: 'desktop' },
+  { title: 'Camera', value: 'camera' },
+  { title: 'Toys', value: 'toys' },
 ];
 
 export default SearchInputWithCategory;

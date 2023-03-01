@@ -1,19 +1,20 @@
-import { FC, useEffect, useState } from "react";
-import { Box, styled, useTheme } from "@mui/material";
-import { H1 } from "components/Typography";
-import Carousel from "components/carousel/Carousel";
-import ProductCard10 from "components/product-cards/ProductCard10";
-import useWindowSize from "hooks/useWindowSize";
-import Product from "models/Product.model";
+import { Box, styled, useTheme } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import ProductCard10 from 'components/product-cards/ProductCard10';
+import { H1 } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // styled components
 const TitleBox = styled(Box)(({ theme }) => ({
-  textAlign: "center",
-  "& h1": { fontSize: 40, fontWeight: 600, marginBottom: "10px" },
-  "& div": {
+  textAlign: 'center',
+  '& h1': { fontSize: 40, fontWeight: 600, marginBottom: '10px' },
+  '& div': {
     width: 200,
-    height: "2px",
-    margin: "auto",
+    height: '2px',
+    margin: 'auto',
     background: theme.palette.primary.main,
   },
 }));
@@ -46,11 +47,11 @@ const Section3: FC<Props> = ({ products }) => {
         visibleSlides={visibleSlides}
         totalSlides={products.length}
         sx={{
-          "& #backArrowButton, #backForwardButton": {
+          '& #backArrowButton, #backForwardButton': {
             width: 40,
             height: 40,
             borderRadius: 0,
-            background: "#fff",
+            background: '#fff',
             boxShadow: theme.shadows[2],
             color: theme.palette.primary.main,
           },

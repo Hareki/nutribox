@@ -1,4 +1,4 @@
-import Product from "./Product.model";
+import Product from './Product.model';
 
 interface Shop {
   id: string;

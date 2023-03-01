@@ -1,15 +1,17 @@
-import { FC } from "react";
-import { Button, Card } from "@mui/material";
-import { H5 } from "components/Typography";
-import { FlexBetween } from "components/flex-box";
-import DataListTable from "./table";
+import { Button, Card } from '@mui/material';
+import { FC } from 'react';
+
+import DataListTable from './table';
+
+import { FlexBetween } from 'components/flex-box';
+import { H5 } from 'components/Typography';
 
 // table column list
 const tableHeading = [
-  { id: "orderId", label: "Order ID", alignRight: false },
-  { id: "product", label: "Product", alignRight: false },
-  { id: "payment", label: "Payment", alignRight: false },
-  { id: "amount", label: "Amount", alignCenter: true },
+  { id: 'orderId', label: 'Order ID', alignRight: false },
+  { id: 'product', label: 'Product', alignRight: false },
+  { id: 'payment', label: 'Payment', alignRight: false },
+  { id: 'amount', label: 'Amount', alignCenter: true },
 ];
 
 // ===================================================
@@ -22,7 +24,7 @@ const RecentPurchase: FC<RecentPurchaseProps> = ({ data }) => {
       <FlexBetween px={3} py={2.5}>
         <H5>Recent Purchases</H5>
 
-        <Button size="small" color="info" variant="outlined">
+        <Button size='small' color='info' variant='outlined'>
           All Orders
         </Button>
       </FlexBetween>
@@ -30,7 +32,7 @@ const RecentPurchase: FC<RecentPurchaseProps> = ({ data }) => {
       <DataListTable
         dataList={data}
         tableHeading={tableHeading}
-        type="RECENT_PURCHASE"
+        type='RECENT_PURCHASE'
       />
     </Card>
   );

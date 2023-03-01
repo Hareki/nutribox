@@ -1,11 +1,12 @@
-import { FC, Fragment, useEffect, useState } from "react";
-import { Container } from "@mui/material";
-import { H2 } from "components/Typography";
-import useWindowSize from "hooks/useWindowSize";
-import Carousel from "components/carousel/Carousel";
-import { carouselStyled } from "components/carousel/styles";
-import ProductCard18 from "components/product-cards/ProductCard18";
-import Product from "models/Product.model";
+import { Container } from '@mui/material';
+import { FC, Fragment, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import { carouselStyled } from 'components/carousel/styles';
+import ProductCard18 from 'components/product-cards/ProductCard18';
+import { H2 } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // ======================================================================
 type Section6Props = { products: Product[] };
@@ -27,7 +28,7 @@ const Section6: FC<Section6Props> = ({ products }) => {
     <Fragment>
       {/* FEATURED PRODUCTS AREA */}
       <Container sx={{ mt: 8 }}>
-        <H2 textAlign="center" mb={4}>
+        <H2 textAlign='center' mb={4}>
           Featured Products
         </H2>
 

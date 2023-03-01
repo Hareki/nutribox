@@ -1,11 +1,12 @@
-import { GetStaticProps, NextPage } from "next";
-import { Container, Grid, Pagination } from "@mui/material";
-import { H2, Span } from "components/Typography";
-import ShopCard1 from "components/shop/ShopCard1";
-import { FlexBetween } from "components/flex-box";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import api from "utils/__api__/shop";
-import Shop from "models/Shop.model";
+import { Container, Grid, Pagination } from '@mui/material';
+import { GetStaticProps, NextPage } from 'next';
+
+import { FlexBetween } from 'components/flex-box';
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import ShopCard1 from 'components/shop/ShopCard1';
+import { H2, Span } from 'components/Typography';
+import Shop from 'models/Shop.model';
+import api from 'utils/__api__/shop';
 
 // =============================================
 type ShopListProps = { shopList: Shop[] };
@@ -35,12 +36,12 @@ const ShopList: NextPage<ShopListProps> = ({ shopList }) => {
         </Grid>
 
         {/* PAGINTAION AREA */}
-        <FlexBetween flexWrap="wrap" mt={4}>
-          <Span color="grey.600">Showing 1-9 of 300 Shops</Span>
+        <FlexBetween flexWrap='wrap' mt={4}>
+          <Span color='grey.600'>Showing 1-9 of 300 Shops</Span>
           <Pagination
             count={shopList.length}
-            variant="outlined"
-            color="primary"
+            variant='outlined'
+            color='primary'
           />
         </FlexBetween>
       </Container>

@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Box, Grid } from "@mui/material";
-import ProductCard1 from "components/product-cards/ProductCard1";
-import { H3 } from "components/Typography";
-import Product from "models/Product.model";
+import { Box, Grid } from '@mui/material';
+import { FC } from 'react';
+
+import ProductCard1 from 'components/product-cards/ProductCard1';
+import { H3 } from 'components/Typography';
+import Product from 'models/Product.model';
 
 // ===================================================
 type RelatedProductsProps = { productsData: Product[] };

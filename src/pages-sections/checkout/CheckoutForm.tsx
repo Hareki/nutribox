@@ -1,20 +1,21 @@
-import Link from "next/link";
-import { FC, useState } from "react";
-import { useRouter } from "next/router";
-import { Button, Checkbox, Grid, TextField, Typography } from "@mui/material";
-import * as yup from "yup";
-import { Formik } from "formik";
-import Card1 from "components/Card1";
-import Autocomplete from "@mui/material/Autocomplete";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import countryList from "data/countryList";
+import { Button, Checkbox, Grid, TextField, Typography } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { Formik } from 'formik';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { FC, useState } from 'react';
+import * as yup from 'yup';
+
+import Card1 from 'components/Card1';
+import countryList from 'data/countryList';
 
 const CheckoutForm: FC = () => {
   const router = useRouter();
   const [sameAsShipping, setSameAsShipping] = useState(false);
 
   const handleFormSubmit = async (values: any) => {
-    router.push("/payment");
+    router.push('/payment');
   };
 
   const handleCheckboxChange =
@@ -23,8 +24,8 @@ const CheckoutForm: FC = () => {
       const checked = e.currentTarget.checked;
 
       setSameAsShipping(checked);
-      setFieldValue("same_as_shipping", checked);
-      setFieldValue("billing_name", checked ? values.shipping_name : "");
+      setFieldValue('same_as_shipping', checked);
+      setFieldValue('billing_name', checked ? values.shipping_name : '');
     };
 
   return (
@@ -44,7 +45,7 @@ const CheckoutForm: FC = () => {
       }) => (
         <form onSubmit={handleSubmit}>
           <Card1 sx={{ mb: 4 }}>
-            <Typography fontWeight="600" mb={2}>
+            <Typography fontWeight='600' mb={2}>
               Shipping Address
             </Typography>
 
@@ -53,9 +54,9 @@ const CheckoutForm: FC = () => {
                 <TextField
                   fullWidth
                   sx={{ mb: 2 }}
-                  label="Full Name"
+                  label='Full Name'
                   onBlur={handleBlur}
-                  name="shipping_name"
+                  name='shipping_name'
                   onChange={handleChange}
                   value={values.shipping_name}
                   error={!!touched.shipping_name && !!errors.shipping_name}
@@ -67,9 +68,9 @@ const CheckoutForm: FC = () => {
                   fullWidth
                   sx={{ mb: 2 }}
                   onBlur={handleBlur}
-                  label="Phone Number"
+                  label='Phone Number'
                   onChange={handleChange}
-                  name="shipping_contact"
+                  name='shipping_contact'
                   value={values.shipping_contact}
                   error={
                     !!touched.shipping_contact && !!errors.shipping_contact
@@ -81,10 +82,10 @@ const CheckoutForm: FC = () => {
                 />
                 <TextField
                   fullWidth
-                  type="number"
+                  type='number'
                   sx={{ mb: 2 }}
-                  label="Zip Code"
-                  name="shipping_zip"
+                  label='Zip Code'
+                  name='shipping_zip'
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.shipping_zip}
@@ -95,10 +96,10 @@ const CheckoutForm: FC = () => {
                 />
                 <TextField
                   fullWidth
-                  label="Address 1"
+                  label='Address 1'
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  name="shipping_address1"
+                  name='shipping_address1'
                   value={values.shipping_address1}
                   error={
                     !!touched.shipping_address1 && !!errors.shipping_address1
@@ -113,11 +114,11 @@ const CheckoutForm: FC = () => {
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  type="email"
+                  type='email'
                   sx={{ mb: 2 }}
                   onBlur={handleBlur}
-                  name="shipping_email"
-                  label="Email Address"
+                  name='shipping_email'
+                  label='Email Address'
                   onChange={handleChange}
                   value={values.shipping_email}
                   error={!!touched.shipping_email && !!errors.shipping_email}
@@ -128,10 +129,10 @@ const CheckoutForm: FC = () => {
                 <TextField
                   fullWidth
                   sx={{ mb: 2 }}
-                  label="Company"
+                  label='Company'
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  name="shipping_company"
+                  name='shipping_company'
                   value={values.shipping_company}
                   error={
                     !!touched.shipping_company && !!errors.shipping_company
@@ -149,13 +150,13 @@ const CheckoutForm: FC = () => {
                   value={values.shipping_country}
                   getOptionLabel={(option) => option.label}
                   onChange={(_, value) =>
-                    setFieldValue("shipping_country", value)
+                    setFieldValue('shipping_country', value)
                   }
                   renderInput={(params) => (
                     <TextField
-                      label="Country"
-                      variant="outlined"
-                      placeholder="Select Country"
+                      label='Country'
+                      variant='outlined'
+                      placeholder='Select Country'
                       error={
                         !!touched.shipping_country && !!errors.shipping_country
                       }
@@ -170,10 +171,10 @@ const CheckoutForm: FC = () => {
 
                 <TextField
                   fullWidth
-                  label="Address 2"
+                  label='Address 2'
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  name="shipping_address2"
+                  name='shipping_address2'
                   value={values.shipping_address2}
                   error={
                     !!touched.shipping_address2 && !!errors.shipping_address2
@@ -188,18 +189,18 @@ const CheckoutForm: FC = () => {
           </Card1>
 
           <Card1 sx={{ mb: 4 }}>
-            <Typography fontWeight="600" mb={2}>
+            <Typography fontWeight='600' mb={2}>
               Billing Address
             </Typography>
 
             <FormControlLabel
-              label="Same as shipping address"
-              control={<Checkbox size="small" color="secondary" />}
+              label='Same as shipping address'
+              control={<Checkbox size='small' color='secondary' />}
               onChange={handleCheckboxChange(values, setFieldValue)}
               sx={{
                 zIndex: 1,
-                position: "relative",
-                mb: sameAsShipping ? "" : "1rem",
+                position: 'relative',
+                mb: sameAsShipping ? '' : '1rem',
               }}
             />
 
@@ -209,8 +210,8 @@ const CheckoutForm: FC = () => {
                   <TextField
                     fullWidth
                     sx={{ mb: 2 }}
-                    label="Full Name"
-                    name="billing_name"
+                    label='Full Name'
+                    name='billing_name'
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.billing_name}
@@ -223,8 +224,8 @@ const CheckoutForm: FC = () => {
                     fullWidth
                     sx={{ mb: 2 }}
                     onBlur={handleBlur}
-                    label="Phone Number"
-                    name="billing_contact"
+                    label='Phone Number'
+                    name='billing_contact'
                     onChange={handleChange}
                     value={values.billing_contact}
                     error={
@@ -237,10 +238,10 @@ const CheckoutForm: FC = () => {
                   />
                   <TextField
                     fullWidth
-                    type="number"
+                    type='number'
                     sx={{ mb: 2 }}
-                    label="Zip Code"
-                    name="billing_zip"
+                    label='Zip Code'
+                    name='billing_zip'
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.billing_zip}
@@ -251,10 +252,10 @@ const CheckoutForm: FC = () => {
                   />
                   <TextField
                     fullWidth
-                    label="Address 1"
+                    label='Address 1'
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    name="billing_address1"
+                    name='billing_address1'
                     value={values.billing_address1}
                     error={
                       !!touched.billing_address1 && !!errors.billing_address1
@@ -269,11 +270,11 @@ const CheckoutForm: FC = () => {
                 <Grid item sm={6} xs={12}>
                   <TextField
                     fullWidth
-                    type="email"
+                    type='email'
                     sx={{ mb: 2 }}
                     onBlur={handleBlur}
-                    name="billing_email"
-                    label="Email Address"
+                    name='billing_email'
+                    label='Email Address'
                     onChange={handleChange}
                     value={values.billing_email}
                     error={!!touched.billing_email && !!errors.billing_email}
@@ -284,9 +285,9 @@ const CheckoutForm: FC = () => {
                   <TextField
                     fullWidth
                     sx={{ mb: 2 }}
-                    label="Company"
+                    label='Company'
                     onBlur={handleBlur}
-                    name="billing_company"
+                    name='billing_company'
                     onChange={handleChange}
                     value={values.billing_company}
                     error={
@@ -304,12 +305,12 @@ const CheckoutForm: FC = () => {
                     value={values.billing_country}
                     getOptionLabel={(option) => option.label}
                     onChange={(_, value) =>
-                      setFieldValue("billing_country", value)
+                      setFieldValue('billing_country', value)
                     }
                     renderInput={(params) => (
                       <TextField
-                        label="Country"
-                        placeholder="Select Country"
+                        label='Country'
+                        placeholder='Select Country'
                         error={
                           !!touched.billing_country && !!errors.billing_country
                         }
@@ -323,9 +324,9 @@ const CheckoutForm: FC = () => {
                   />
                   <TextField
                     fullWidth
-                    label="Address 2"
+                    label='Address 2'
                     onBlur={handleBlur}
-                    name="billing_address2"
+                    name='billing_address2'
                     onChange={handleChange}
                     value={values.billing_address2}
                     error={
@@ -343,11 +344,11 @@ const CheckoutForm: FC = () => {
 
           <Grid container spacing={6}>
             <Grid item sm={6} xs={12}>
-              <Link href="/cart" passHref>
+              <Link href='/cart' passHref>
                 <Button
-                  variant="outlined"
-                  color="primary"
-                  type="button"
+                  variant='outlined'
+                  color='primary'
+                  type='button'
                   fullWidth
                 >
                   Back to Cart
@@ -357,9 +358,9 @@ const CheckoutForm: FC = () => {
 
             <Grid item sm={6} xs={12}>
               <Button
-                variant="contained"
-                color="primary"
-                type="submit"
+                variant='contained'
+                color='primary'
+                type='submit'
                 fullWidth
               >
                 Proceed to Payment
@@ -373,22 +374,22 @@ const CheckoutForm: FC = () => {
 };
 
 const initialValues = {
-  shipping_zip: "",
-  shipping_name: "",
-  shipping_email: "",
-  shipping_contact: "",
-  shipping_company: "",
-  shipping_address1: "",
-  shipping_address2: "",
+  shipping_zip: '',
+  shipping_name: '',
+  shipping_email: '',
+  shipping_contact: '',
+  shipping_company: '',
+  shipping_address1: '',
+  shipping_address2: '',
   shipping_country: countryList[229],
 
-  billing_zip: "",
-  billing_name: "",
-  billing_email: "",
-  billing_contact: "",
-  billing_company: "",
-  billing_address1: "",
-  billing_address2: "",
+  billing_zip: '',
+  billing_name: '',
+  billing_email: '',
+  billing_contact: '',
+  billing_company: '',
+  billing_address1: '',
+  billing_address2: '',
   billing_country: countryList[229],
 };
 

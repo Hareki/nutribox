@@ -1,23 +1,24 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import Scrollbar from "components/Scrollbar";
-import { H3 } from "components/Typography";
-import useMuiTable from "hooks/useMuiTable";
-import { StyledTableCell, StyledTableRow } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
-import { currency } from "lib";
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import { currency } from 'lib';
+import { StyledTableCell, StyledTableRow } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // table column list
 const tableHeading = [
-  { id: "no", label: "No", align: "center" },
-  { id: "amount", label: "Amount", align: "center" },
-  { id: "payment", label: "Payment Method", align: "center" },
-  { id: "date", label: "Date", align: "center" },
+  { id: 'no', label: 'No', align: 'center' },
+  { id: 'amount', label: 'Amount', align: 'center' },
+  { id: 'payment', label: 'Payment Method', align: 'center' },
+  { id: 'date', label: 'Date', align: 'center' },
 ];
 
 // =============================================================================
@@ -39,7 +40,7 @@ export default function Payouts({ payouts }: PayoutsProps) {
     filteredList,
     handleChangePage,
     handleRequestSort,
-  } = useMuiTable({ listData: payouts, defaultSort: "no" });
+  } = useMuiTable({ listData: payouts, defaultSort: 'no' });
 
   return (
     <Box py={4}>
@@ -61,17 +62,17 @@ export default function Payouts({ payouts }: PayoutsProps) {
 
               <TableBody>
                 {filteredList.map((payout, index) => (
-                  <StyledTableRow role="checkbox" key={index}>
-                    <StyledTableCell align="center">
+                  <StyledTableRow role='checkbox' key={index}>
+                    <StyledTableCell align='center'>
                       {payout.no}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       {currency(payout.amount)}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       {payout.payment}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       {payout.date}
                     </StyledTableCell>
                   </StyledTableRow>
@@ -81,7 +82,7 @@ export default function Payouts({ payouts }: PayoutsProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(payouts.length / rowsPerPage)}

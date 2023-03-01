@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import { H3 } from "components/Typography";
-import Carousel from "components/carousel/Carousel";
-import ProductCard1 from "components/product-cards/ProductCard1";
-import useWindowSize from "hooks/useWindowSize";
-import Product from "models/Product.model";
+import { Box } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import ProductCard1 from 'components/product-cards/ProductCard1';
+import { H3 } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 // =======================================================
 type ProductCarouselProps = { title: string; products: Product[] };
@@ -32,7 +33,7 @@ const ProductCarousel: FC<ProductCarouselProps> = (props) => {
         step={3}
         showDots
         showArrowOnHover={true}
-        arrowButtonColor="inherit"
+        arrowButtonColor='inherit'
         totalSlides={products.length}
         visibleSlides={visibleSlides}
       >
@@ -59,7 +60,7 @@ const ProductCarousel: FC<ProductCarouselProps> = (props) => {
 // set default component props
 ProductCarousel.defaultProps = {
   products: [],
-  title: "Best Seller in Your Area",
+  title: 'Best Seller in Your Area',
 };
 
 export default ProductCarousel;

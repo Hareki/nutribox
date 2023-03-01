@@ -1,14 +1,15 @@
-import { ThemeOptions } from "@mui/material/styles";
-import { components } from "./components";
-import { blue, marron, paste, primary, themeColors } from "./themeColors";
-import { typography } from "./typography";
+import { ThemeOptions } from '@mui/material/styles';
+
+import { components } from './components';
+import { blue, marron, paste, primary, themeColors } from './themeColors';
+import { typography } from './typography';
 
 const THEMES = {
-  GIFT: "GIFT",
-  HEALTH: "HEALTH",
-  DEFAULT: "DEFAULT",
-  GROCERY: "GROCERY",
-  FURNITURE: "FURNITURE",
+  GIFT: 'GIFT',
+  HEALTH: 'HEALTH',
+  DEFAULT: 'DEFAULT',
+  GROCERY: 'GROCERY',
+  FURNITURE: 'FURNITURE',
 };
 
 const breakpoints = {
@@ -72,25 +73,25 @@ const themeOptions = (publicRuntimeConfig: any, pathname: string) => {
   };
 
   switch (pathname) {
-    case "/":
-    case "/grocery1":
-    case "/grocery2":
-    case "/grocery3":
-    case "/gadget-shop":
-    case "/fashion-shop-1":
-    case "/market-1":
+    case '/':
+    case '/grocery1':
+    case '/grocery2':
+    case '/grocery3':
+    case '/gadget-shop':
+    case '/fashion-shop-1':
+    case '/market-1':
       updateTheme(THEMES.DEFAULT);
       break;
 
-    case "/furniture-shop":
+    case '/furniture-shop':
       updateTheme(THEMES.FURNITURE);
       break;
 
-    case "/healthbeauty-shop":
+    case '/healthbeauty-shop':
       updateTheme(THEMES.HEALTH);
       break;
 
-    case "/gift-shop":
+    case '/gift-shop':
       updateTheme(THEMES.GIFT);
       break;
 

@@ -1,6 +1,6 @@
 {
-  "name": "bazaar",
-  "version": "3.4.0",
+  "name": "NutriBox",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,10 @@
     "start": "next start",
     "size": "node --max_old_space_size=4096",
     "fix:prettier": "prettier --write . '!.next' '!.node_modules'",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pretty": "prettier --write . --ignore-path .gitignore",
+    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx . --ignore-path .gitignore",
+    "formatter": "npm-run-all pretty lint:fix"
   },
   "lint-staged": {
     "*.+(js|jsx)": [

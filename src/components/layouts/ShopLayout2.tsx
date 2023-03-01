@@ -1,10 +1,11 @@
-import { FC, Fragment, ReactNode, useCallback, useState } from "react";
-import { Box } from "@mui/material";
-import Sticky from "components/Sticky";
-import Topbar from "components/Topbar";
-import Header from "components/header/Header";
-import Navbar from "components/navbar/Navbar";
-import SearchInput from "components/search-box/SearchInput";
+import { Box } from '@mui/material';
+import { FC, Fragment, ReactNode, useCallback, useState } from 'react';
+
+import Header from 'components/header/Header';
+import Navbar from 'components/navbar/Navbar';
+import SearchInput from 'components/search-box/SearchInput';
+import Sticky from 'components/Sticky';
+import Topbar from 'components/Topbar';
 
 /**
  *  Used in:
@@ -38,7 +39,7 @@ const ShopLayout2: FC<ShopLayout2Props> = ({
         <Header isFixed={isFixed} searchInput={<SearchInput />} />
       </Sticky>
 
-      <Box zIndex={4} position="relative" className="section-after-sticky">
+      <Box zIndex={4} position='relative' className='section-after-sticky'>
         {/* NAVIGATION BAR */}
         {showNavbar && <Navbar elevation={0} />}
 

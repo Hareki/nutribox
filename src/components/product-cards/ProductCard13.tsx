@@ -1,43 +1,44 @@
-import Link from "next/link";
-import { FC, Fragment, useCallback, useState } from "react";
-import { Add, Favorite, Remove, RemoveRedEye } from "@mui/icons-material";
-import ShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import { Box, Button, Chip, styled } from "@mui/material";
-import { useSnackbar } from "notistack";
-import LazyImage from "components/LazyImage";
-import BazaarCard from "components/BazaarCard";
-import { H3, Span } from "components/Typography";
-import BazaarRating from "components/BazaarRating";
-import { FlexBetween, FlexBox } from "components/flex-box";
-import ProductViewDialog from "components/products/ProductViewDialog";
-import { CartItem, useAppContext } from "contexts/AppContext";
-import { calculateDiscount, currency } from "lib";
+import { Add, Favorite, Remove, RemoveRedEye } from '@mui/icons-material';
+import ShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import { Box, Button, Chip, styled } from '@mui/material';
+import Link from 'next/link';
+import { useSnackbar } from 'notistack';
+import { FC, Fragment, useCallback, useState } from 'react';
+
+import BazaarCard from 'components/BazaarCard';
+import BazaarRating from 'components/BazaarRating';
+import { FlexBetween, FlexBox } from 'components/flex-box';
+import LazyImage from 'components/LazyImage';
+import ProductViewDialog from 'components/products/ProductViewDialog';
+import { H3, Span } from 'components/Typography';
+import { CartItem, useAppContext } from 'contexts/AppContext';
+import { calculateDiscount, currency } from 'lib';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
-  height: "100%",
-  margin: "auto",
-  display: "flex",
-  overflow: "hidden",
-  borderRadius: "8px",
-  position: "relative",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  transition: "all 250ms ease-in-out",
-  "&:hover": {
+  height: '100%',
+  margin: 'auto',
+  display: 'flex',
+  overflow: 'hidden',
+  borderRadius: '8px',
+  position: 'relative',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  transition: 'all 250ms ease-in-out',
+  '&:hover': {
     boxShadow: theme.shadows[2],
-    "& .controller": { display: "flex", bottom: 20 },
+    '& .controller': { display: 'flex', bottom: 20 },
   },
 }));
 
 const ImageWrapper = styled(Box)(({ theme }) => ({
-  overflow: "hidden",
-  textAlign: "center",
-  position: "relative",
-  padding: "44px 40px",
-  background: "#efefef",
-  display: "inline-block",
-  [theme.breakpoints.down("sm")]: { display: "block" },
+  overflow: 'hidden',
+  textAlign: 'center',
+  position: 'relative',
+  padding: '44px 40px',
+  background: '#efefef',
+  display: 'inline-block',
+  [theme.breakpoints.down('sm')]: { display: 'block' },
 }));
 
 const HoverWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -46,42 +47,42 @@ const HoverWrapper = styled(FlexBetween)(({ theme }) => ({
   width: 120,
   height: 25,
   bottom: -40,
-  margin: "auto",
-  overflow: "hidden",
-  background: "#fff",
-  borderRadius: "5px",
-  position: "absolute",
+  margin: 'auto',
+  overflow: 'hidden',
+  background: '#fff',
+  borderRadius: '5px',
+  position: 'absolute',
   boxShadow: theme.shadows[2],
-  transition: "bottom 0.3s ease-in-out",
-  "& span, & a": {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    "&:hover": { cursor: "pointer", background: "#f3f5f9" },
+  transition: 'bottom 0.3s ease-in-out',
+  '& span, & a': {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    '&:hover': { cursor: 'pointer', background: '#f3f5f9' },
   },
-  "& span": { padding: "0px 10px" },
-  "& svg": { fontSize: 18, color: theme.palette.grey[600] },
+  '& span': { padding: '0px 10px' },
+  '& svg': { fontSize: 18, color: theme.palette.grey[600] },
 }));
 
 const StyledChip = styled(Chip)({
   zIndex: 11,
-  top: "10px",
-  left: "10px",
+  top: '10px',
+  left: '10px',
   paddingLeft: 3,
   paddingRight: 3,
   fontWeight: 600,
-  fontSize: "10px",
-  position: "absolute",
+  fontSize: '10px',
+  position: 'absolute',
 });
 
 const ContentWrapper = styled(FlexBox)({
   minHeight: 110,
-  padding: "1rem",
-  "& .title, & .categories": {
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
+  padding: '1rem',
+  '& .title, & .categories': {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
 });
 
@@ -121,20 +122,20 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
   const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
 
   const cartItem: CartItem | undefined = state.cart.find(
-    (item) => item.slug === slug
+    (item) => item.slug === slug,
   );
 
   const handleCartAmountChange =
-    (amount: number, type?: "add" | "remove") => () => {
+    (amount: number, type?: 'add' | 'remove') => () => {
       dispatch({
-        type: "CHANGE_CART_AMOUNT",
+        type: 'CHANGE_CART_AMOUNT',
         payload: { price, imgUrl, id, name: title, qty: amount, slug },
       });
 
-      if (type === "remove") {
-        enqueueSnackbar("Remove from Cart", { variant: "error" });
+      if (type === 'remove') {
+        enqueueSnackbar('Remove from Cart', { variant: 'error' });
       } else {
-        enqueueSnackbar("Added to Cart", { variant: "success" });
+        enqueueSnackbar('Added to Cart', { variant: 'success' });
       }
     };
 
@@ -142,7 +143,7 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
     <StyledBazaarCard hoverEffect={hoverEffect}>
       <ImageWrapper>
         {off !== 0 && (
-          <StyledChip color="primary" size="small" label={`${off}% off`} />
+          <StyledChip color='primary' size='small' label={`${off}% off`} />
         )}
 
         <Link href={`/product/${slug}`}>
@@ -152,13 +153,13 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
               width={190}
               src={imgUrl}
               height={190}
-              layout="responsive"
-              objectFit="contain"
+              layout='responsive'
+              objectFit='contain'
             />
           </a>
         </Link>
 
-        <HoverWrapper className="controller">
+        <HoverWrapper className='controller'>
           <Span onClick={toggleDialog}>
             <RemoveRedEye />
           </Span>
@@ -166,15 +167,15 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
           <Span
             onClick={toggleIsFavorite}
             sx={{
-              borderLeft: "1px solid",
-              borderRight: "1px solid",
-              borderColor: "grey.300",
+              borderLeft: '1px solid',
+              borderRight: '1px solid',
+              borderColor: 'grey.300',
             }}
           >
             {isFavorite ? (
-              <Favorite color="primary" fontSize="small" />
+              <Favorite color='primary' fontSize='small' />
             ) : (
-              <FavoriteBorder fontSize="small" color="disabled" />
+              <FavoriteBorder fontSize='small' color='disabled' />
             )}
           </Span>
 
@@ -191,17 +192,17 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
       />
 
       <ContentWrapper>
-        <Box flex="1 1 0" minWidth="0px" mr={1}>
+        <Box flex='1 1 0' minWidth='0px' mr={1}>
           <Link href={`/product/${slug}`}>
             <a>
               <H3
                 mb={1}
                 title={title}
-                fontSize="14px"
-                textAlign="left"
-                fontWeight="600"
-                className="title"
-                color="text.secondary"
+                fontSize='14px'
+                textAlign='left'
+                fontWeight='600'
+                className='title'
+                color='text.secondary'
               >
                 {title}
               </H3>
@@ -209,19 +210,19 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
           </Link>
 
           {!hideRating && (
-            <FlexBox gap={1} alignItems="center">
-              <BazaarRating value={rating || 0} color="warn" readOnly />
-              <Span color="grey.600">{`(${rating})`}</Span>
+            <FlexBox gap={1} alignItems='center'>
+              <BazaarRating value={rating || 0} color='warn' readOnly />
+              <Span color='grey.600'>{`(${rating})`}</Span>
             </FlexBox>
           )}
 
-          <FlexBox gap={1} alignItems="center" mt={0.5}>
-            <Box fontWeight={600} color="primary.main">
+          <FlexBox gap={1} alignItems='center' mt={0.5}>
+            <Box fontWeight={600} color='primary.main'>
               {calculateDiscount(price, off)}
             </Box>
 
             {off !== 0 && (
-              <Box color="grey.600" fontWeight={600}>
+              <Box color='grey.600' fontWeight={600}>
                 <del>{currency(price)}</del>
               </Box>
             )}
@@ -229,34 +230,34 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
         </Box>
 
         <FlexBox
-          width="30px"
-          alignItems="center"
-          className="add-cart"
-          flexDirection="column-reverse"
-          justifyContent={!!cartItem?.qty ? "space-between" : "flex-start"}
+          width='30px'
+          alignItems='center'
+          className='add-cart'
+          flexDirection='column-reverse'
+          justifyContent={cartItem?.qty ? 'space-between' : 'flex-start'}
         >
           <Button
-            color="primary"
-            variant="outlined"
-            sx={{ padding: "3px" }}
+            color='primary'
+            variant='outlined'
+            sx={{ padding: '3px' }}
             onClick={handleCartAmountChange((cartItem?.qty || 0) + 1)}
           >
-            <Add fontSize="small" />
+            <Add fontSize='small' />
           </Button>
 
           {!!cartItem?.qty && (
             <Fragment>
-              <Box color="text.primary" fontWeight="600">
+              <Box color='text.primary' fontWeight='600'>
                 {cartItem?.qty}
               </Box>
 
               <Button
-                color="primary"
-                variant="outlined"
-                sx={{ padding: "3px" }}
-                onClick={handleCartAmountChange(cartItem?.qty - 1, "remove")}
+                color='primary'
+                variant='outlined'
+                sx={{ padding: '3px' }}
+                onClick={handleCartAmountChange(cartItem?.qty - 1, 'remove')}
               >
-                <Remove fontSize="small" />
+                <Remove fontSize='small' />
               </Button>
             </Fragment>
           )}

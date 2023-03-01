@@ -1,23 +1,24 @@
-import { FC } from "react";
-import Link from "next/link";
-import { alpha, Box, styled } from "@mui/material";
-import LazyImage from "components/LazyImage";
-import { NavLink2 } from "components/nav-link";
-import { H3, Paragraph } from "components/Typography";
+import { alpha, Box, styled } from '@mui/material';
+import Link from 'next/link';
+import { FC } from 'react';
+
+import LazyImage from 'components/LazyImage';
+import { NavLink2 } from 'components/nav-link';
+import { H3, Paragraph } from 'components/Typography';
 
 // styled component
 const Wrapper = styled(Box)(({ theme }) => ({
   gap: 10,
-  display: "flex",
+  display: 'flex',
   borderRadius: 2,
-  alignItems: "center",
+  alignItems: 'center',
   boxShadow: theme.shadows[4],
-  transition: "all 250ms ease-in-out",
+  transition: 'all 250ms ease-in-out',
   backgroundColor: alpha(theme.palette.background.paper, 1),
-  "& img": { transform: "scale(1.2)" },
-  "& .content": { paddingLeft: "2rem" },
-  "&:hover": { boxShadow: theme.shadows[2] },
-  [theme.breakpoints.down("sm")]: { "& .content": { padding: "1.5rem" } },
+  '& img': { transform: 'scale(1.2)' },
+  '& .content': { paddingLeft: '2rem' },
+  '&:hover': { boxShadow: theme.shadows[2] },
+  [theme.breakpoints.down('sm')]: { '& .content': { padding: '1.5rem' } },
 }));
 
 // =====================================================
@@ -38,24 +39,24 @@ const HomeFourCard3: FC<HomeFourCard3Props> = ({
   bgColor,
 }) => {
   return (
-    <Link href="/sale-page-1">
+    <Link href='/sale-page-1'>
       <a>
         <Wrapper sx={{ backgroundColor: bgColor, color, pr: 0 }}>
-          <Box width="60%" className="content">
+          <Box width='60%' className='content'>
             <H3 lineHeight={1.3}>{title}</H3>
-            <Paragraph color={color ? color : "grey.600"} mt={1} mb={2}>
+            <Paragraph color={color ? color : 'grey.600'} mt={1} mb={2}>
               {body}
             </Paragraph>
-            <NavLink2 title="SHOP NOW" />
+            <NavLink2 title='SHOP NOW' />
           </Box>
 
-          <Box width="40%">
+          <Box width='40%'>
             <LazyImage
               width={100}
               src={imgUrl}
               height={100}
-              alt="apple-watch-1"
-              layout="responsive"
+              alt='apple-watch-1'
+              layout='responsive'
             />
           </Box>
         </Wrapper>

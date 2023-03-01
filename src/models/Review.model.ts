@@ -1,5 +1,5 @@
-import User from "./User.model";
-import Product from "./Product.model";
+import Product from './Product.model';
+import User from './User.model';
 
 interface Review {
   id: string;

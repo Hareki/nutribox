@@ -1,19 +1,20 @@
-import { GetStaticProps, NextPage } from "next";
-import SEO from "components/SEO";
-import Setting from "components/Setting";
-import Newsletter from "components/Newsletter";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import Section1 from "pages-sections/gadget-shop/Section1";
-import Section2 from "pages-sections/gadget-shop/Section2";
-import Section3 from "pages-sections/gadget-shop/Section3";
-import Section4 from "pages-sections/gadget-shop/Section4";
-import Section6 from "pages-sections/gadget-shop/Section6";
-import Section7 from "pages-sections/gadget-shop/Section7";
-import Blog from "models/Blog.model";
-import Product from "models/Product.model";
-import Category from "models/Category.model";
-import { Banner } from "models/Gadget.model";
-import api from "utils/__api__/gadget-shop";
+import { GetStaticProps, NextPage } from 'next';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import Newsletter from 'components/Newsletter';
+import SEO from 'components/SEO';
+import Setting from 'components/Setting';
+import Blog from 'models/Blog.model';
+import Category from 'models/Category.model';
+import { Banner } from 'models/Gadget.model';
+import Product from 'models/Product.model';
+import Section1 from 'pages-sections/gadget-shop/Section1';
+import Section2 from 'pages-sections/gadget-shop/Section2';
+import Section3 from 'pages-sections/gadget-shop/Section3';
+import Section4 from 'pages-sections/gadget-shop/Section4';
+import Section6 from 'pages-sections/gadget-shop/Section6';
+import Section7 from 'pages-sections/gadget-shop/Section7';
+import api from 'utils/__api__/gadget-shop';
 
 // ============================================================
 type GadgetShopProps = {
@@ -30,7 +31,7 @@ type GadgetShopProps = {
 const GadgetShop: NextPage<GadgetShopProps> = (props) => {
   return (
     <ShopLayout1>
-      <SEO title="Gadget shop template" />
+      <SEO title='Gadget shop template' />
       {/* MAIN PRODUCT CAROUSEL AND TOP PICK PRODUCTS AREA */}
       <Section1
         mainCarousel={props.mainCarouselData}

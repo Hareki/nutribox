@@ -1,11 +1,12 @@
-import Link from "next/link";
-import { FC, useEffect, useState } from "react";
-import { Box, useTheme } from "@mui/material";
-import { H1 } from "components/Typography";
-import Carousel from "components/carousel/Carousel";
-import ProductCard15 from "components/product-cards/ProductCard15";
-import useWindowSize from "hooks/useWindowSize";
-import Category from "models/Category.model";
+import { Box, useTheme } from '@mui/material';
+import Link from 'next/link';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import ProductCard15 from 'components/product-cards/ProductCard15';
+import { H1 } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Category from 'models/Category.model';
 
 // ===============================================
 type Props = { categoryList: Partial<Category>[] };
@@ -31,19 +32,19 @@ const Section4: FC<Props> = ({ categoryList }) => {
         visibleSlides={visibleSlides}
         totalSlides={categoryList.length}
         sx={{
-          "& #backArrowButton, #backForwardButton": {
+          '& #backArrowButton, #backForwardButton': {
             width: 35,
             height: 35,
             borderRadius: 0,
             boxShadow: theme.shadows[2],
             color: theme.palette.primary.main,
             background: theme.palette.primary[50],
-            "&:hover": { background: theme.palette.primary[100] },
+            '&:hover': { background: theme.palette.primary[100] },
           },
         }}
       >
         {categoryList.map((item, ind) => (
-          <Link href="#" key={ind}>
+          <Link href='#' key={ind}>
             <a>
               <ProductCard15
                 title={item.name}

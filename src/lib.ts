@@ -1,6 +1,6 @@
-import getConfig from "next/config";
-import ceil from "lodash/ceil";
-import { differenceInMinutes } from "date-fns";
+import { differenceInMinutes } from 'date-fns';
+import ceil from 'lodash/ceil';
+import getConfig from 'next/config';
 
 /**
  * GET THE DIFFERENCE DATE FORMAT
@@ -10,19 +10,19 @@ import { differenceInMinutes } from "date-fns";
 
 function getDateDifference(date: string | number | Date) {
   let diff = differenceInMinutes(new Date(), new Date(date));
-  if (diff < 60) return diff + " minutes ago";
+  if (diff < 60) return diff + ' minutes ago';
 
   diff = ceil(diff / 60);
-  if (diff < 24) return `${diff} hour${diff === 0 ? "" : "s"} ago`;
+  if (diff < 24) return `${diff} hour${diff === 0 ? '' : 's'} ago`;
 
   diff = ceil(diff / 24);
-  if (diff < 30) return `${diff} day${diff === 0 ? "" : "s"} ago`;
+  if (diff < 30) return `${diff} day${diff === 0 ? '' : 's'} ago`;
 
   diff = ceil(diff / 30);
-  if (diff < 12) return `${diff} month${diff === 0 ? "" : "s"} ago`;
+  if (diff < 12) return `${diff} month${diff === 0 ? '' : 's'} ago`;
 
   diff = diff / 12;
-  return `${diff.toFixed(1)} year${ceil(diff) === 0 ? "" : "s"} ago`;
+  return `${diff.toFixed(1)} year${ceil(diff) === 0 ? '' : 's'} ago`;
 }
 
 /**
@@ -36,9 +36,9 @@ function getDateDifference(date: string | number | Date) {
 function renderProductCount(
   page: number,
   perPageProduct: number,
-  totalProduct: number
+  totalProduct: number,
 ) {
-  let startNumber = (page - 1) * perPageProduct;
+  const startNumber = (page - 1) * perPageProduct;
   let endNumber = page * perPageProduct;
 
   if (endNumber > totalProduct) {
@@ -66,11 +66,11 @@ function calculateDiscount(price: number, discount: number) {
  * @returns - RETURN PRICE WITH CURRENCY
  */
 
-function currency(price: number, fraction: number = 2) {
+function currency(price: number, fraction = 2) {
   const { publicRuntimeConfig } = getConfig();
 
   const formatCurrency = new Intl.NumberFormat(undefined, {
-    style: "currency",
+    style: 'currency',
     currency: publicRuntimeConfig.currency,
     maximumFractionDigits: fraction,
     minimumFractionDigits: fraction,

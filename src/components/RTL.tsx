@@ -1,16 +1,17 @@
-import { FC, ReactNode, useEffect } from "react";
-import { prefixer } from "stylis";
-import createCache from "@emotion/cache";
-import rtlPlugin from "stylis-plugin-rtl";
-import { CacheProvider } from "@emotion/react";
-import useSettings from "hooks/useSettings";
+import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+import { FC, ReactNode, useEffect } from 'react';
+import { prefixer } from 'stylis';
+import rtlPlugin from 'stylis-plugin-rtl';
+
+import useSettings from 'hooks/useSettings';
 
 // ========================================================
 type RTLProps = { children?: ReactNode };
 // ========================================================
 
 const cacheRTL = createCache({
-  key: "rtl",
+  key: 'rtl',
   // prepend: true,
   stylisPlugins: [rtlPlugin, prefixer],
 });
@@ -22,7 +23,7 @@ const RTL: FC<RTLProps> = ({ children }) => {
     document.dir = settings.direction;
   }, [settings.direction]);
 
-  if (settings.direction === "rtl") {
+  if (settings.direction === 'rtl') {
     return <CacheProvider value={cacheRTL}>{children}</CacheProvider>;
   }
 

@@ -1,26 +1,27 @@
-import { GetStaticProps, NextPage } from "next";
-import { Box, Stack } from "@mui/material";
-import SEO from "components/SEO";
-import Setting from "components/Setting";
-import { Footer2 } from "components/footer";
-import Scrollbar from "components/Scrollbar";
-import Newsletter from "components/Newsletter";
-import ShopLayout2 from "components/layouts/ShopLayout2";
-import SidenavContainer from "components/SidenavContainer";
-import { MobileNavigationBar2 } from "components/mobile-navigation";
-import Grocery2SideNav from "components/page-sidenav/Grocery2Sidenav";
-import Section1 from "pages-sections/grocery2/Section1";
-import Section2 from "pages-sections/grocery2/Section2";
-import Section3 from "pages-sections/grocery2/Section3";
-import Section6 from "pages-sections/grocery2/Section6";
-import Section9 from "pages-sections/grocery2/Section9";
-import ProductCarousel from "pages-sections/grocery2/ProductCarousel";
-import api from "utils/__api__/grocery2-shop";
-import Service from "models/Service.model";
-import Product from "models/Product.model";
-import Category from "models/Category.model";
-import { CategoryItem } from "models/CategoryNavList.model";
-import { GroceryTwoCarouselItem } from "models/Carousel.model";
+import { Box, Stack } from '@mui/material';
+import { GetStaticProps, NextPage } from 'next';
+
+import { Footer2 } from 'components/footer';
+import ShopLayout2 from 'components/layouts/ShopLayout2';
+import { MobileNavigationBar2 } from 'components/mobile-navigation';
+import Newsletter from 'components/Newsletter';
+import Grocery2SideNav from 'components/page-sidenav/Grocery2Sidenav';
+import Scrollbar from 'components/Scrollbar';
+import SEO from 'components/SEO';
+import Setting from 'components/Setting';
+import SidenavContainer from 'components/SidenavContainer';
+import { GroceryTwoCarouselItem } from 'models/Carousel.model';
+import Category from 'models/Category.model';
+import { CategoryItem } from 'models/CategoryNavList.model';
+import Product from 'models/Product.model';
+import Service from 'models/Service.model';
+import ProductCarousel from 'pages-sections/grocery2/ProductCarousel';
+import Section1 from 'pages-sections/grocery2/Section1';
+import Section2 from 'pages-sections/grocery2/Section2';
+import Section3 from 'pages-sections/grocery2/Section3';
+import Section6 from 'pages-sections/grocery2/Section6';
+import Section9 from 'pages-sections/grocery2/Section9';
+import api from 'utils/__api__/grocery2-shop';
 
 // ========================================================
 type Grocery2Props = {
@@ -40,11 +41,11 @@ type Grocery2Props = {
 const Grocery2: NextPage<Grocery2Props> = (props) => {
   return (
     <ShopLayout2 showTopbar={false}>
-      <SEO title="Grocery store template v2" />
-      <Box id="grocerySection" />
+      <SEO title='Grocery store template v2' />
+      <Box id='grocerySection' />
 
       <SidenavContainer
-        navFixedComponentID="grocerySection"
+        navFixedComponentID='grocerySection'
         SideNav={() => (
           <Grocery2SideNav groceryNavigation={props.navigationList} />
         )}
@@ -61,13 +62,13 @@ const Grocery2: NextPage<Grocery2Props> = (props) => {
 
           {/* FEATURED ITEMS AREA */}
           <ProductCarousel
-            title="Featured Items"
+            title='Featured Items'
             products={props.featuredProducts}
           />
 
           {/* BEST SELLER IN YOUR AREA */}
           <ProductCarousel
-            title="Best Seller in Your Area"
+            title='Best Seller in Your Area'
             products={props.bestSellProducts}
           />
 
@@ -76,13 +77,13 @@ const Grocery2: NextPage<Grocery2Props> = (props) => {
 
           {/* BEST OF HOME ESSENTIALS PRODUCTS AREA  */}
           <ProductCarousel
-            title="Best of Home Essentials"
+            title='Best of Home Essentials'
             products={props.bestHomeProducts}
           />
 
           {/* SNACKS-DRINKS-DAIRY PRODUCTS AREA */}
           <ProductCarousel
-            title="Snacks, Drinks, Dairy & More"
+            title='Snacks, Drinks, Dairy & More'
             products={props.dairyProducts}
           />
 
@@ -98,7 +99,7 @@ const Grocery2: NextPage<Grocery2Props> = (props) => {
       <Setting />
 
       {/* POPUP NEWSLETTER FORM */}
-      <Newsletter image="/assets/images/newsletter/bg-2.png" />
+      <Newsletter image='/assets/images/newsletter/bg-2.png' />
 
       {/* SMALL DEVICE BOTTOM NAVIGATION */}
       <MobileNavigationBar2>

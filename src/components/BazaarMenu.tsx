@@ -1,4 +1,4 @@
-import { SxProps, Menu } from "@mui/material";
+import { SxProps, Menu } from '@mui/material';
 import {
   Children,
   cloneElement,
@@ -6,7 +6,7 @@ import {
   Fragment,
   ReactElement,
   useState,
-} from "react";
+} from 'react';
 
 // ===============================================================
 type BazaarMenuProps = {
@@ -17,7 +17,7 @@ type BazaarMenuProps = {
   handler: ReactElement;
   shouldCloseOnItemClick?: boolean;
   children: ReactElement | ReactElement[];
-  direction?: "left" | "right" | "center";
+  direction?: 'left' | 'right' | 'center';
 };
 // ===============================================================
 
@@ -25,7 +25,7 @@ const BazaarMenu: FC<BazaarMenuProps> = ({
   open,
   handler,
   children,
-  direction = "left",
+  direction = 'left',
   shouldCloseOnItemClick = true,
   ...props
 }) => {
@@ -50,14 +50,14 @@ const BazaarMenu: FC<BazaarMenuProps> = ({
         anchorEl={anchorEl}
         onClose={handleClose}
         open={open !== undefined ? open : !!anchorEl}
-        anchorOrigin={{ vertical: "bottom", horizontal: direction || "left" }}
-        transformOrigin={{ vertical: "top", horizontal: direction || "left" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: direction || 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: direction || 'left' }}
         {...props}
       >
         {Children.map(children, (child: ReactElement) =>
           cloneElement(child, {
             onClick: handleMenuItemClick(child.props.onClick),
-          })
+          }),
         )}
       </Menu>
     </Fragment>

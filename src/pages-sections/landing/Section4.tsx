@@ -1,34 +1,35 @@
-import { Box, Card, Container, Grid } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import LazyImage from "components/LazyImage";
-import { H3, H4 } from "components/Typography";
+import { Box, Card, Container, Grid } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const StyledContent = styled("div")(({ theme }) => ({
-  position: "relative",
+import LazyImage from 'components/LazyImage';
+import { H3, H4 } from 'components/Typography';
+
+const StyledContent = styled('div')(({ theme }) => ({
+  position: 'relative',
   zIndex: 1,
-  "&:after": {
+  '&:after': {
     content: '" "',
-    position: "absolute",
+    position: 'absolute',
     height: 150,
     width: 150,
     top: 0,
     right: 0,
-    background: "#fbeef0",
+    background: '#fbeef0',
     zIndex: -1,
-    borderRadius: "300px",
+    borderRadius: '300px',
     marginRight: -75,
     marginTop: -51,
   },
-  "&:before": {
+  '&:before': {
     content: '" "',
-    position: "absolute",
+    position: 'absolute',
     height: 150,
     width: 150,
     bottom: 0,
     left: 0,
     background: theme.palette.grey[300],
     zIndex: -1,
-    borderRadius: "300px",
+    borderRadius: '300px',
     marginLeft: -75,
     marginBottom: -75,
   },
@@ -36,14 +37,14 @@ const StyledContent = styled("div")(({ theme }) => ({
 
 const Section4 = () => {
   return (
-    <Container id="technologies" sx={{ mb: "7rem" }}>
+    <Container id='technologies' sx={{ mb: '7rem' }}>
       <H3
         fontSize={28}
-        textAlign="center"
-        fontWeight="700"
-        color="secondary.main"
+        textAlign='center'
+        fontWeight='700'
+        color='secondary.main'
         mb={8}
-        textTransform="uppercase"
+        textTransform='uppercase'
       >
         Technologies Used
       </H3>
@@ -55,12 +56,12 @@ const Section4 = () => {
               <Card
                 elevation={3}
                 sx={{
-                  display: "flex",
-                  minHeight: "260px",
-                  boxShadow: "large",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  justifyContent: "center",
+                  display: 'flex',
+                  minHeight: '260px',
+                  boxShadow: 'large',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                 }}
               >
                 <Box mb={2}>
@@ -69,16 +70,16 @@ const Section4 = () => {
                     height={60}
                     alt={item.title}
                     src={item.imgUrl}
-                    objectFit="contain"
-                    objectPosition="center"
+                    objectFit='contain'
+                    objectPosition='center'
                   />
                 </Box>
                 <H4
-                  fontSize="18px"
-                  fontWeight="700"
-                  maxWidth="200px"
-                  textAlign="center"
-                  mx="auto"
+                  fontSize='18px'
+                  fontWeight='700'
+                  maxWidth='200px'
+                  textAlign='center'
+                  mx='auto'
                 >
                   {item.title}
                 </H4>
@@ -93,20 +94,20 @@ const Section4 = () => {
 
 const list = [
   {
-    imgUrl: "/assets/images/logos/react.png",
-    title: "React",
+    imgUrl: '/assets/images/logos/react.png',
+    title: 'React',
   },
   {
-    imgUrl: "/assets/images/logos/next-js.png",
-    title: "Next.js",
+    imgUrl: '/assets/images/logos/next-js.png',
+    title: 'Next.js',
   },
   {
-    imgUrl: "/assets/images/logos/typescript.png",
-    title: "TypeScript",
+    imgUrl: '/assets/images/logos/typescript.png',
+    title: 'TypeScript',
   },
   {
-    imgUrl: "/assets/images/logos/mui.svg",
-    title: "MUI",
+    imgUrl: '/assets/images/logos/mui.svg',
+    title: 'MUI',
   },
 ];
 

@@ -1,26 +1,27 @@
-import { GetStaticProps, NextPage } from "next";
-import { Box, useTheme } from "@mui/material";
-import SEO from "components/SEO";
-import Setting from "components/Setting";
-import Newsletter from "components/Newsletter";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import Section1 from "pages-sections/fashion-shop-2/Section1";
-import Section2 from "pages-sections/fashion-shop-2/Section2";
-import Section3 from "pages-sections/fashion-shop-2/Section3";
-import Section4 from "pages-sections/fashion-shop-2/Section4";
-import Section5 from "pages-sections/fashion-shop-2/Section5";
-import Section6 from "pages-sections/fashion-shop-2/Section6";
-import Section7 from "pages-sections/fashion-shop-2/Section7";
-import Section8 from "pages-sections/fashion-shop-2/Section8";
-import Section9 from "pages-sections/fashion-shop-2/Section9";
-import Section10 from "pages-sections/fashion-shop-2/Section10";
-import Blog from "models/Blog.model";
-import Brand from "models/Brand.model";
-import Product from "models/Product.model";
-import Service from "models/Service.model";
-import Category from "models/Category.model";
-import MainCarouselItem from "models/Market-1.model";
-import api from "utils/__api__/fashion-shop-2";
+import { Box, useTheme } from '@mui/material';
+import { GetStaticProps, NextPage } from 'next';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import Newsletter from 'components/Newsletter';
+import SEO from 'components/SEO';
+import Setting from 'components/Setting';
+import Blog from 'models/Blog.model';
+import Brand from 'models/Brand.model';
+import Category from 'models/Category.model';
+import MainCarouselItem from 'models/Market-1.model';
+import Product from 'models/Product.model';
+import Service from 'models/Service.model';
+import Section1 from 'pages-sections/fashion-shop-2/Section1';
+import Section10 from 'pages-sections/fashion-shop-2/Section10';
+import Section2 from 'pages-sections/fashion-shop-2/Section2';
+import Section3 from 'pages-sections/fashion-shop-2/Section3';
+import Section4 from 'pages-sections/fashion-shop-2/Section4';
+import Section5 from 'pages-sections/fashion-shop-2/Section5';
+import Section6 from 'pages-sections/fashion-shop-2/Section6';
+import Section7 from 'pages-sections/fashion-shop-2/Section7';
+import Section8 from 'pages-sections/fashion-shop-2/Section8';
+import Section9 from 'pages-sections/fashion-shop-2/Section9';
+import api from 'utils/__api__/fashion-shop-2';
 
 // =======================================================
 type FashionShop2Props = {
@@ -43,8 +44,8 @@ const FashionShop2: NextPage<FashionShop2Props> = (props) => {
 
   return (
     <ShopLayout1 topbarBgColor={theme.palette.grey[900]}>
-      <SEO title="Fashion shop template v2" />
-      <Box bgcolor="white">
+      <SEO title='Fashion shop template v2' />
+      <Box bgcolor='white'>
         {/* HERO SECTION CAROUSEL */}
         <Section1 carouselData={props.mainCarouselData} />
 

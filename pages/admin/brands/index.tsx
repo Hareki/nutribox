@@ -1,26 +1,27 @@
-import Router from "next/router";
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import SearchArea from "components/dashboard/SearchArea";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import Scrollbar from "components/Scrollbar";
-import { H3 } from "components/Typography";
-import { BrandRow } from "pages-sections/admin";
-import useMuiTable from "hooks/useMuiTable";
-import Brand from "models/Brand.model";
-import api from "utils/__api__/dashboard";
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import Router from 'next/router';
+import { ReactElement } from 'react';
+
+import SearchArea from 'components/dashboard/SearchArea';
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import Brand from 'models/Brand.model';
+import { BrandRow } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
-  { id: "id", label: "ID", align: "center" },
-  { id: "name", label: "Name", align: "center" },
-  { id: "logo", label: "Logo", align: "center" },
-  { id: "featured", label: "Featured", align: "center" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'id', label: 'ID', align: 'center' },
+  { id: 'name', label: 'Name', align: 'center' },
+  { id: 'logo', label: 'Logo', align: 'center' },
+  { id: 'featured', label: 'Featured', align: 'center' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -49,7 +50,7 @@ export default function BrandList({ brands }: BrandListProps) {
     filteredList,
     handleChangePage,
     handleRequestSort,
-  } = useMuiTable({ listData: filteredBrands, defaultSort: "name" });
+  } = useMuiTable({ listData: filteredBrands, defaultSort: 'name' });
 
   return (
     <Box py={4}>
@@ -57,9 +58,9 @@ export default function BrandList({ brands }: BrandListProps) {
 
       <SearchArea
         handleSearch={() => {}}
-        buttonText="Add Brand"
-        searchPlaceholder="Search Brand..."
-        handleBtnClick={() => Router.push("/admin/brands/create")}
+        buttonText='Add Brand'
+        searchPlaceholder='Search Brand...'
+        handleBtnClick={() => Router.push('/admin/brands/create')}
       />
 
       <Card>
@@ -85,7 +86,7 @@ export default function BrandList({ brands }: BrandListProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(filteredList.length / rowsPerPage)}

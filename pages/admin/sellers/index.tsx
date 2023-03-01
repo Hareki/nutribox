@@ -1,25 +1,26 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import SearchArea from "components/dashboard/SearchArea";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import { H3 } from "components/Typography";
-import Scrollbar from "components/Scrollbar";
-import useMuiTable from "hooks/useMuiTable";
-import { SellerRow } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import SearchArea from 'components/dashboard/SearchArea';
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import { SellerRow } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // table column list
 const tableHeading = [
-  { id: "name", label: "Seller Name", align: "left" },
-  { id: "shopName", label: "Shop Name", align: "left" },
-  { id: "package", label: "Current Package", align: "left" },
-  { id: "balance", label: "Current Balance", align: "left" },
-  { id: "published", label: "Shop Published", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'name', label: 'Seller Name', align: 'left' },
+  { id: 'shopName', label: 'Shop Name', align: 'left' },
+  { id: 'package', label: 'Current Package', align: 'left' },
+  { id: 'balance', label: 'Current Balance', align: 'left' },
+  { id: 'published', label: 'Shop Published', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -48,9 +49,9 @@ export default function SellerList({ sellers }: SellerListProps) {
 
       <SearchArea
         handleSearch={() => {}}
-        buttonText="Add New Seller"
+        buttonText='Add New Seller'
         handleBtnClick={() => {}}
-        searchPlaceholder="Search Seller..."
+        searchPlaceholder='Search Seller...'
       />
 
       <Card>
@@ -76,7 +77,7 @@ export default function SellerList({ sellers }: SellerListProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(sellers.length / rowsPerPage)}

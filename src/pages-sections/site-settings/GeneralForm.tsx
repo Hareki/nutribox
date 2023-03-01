@@ -1,21 +1,22 @@
-import { FC } from "react";
-import { Box, Button, Grid, styled, TextField } from "@mui/material";
-import * as yup from "yup";
-import { Formik } from "formik";
-import DropZone from "components/DropZone";
+import { Box, Button, Grid, styled, TextField } from '@mui/material';
+import { Formik } from 'formik';
+import { FC } from 'react';
+import * as yup from 'yup';
+
+import DropZone from 'components/DropZone';
 
 // form field validation
 const validationSchema = yup.object().shape({
-  site_name: yup.string().required("site name is required"),
-  site_description: yup.string().required("site description is required"),
-  site_banner_text: yup.string().required("site banner text required"),
+  site_name: yup.string().required('site name is required'),
+  site_description: yup.string().required('site description is required'),
+  site_banner_text: yup.string().required('site banner text required'),
 });
 
 const GeneralForm: FC = () => {
   const initialValues = {
-    site_name: "",
-    site_description: "",
-    site_banner_text: "",
+    site_name: '',
+    site_description: '',
+    site_banner_text: '',
   };
 
   const handleFormSubmit = async (values) => {
@@ -36,22 +37,22 @@ const GeneralForm: FC = () => {
         handleBlur,
         handleSubmit,
       }) => (
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <form onSubmit={handleSubmit} encType='multipart/form-data'>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <DropZone
                 onChange={(files) => console.log(files)}
-                title="Drag & Drop Site Logo"
+                title='Drag & Drop Site Logo'
               />
             </Grid>
 
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                color="info"
-                size="medium"
-                name="site_name"
-                label="Site Name"
+                color='info'
+                size='medium'
+                name='site_name'
+                label='Site Name'
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.site_name}
@@ -62,12 +63,12 @@ const GeneralForm: FC = () => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                color="info"
-                size="medium"
+                color='info'
+                size='medium'
                 onBlur={handleBlur}
                 onChange={handleChange}
-                name="site_description"
-                label="Site Description"
+                name='site_description'
+                label='Site Description'
                 value={values.site_description}
                 error={!!touched.site_description && !!errors.site_description}
                 helperText={
@@ -82,12 +83,12 @@ const GeneralForm: FC = () => {
                 rows={6}
                 fullWidth
                 multiline
-                color="info"
-                size="medium"
+                color='info'
+                size='medium'
                 onBlur={handleBlur}
-                name="site_banner_text"
+                name='site_banner_text'
                 onChange={handleChange}
-                label="Site Banner Text"
+                label='Site Banner Text'
                 value={values.site_banner_text}
                 error={!!touched.site_banner_text && !!errors.site_banner_text}
                 helperText={
@@ -100,12 +101,12 @@ const GeneralForm: FC = () => {
             <Grid item xs={12}>
               <DropZone
                 onChange={(files) => console.log(files)}
-                title="Drag & Drop Site Banner Image"
+                title='Drag & Drop Site Banner Image'
               />
             </Grid>
           </Grid>
 
-          <Button type="submit" color="info" variant="contained" sx={{ mt: 4 }}>
+          <Button type='submit' color='info' variant='contained' sx={{ mt: 4 }}>
             Save Changes
           </Button>
         </form>

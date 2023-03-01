@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Add } from "@mui/icons-material";
-import { Button, Theme, useMediaQuery } from "@mui/material";
-import { FlexBox } from "components/flex-box";
-import SearchInput from "components/SearchInput";
+import { Add } from '@mui/icons-material';
+import { Button, Theme, useMediaQuery } from '@mui/material';
+import { FC } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import SearchInput from 'components/SearchInput';
 
 // ===============================================================
 type SearchAreaProps = {
@@ -15,16 +16,16 @@ type SearchAreaProps = {
 
 const SearchArea: FC<SearchAreaProps> = (props) => {
   const { searchPlaceholder, buttonText, handleBtnClick } = props;
-  const downSM = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  const downSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   return (
-    <FlexBox mb={2} gap={2} justifyContent="space-between" flexWrap="wrap">
+    <FlexBox mb={2} gap={2} justifyContent='space-between' flexWrap='wrap'>
       <SearchInput placeholder={searchPlaceholder} />
 
       <Button
-        color="info"
+        color='info'
         fullWidth={downSM}
-        variant="contained"
+        variant='contained'
         startIcon={<Add />}
         onClick={handleBtnClick}
         sx={{ minHeight: 44 }}
@@ -36,8 +37,8 @@ const SearchArea: FC<SearchAreaProps> = (props) => {
 };
 
 SearchArea.defaultProps = {
-  buttonText: "Add Product",
-  searchPlaceholder: "Search Product...",
+  buttonText: 'Add Product',
+  searchPlaceholder: 'Search Product...',
 };
 
 export default SearchArea;

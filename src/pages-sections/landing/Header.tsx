@@ -1,5 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
-import { Link as Scroll } from "react-scroll";
+import Menu from '@mui/icons-material/Menu';
 import {
   Box,
   Button,
@@ -7,16 +6,18 @@ import {
   IconButton,
   Typography,
   useMediaQuery,
-} from "@mui/material";
-import Menu from "@mui/icons-material/Menu";
-import { styled, Theme } from "@mui/material/styles";
-import { keyframes } from "@mui/styled-engine";
-import clsx from "clsx";
-import Image from "components/BazaarImage";
-import { FlexBox } from "components/flex-box";
-import Sidenav from "components/Sidenav";
-import debounce from "lodash/debounce";
-import Link from "next/link";
+} from '@mui/material';
+import { styled, Theme } from '@mui/material/styles';
+import { keyframes } from '@mui/styled-engine';
+import clsx from 'clsx';
+import debounce from 'lodash/debounce';
+import Link from 'next/link';
+import { Fragment, useEffect, useState } from 'react';
+import { Link as Scroll } from 'react-scroll';
+
+import Image from 'components/BazaarImage';
+import { FlexBox } from 'components/flex-box';
+import Sidenav from 'components/Sidenav';
 
 const headerHeight = 72;
 
@@ -26,36 +27,36 @@ to { top: 0; }`;
 
 const HeaderWrapper = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.grey[200]}`,
-  "& .link": {
-    cursor: "pointer",
-    transition: "color 250ms ease-in-out",
+  '& .link': {
+    cursor: 'pointer',
+    transition: 'color 250ms ease-in-out',
     fontWeight: 500,
-    "&:hover": { color: theme.palette.primary.main },
+    '&:hover': { color: theme.palette.primary.main },
   },
 
-  "& .fixedHeader": {
-    position: "fixed",
+  '& .fixedHeader': {
+    position: 'fixed',
     top: 0,
     left: 0,
     right: 0,
     zIndex: 99,
-    background: "white",
+    background: 'white',
     height: headerHeight,
     boxShadow: theme.shadows[2],
     animation: `${slideFromTop} 250ms ease-in-out`,
-    "& .link": { color: "inherit" },
+    '& .link': { color: 'inherit' },
   },
 
-  [theme.breakpoints.down("sm")]: {
-    "& .right-links": { display: "none" },
-    "& .purchase-link": { display: "none" },
+  [theme.breakpoints.down('sm')]: {
+    '& .right-links': { display: 'none' },
+    '& .purchase-link': { display: 'none' },
   },
 }));
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const [isFixed, setFixed] = useState(false);
-  const downSM = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  const downSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   const toggleSidenav = () => setOpen((open) => !open);
 
@@ -67,8 +68,8 @@ const Header = () => {
   useEffect(() => {
     if (!window) return null;
 
-    window.addEventListener("scroll", scrollListener);
-    return () => window.removeEventListener("scroll", scrollListener);
+    window.addEventListener('scroll', scrollListener);
+    return () => window.removeEventListener('scroll', scrollListener);
   }, [scrollListener]);
 
   return (
@@ -76,56 +77,56 @@ const Header = () => {
       <HeaderWrapper>
         <Box className={clsx({ fixedHeader: isFixed })}>
           <Container>
-            <FlexBox height={headerHeight} alignItems="center">
-              <Scroll to="top" duration={400} smooth={true} isDynamic>
-                <Box sx={{ cursor: "pointer" }}>
+            <FlexBox height={headerHeight} alignItems='center'>
+              <Scroll to='top' duration={400} smooth={true} isDynamic>
+                <Box sx={{ cursor: 'pointer' }}>
                   <Image
-                    width="96px"
-                    height="44px"
-                    src="/assets/images/logo2.svg"
-                    alt="logo"
+                    width='96px'
+                    height='44px'
+                    src='/assets/images/logo2.svg'
+                    alt='logo'
                   />
                 </Box>
               </Scroll>
 
-              <Box sx={{ mx: "auto" }}></Box>
+              <Box sx={{ mx: 'auto' }}></Box>
 
-              <FlexBox className="right-links" alignItems="center">
+              <FlexBox className='right-links' alignItems='center'>
                 <Scroll
-                  to="features"
+                  to='features'
                   duration={400}
                   offset={-headerHeight - 16}
                   smooth={true}
                 >
                   <Typography
-                    className="link"
-                    color="grey.600"
-                    p="0.25rem 1.25rem"
+                    className='link'
+                    color='grey.600'
+                    p='0.25rem 1.25rem'
                   >
                     Features
                   </Typography>
                 </Scroll>
 
                 <Scroll
-                  to="demos"
+                  to='demos'
                   duration={400}
                   offset={-headerHeight - 16}
                   smooth={true}
                 >
                   <Typography
-                    className="link"
-                    color="grey.600"
-                    p="0.25rem 1.25rem"
+                    className='link'
+                    color='grey.600'
+                    p='0.25rem 1.25rem'
                   >
                     Demos
                   </Typography>
                 </Scroll>
 
-                <a href="https://bazaar-doc.netlify.app/" target="__blank">
+                <a href='https://bazaar-doc.netlify.app/' target='__blank'>
                   <Typography
-                    className="link"
-                    color="grey.600"
-                    p="0.25rem 1.25rem"
+                    className='link'
+                    color='grey.600'
+                    p='0.25rem 1.25rem'
                   >
                     Documentation
                   </Typography>
@@ -133,8 +134,8 @@ const Header = () => {
               </FlexBox>
 
               {!downSM && (
-                <a target="__blank" href="https://tinyurl.com/get-bazaar">
-                  <Button variant="outlined">Purchase Now</Button>
+                <a target='__blank' href='https://tinyurl.com/get-bazaar'>
+                  <Button variant='outlined'>Purchase Now</Button>
                 </a>
               )}
 
@@ -143,7 +144,7 @@ const Header = () => {
                 <Sidenav
                   open={open}
                   width={260}
-                  position="right"
+                  position='right'
                   toggleSidenav={toggleSidenav}
                   handle={
                     <IconButton>
@@ -154,21 +155,21 @@ const Header = () => {
                   <Box
                     p={2}
                     sx={{
-                      "& .link": {
-                        cursor: "pointer",
-                        transition: "color 250ms ease-in-out",
-                        "&:hover": { color: "primary.main" },
+                      '& .link': {
+                        cursor: 'pointer',
+                        transition: 'color 250ms ease-in-out',
+                        '&:hover': { color: 'primary.main' },
                       },
                     }}
                   >
                     <Scroll
-                      to="features"
+                      to='features'
                       duration={400}
                       offset={-headerHeight - 16}
                       smooth={true}
                     >
                       <Typography
-                        className="link"
+                        className='link'
                         py={1}
                         onClick={toggleSidenav}
                       >
@@ -177,13 +178,13 @@ const Header = () => {
                     </Scroll>
 
                     <Scroll
-                      to="demos"
+                      to='demos'
                       duration={400}
                       offset={-headerHeight - 16}
                       smooth={true}
                     >
                       <Typography
-                        className="link"
+                        className='link'
                         py={1}
                         onClick={toggleSidenav}
                       >
@@ -194,11 +195,11 @@ const Header = () => {
                     <Scroll
                       smooth={true}
                       duration={400}
-                      to="technologies"
+                      to='technologies'
                       offset={-headerHeight - 16}
                     >
                       <Typography
-                        className="link"
+                        className='link'
                         py={1}
                         mb={2}
                         onClick={toggleSidenav}
@@ -208,11 +209,11 @@ const Header = () => {
                     </Scroll>
 
                     <Link
-                      href="https://material-ui.com/store/items/bazaar-pro-react-ecommerce-template/"
+                      href='https://material-ui.com/store/items/bazaar-pro-react-ecommerce-template/'
                       passHref
                       legacyBehavior
                     >
-                      <Button variant="outlined" color="primary">
+                      <Button variant='outlined' color='primary'>
                         Purchase Now
                       </Button>
                     </Link>

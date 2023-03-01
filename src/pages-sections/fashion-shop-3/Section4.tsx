@@ -1,49 +1,50 @@
-import { FC } from "react";
-import Image from "next/image";
-import { Box, Container, Grid, Stack, styled } from "@mui/material";
-import { FlexBox } from "components/flex-box";
-import { H2, H3 } from "components/Typography";
-import WhiteButton from "components/WhiteButton";
+import { Box, Container, Grid, Stack, styled } from '@mui/material';
+import Image from 'next/image';
+import { FC } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import { H2, H3 } from 'components/Typography';
+import WhiteButton from 'components/WhiteButton';
 
 // custom styled components
 const ContentBox = styled(Box)({
   top: 30,
   left: 0,
   right: 0,
-  textAlign: "center",
-  position: "absolute",
+  textAlign: 'center',
+  position: 'absolute',
 });
 
 const Category2Wrapper = styled(Box)({
-  width: "100%",
-  height: "50%",
-  position: "relative",
+  width: '100%',
+  height: '50%',
+  position: 'relative',
 });
 
 const Category2ButtonWrapper = styled(Box)({
   left: 0,
   right: 0,
   bottom: 30,
-  textAlign: "center",
-  position: "absolute",
+  textAlign: 'center',
+  position: 'absolute',
 });
 
 const Section4: FC = () => {
   return (
     <Container sx={{ mt: 8 }}>
-      <H2 textAlign="center" mb={4}>
+      <H2 textAlign='center' mb={4}>
         Top Categories
       </H2>
 
       <Grid container spacing={3}>
         <Grid item md={6} xs={12}>
-          <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
+          <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
             <Image
               width={580}
               height={580}
-              alt="category"
-              layout="responsive"
-              src="/assets/images/categories/1.jpg"
+              alt='category'
+              layout='responsive'
+              src='/assets/images/categories/1.jpg'
             />
 
             <ContentBox>
@@ -55,12 +56,12 @@ const Section4: FC = () => {
 
             <FlexBox
               gap={2}
-              justifyContent="center"
-              sx={{ position: "absolute", bottom: 30, left: 0, right: 0 }}
+              justifyContent='center'
+              sx={{ position: 'absolute', bottom: 30, left: 0, right: 0 }}
             >
-              <WhiteButton size="large">Women&#39;s</WhiteButton>
+              <WhiteButton size='large'>Women&#39;s</WhiteButton>
 
-              <WhiteButton size="large">Men&#39;s</WhiteButton>
+              <WhiteButton size='large'>Men&#39;s</WhiteButton>
             </FlexBox>
           </Box>
         </Grid>
@@ -68,15 +69,15 @@ const Section4: FC = () => {
         <Grid item md={6} xs={12}>
           <Stack spacing={3}>
             <SingleCategory
-              url="#"
+              url='#'
               buttonText="Women's T-Shirt"
-              img="/assets/images/categories/2.jpg"
+              img='/assets/images/categories/2.jpg'
             />
 
             <SingleCategory
-              url="#"
+              url='#'
               buttonText="Men's T-Shirt"
-              img="/assets/images/categories/3.jpg"
+              img='/assets/images/categories/3.jpg'
             />
           </Stack>
         </Grid>
@@ -97,13 +98,13 @@ const SingleCategory: FC<SingleCategoryProps> = (props) => {
       <Image
         width={580}
         height={280}
-        alt="category"
-        layout="responsive"
+        alt='category'
+        layout='responsive'
         src={img}
       />
 
       <Category2ButtonWrapper>
-        <WhiteButton size="large">{buttonText}</WhiteButton>
+        <WhiteButton size='large'>{buttonText}</WhiteButton>
       </Category2ButtonWrapper>
     </Category2Wrapper>
   );

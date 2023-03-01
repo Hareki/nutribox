@@ -1,27 +1,28 @@
-import { GetStaticProps, NextPage } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import SEO from "components/SEO";
-import Setting from "components/Setting";
-import Newsletter from "components/Newsletter";
-import MainCarouselItem from "models/Market-1.model";
-import ShopLayout1 from "components/layouts/ShopLayout1";
-import Section1 from "pages-sections/market-1/Section1";
-import Section2 from "pages-sections/market-1/Section2";
-import Section3 from "pages-sections/market-1/Section3";
-import Section4 from "pages-sections/market-1/Section4";
-import Section5 from "pages-sections/market-1/Section5";
-import Section6 from "pages-sections/market-1/Section6";
-import Section7 from "pages-sections/market-1/Section7";
-import Section8 from "pages-sections/market-1/Section8";
-import Section10 from "pages-sections/market-1/Section10";
-import Section11 from "pages-sections/market-1/Section11";
-import Section12 from "pages-sections/market-1/Section12";
-import Section13 from "pages-sections/market-1/Section13";
-import api from "utils/__api__/market-1";
-import Brand from "models/Brand.model";
-import Service from "models/Service.model";
-import Product from "models/Product.model";
-import Category from "models/Category.model";
+import { GetStaticProps, NextPage } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+import ShopLayout1 from 'components/layouts/ShopLayout1';
+import Newsletter from 'components/Newsletter';
+import SEO from 'components/SEO';
+import Setting from 'components/Setting';
+import Brand from 'models/Brand.model';
+import Category from 'models/Category.model';
+import MainCarouselItem from 'models/Market-1.model';
+import Product from 'models/Product.model';
+import Service from 'models/Service.model';
+import Section1 from 'pages-sections/market-1/Section1';
+import Section10 from 'pages-sections/market-1/Section10';
+import Section11 from 'pages-sections/market-1/Section11';
+import Section12 from 'pages-sections/market-1/Section12';
+import Section13 from 'pages-sections/market-1/Section13';
+import Section2 from 'pages-sections/market-1/Section2';
+import Section3 from 'pages-sections/market-1/Section3';
+import Section4 from 'pages-sections/market-1/Section4';
+import Section5 from 'pages-sections/market-1/Section5';
+import Section6 from 'pages-sections/market-1/Section6';
+import Section7 from 'pages-sections/market-1/Section7';
+import Section8 from 'pages-sections/market-1/Section8';
+import api from 'utils/__api__/market-1';
 
 // =================================================================
 type MarketProps = {
@@ -49,7 +50,7 @@ type MarketProps = {
 const MarketShop: NextPage<MarketProps> = (props) => {
   return (
     <ShopLayout1>
-      <SEO title="Market v1" />
+      <SEO title='Market v1' />
 
       {/* HERO SLIDER SECTION */}
       <Section1 carouselData={props.mainCarouselData} />
@@ -77,7 +78,7 @@ const MarketShop: NextPage<MarketProps> = (props) => {
 
       {/* MOBILE PHONES */}
       <Section7
-        title="Mobile Phones"
+        title='Mobile Phones'
         shops={props.mobileShops}
         brands={props.mobileBrands}
         productList={props.mobileList}
@@ -88,7 +89,7 @@ const MarketShop: NextPage<MarketProps> = (props) => {
 
       {/* OPTICS / WATHCH */}
       <Section7
-        title="Optics / Watch"
+        title='Optics / Watch'
         shops={props.opticsShops}
         brands={props.opticsBrands}
         productList={props.opticsList}
@@ -132,7 +133,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const bigDiscountList = await api.getBigDiscountList();
   const topRatedProducts = await api.getTopRatedProduct();
 
-  let locales = await serverSideTranslations(locale ?? "en", ["common"]);
+  const locales = await serverSideTranslations(locale ?? 'en', ['common']);
 
   return {
     props: {

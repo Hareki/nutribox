@@ -1,25 +1,26 @@
-import { FC } from "react";
-import { Box, Button, Card, styled } from "@mui/material";
-import { FlexBox } from "components/flex-box";
-import Verify from "components/icons/Verify";
-import { H1, H3, H5 } from "components/Typography";
-import { currency } from "lib";
+import { Box, Button, Card, styled } from '@mui/material';
+import { FC } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import Verify from 'components/icons/Verify';
+import { H1, H3, H5 } from 'components/Typography';
+import { currency } from 'lib';
 
 // styled components
 const Wrapper = styled(Card)({
-  display: "flex",
-  padding: "3rem 2rem",
-  alignItems: "center",
-  flexDirection: "column",
-  justifyContent: "center",
+  display: 'flex',
+  padding: '3rem 2rem',
+  alignItems: 'center',
+  flexDirection: 'column',
+  justifyContent: 'center',
 });
 
 const PackageHeading = styled(H1)(({ theme }) => ({
-  ":after": {
+  ':after': {
     fontSize: 16,
     fontWeight: 600,
     content: "'/month'",
-    verticalAlign: "baseline",
+    verticalAlign: 'baseline',
     color: theme.palette.grey[600],
   },
 }));
@@ -43,19 +44,19 @@ const SellerPackageCard: FC<SellerPackageCardProps> = ({ listItem }) => {
 
       <Box mt={1} mb={2}>
         {features.map((item, index) => (
-          <FlexBox gap={2} my={2} alignItems="center" key={index}>
+          <FlexBox gap={2} my={2} alignItems='center' key={index}>
             <Verify />
             <H5>{item}</H5>
           </FlexBox>
         ))}
       </Box>
 
-      <FlexBox alignItems="center" gap={2} width={200}>
-        <Button fullWidth color="secondary" variant="outlined">
+      <FlexBox alignItems='center' gap={2} width={200}>
+        <Button fullWidth color='secondary' variant='outlined'>
           Edit
         </Button>
 
-        <Button fullWidth color="error" variant="outlined">
+        <Button fullWidth color='error' variant='outlined'>
           Delete
         </Button>
       </FlexBox>

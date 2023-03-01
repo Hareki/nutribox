@@ -1,5 +1,4 @@
-import { ReactElement, useState } from "react";
-import { Delete } from "@mui/icons-material";
+import { Delete } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -9,30 +8,32 @@ import {
   MenuItem,
   Stack,
   TextField,
-} from "@mui/material";
-import * as Yup from "yup";
-import { Formik } from "formik";
-import DropZone from "components/DropZone";
-import { FlexBox } from "components/flex-box";
-import { H3, Paragraph } from "components/Typography";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+} from '@mui/material';
+import { Formik } from 'formik';
+import { ReactElement, useState } from 'react';
+import * as Yup from 'yup';
+
+import DropZone from 'components/DropZone';
+import { FlexBox } from 'components/flex-box';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import { H3, Paragraph } from 'components/Typography';
 
 const INITIAL_VALUES = {
   order: 10,
-  category: "fashion",
-  shopName: "The Icon Style",
-  shopPhone: "+123 4567 8910",
-  shopAddress: "4990 Hide A Way Road Santa Clara, CA 95050.",
+  category: 'fashion',
+  shopName: 'The Icon Style',
+  shopPhone: '+123 4567 8910',
+  shopAddress: '4990 Hide A Way Road Santa Clara, CA 95050.',
   description: `There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.`,
 };
 
 const validationSchema = Yup.object().shape({
-  shopName: Yup.string().required("Shop Name is required!"),
-  shopPhone: Yup.string().required("Shop Phone is required!"),
-  category: Yup.string().required("Category is required!"),
-  description: Yup.string().required("Description is required!"),
-  shopAddress: Yup.string().required("Shop Address is required!"),
-  order: Yup.number().required("Orders is required!"),
+  shopName: Yup.string().required('Shop Name is required!'),
+  shopPhone: Yup.string().required('Shop Phone is required!'),
+  category: Yup.string().required('Category is required!'),
+  description: Yup.string().required('Description is required!'),
+  shopAddress: Yup.string().required('Shop Address is required!'),
+  order: Yup.number().required('Orders is required!'),
 });
 
 // =============================================================================
@@ -43,14 +44,14 @@ ShopSettings.getLayout = function getLayout(page: ReactElement) {
 
 export default function ShopSettings() {
   const [links, setLinks] = useState([
-    { id: 1, name: "Links", value: "https://www.productbanner.com" },
+    { id: 1, name: 'Links', value: 'https://www.productbanner.com' },
   ]);
 
   const handleAddLink = () => {
     const newLink = {
       id: Date.now(),
-      name: "Links",
-      value: "https://www.google.com",
+      name: 'Links',
+      value: 'https://www.google.com',
     };
     setLinks((state) => [...state, newLink]);
   };
@@ -62,7 +63,7 @@ export default function ShopSettings() {
   const handleFormSubmit = (values) => {};
 
   return (
-    <Box py={4} maxWidth={740} margin="auto">
+    <Box py={4} maxWidth={740} margin='auto'>
       <H3 mb={2}>Shop Settings</H3>
 
       <Card sx={{ p: 3 }}>
@@ -86,10 +87,10 @@ export default function ShopSettings() {
             <form onSubmit={handleSubmit}>
               <Stack spacing={3} mb={3}>
                 <TextField
-                  color="info"
-                  size="medium"
-                  name="shopName"
-                  label="Shop Name *"
+                  color='info'
+                  size='medium'
+                  name='shopName'
+                  label='Shop Name *'
                   onBlur={handleBlur}
                   value={values.shopName}
                   onChange={handleChange}
@@ -98,10 +99,10 @@ export default function ShopSettings() {
                 />
 
                 <TextField
-                  color="info"
-                  size="medium"
-                  name="shopPhone"
-                  label="Shop Phone"
+                  color='info'
+                  size='medium'
+                  name='shopPhone'
+                  label='Shop Phone'
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.shopPhone}
@@ -112,32 +113,32 @@ export default function ShopSettings() {
                 <TextField
                   select
                   fullWidth
-                  color="info"
-                  size="medium"
-                  name="category"
+                  color='info'
+                  size='medium'
+                  name='category'
                   onBlur={handleBlur}
-                  placeholder="Category"
-                  label="Select Category"
+                  placeholder='Category'
+                  label='Select Category'
                   onChange={handleChange}
                   value={values.category}
                   error={Boolean(errors.category && touched.category)}
                   helperText={(touched.category && errors.category) as string}
                 >
-                  <MenuItem value="electronics">Electronics</MenuItem>
-                  <MenuItem value="fashion">Fashion</MenuItem>
+                  <MenuItem value='electronics'>Electronics</MenuItem>
+                  <MenuItem value='fashion'>Fashion</MenuItem>
                 </TextField>
 
                 <TextField
                   rows={6}
                   multiline
                   fullWidth
-                  color="info"
-                  size="medium"
-                  name="description"
+                  color='info'
+                  size='medium'
+                  name='description'
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.description}
-                  label="Description (optional)"
+                  label='Description (optional)'
                   error={Boolean(errors.description && touched.description)}
                   helperText={
                     (touched.description && errors.description) as string
@@ -145,10 +146,10 @@ export default function ShopSettings() {
                 />
 
                 <TextField
-                  color="info"
-                  size="medium"
-                  name="shopAddress"
-                  label="Shop Address"
+                  color='info'
+                  size='medium'
+                  name='shopAddress'
+                  label='Shop Address'
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.shopAddress}
@@ -159,20 +160,20 @@ export default function ShopSettings() {
                 />
 
                 <TextField
-                  name="order"
-                  color="info"
-                  size="medium"
-                  type="number"
+                  name='order'
+                  color='info'
+                  size='medium'
+                  type='number'
                   onBlur={handleBlur}
                   value={values.order}
-                  label="Minimum Order *"
+                  label='Minimum Order *'
                   onChange={handleChange}
                   error={Boolean(errors.order && touched.order)}
                   helperText={(touched.order && errors.order) as string}
                 />
               </Stack>
 
-              <Button type="submit" color="info" variant="contained">
+              <Button type='submit' color='info' variant='contained'>
                 Save Changes
               </Button>
             </form>
@@ -188,56 +189,56 @@ export default function ShopSettings() {
         <Stack spacing={3} mb={3}>
           <DropZone
             onChange={(files) => console.log(files)}
-            title="Main Banner (1920 x 360) *"
-            imageSize="We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
+            title='Main Banner (1920 x 360) *'
+            imageSize='We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation.'
           />
 
           <TextField
             select
             fullWidth
-            color="info"
-            size="medium"
-            name="features"
-            placeholder="Product Features"
-            label="Product Features"
-            defaultValue="electronics"
+            color='info'
+            size='medium'
+            name='features'
+            placeholder='Product Features'
+            label='Product Features'
+            defaultValue='electronics'
           >
-            <MenuItem value="electronics">Electronics</MenuItem>
-            <MenuItem value="fashion">Fashion</MenuItem>
+            <MenuItem value='electronics'>Electronics</MenuItem>
+            <MenuItem value='fashion'>Fashion</MenuItem>
           </TextField>
 
           <DropZone
             onChange={(files) => console.log(files)}
-            title="All products page banner * (Recommended size 1025x120)"
-            imageSize="We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
+            title='All products page banner * (Recommended size 1025x120)'
+            imageSize='We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation.'
           />
         </Stack>
 
         <Box mb={4}>
           {links.map((item) => (
-            <FlexBox gap={2} alignItems="center" mb={2} key={item.id}>
+            <FlexBox gap={2} alignItems='center' mb={2} key={item.id}>
               <TextField
                 fullWidth
-                color="info"
-                size="medium"
-                label="Links"
+                color='info'
+                size='medium'
+                label='Links'
                 defaultValue={item.value}
               />
 
               <Box flexShrink={0}>
                 <IconButton onClick={handleDeleteLink(item.id)}>
-                  <Delete sx={{ color: "grey.600" }} />
+                  <Delete sx={{ color: 'grey.600' }} />
                 </IconButton>
               </Box>
             </FlexBox>
           ))}
 
-          <Button color="info" variant="outlined" onClick={handleAddLink}>
+          <Button color='info' variant='outlined' onClick={handleAddLink}>
             Add Link
           </Button>
         </Box>
 
-        <Button color="info" variant="contained">
+        <Button color='info' variant='contained'>
           Save Changes
         </Button>
       </Card>

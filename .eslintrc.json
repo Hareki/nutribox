@@ -7,6 +7,11 @@
     "eslint:recommended"
   ],
   "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "import/no-named-as-default-member": "off",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/ban-types": "warn",
     "import/no-anonymous-default-export": 0,
     "@next/next/no-img-element": 0,
     "spaced-comment": "error",
@@ -25,6 +30,7 @@
   "parser": "@typescript-eslint/parser",
   "globals": {
     "Promise": true,
-    "JSX": true
+    "JSX": true,
+    "React": true
   }
 }

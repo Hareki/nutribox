@@ -1,5 +1,5 @@
-import { FC, ReactNode } from "react";
-import { Box, Drawer, styled } from "@mui/material";
+import { Box, Drawer, styled } from '@mui/material';
+import { FC, ReactNode } from 'react';
 
 // ==========================================================
 type LayoutDrawerProps = {
@@ -11,10 +11,10 @@ type LayoutDrawerProps = {
 // ==========================================================
 
 const Wrapper = styled(Box)(({ theme }) => ({
-  height: "100%",
-  width: "inherit",
-  position: "fixed",
-  overflow: "hidden",
+  height: '100%',
+  width: 'inherit',
+  position: 'fixed',
+  overflow: 'hidden',
   boxShadow: theme.shadows[1],
   zIndex: theme.zIndex.drawer + 3,
   color: theme.palette.common.white,
@@ -27,7 +27,7 @@ const LayoutDrawer: FC<LayoutDrawerProps> = (props) => {
   return (
     <Drawer
       open={open}
-      anchor="left"
+      anchor='left'
       onClose={onClose}
       PaperProps={{ sx: { width: drawerWidth } }}
     >

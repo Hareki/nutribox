@@ -1,96 +1,97 @@
-import axios from "axios";
-import Product from "models/Product.model";
-import Service from "models/Service.model";
-import Category from "models/Category.model";
-import MainCarouselItem from "models/Market-1.model";
+import axios from 'axios';
+
+import Category from 'models/Category.model';
+import MainCarouselItem from 'models/Market-1.model';
+import Product from 'models/Product.model';
+import Service from 'models/Service.model';
 
 const getTopRatedProduct = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-1/toprated-product");
+  const response = await axios.get('/api/market-1/toprated-product');
   return response.data;
 };
 
 const getTopRatedBrand = async () => {
-  const response = await axios.get("/api/market-1/toprated-brand");
+  const response = await axios.get('/api/market-1/toprated-brand');
   return response.data;
 };
 
 const getNewArrivalList = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-1/new-arrivals");
+  const response = await axios.get('/api/market-1/new-arrivals');
   return response.data;
 };
 
 const getCarBrands = async (): Promise<string[]> => {
-  const response = await axios.get("/api/market-1/car-brand-list");
+  const response = await axios.get('/api/market-1/car-brand-list');
   return response.data;
 };
 
 const getCarList = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-1/car-list");
+  const response = await axios.get('/api/market-1/car-list');
   return response.data;
 };
 
 const getMobileBrands = async (): Promise<string[]> => {
-  const response = await axios.get("/api/market-1/mobile-brand-list");
+  const response = await axios.get('/api/market-1/mobile-brand-list');
   return response.data;
 };
 
 const getMobileShops = async (): Promise<string[]> => {
-  const response = await axios.get("/api/market-1/mobile-shop-list");
+  const response = await axios.get('/api/market-1/mobile-shop-list');
   return response.data;
 };
 
 const getMobileList = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-1/mobile-list");
+  const response = await axios.get('/api/market-1/mobile-list');
   return response.data;
 };
 
 const getOpticsBrands = async (): Promise<string[]> => {
-  const response = await axios.get("/api/market-1/optics/watch-brands");
+  const response = await axios.get('/api/market-1/optics/watch-brands');
   return response.data;
 };
 
 const getOpticsShops = async (): Promise<string[]> => {
-  const response = await axios.get("/api/market-1/optics/watch-shops");
+  const response = await axios.get('/api/market-1/optics/watch-shops');
   return response.data;
 };
 
 const getOpticsList = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-1/optics-list");
+  const response = await axios.get('/api/market-1/optics-list');
   return response.data;
 };
 
 const getCategories = async (): Promise<Category[]> => {
-  const response = await axios.get("/api/market-1/bottom-categories");
+  const response = await axios.get('/api/market-1/bottom-categories');
   return response.data;
 };
 
 const getMoreItems = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-1/get-more-items");
+  const response = await axios.get('/api/market-1/get-more-items');
   return response.data;
 };
 
 const getServiceList = async (): Promise<Service[]> => {
-  const response = await axios.get("/api/market-1/get-service-list");
+  const response = await axios.get('/api/market-1/get-service-list');
   return response.data;
 };
 
 const getMainCarousel = async (): Promise<[MainCarouselItem]> => {
-  const response = await axios.get("/api/market-1/main-carousel");
+  const response = await axios.get('/api/market-1/main-carousel');
   return response.data;
 };
 
 const getFlashDeals = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-1/flash-deals");
+  const response = await axios.get('/api/market-1/flash-deals');
   return response.data;
 };
 
 const getTopCategories = async (): Promise<Category[]> => {
-  const response = await axios.get("/api/market-1/top-categories");
+  const response = await axios.get('/api/market-1/top-categories');
   return response.data;
 };
 
 const getBigDiscountList = async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-1/big-discounts");
+  const response = await axios.get('/api/market-1/big-discounts');
   return response.data;
 };
 

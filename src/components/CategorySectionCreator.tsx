@@ -1,6 +1,7 @@
-import { FC, ReactNode } from "react";
-import { Box, BoxProps, Container } from "@mui/material";
-import CategorySectionHeader from "./CategorySectionHeader";
+import { Box, BoxProps, Container } from '@mui/material';
+import { FC, ReactNode } from 'react';
+
+import CategorySectionHeader from './CategorySectionHeader';
 
 // ==============================================================
 interface Props extends BoxProps {
@@ -15,7 +16,7 @@ const CategorySectionCreator: FC<Props> = (props) => {
 
   return (
     <Box mb={7.5} {...others}>
-      <Container sx={{ pb: "1rem" }}>
+      <Container sx={{ pb: '1rem' }}>
         {title && (
           <CategorySectionHeader
             title={title}

@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Box } from "@mui/material";
-import HoverBox from "components/HoverBox";
-import LazyImage from "components/LazyImage";
-import { H4 } from "components/Typography";
+import { Box } from '@mui/material';
+import { FC } from 'react';
+
+import HoverBox from 'components/HoverBox';
+import LazyImage from 'components/LazyImage';
+import { H4 } from 'components/Typography';
 
 // ==========================================================
 type ProductCardProps = { title: string; imgUrl: string };
@@ -11,14 +12,14 @@ type ProductCardProps = { title: string; imgUrl: string };
 const ProductCard5: FC<ProductCardProps> = ({ imgUrl, title }) => {
   return (
     <Box>
-      <HoverBox borderRadius="5px" mb={1}>
+      <HoverBox borderRadius='5px' mb={1}>
         <LazyImage
           alt={title}
           width={260}
           src={imgUrl}
           height={175}
-          objectFit="cover"
-          layout="responsive"
+          objectFit='cover'
+          layout='responsive'
         />
       </HoverBox>
       <H4 fontSize={14}>{title}</H4>

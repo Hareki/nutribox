@@ -1,30 +1,30 @@
-import { FC, ReactNode } from "react";
-import { Box, styled } from "@mui/material";
+import { Box, styled } from '@mui/material';
+import { FC, ReactNode } from 'react';
 
 // styled component
 const Wrapper = styled(Box)(({ theme }) => ({
-  display: "none",
-  position: "absolute",
-  left: "100%",
-  right: "auto",
+  display: 'none',
+  position: 'absolute',
+  left: '100%',
+  right: 'auto',
   top: 0,
   zIndex: 99,
-  "& .title-link, & .child-link": {
-    color: "inherit",
+  '& .title-link, & .child-link': {
+    color: 'inherit',
     fontWeight: 600,
-    display: "block",
-    padding: "0.5rem 0px",
+    display: 'block',
+    padding: '0.5rem 0px',
   },
-  "& .child-link": {
+  '& .child-link': {
     fontWeight: 400,
   },
-  "& .mega-menu-content": {
-    padding: "0.5rem 0px",
-    marginLeft: "1rem",
+  '& .mega-menu-content': {
+    padding: '0.5rem 0px',
+    marginLeft: '1rem',
     borderRadius: 4,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[3],
-    transition: "all 250ms ease-in-out",
+    transition: 'all 250ms ease-in-out',
   },
 }));
 
@@ -33,7 +33,7 @@ type Props = { children?: ReactNode };
 // =================================================
 
 const StyledMegaMenu: FC<Props> = ({ children }) => {
-  return <Wrapper className="mega-menu">{children}</Wrapper>;
+  return <Wrapper className='mega-menu'>{children}</Wrapper>;
 };
 
 export default StyledMegaMenu;

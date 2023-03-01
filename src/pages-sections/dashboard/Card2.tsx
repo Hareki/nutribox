@@ -1,8 +1,9 @@
-import { FC, ReactNode } from "react";
-import { Box, Card } from "@mui/material";
-import { ArrowDropUp } from "@mui/icons-material";
-import { FlexBox } from "components/flex-box";
-import { H3, H6, Paragraph } from "components/Typography";
+import { ArrowDropUp } from '@mui/icons-material';
+import { Box, Card } from '@mui/material';
+import { FC, ReactNode } from 'react';
+
+import { FlexBox } from 'components/flex-box';
+import { H3, H6, Paragraph } from 'components/Typography';
 
 // =========================================================
 type Card2Props = {
@@ -20,23 +21,23 @@ const Card2: FC<Card2Props> = ({ children, title, amount, percentage }) => {
         p: 3,
         pr: 1,
         gap: 2,
-        height: "100%",
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "space-between",
+        height: '100%',
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
       }}
     >
-      <Box flexShrink={0} height="inherit">
+      <Box flexShrink={0} height='inherit'>
         <FlexBox
-          flexDirection="column"
-          justifyContent="space-between"
-          height="inherit"
+          flexDirection='column'
+          justifyContent='space-between'
+          height='inherit'
         >
-          <H6 color="grey.600">{title}</H6>
+          <H6 color='grey.600'>{title}</H6>
 
           <Box>
             <H3>{amount}</H3>
-            <FlexBox mt={0.3} alignItems="center" color="info.main">
+            <FlexBox mt={0.3} alignItems='center' color='info.main'>
               <ArrowDropUp />
               <Paragraph fontSize={12}>{percentage}</Paragraph>
             </FlexBox>
@@ -44,7 +45,7 @@ const Card2: FC<Card2Props> = ({ children, title, amount, percentage }) => {
         </FlexBox>
       </Box>
 
-      <Box sx={{ "& > div": { minHeight: "0px !important" } }}>{children}</Box>
+      <Box sx={{ '& > div': { minHeight: '0px !important' } }}>{children}</Box>
     </Card>
   );
 };

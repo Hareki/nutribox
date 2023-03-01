@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 // ================================================================
-type Order = "asc" | "desc";
+type Order = 'asc' | 'desc';
 type Unknown = Record<string | number, string>;
 // ================================================================
 
@@ -12,7 +12,7 @@ export function descendingComparator(a: Unknown, b: Unknown, orderBy: string) {
 }
 
 export function getComparator(order: Order, orderBy: string) {
-  return order === "desc"
+  return order === 'desc'
     ? (a: Unknown, b: Unknown) => descendingComparator(a, b, orderBy)
     : (a: Unknown, b: Unknown) => -descendingComparator(a, b, orderBy);
 }
@@ -33,12 +33,12 @@ export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 interface HookProps {
   listData: any[];
   defaultSort?: string;
-  defaultOrder?: "asc" | "desc";
+  defaultOrder?: 'asc' | 'desc';
 }
 // ================================================================
 
 const useMuiTable = (props: HookProps) => {
-  const { listData = [], defaultSort = "name", defaultOrder = "asc" } = props;
+  const { listData = [], defaultSort = 'name', defaultOrder = 'asc' } = props;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(20);
@@ -48,8 +48,8 @@ const useMuiTable = (props: HookProps) => {
 
   // Handle list sorting
   const handleRequestSort = (property: string) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
 
@@ -76,7 +76,7 @@ const useMuiTable = (props: HookProps) => {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
     setSelected(newSelected);
@@ -86,7 +86,7 @@ const useMuiTable = (props: HookProps) => {
 
   const filteredList = stableSort(
     listData,
-    getComparator(order, orderBy)
+    getComparator(order, orderBy),
   ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return {

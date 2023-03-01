@@ -1,21 +1,22 @@
-import { FC } from "react";
-import { Box, Button, Grid, styled } from "@mui/material";
-import { H1 } from "components/Typography";
-import ProductCard10 from "components/product-cards/ProductCard10";
-import Product from "models/Product.model";
+import { Box, Button, Grid, styled } from '@mui/material';
+import { FC } from 'react';
+
+import ProductCard10 from 'components/product-cards/ProductCard10';
+import { H1 } from 'components/Typography';
+import Product from 'models/Product.model';
 
 // styled component
 const TitleBox = styled(Box)(({ theme }) => ({
-  textAlign: "center",
-  "& h1": {
+  textAlign: 'center',
+  '& h1': {
     fontSize: 40,
     fontWeight: 600,
-    marginBottom: "10px",
+    marginBottom: '10px',
   },
-  "& div": {
+  '& div': {
     width: 200,
-    height: "2px",
-    margin: "auto",
+    height: '2px',
+    margin: 'auto',
     background: theme.palette.primary.main,
   },
 }));
@@ -48,8 +49,8 @@ const Section4: FC<Props> = ({ products }) => {
           </Grid>
         ))}
       </Grid>
-      <Box mt={6} display="flex" justifyContent="center">
-        <Button variant="contained" color="primary" sx={{ fontSize: "13px" }}>
+      <Box mt={6} display='flex' justifyContent='center'>
+        <Button variant='contained' color='primary' sx={{ fontSize: '13px' }}>
           Load More...
         </Button>
       </Box>

@@ -1,64 +1,66 @@
-import { NextPage } from "next";
-import { useEffect, useRef, useState } from "react";
-import { Box, Chip, Container, Grid, Pagination, styled } from "@mui/material";
-import SEO from "components/SEO";
-import SaleNavbar from "components/navbar/SaleNavbar";
-import SaleLayout from "components/layouts/SaleLayout";
-import ProductCard1 from "components/product-cards/ProductCard1";
-import { FlexBetween, FlexBox, FlexRowCenter } from "components/flex-box";
-import { H1, H5, Span } from "components/Typography";
-import appIcons from "components/icons";
-import productDB from "data/product-database";
-import { renderProductCount } from "../src/lib";
-import useScroller from "hooks/useScroller";
-import Product from "models/Product.model";
-import Category from "models/Category.model";
-import api from "utils/__api__/sales";
+import { Box, Chip, Container, Grid, Pagination, styled } from '@mui/material';
+import { NextPage } from 'next';
+import { useEffect, useRef, useState } from 'react';
+
+import { renderProductCount } from '../src/lib';
+
+import { FlexBetween, FlexBox, FlexRowCenter } from 'components/flex-box';
+import appIcons from 'components/icons';
+import SaleLayout from 'components/layouts/SaleLayout';
+import SaleNavbar from 'components/navbar/SaleNavbar';
+import ProductCard1 from 'components/product-cards/ProductCard1';
+import SEO from 'components/SEO';
+import { H1, H5, Span } from 'components/Typography';
+import productDB from 'data/product-database';
+import useScroller from 'hooks/useScroller';
+import Category from 'models/Category.model';
+import Product from 'models/Product.model';
+import api from 'utils/__api__/sales';
 // import productsList from "data/product-database";
 
 //  custom styled components
 const CategoryBoxWrapper = styled(FlexRowCenter)<{ selected: number }>(
   ({ selected, theme }) => ({
-    flex: "1 1 0",
-    height: "175px",
-    margin: "0.75rem",
-    minWidth: "200px",
-    cursor: "pointer",
-    borderRadius: "8px",
-    position: "relative",
-    flexDirection: "column",
-    transition: "all 250ms ease-in-out",
+    flex: '1 1 0',
+    height: '175px',
+    margin: '0.75rem',
+    minWidth: '200px',
+    cursor: 'pointer',
+    borderRadius: '8px',
+    position: 'relative',
+    flexDirection: 'column',
+    transition: 'all 250ms ease-in-out',
     border: `1px solid ${theme.palette.grey[400]}`,
-    background: selected ? "white" : "transparent",
-  })
+    background: selected ? 'white' : 'transparent',
+  }),
 );
 
 const StyledChip = styled(Chip)<{ selected: number }>(
   ({ selected, theme }) => ({
-    top: "1rem",
-    right: "1rem",
+    top: '1rem',
+    right: '1rem',
     fontWeight: 600,
-    fontSize: "10px",
-    padding: "5px 10px",
-    position: "absolute",
-    color: selected ? "white" : "inherit",
+    fontSize: '10px',
+    padding: '5px 10px',
+    position: 'absolute',
+    color: selected ? 'white' : 'inherit',
     boxShadow: selected
-      ? "0px 8px 20px -5px rgba(255, 103, 128, 0.9)"
-      : "inherit",
+      ? '0px 8px 20px -5px rgba(255, 103, 128, 0.9)'
+      : 'inherit',
     backgroundColor: selected
       ? theme.palette.primary.main
       : theme.palette.grey[300],
-  })
+  }),
 );
 
 const CategoryWrapper = styled(Box)<{ show: number }>(({ show, theme }) => ({
   left: 0,
   zIndex: 99,
-  width: "100%",
-  position: "fixed",
+  width: '100%',
+  position: 'fixed',
   top: show ? 0 : -90,
   boxShadow: theme.shadows[2],
-  transition: "top 0.3s ease-in-out",
+  transition: 'top 0.3s ease-in-out',
 }));
 
 const SalePage1: NextPage = () => {
@@ -68,7 +70,7 @@ const SalePage1: NextPage = () => {
   const [page, setPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("women");
+  const [selectedCategory, setSelectedCategory] = useState('women');
   const { isFixedHeader } = useScroller(categoryRef);
 
   // HANDLE CHANGE PAGE
@@ -89,9 +91,9 @@ const SalePage1: NextPage = () => {
 
   return (
     <SaleLayout>
-      <SEO title="Sale page v1" />
+      <SEO title='Sale page v1' />
 
-      <Container sx={{ mt: "2rem" }}>
+      <Container sx={{ mt: '2rem' }}>
         {/* CATEGORY HEADER NAV */}
         <CategoryWrapper show={isFixedHeader ? 1 : 0}>
           <SaleNavbar
@@ -102,19 +104,19 @@ const SalePage1: NextPage = () => {
         </CategoryWrapper>
 
         {/* TITLE */}
-        <FlexBox mb={4} flexWrap="wrap">
-          <H1 color="primary.main" mr={1} lineHeight="1">
+        <FlexBox mb={4} flexWrap='wrap'>
+          <H1 color='primary.main' mr={1} lineHeight='1'>
             Flash Deals,
           </H1>
 
-          <H1 color="grey.600" lineHeight="1">
+          <H1 color='grey.600' lineHeight='1'>
             Enjoy Upto 80% discounts
           </H1>
         </FlexBox>
 
         {/* SELECTED CATEGORY LIST */}
-        <Box mb={4} overflow="hidden" ref={categoryRef}>
-          <FlexBox m={-1.5} flexWrap="wrap">
+        <Box mb={4} overflow='hidden' ref={categoryRef}>
+          <FlexBox m={-1.5} flexWrap='wrap'>
             {categories.map((item) => {
               const selectedItem = item.slug === selectedCategory ? 1 : 0;
               const Icon = appIcons[item.icon];
@@ -126,19 +128,19 @@ const SalePage1: NextPage = () => {
                   onClick={handleCategoryChange(item.slug)}
                 >
                   <Icon
-                    fontSize="inherit"
+                    fontSize='inherit'
                     sx={{ fontSize: 44 }}
-                    color={selectedItem ? "primary" : "secondary"}
+                    color={selectedItem ? 'primary' : 'secondary'}
                   />
 
-                  <H5 color={selectedItem ? "primary.main" : "inherit"}>
+                  <H5 color={selectedItem ? 'primary.main' : 'inherit'}>
                     {item.name}
                   </H5>
 
                   <StyledChip
-                    size="small"
-                    color="primary"
-                    label="Upto 40% off"
+                    size='small'
+                    color='primary'
+                    label='Upto 40% off'
                     selected={selectedItem}
                   />
                 </CategoryBoxWrapper>
@@ -165,14 +167,14 @@ const SalePage1: NextPage = () => {
         </Grid>
 
         {/* PAGINATION AREA */}
-        <FlexBetween flexWrap="wrap" my={8}>
+        <FlexBetween flexWrap='wrap' my={8}>
           <Span>
             {renderProductCount(page, PRODUCT_PER_PAGE, productDB.length)}
           </Span>
           <Pagination
             page={page}
-            color="primary"
-            variant="outlined"
+            color='primary'
+            variant='outlined'
             onChange={handlePageChange}
             count={Math.ceil(productDB.length / PRODUCT_PER_PAGE)}
           />

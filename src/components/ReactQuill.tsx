@@ -1,27 +1,27 @@
-import { Box, FormHelperText, styled } from "@mui/material";
+import { Box, FormHelperText, styled } from '@mui/material';
 // import dynamic from "next/dynamic";
-import { FC } from "react";
+import { FC } from 'react';
 
-//react quill
+// react quill
 // const CustomQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const Container = styled(Box)<{ box_height?: number }>(
   ({ theme, box_height }) => ({
-    "& .ql-toolbar": {
-      borderColor: "transparent",
-      borderRadius: "12px 12px 0px 0px",
+    '& .ql-toolbar': {
+      borderColor: 'transparent',
+      borderRadius: '12px 12px 0px 0px',
       backgroundColor: theme.palette.divider,
     },
-    "& .ql-editor": {
+    '& .ql-editor': {
       minHeight: box_height ?? 500,
       direction: theme.direction,
       // ...(theme.direction === "rtl" && { direction: "rtl", textAlign: "right" }),
     },
-    "& .ql-container": {
+    '& .ql-container': {
       minHeight: box_height ?? 500,
       borderColor: theme.palette.divider,
     },
-  })
+  }),
 );
 
 // ===================================================
@@ -48,15 +48,15 @@ const modules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     [{ font: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' },
     ],
-    ["link", "image", "video"],
-    ["clean"],
+    ['link', 'image', 'video'],
+    ['clean'],
   ],
 };
 

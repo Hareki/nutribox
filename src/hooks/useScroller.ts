@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useState } from "react";
+import { MutableRefObject, useCallback, useEffect, useState } from 'react';
 
 const useScroller = (ref: MutableRefObject<any>) => {
   const [isFixedHeader, setIsFixedHeader] = useState(false);
@@ -22,8 +22,8 @@ const useScroller = (ref: MutableRefObject<any>) => {
   useEffect(() => {
     if (!window) return;
 
-    window.addEventListener("scroll", scroller);
-    return () => window.removeEventListener("scroll", scroller);
+    window.addEventListener('scroll', scroller);
+    return () => window.removeEventListener('scroll', scroller);
   }, [scroller]);
 
   return { isFixedHeader };

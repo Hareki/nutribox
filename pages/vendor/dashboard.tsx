@@ -1,14 +1,15 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Grid } from "@mui/material";
-import Card1 from "pages-sections/dashboard/Card1";
-import Section3 from "pages-sections/dashboard/Section3";
-import WishCard from "pages-sections/dashboard/WishCard";
-import Analytics from "pages-sections/dashboard/Analytics";
-import RecentPurchase from "pages-sections/dashboard/RecentPurchase";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import StockOutProducts from "pages-sections/dashboard/StockOutProducts";
-import api from "utils/__api__/dashboard";
+import { Box, Grid } from '@mui/material';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Analytics from 'pages-sections/dashboard/Analytics';
+import Card1 from 'pages-sections/dashboard/Card1';
+import RecentPurchase from 'pages-sections/dashboard/RecentPurchase';
+import Section3 from 'pages-sections/dashboard/Section3';
+import StockOutProducts from 'pages-sections/dashboard/StockOutProducts';
+import WishCard from 'pages-sections/dashboard/WishCard';
+import api from 'utils/__api__/dashboard';
 
 // =============================================================================
 VendorDashboard.getLayout = function getLayout(page: ReactElement) {
@@ -43,7 +44,7 @@ export default function VendorDashboard(props: DashboardProps) {
                 amount1={item.amount1}
                 amount2={item.amount2}
                 percentage={item.percentage}
-                status={item.status === "down" ? "down" : "up"}
+                status={item.status === 'down' ? 'down' : 'up'}
               />
             </Grid>
           ))}

@@ -5,17 +5,17 @@ import {
   Grid,
   TextField,
   Typography,
-} from "@mui/material";
-import Box from "@mui/material/Box";
-import { useFormik } from "formik";
-import React, { FC } from "react";
-import * as yup from "yup";
+} from '@mui/material';
+import Box from '@mui/material/Box';
+import { useFormik } from 'formik';
+import React, { FC } from 'react';
+import * as yup from 'yup';
 
 const checkoutSchema = yup.object({
   address2: yup.string(),
-  name: yup.string().required("required"),
-  address1: yup.string().required("required"),
-  phone: yup.number().required("required"),
+  name: yup.string().required('required'),
+  address1: yup.string().required('required'),
+  phone: yup.number().required('required'),
 });
 
 // ================================================================
@@ -60,7 +60,7 @@ const EditAddressForm: FC<EditAddressFormProps> = (props) => {
   return (
     <Dialog open={openEditForm} onClose={() => setOpenEditForm(false)}>
       <DialogContent>
-        <Typography variant="h6" mb={3}>
+        <Typography variant='h6' mb={3}>
           Edit Address Information
         </Typography>
 
@@ -70,9 +70,9 @@ const EditAddressForm: FC<EditAddressFormProps> = (props) => {
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  name="name"
-                  type="text"
-                  label="Enter Your Name"
+                  name='name'
+                  type='text'
+                  label='Enter Your Name'
                   value={formik.values.name}
                   onChange={formik.handleChange}
                   helperText={
@@ -84,9 +84,9 @@ const EditAddressForm: FC<EditAddressFormProps> = (props) => {
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  type="text"
-                  name="address1"
-                  label="Address line 1"
+                  type='text'
+                  name='address1'
+                  label='Address line 1'
                   value={formik.values.address1}
                   onChange={formik.handleChange}
                   error={
@@ -102,9 +102,9 @@ const EditAddressForm: FC<EditAddressFormProps> = (props) => {
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  type="text"
-                  name="address2"
-                  label="Address line 2"
+                  type='text'
+                  name='address2'
+                  label='Address line 2'
                   value={formik.values.address2}
                   onChange={formik.handleChange}
                   error={
@@ -120,9 +120,9 @@ const EditAddressForm: FC<EditAddressFormProps> = (props) => {
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  type="text"
-                  name="phone"
-                  label="Enter Your Phone"
+                  type='text'
+                  name='phone'
+                  label='Enter Your Phone'
                   value={formik.values.phone}
                   onChange={formik.handleChange}
                   error={formik.touched.phone && Boolean(formik.errors.phone)}
@@ -134,7 +134,7 @@ const EditAddressForm: FC<EditAddressFormProps> = (props) => {
             </Grid>
           </Box>
 
-          <Button color="primary" variant="contained" type="submit">
+          <Button color='primary' variant='contained' type='submit'>
             Save
           </Button>
         </form>

@@ -1,9 +1,10 @@
-import { ReactElement } from "react";
-import { Box } from "@mui/material";
-import * as yup from "yup";
-import { H3 } from "components/Typography";
-import { BrandForm } from "pages-sections/admin";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+import { Box } from '@mui/material';
+import { ReactElement } from 'react';
+import * as yup from 'yup';
+
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import { H3 } from 'components/Typography';
+import { BrandForm } from 'pages-sections/admin';
 // import api from "utils/__api__/products";
 
 // =============================================================================
@@ -13,13 +14,13 @@ CreateBrand.getLayout = function getLayout(page: ReactElement) {
 // =============================================================================
 
 const INITIAL_VALUES = {
-  name: "",
+  name: '',
   featured: false,
 };
 
 // form field validation schema
 const validationSchema = yup.object().shape({
-  name: yup.string().required("required"),
+  name: yup.string().required('required'),
 });
 
 export default function CreateBrand() {

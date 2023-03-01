@@ -1,19 +1,20 @@
-import { Box, styled } from "@mui/material";
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import CategoryMenuCard from "./CategoryMenuCard";
+import { Box, styled } from '@mui/material';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+
+import CategoryMenuCard from './CategoryMenuCard';
 
 // styled component
 const Wrapper = styled(Box)<{ open: boolean }>(
   ({ open, theme: { direction } }) => ({
-    cursor: "pointer",
-    position: "relative",
-    "& .dropdown-icon": {
-      transition: "all 250ms ease-in-out",
+    cursor: 'pointer',
+    position: 'relative',
+    '& .dropdown-icon': {
+      transition: 'all 250ms ease-in-out',
       transform: `rotate(${
-        open ? (direction === "rtl" ? "-90deg" : "90deg") : "0deg"
+        open ? (direction === 'rtl' ? '-90deg' : '90deg') : '0deg'
       })`,
     },
-  })
+  }),
 );
 
 // ===========================================================
@@ -41,9 +42,9 @@ const CategoryMenu: FC<CategoryMenuProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    window.addEventListener("click", handleDocumentClick);
+    window.addEventListener('click', handleDocumentClick);
 
-    return () => window.removeEventListener("click", handleDocumentClick);
+    return () => window.removeEventListener('click', handleDocumentClick);
   }, [handleDocumentClick]);
 
   return (

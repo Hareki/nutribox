@@ -1,4 +1,3 @@
-import { FC, useState } from "react";
 import {
   Button,
   Card,
@@ -7,14 +6,17 @@ import {
   Grid,
   MenuItem,
   TextField,
-} from "@mui/material";
-import * as yup from "yup";
-import { Formik } from "formik";
-import { Assign, ObjectShape } from "yup/lib/object";
-import DropZone from "components/DropZone";
-import { FlexBox } from "components/flex-box";
-import BazaarImage from "components/BazaarImage";
-import { UploadImageBox, StyledClear } from "../StyledComponents";
+} from '@mui/material';
+import { Formik } from 'formik';
+import { FC, useState } from 'react';
+import * as yup from 'yup';
+import { Assign, ObjectShape } from 'yup/lib/object';
+
+import { UploadImageBox, StyledClear } from '../StyledComponents';
+
+import BazaarImage from 'components/BazaarImage';
+import DropZone from 'components/DropZone';
+import { FlexBox } from 'components/flex-box';
 
 // ================================================================
 type CategoryFormProps = {
@@ -33,7 +35,7 @@ const CategoryForm: FC<CategoryFormProps> = (props) => {
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const handleChangeDropZone = (files: File[]) => {
     files.forEach((file) =>
-      Object.assign(file, { preview: URL.createObjectURL(file) })
+      Object.assign(file, { preview: URL.createObjectURL(file) }),
     );
     setFiles(files);
   };
@@ -63,11 +65,11 @@ const CategoryForm: FC<CategoryFormProps> = (props) => {
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  name="name"
-                  label="Name"
-                  color="info"
-                  size="medium"
-                  placeholder="Name"
+                  name='name'
+                  label='Name'
+                  color='info'
+                  size='medium'
+                  placeholder='Name'
                   value={values.name}
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -80,32 +82,32 @@ const CategoryForm: FC<CategoryFormProps> = (props) => {
                 <TextField
                   select
                   fullWidth
-                  color="info"
-                  size="medium"
-                  name="parent"
+                  color='info'
+                  size='medium'
+                  name='parent'
                   onBlur={handleBlur}
                   value={values.parent}
                   onChange={handleChange}
-                  placeholder="Parent Category"
-                  label="Select Parent Category"
+                  placeholder='Parent Category'
+                  label='Select Parent Category'
                   SelectProps={{ multiple: true }}
                 >
-                  <MenuItem value="electronics">Electronics</MenuItem>
-                  <MenuItem value="fashion">Fashion</MenuItem>
+                  <MenuItem value='electronics'>Electronics</MenuItem>
+                  <MenuItem value='fashion'>Fashion</MenuItem>
                 </TextField>
               </Grid>
 
               <Grid item xs={12}>
                 <DropZone
-                  title="Drop & drag category image"
+                  title='Drop & drag category image'
                   onChange={(files) => handleChangeDropZone(files)}
                 />
 
-                <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
+                <FlexBox flexDirection='row' mt={2} flexWrap='wrap' gap={1}>
                   {files.map((file, index) => {
                     return (
                       <UploadImageBox key={index}>
-                        <BazaarImage src={file.preview} width="100%" />
+                        <BazaarImage src={file.preview} width='100%' />
                         <StyledClear onClick={handleFileDelete(file)} />
                       </UploadImageBox>
                     );
@@ -115,11 +117,11 @@ const CategoryForm: FC<CategoryFormProps> = (props) => {
 
               <Grid item sm={6} xs={12}>
                 <FormControlLabel
-                  label="Featured Category"
+                  label='Featured Category'
                   control={
                     <Checkbox
-                      color="info"
-                      name="featured"
+                      color='info'
+                      name='featured'
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.featured}
@@ -146,7 +148,7 @@ const CategoryForm: FC<CategoryFormProps> = (props) => {
               </Grid> */}
 
               <Grid item xs={12}>
-                <Button variant="contained" color="info" type="submit">
+                <Button variant='contained' color='info' type='submit'>
                   Save category
                 </Button>
               </Grid>

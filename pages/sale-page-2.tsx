@@ -1,24 +1,26 @@
-import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { Container, Grid, Pagination } from "@mui/material";
-import SEO from "components/SEO";
-import { Span } from "components/Typography";
-import { FlexBetween } from "components/flex-box";
-import SaleLayout from "components/layouts/SaleLayout";
-import ProductCard1 from "components/product-cards/ProductCard1";
-import productDatabase from "data/product-database";
-import { renderProductCount } from "../src/lib";
-import Product from "models/Product.model";
-import api from "utils/__api__/sales";
-import Sticky from "components/Sticky";
-import SaleNavbar from "components/navbar/SaleNavbar";
-import Category from "models/Category.model";
+import { Container, Grid, Pagination } from '@mui/material';
+import { NextPage } from 'next';
+import { useEffect, useState } from 'react';
+
+import { renderProductCount } from '../src/lib';
+
+import { FlexBetween } from 'components/flex-box';
+import SaleLayout from 'components/layouts/SaleLayout';
+import SaleNavbar from 'components/navbar/SaleNavbar';
+import ProductCard1 from 'components/product-cards/ProductCard1';
+import SEO from 'components/SEO';
+import Sticky from 'components/Sticky';
+import { Span } from 'components/Typography';
+import productDatabase from 'data/product-database';
+import Category from 'models/Category.model';
+import Product from 'models/Product.model';
+import api from 'utils/__api__/sales';
 
 const PRODUCT_PER_PAGE = 28;
 
 const SalePage2: NextPage = () => {
   const [page, setPage] = useState(1);
-  const [selected, setSelected] = useState("men");
+  const [selected, setSelected] = useState('men');
   const [categories, setCategories] = useState<Category[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
 
@@ -51,8 +53,8 @@ const SalePage2: NextPage = () => {
   );
 
   return (
-    <SaleLayout type="two" categoryNav={categoryNav}>
-      <SEO title="Sale page v2" />
+    <SaleLayout type='two' categoryNav={categoryNav}>
+      <SEO title='Sale page v2' />
 
       <Container sx={{ mt: 4 }}>
         {/* PRODUCT LIST AREA */}
@@ -73,15 +75,15 @@ const SalePage2: NextPage = () => {
         </Grid>
 
         {/* PAGINATION AREA */}
-        <FlexBetween flexWrap="wrap" my={8}>
+        <FlexBetween flexWrap='wrap' my={8}>
           <Span>
             {renderProductCount(page, PRODUCT_PER_PAGE, productDatabase.length)}
           </Span>
 
           <Pagination
             page={page}
-            color="primary"
-            variant="outlined"
+            color='primary'
+            variant='outlined'
             onChange={handlePageChange}
             count={Math.ceil(productDatabase.length / PRODUCT_PER_PAGE)}
           />

@@ -1,6 +1,7 @@
-import { FC } from "react";
-import { Container, Grid, useTheme } from "@mui/material";
-import { BannerCard1, BannerCard2 } from "components/banners";
+import { Container, Grid, useTheme } from '@mui/material';
+import { FC } from 'react';
+
+import { BannerCard1, BannerCard2 } from 'components/banners';
 
 const Section5: FC = () => {
   const { direction } = useTheme();
@@ -10,31 +11,31 @@ const Section5: FC = () => {
       <Grid container spacing={3}>
         <Grid item md={4} xs={12}>
           <BannerCard1
-            url="#"
+            url='#'
             title="For Men's"
-            subTitle="Starting At $29"
+            subTitle='Starting At $29'
             img="/assets/images/banners/men's-fashion.jpg"
-            contentPosition={direction === "rtl" ? "right" : "left"}
+            contentPosition={direction === 'rtl' ? 'right' : 'left'}
           />
         </Grid>
 
         <Grid item md={4} xs={12}>
           <BannerCard2
-            url="#"
-            text3="Sale"
-            text2="Black Friday"
-            text1="Up to 20% Off"
-            img="/assets/images/banners/banner2.jpg"
+            url='#'
+            text3='Sale'
+            text2='Black Friday'
+            text1='Up to 20% Off'
+            img='/assets/images/banners/banner2.jpg'
           />
         </Grid>
 
         <Grid item md={4} xs={12}>
           <BannerCard1
-            url="#"
-            subTitle="25% Off"
+            url='#'
+            subTitle='25% Off'
             title="For Women's"
-            img="/assets/images/banners/womens-fashion.jpg"
-            contentPosition={direction === "rtl" ? "left" : "right"}
+            img='/assets/images/banners/womens-fashion.jpg'
+            contentPosition={direction === 'rtl' ? 'left' : 'right'}
           />
         </Grid>
       </Grid>

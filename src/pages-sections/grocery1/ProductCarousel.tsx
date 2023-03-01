@@ -1,16 +1,17 @@
-import { FC, useEffect, useState } from "react";
-import { Box, styled, useTheme } from "@mui/material";
-import useWindowSize from "hooks/useWindowSize";
-import { Paragraph } from "components/Typography";
-import Carousel from "components/carousel/Carousel";
-import ProductCard13 from "components/product-cards/ProductCard13";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import Product from "models/Product.model";
+import { Box, styled, useTheme } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import Carousel from 'components/carousel/Carousel';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import ProductCard13 from 'components/product-cards/ProductCard13';
+import { Paragraph } from 'components/Typography';
+import useWindowSize from 'hooks/useWindowSize';
+import Product from 'models/Product.model';
 
 const SubTitle = styled(Paragraph)(({ theme }) => ({
   fontSize: 12,
-  marginTop: "-20px",
-  marginBottom: "20px",
+  marginTop: '-20px',
+  marginBottom: '20px',
   color: theme.palette.grey[600],
 }));
 
@@ -31,7 +32,7 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
   }, [width]);
 
   return (
-    <CategorySectionCreator title={title} seeMoreLink="#" mb={0}>
+    <CategorySectionCreator title={title} seeMoreLink='#' mb={0}>
       <SubTitle>Best collection in 2021 for you!</SubTitle>
 
       <Carousel
@@ -39,10 +40,10 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
         totalSlides={products.length}
         visibleSlides={visibleSlides}
         sx={{
-          "& #backArrowButton, #backForwardButton": {
+          '& #backArrowButton, #backForwardButton': {
             width: 40,
             height: 40,
-            background: "#fff",
+            background: '#fff',
             boxShadow: shadows[2],
             color: palette.primary.main,
           },

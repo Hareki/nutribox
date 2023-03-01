@@ -1,24 +1,25 @@
-import { ReactElement } from "react";
-import { GetStaticProps } from "next";
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
-import TableBody from "@mui/material/TableBody";
-import TableHeader from "components/data-table/TableHeader";
-import TablePagination from "components/data-table/TablePagination";
-import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import Scrollbar from "components/Scrollbar";
-import { H3 } from "components/Typography";
-import useMuiTable from "hooks/useMuiTable";
-import { ReviewRow } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
-import Review from "models/Review.model";
+import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import { GetStaticProps } from 'next';
+import { ReactElement } from 'react';
+
+import TableHeader from 'components/data-table/TableHeader';
+import TablePagination from 'components/data-table/TablePagination';
+import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import Scrollbar from 'components/Scrollbar';
+import { H3 } from 'components/Typography';
+import useMuiTable from 'hooks/useMuiTable';
+import Review from 'models/Review.model';
+import { ReviewRow } from 'pages-sections/admin';
+import api from 'utils/__api__/dashboard';
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
-  { id: "product", label: "Product", align: "left" },
-  { id: "customer", label: "Customer", align: "left" },
-  { id: "comment", label: "Comment", align: "left" },
-  { id: "published", label: "Published", align: "left" },
-  { id: "action", label: "Action", align: "center" },
+  { id: 'product', label: 'Product', align: 'left' },
+  { id: 'customer', label: 'Customer', align: 'left' },
+  { id: 'comment', label: 'Comment', align: 'left' },
+  { id: 'published', label: 'Published', align: 'left' },
+  { id: 'action', label: 'Action', align: 'center' },
 ];
 
 // =============================================================================
@@ -49,7 +50,7 @@ export default function ProductReviews({ reviews }: ProductReviewsProps) {
     filteredList,
     handleChangePage,
     handleRequestSort,
-  } = useMuiTable({ listData: filteredrReviews, defaultSort: "product" });
+  } = useMuiTable({ listData: filteredrReviews, defaultSort: 'product' });
 
   return (
     <Box py={4}>
@@ -78,7 +79,7 @@ export default function ProductReviews({ reviews }: ProductReviewsProps) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        <Stack alignItems='center' my={4}>
           <TablePagination
             onChange={handleChangePage}
             count={Math.ceil(filteredList.length / rowsPerPage)}

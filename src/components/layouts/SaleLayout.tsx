@@ -1,11 +1,12 @@
-import { FC, Fragment, ReactNode } from "react";
-import { Divider } from "@mui/material";
-import Topbar from "components/Topbar";
-import { Footer1 } from "components/footer";
-import Header from "components/header/Header";
-import Navbar from "components/navbar/Navbar";
-import { MobileNavigationBar } from "components/mobile-navigation";
-import SearchInputWithCategory from "components/search-box/SearchInputWithCategory";
+import { Divider } from '@mui/material';
+import { FC, Fragment, ReactNode } from 'react';
+
+import { Footer1 } from 'components/footer';
+import Header from 'components/header/Header';
+import { MobileNavigationBar } from 'components/mobile-navigation';
+import Navbar from 'components/navbar/Navbar';
+import SearchInputWithCategory from 'components/search-box/SearchInputWithCategory';
+import Topbar from 'components/Topbar';
 
 /**
  *  Used:
@@ -15,15 +16,15 @@ import SearchInputWithCategory from "components/search-box/SearchInputWithCatego
 
 // =============================================================
 
-type NoOne = { type?: "one"; categoryNav?: never; children: ReactNode };
-type NoTwo = { type?: "two"; children: ReactNode; categoryNav: ReactNode };
+type NoOne = { type?: 'one'; categoryNav?: never; children: ReactNode };
+type NoTwo = { type?: 'two'; children: ReactNode; categoryNav: ReactNode };
 
 type SaleLayoutProps = NoOne | NoTwo;
 // =============================================================
 
 const SaleLayout: FC<SaleLayoutProps> = ({
   children,
-  type = "one",
+  type = 'one',
   categoryNav,
 }) => {
   return (
@@ -34,18 +35,18 @@ const SaleLayout: FC<SaleLayoutProps> = ({
       {/* HEADER AREA */}
       <Header searchInput={<SearchInputWithCategory />} />
 
-      {type === "one" && (
+      {type === 'one' && (
         <Fragment>
           <Navbar />
           {children}
         </Fragment>
       )}
 
-      {type === "two" && (
+      {type === 'two' && (
         <Fragment>
           <Divider />
           {categoryNav}
-          <div className="section-after-sticky">{children}</div>
+          <div className='section-after-sticky'>{children}</div>
         </Fragment>
       )}
 

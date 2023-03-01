@@ -1,7 +1,8 @@
-import { FC } from "react";
-import { Formik } from "formik";
-import { Button, Grid, TextField } from "@mui/material";
-import { H4 } from "components/Typography";
+import { Button, Grid, TextField } from '@mui/material';
+import { Formik } from 'formik';
+import { FC } from 'react';
+
+import { H4 } from 'components/Typography';
 
 const ShippingVatForm: FC = () => {
   const initialValues = { vat: 2, shipping: 10 };
@@ -20,7 +21,7 @@ const ShippingVatForm: FC = () => {
         handleBlur,
         handleSubmit,
       }) => (
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <form onSubmit={handleSubmit} encType='multipart/form-data'>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <H4>Shipping and Vat</H4>
@@ -29,12 +30,12 @@ const ShippingVatForm: FC = () => {
             <Grid item md={7} xs={12}>
               <TextField
                 fullWidth
-                color="info"
-                size="medium"
-                type="number"
-                name="shipping"
+                color='info'
+                size='medium'
+                type='number'
+                name='shipping'
                 onBlur={handleBlur}
-                label="Shipping Charge"
+                label='Shipping Charge'
                 onChange={handleChange}
                 value={values.shipping}
                 error={!!touched.shipping && !!errors.shipping}
@@ -45,11 +46,11 @@ const ShippingVatForm: FC = () => {
             <Grid item md={7} xs={12}>
               <TextField
                 fullWidth
-                name="vat"
-                color="info"
-                size="medium"
-                type="number"
-                label="VAT (%)"
+                name='vat'
+                color='info'
+                size='medium'
+                type='number'
+                label='VAT (%)'
                 value={values.vat}
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -59,7 +60,7 @@ const ShippingVatForm: FC = () => {
             </Grid>
           </Grid>
 
-          <Button type="submit" color="info" variant="contained" sx={{ mt: 4 }}>
+          <Button type='submit' color='info' variant='contained' sx={{ mt: 4 }}>
             Save Changes
           </Button>
         </form>

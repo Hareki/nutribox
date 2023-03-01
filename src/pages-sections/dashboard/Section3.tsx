@@ -1,12 +1,14 @@
-import { FC } from "react";
-import dynamic from "next/dynamic";
-import { Box, Grid, useTheme } from "@mui/material";
-import Card2 from "./Card2";
-import * as options from "./chartsOptions";
-import { currency } from "lib";
+import { Box, Grid, useTheme } from '@mui/material';
+import dynamic from 'next/dynamic';
+import { FC } from 'react';
+
+import Card2 from './Card2';
+import * as options from './chartsOptions';
+
+import { currency } from 'lib';
 
 // apext chart instance
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
 
@@ -15,10 +17,10 @@ const Section3: FC = () => {
 
   // weekly chart series
   const series = [
-    { name: "Weekly", data: [7600, 8500, 10100, 9800, 8700, 1050, 9100] },
+    { name: 'Weekly', data: [7600, 8500, 10100, 9800, 8700, 1050, 9100] },
   ];
   const totalOrderseries = [
-    { name: "Weekly", data: [7600, 8500, 10100, 9800, 8700, 1050, 9100] },
+    { name: 'Weekly', data: [7600, 8500, 10100, 9800, 8700, 1050, 9100] },
   ];
 
   return (
@@ -27,12 +29,12 @@ const Section3: FC = () => {
         {/* WEEKLY SALE CHART */}
         <Grid item xl={3} lg={3} md={6} xs={12}>
           <Card2
-            title="Weekly Sales"
-            percentage="25.25%"
+            title='Weekly Sales'
+            percentage='25.25%'
             amount={currency(10240, 0)}
           >
             <ReactApexChart
-              type="bar"
+              type='bar'
               height={100}
               series={series}
               options={options.weeklyChartOptions(theme)}
@@ -42,11 +44,11 @@ const Section3: FC = () => {
 
         {/* PRODUCT SHARE CHART */}
         <Grid item xl={3} lg={3} md={6} xs={12}>
-          <Card2 title="Product Share" percentage="10.25%" amount="39.56%">
+          <Card2 title='Product Share' percentage='10.25%' amount='39.56%'>
             <ReactApexChart
               height={130}
               series={[75]}
-              type="radialBar"
+              type='radialBar'
               options={options.productShareChartOptions(theme)}
             />
           </Card2>
@@ -55,12 +57,12 @@ const Section3: FC = () => {
         {/* TOTAL ORDERS CHART */}
         <Grid item xl={3} lg={3} md={6} xs={12}>
           <Card2
-            title="Total Order"
-            percentage="2.65%"
+            title='Total Order'
+            percentage='2.65%'
             amount={currency(12260, 0)}
           >
             <ReactApexChart
-              type="area"
+              type='area'
               height={80}
               series={totalOrderseries}
               options={options.totalOrderChartOptions(theme)}
@@ -71,13 +73,13 @@ const Section3: FC = () => {
         {/* MARKET SHARE CHART */}
         <Grid item xl={3} lg={3} md={6} xs={12}>
           <Card2
-            title="Market Share"
-            percentage="2.65%"
+            title='Market Share'
+            percentage='2.65%'
             amount={currency(14260, 0)}
           >
             <ReactApexChart
               height={130}
-              type="radialBar"
+              type='radialBar'
               series={[44, 55, 67]}
               options={options.marketShareChartOptions(theme)}
             />

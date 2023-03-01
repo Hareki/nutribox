@@ -1,12 +1,13 @@
-import Link from "next/link";
-import { FC, useEffect, useState } from "react";
-import BazaarCard from "components/BazaarCard";
-import useWindowSize from "hooks/useWindowSize";
-import CategoryIcon from "components/icons/Category";
-import Carousel from "components/carousel/Carousel";
-import ProductCard6 from "components/product-cards/ProductCard6";
-import CategorySectionCreator from "components/CategorySectionCreator";
-import Category from "models/Category.model";
+import Link from 'next/link';
+import { FC, useEffect, useState } from 'react';
+
+import BazaarCard from 'components/BazaarCard';
+import Carousel from 'components/carousel/Carousel';
+import CategorySectionCreator from 'components/CategorySectionCreator';
+import CategoryIcon from 'components/icons/Category';
+import ProductCard6 from 'components/product-cards/ProductCard6';
+import useWindowSize from 'hooks/useWindowSize';
+import Category from 'models/Category.model';
 
 // =====================================================
 type Props = { categoryList: Category[] };
@@ -24,9 +25,9 @@ const Section3: FC<Props> = ({ categoryList }) => {
 
   return (
     <CategorySectionCreator
-      seeMoreLink="#"
-      title="Top Categories"
-      icon={<CategoryIcon color="primary" />}
+      seeMoreLink='#'
+      title='Top Categories'
+      icon={<CategoryIcon color='primary' />}
     >
       <Carousel totalSlides={5} visibleSlides={visibleSlides}>
         {categoryList.map((item) => (

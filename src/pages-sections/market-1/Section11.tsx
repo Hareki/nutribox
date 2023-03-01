@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Container, Grid } from "@mui/material";
-import ProductCard1 from "components/product-cards/ProductCard1";
-import CategorySectionHeader from "components/CategorySectionHeader";
-import Product from "models/Product.model";
+import { Container, Grid } from '@mui/material';
+import { FC } from 'react';
+
+import CategorySectionHeader from 'components/CategorySectionHeader';
+import ProductCard1 from 'components/product-cards/ProductCard1';
+import Product from 'models/Product.model';
 
 // ====================================================
 type Props = { moreItems: Product[] };
@@ -10,8 +11,8 @@ type Props = { moreItems: Product[] };
 
 const Section11: FC<Props> = ({ moreItems }) => {
   return (
-    <Container sx={{ mb: "70px" }}>
-      <CategorySectionHeader title="More For You" seeMoreLink="#" />
+    <Container sx={{ mb: '70px' }}>
+      <CategorySectionHeader title='More For You' seeMoreLink='#' />
 
       <Grid container spacing={3}>
         {moreItems.map((item) => (

@@ -1,21 +1,22 @@
-import { styled, TableCell, TableHead, TableRow } from "@mui/material";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import UpDown from "components/icons/UpDown";
-import React, { FC } from "react";
+import { styled, TableCell, TableHead, TableRow } from '@mui/material';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import React, { FC } from 'react';
+
+import UpDown from 'components/icons/UpDown';
 
 // styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: 600,
-  padding: "12px 16px",
+  padding: '12px 16px',
   color: theme.palette.grey[900],
-  ":first-of-type": { paddingLeft: 24 },
+  ':first-of-type': { paddingLeft: 24 },
 }));
 
 // ----------------------------------------------------------------------
 type TableHeaderProps = {
   heading: any[];
   orderBy: string;
-  order: "asc" | "desc";
+  order: 'asc' | 'desc';
   onRequestSort: (id: string) => void;
 };
 // ----------------------------------------------------------------------
@@ -24,21 +25,21 @@ const TableHeader: FC<TableHeaderProps> = (props) => {
   const { heading, orderBy, order, onRequestSort } = props;
 
   return (
-    <TableHead sx={{ backgroundColor: "grey.200" }}>
+    <TableHead sx={{ backgroundColor: 'grey.200' }}>
       <TableRow>
         {heading.map((headCell) => (
           <StyledTableCell
             key={headCell.id}
-            align={headCell.alignCenter ? "center" : "left"}
+            align={headCell.alignCenter ? 'center' : 'left'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
               onClick={() => onRequestSort(headCell.id)}
-              direction={orderBy === headCell.id ? order : "asc"}
-              sx={{ "& .MuiTableSortLabel-icon": { opacity: 1 } }}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              sx={{ '& .MuiTableSortLabel-icon': { opacity: 1 } }}
               IconComponent={() => (
-                <UpDown sx={{ fontSize: 14, ml: 1, color: "grey.600" }} />
+                <UpDown sx={{ fontSize: 14, ml: 1, color: 'grey.600' }} />
               )}
             >
               {headCell.label}
