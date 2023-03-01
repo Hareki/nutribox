@@ -36,15 +36,15 @@ const Section4: FC<Props> = ({ topRatedBrands, topRatedList }) => {
                 {topRatedList.map((item) => (
                   <Grid item md={3} sm={6} xs={6} key={item.title}>
                     <Link href={`/product/${item.slug}`} passHref>
-                      <a>
-                        <ProductCard4
-                          title={item.title}
-                          price={item.price}
-                          rating={item.rating}
-                          imgUrl={item.thumbnail}
-                          reviewCount={item.reviews.length}
-                        />
-                      </a>
+
+                      <ProductCard4
+                        title={item.title}
+                        price={item.price}
+                        rating={item.rating}
+                        imgUrl={item.thumbnail}
+                        reviewCount={item.reviews.length}
+                      />
+
                     </Link>
                   </Grid>
                 ))}
@@ -65,9 +65,9 @@ const Section4: FC<Props> = ({ topRatedBrands, topRatedList }) => {
                 {topRatedBrands.map(({ id, name, image, slug }) => (
                   <Grid item sm={6} xs={12} key={id}>
                     <Link href={`/product/search/${slug}`} passHref>
-                      <a>
-                        <ProductCard5 title={name} imgUrl={image} />
-                      </a>
+
+                      <ProductCard5 title={name} imgUrl={image} />
+
                     </Link>
                   </Grid>
                 ))}

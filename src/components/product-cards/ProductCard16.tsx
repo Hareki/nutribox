@@ -137,16 +137,16 @@ const ProductCard16: FC<Props> = (props) => {
         )}
 
         <Link href={`/product/${slug}`}>
-          <a>
-            <LazyImage
-              alt={title}
-              width={100}
-              height={100}
-              src={thumbnail}
-              layout='responsive'
-              objectFit='contain'
-            />
-          </a>
+
+          <LazyImage
+            alt={title}
+            width={100}
+            height={100}
+            src={thumbnail}
+            layout='responsive'
+            objectFit='contain'
+          />
+
         </Link>
 
         <ItemController className='controlBox'>
@@ -196,19 +196,19 @@ const ProductCard16: FC<Props> = (props) => {
         </FlexRowCenter>
 
         <Link href={`/product/${slug}`}>
-          <a>
-            <H3
-              my='6px'
-              title={title}
-              fontSize='15px'
-              fontWeight='600'
-              className='title'
-              textAlign='center'
-              color='text.secondary'
-            >
-              {title}
-            </H3>
-          </a>
+
+          <H3
+            my='6px'
+            title={title}
+            fontSize='15px'
+            fontWeight='600'
+            className='title'
+            textAlign='center'
+            color='text.secondary'
+          >
+            {title}
+          </H3>
+
         </Link>
 
         {!hideRating && (

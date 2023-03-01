@@ -44,7 +44,7 @@ const CategoryMenuItem: FC<CategoryMenuItemProps> = (props) => {
 
   return (
     <Wrapper>
-      <Link href={href} passHref>
+      <Link href={href} passHref legacyBehavior>
         <MenuItem className='category-dropdown-link'>
           {rest.icon && <rest.icon fontSize='small' color='inherit' />}
           <span className='title'>{title}</span>

@@ -38,17 +38,17 @@ const ProductCard12: FC<ProductCardProps> = ({
   return (
     <Box>
       <Link href={`/product/${slug}`}>
-        <a>
-          <HoverBox>
-            <BazaarImage
-              src={imgUrl}
-              width='100%'
-              height='auto'
-              alt={title}
-              mx='auto'
-            />
-          </HoverBox>
-        </a>
+
+        <HoverBox>
+          <BazaarImage
+            src={imgUrl}
+            width='100%'
+            height='auto'
+            alt={title}
+            mx='auto'
+          />
+        </HoverBox>
+
       </Link>
 
       <FlexBetween>

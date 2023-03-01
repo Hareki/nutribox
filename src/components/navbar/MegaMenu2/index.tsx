@@ -81,23 +81,23 @@ const MegaMenu2: FC<MegaMenuProps> = ({ title, menuList }) => {
                     <SubCategoryList>
                       {item.child.map((sub, key) => {
                         return (
-                          <Link href='/' key={key} passHref>
-                            <a>
-                              <SubCategoryListItem>
-                                {sub.img && (
-                                  <Avatar
-                                    src={sub.img}
-                                    sx={{
-                                      backgroundColor: 'grey.100',
-                                      borderRadius: 1,
-                                    }}
-                                  />
-                                )}
-                                {sub.Icon && <sub.Icon sx={{ fontSize: 16 }} />}
-                                {sub.title}
-                              </SubCategoryListItem>
-                            </a>
-                          </Link>
+                          (<Link href='/' key={key} passHref>
+
+                            <SubCategoryListItem>
+                              {sub.img && (
+                                <Avatar
+                                  src={sub.img}
+                                  sx={{
+                                    backgroundColor: 'grey.100',
+                                    borderRadius: 1,
+                                  }}
+                                />
+                              )}
+                              {sub.Icon && <sub.Icon sx={{ fontSize: 16 }} />}
+                              {sub.title}
+                            </SubCategoryListItem>
+
+                          </Link>)
                         );
                       })}
                     </SubCategoryList>

@@ -38,18 +38,18 @@ const ProductCard3: FC<ProductCardProps> = ({
   return (
     <Box>
       <Link href={`/product/${slug}`}>
-        <a>
-          <HoverBox sx={{ borderRadius: '8px', overflow: 'hidden' }}>
-            <LazyImage
-              width={0}
-              mx='auto'
-              height={0}
-              alt={title}
-              src={imgUrl}
-              layout='responsive'
-            />
-          </HoverBox>
-        </a>
+
+        <HoverBox sx={{ borderRadius: '8px', overflow: 'hidden' }}>
+          <LazyImage
+            width={0}
+            mx='auto'
+            height={0}
+            alt={title}
+            src={imgUrl}
+            layout='responsive'
+          />
+        </HoverBox>
+
       </Link>
 
       <FlexBetween mt={2}>

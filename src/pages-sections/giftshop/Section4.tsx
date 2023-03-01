@@ -44,15 +44,15 @@ const Section4: FC<Props> = ({ categoryList }) => {
         }}
       >
         {categoryList.map((item, ind) => (
-          <Link href='#' key={ind}>
-            <a>
-              <ProductCard15
-                title={item.name}
-                available={item.description}
-                imgUrl={item.image}
-              />
-            </a>
-          </Link>
+          (<Link href='#' key={ind}>
+
+            <ProductCard15
+              title={item.name}
+              available={item.description}
+              imgUrl={item.image}
+            />
+
+          </Link>)
         ))}
       </Carousel>
     </Box>

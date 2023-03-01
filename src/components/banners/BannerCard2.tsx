@@ -59,11 +59,11 @@ const BannerCard2: FC<BannerCard2Props> = ({
         </Box>
 
         <Link href={url}>
-          <a>
-            <Button variant='outlined' size='large' color='info'>
-              Shop Now
-            </Button>
-          </a>
+
+          <Button variant='outlined' size='large' color='info'>
+            Shop Now
+          </Button>
+
         </Link>
       </CardContent>
     </CardWrapper>

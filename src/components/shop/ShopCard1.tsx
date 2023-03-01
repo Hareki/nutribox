@@ -71,17 +71,17 @@ const ShopCard1: FC<Partial<Shop>> = (props) => {
           }}
         />
         <Link href={`/shops/${slug}`}>
-          <a>
-            <IconButton sx={{ my: 0.5 }}>
-              <East
-                sx={{
-                  fontSize: 19,
-                  transform: ({ direction }) =>
-                    `rotate(${direction === 'rtl' ? '180deg' : '0deg'})`,
-                }}
-              />
-            </IconButton>
-          </a>
+
+          <IconButton sx={{ my: 0.5 }}>
+            <East
+              sx={{
+                fontSize: 19,
+                transform: ({ direction }) =>
+                  `rotate(${direction === 'rtl' ? '180deg' : '0deg'})`,
+              }}
+            />
+          </IconButton>
+
         </Link>
       </FlexBetween>
     </Card>

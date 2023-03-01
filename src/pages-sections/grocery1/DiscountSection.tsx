@@ -27,31 +27,31 @@ const DiscountSection: FC = () => {
   return (
     <Container>
       <Link href='/sale-page-1'>
-        <a>
-          <Grid container>
-            <Grid className='content' item sm={7} xs={12}>
-              <Paragraph>Till 10 Dec, 2021</Paragraph>
-              <H1>25% Special Off Today</H1>
-              <H1>Only for Vegetables</H1>
-              <Button
-                color='primary'
-                variant='contained'
-                sx={{ mt: 5, fontSize: '12px' }}
-                onClick={() => router.push('/sale-page-1')}
-              >
-                Shop Now
-              </Button>
-            </Grid>
 
-            <Grid item sm={5}>
-              <Image
-                width='100%'
-                alt='discount'
-                src='/assets/images/Groceries Shop/vagitable.png'
-              />
-            </Grid>
+        <Grid container>
+          <Grid className='content' item sm={7} xs={12}>
+            <Paragraph>Till 10 Dec, 2021</Paragraph>
+            <H1>25% Special Off Today</H1>
+            <H1>Only for Vegetables</H1>
+            <Button
+              color='primary'
+              variant='contained'
+              sx={{ mt: 5, fontSize: '12px' }}
+              onClick={() => router.push('/sale-page-1')}
+            >
+              Shop Now
+            </Button>
           </Grid>
-        </a>
+
+          <Grid item sm={5}>
+            <Image
+              width='100%'
+              alt='discount'
+              src='/assets/images/Groceries Shop/vagitable.png'
+            />
+          </Grid>
+        </Grid>
+
       </Link>
     </Container>
   );

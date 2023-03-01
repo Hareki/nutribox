@@ -48,64 +48,64 @@ const MegaMenu3: FC<MegaMenuProps> = ({
           </Box>
 
           {rightImage && (
-            <Link href={rightImage.href}>
-              <a>
-                <Box position='relative' width='153px' height='100%'>
-                  <LazyImage
-                    alt='banner'
-                    layout='fill'
-                    objectFit='contain'
-                    src={rightImage.imgUrl}
-                  />
-                </Box>
-              </a>
-            </Link>
+            (<Link href={rightImage.href}>
+
+              <Box position='relative' width='153px' height='100%'>
+                <LazyImage
+                  alt='banner'
+                  layout='fill'
+                  objectFit='contain'
+                  src={rightImage.imgUrl}
+                />
+              </Box>
+
+            </Link>)
           )}
         </FlexBox>
 
         <Link href='/sale-page-2'>
-          <a>
-            <Grid
-              className='h-full'
-              container
-              spacing={0}
-              wrap='wrap-reverse'
-              alignItems='center'
-            >
-              <Grid item sm={6} xs={12}>
-                <Box px={2.5}>
-                  <H3 mb={1}>Big Sale Upto 60% Off</H3>
 
-                  <Box color='grey.600' mb={1}>
-                    Handcrafted from genuine Italian Leather
-                  </Box>
+          <Grid
+            className='h-full'
+            container
+            spacing={0}
+            wrap='wrap-reverse'
+            alignItems='center'
+          >
+            <Grid item sm={6} xs={12}>
+              <Box px={2.5}>
+                <H3 mb={1}>Big Sale Upto 60% Off</H3>
 
-                  <Small
-                    fontWeight='700'
-                    borderBottom='2px solid'
-                    borderColor='primary.main'
-                  >
-                    SHOP NOW
-                  </Small>
+                <Box color='grey.600' mb={1}>
+                  Handcrafted from genuine Italian Leather
                 </Box>
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <FlexBox
-                  flexDirection='column'
-                  justifyContent='flex-end'
-                  height='160px'
-                  position='relative'
+
+                <Small
+                  fontWeight='700'
+                  borderBottom='2px solid'
+                  borderColor='primary.main'
                 >
-                  <LazyImage
-                    layout='fill'
-                    objectFit='cover'
-                    src='/assets/images/models/model-1.png'
-                    alt='model'
-                  />
-                </FlexBox>
-              </Grid>
+                  SHOP NOW
+                </Small>
+              </Box>
             </Grid>
-          </a>
+            <Grid item sm={6} xs={12}>
+              <FlexBox
+                flexDirection='column'
+                justifyContent='flex-end'
+                height='160px'
+                position='relative'
+              >
+                <LazyImage
+                  layout='fill'
+                  objectFit='cover'
+                  src='/assets/images/models/model-1.png'
+                  alt='model'
+                />
+              </FlexBox>
+            </Grid>
+          </Grid>
+
         </Link>
       </BazaarCard>
     </StyledMegaMenu>

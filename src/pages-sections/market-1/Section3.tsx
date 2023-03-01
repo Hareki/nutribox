@@ -31,17 +31,17 @@ const Section3: FC<Props> = ({ categoryList }) => {
     >
       <Carousel totalSlides={5} visibleSlides={visibleSlides}>
         {categoryList.map((item) => (
-          <Link href={`/product/search/${item.slug}`} key={item.id} passHref>
-            <a>
-              <BazaarCard sx={{ p: 2 }} elevation={0}>
-                <ProductCard6
-                  title={item.name}
-                  subtitle={item.description}
-                  imgUrl={item.image}
-                />
-              </BazaarCard>
-            </a>
-          </Link>
+          (<Link href={`/product/search/${item.slug}`} key={item.id} passHref>
+
+            <BazaarCard sx={{ p: 2 }} elevation={0}>
+              <ProductCard6
+                title={item.name}
+                subtitle={item.description}
+                imgUrl={item.image}
+              />
+            </BazaarCard>
+
+          </Link>)
         ))}
       </Carousel>
     </CategorySectionCreator>

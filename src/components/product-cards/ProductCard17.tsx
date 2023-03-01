@@ -172,50 +172,50 @@ const ProductCard17: FC<ProductCardProps> = (props) => {
   return (
     <StyledCard sx={sx}>
       <Link href={`/product/${slug}`}>
-        <a>
-          <ImgBox id='imgBox'>
-            {status && (
-              <StatusChipBox>
-                <StatusChip>{status}</StatusChip>
-                <Box width='100%' display='flex'>
-                  <Box className='triangle-left' />
-                  <Box className='triangle-right' />
-                </Box>
-              </StatusChipBox>
-            )}
 
-            {off !== 0 && <StyledChip size='small' label={`${off}% off`} />}
+        <ImgBox id='imgBox'>
+          {status && (
+            <StatusChipBox>
+              <StatusChip>{status}</StatusChip>
+              <Box width='100%' display='flex'>
+                <Box className='triangle-left' />
+                <Box className='triangle-right' />
+              </Box>
+            </StatusChipBox>
+          )}
 
-            <LazyImage
-              alt={title}
-              width={100}
-              height={100}
-              src={imgUrl}
-              id='productImg'
-              layout='responsive'
-              objectFit='contain'
-            />
-          </ImgBox>
-        </a>
+          {off !== 0 && <StyledChip size='small' label={`${off}% off`} />}
+
+          <LazyImage
+            alt={title}
+            width={100}
+            height={100}
+            src={imgUrl}
+            id='productImg'
+            layout='responsive'
+            objectFit='contain'
+          />
+        </ImgBox>
+
       </Link>
 
       <ContentWrapper>
         <FlexBox>
           <Box flex='1 1 0' minWidth='0px' mr={1}>
             <Link href={`/product/${slug}`}>
-              <a>
-                <H3
-                  mb={1}
-                  title={title}
-                  fontSize='24px'
-                  // textAlign="left"
-                  fontWeight='700'
-                  className='title'
-                  color='text.secondary'
-                >
-                  {title}
-                </H3>
-              </a>
+
+              <H3
+                mb={1}
+                title={title}
+                fontSize='24px'
+                // textAlign="left"
+                fontWeight='700'
+                className='title'
+                color='text.secondary'
+              >
+                {title}
+              </H3>
+
             </Link>
 
             {!hideRating && (

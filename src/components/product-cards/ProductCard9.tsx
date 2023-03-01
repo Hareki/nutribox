@@ -93,11 +93,11 @@ const ProductCard9: FC<ProductCardProps> = (props) => {
             p={2}
           >
             <Link href={`/product/${slug}`}>
-              <a>
-                <H5 fontWeight='600' my='0.5rem'>
-                  {title}
-                </H5>
-              </a>
+
+              <H5 fontWeight='600' my='0.5rem'>
+                {title}
+              </H5>
+
             </Link>
 
             <Rating value={rating || 0} color='warn' readOnly />

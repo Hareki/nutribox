@@ -68,42 +68,42 @@ const Section2: FC = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7} md={7}>
           <Link href='/sale-page-1'>
-            <a>
-              <LeftContentBox imgUrl={product1} sx={{ p: '20px 30px' }}>
-                <RightContent>
-                  <H6>Modern Furniture.</H6>
-                  <H1 fontSize={35} color='primary.main'>
-                    Big Sale
-                  </H1>
-                  <H3 fontSize={23}>UP TO 50% OFF</H3>
-                  <Box>
-                    <StyledButton onClick={() => router.push('/sale-page-1')}>
-                      Shop Now
-                    </StyledButton>
-                  </Box>
-                </RightContent>
-                <LeftContent />
-              </LeftContentBox>
-            </a>
+
+            <LeftContentBox imgUrl={product1} sx={{ p: '20px 30px' }}>
+              <RightContent>
+                <H6>Modern Furniture.</H6>
+                <H1 fontSize={35} color='primary.main'>
+                  Big Sale
+                </H1>
+                <H3 fontSize={23}>UP TO 50% OFF</H3>
+                <Box>
+                  <StyledButton onClick={() => router.push('/sale-page-1')}>
+                    Shop Now
+                  </StyledButton>
+                </Box>
+              </RightContent>
+              <LeftContent />
+            </LeftContentBox>
+
           </Link>
         </Grid>
 
         <Grid item xs={12} sm={5} md={5}>
           <Link href='/sale-page-1'>
-            <a>
-              <RightContentBox imgUrl={product2} sx={{ pt: '20px' }}>
-                <Box textAlign='center'>
-                  <H6>Sofa Collection</H6>
-                  <H3 fontSize={23} color='primary.main'>
-                    UP TO 60% OFF
-                  </H3>
-                  <StyledButton onClick={() => router.push('/sale-page-1')}>
-                    Shop Now
-                  </StyledButton>
-                </Box>
-                <Box className='content' />
-              </RightContentBox>
-            </a>
+
+            <RightContentBox imgUrl={product2} sx={{ pt: '20px' }}>
+              <Box textAlign='center'>
+                <H6>Sofa Collection</H6>
+                <H3 fontSize={23} color='primary.main'>
+                  UP TO 60% OFF
+                </H3>
+                <StyledButton onClick={() => router.push('/sale-page-1')}>
+                  Shop Now
+                </StyledButton>
+              </Box>
+              <Box className='content' />
+            </RightContentBox>
+
           </Link>
         </Grid>
       </Grid>
@@ -122,72 +122,72 @@ const Section2: FC = () => {
       >
         <Grid item xs={12} sm={7} md={7}>
           <Link href='/sale-page-1'>
-            <a>
-              <RightContentBox
-                imgUrl={product4}
-                sx={{
-                  height: 484,
-                  pt: '20px',
-                  px: '80px',
-                  [breakpoints.between('xs', 'sm')]: { px: '20px' },
-                }}
-              >
-                <Box textAlign='center'>
-                  <H3>Winter Offer!</H3>
-                  <H1 fontSize={50} color='primary.main'>
-                    50% OFF
-                  </H1>
-                  <H6>All Kind of Furniture Items</H6>
-                  <StyledButton onClick={() => router.push('/sale-page-1')}>
-                    Shop Now
-                  </StyledButton>
-                </Box>
-                <Box className='content' />
-              </RightContentBox>
-            </a>
+
+            <RightContentBox
+              imgUrl={product4}
+              sx={{
+                height: 484,
+                pt: '20px',
+                px: '80px',
+                [breakpoints.between('xs', 'sm')]: { px: '20px' },
+              }}
+            >
+              <Box textAlign='center'>
+                <H3>Winter Offer!</H3>
+                <H1 fontSize={50} color='primary.main'>
+                  50% OFF
+                </H1>
+                <H6>All Kind of Furniture Items</H6>
+                <StyledButton onClick={() => router.push('/sale-page-1')}>
+                  Shop Now
+                </StyledButton>
+              </Box>
+              <Box className='content' />
+            </RightContentBox>
+
           </Link>
         </Grid>
 
         <Grid item xs={12} sm={5} md={5}>
           <Link href='/sale-page-1'>
-            <a>
-              <LeftContentBox imgUrl={product5} sx={{ py: '20px', pl: '20px' }}>
-                <RightContent>
-                  <Paragraph>Modern & Comfortable</Paragraph>
-                  <H3 fontSize={20} color='primary.main'>
-                    Chair Collection
-                  </H3>
-                  <Box>
-                    <StyledButton onClick={() => router.push('/sale-page-1')}>
-                      Shop Now
-                    </StyledButton>
-                  </Box>
-                </RightContent>
-                <LeftContent />
-              </LeftContentBox>
-            </a>
+
+            <LeftContentBox imgUrl={product5} sx={{ py: '20px', pl: '20px' }}>
+              <RightContent>
+                <Paragraph>Modern & Comfortable</Paragraph>
+                <H3 fontSize={20} color='primary.main'>
+                  Chair Collection
+                </H3>
+                <Box>
+                  <StyledButton onClick={() => router.push('/sale-page-1')}>
+                    Shop Now
+                  </StyledButton>
+                </Box>
+              </RightContent>
+              <LeftContent />
+            </LeftContentBox>
+
           </Link>
 
           <Link href='/sale-page-1'>
-            <a>
-              <LeftContentBox
-                imgUrl={product3}
-                sx={{ mt: 3, py: '20px', pl: '20px' }}
-              >
-                <RightContent>
-                  <Paragraph>December New!</Paragraph>
-                  <H3 fontSize={20} color='primary.main'>
-                    Sofa Chair
-                  </H3>
-                  <Box>
-                    <StyledButton onClick={() => router.push('/sale-page-1')}>
-                      Shop Now
-                    </StyledButton>
-                  </Box>
-                </RightContent>
-                <LeftContent />
-              </LeftContentBox>
-            </a>
+
+            <LeftContentBox
+              imgUrl={product3}
+              sx={{ mt: 3, py: '20px', pl: '20px' }}
+            >
+              <RightContent>
+                <Paragraph>December New!</Paragraph>
+                <H3 fontSize={20} color='primary.main'>
+                  Sofa Chair
+                </H3>
+                <Box>
+                  <StyledButton onClick={() => router.push('/sale-page-1')}>
+                    Shop Now
+                  </StyledButton>
+                </Box>
+              </RightContent>
+              <LeftContent />
+            </LeftContentBox>
+
           </Link>
         </Grid>
       </Grid>

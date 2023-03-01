@@ -19,18 +19,18 @@ const NavLink2: FC<NavLinkProps> = ({
   borderColor = 'primary.600',
 }) => {
   return url ? (
-    <Link href={url}>
-      <a>
-        <Small
-          fontWeight='900'
-          borderBottom={2}
-          color={color}
-          borderColor={borderColor}
-        >
-          {title}
-        </Small>
-      </a>
-    </Link>
+    (<Link href={url}>
+
+      <Small
+        fontWeight='900'
+        borderBottom={2}
+        color={color}
+        borderColor={borderColor}
+      >
+        {title}
+      </Small>
+
+    </Link>)
   ) : (
     <Small
       fontWeight='900'

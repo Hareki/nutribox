@@ -39,29 +39,29 @@ const HomeFourCard3: FC<HomeFourCard3Props> = ({
   bgColor,
 }) => {
   return (
-    <Link href='/sale-page-1'>
-      <a>
-        <Wrapper sx={{ backgroundColor: bgColor, color, pr: 0 }}>
-          <Box width='60%' className='content'>
-            <H3 lineHeight={1.3}>{title}</H3>
-            <Paragraph color={color ? color : 'grey.600'} mt={1} mb={2}>
-              {body}
-            </Paragraph>
-            <NavLink2 title='SHOP NOW' />
-          </Box>
+    (<Link href='/sale-page-1'>
 
-          <Box width='40%'>
-            <LazyImage
-              width={100}
-              src={imgUrl}
-              height={100}
-              alt='apple-watch-1'
-              layout='responsive'
-            />
-          </Box>
-        </Wrapper>
-      </a>
-    </Link>
+      <Wrapper sx={{ backgroundColor: bgColor, color, pr: 0 }}>
+        <Box width='60%' className='content'>
+          <H3 lineHeight={1.3}>{title}</H3>
+          <Paragraph color={color ? color : 'grey.600'} mt={1} mb={2}>
+            {body}
+          </Paragraph>
+          <NavLink2 title='SHOP NOW' />
+        </Box>
+
+        <Box width='40%'>
+          <LazyImage
+            width={100}
+            src={imgUrl}
+            height={100}
+            alt='apple-watch-1'
+            layout='responsive'
+          />
+        </Box>
+      </Wrapper>
+
+    </Link>)
   );
 };
 

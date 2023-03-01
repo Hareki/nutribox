@@ -36,22 +36,22 @@ const Section3: FC<Props> = ({ categories = [] }) => {
         {categories.map((item) => (
           <Grid item lg={4} xs={6} key={item.id}>
             <Link href={`/product/search/${item.slug}`}>
-              <a>
-                <StyledBazaarCard hoverEffect>
-                  <LazyImage
-                    width={46}
-                    height={46}
-                    alt={item.name}
-                    src={item.image}
-                    objectFit='contain'
-                  />
 
-                  <Box>
-                    <Tiny color='primary.main'>{item.description}</Tiny>
-                    <H5>{item.name}</H5>
-                  </Box>
-                </StyledBazaarCard>
-              </a>
+              <StyledBazaarCard hoverEffect>
+                <LazyImage
+                  width={46}
+                  height={46}
+                  alt={item.name}
+                  src={item.image}
+                  objectFit='contain'
+                />
+
+                <Box>
+                  <Tiny color='primary.main'>{item.description}</Tiny>
+                  <H5>{item.name}</H5>
+                </Box>
+              </StyledBazaarCard>
+
             </Link>
           </Grid>
         ))}

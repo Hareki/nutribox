@@ -71,9 +71,9 @@ const Section2: FC = () => {
             <H4 fontWeight='700'>CREAM BRIGHT</H4>
             <H4 fontWeight='700'>UP TO 25%</H4>
             <Link href='/shops/scarlett-beauty' passHref>
-              <a>
-                <StyledButton>Shop Now</StyledButton>
-              </a>
+
+              <StyledButton>Shop Now</StyledButton>
+
             </Link>
           </Box>
 

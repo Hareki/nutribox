@@ -21,34 +21,34 @@ type HomeFourCard1Props = { body: string; title: string; imgUrl: string };
 
 const HomeFourCard1: FC<HomeFourCard1Props> = ({ title, body, imgUrl }) => {
   return (
-    <Link href='/sale-page-1'>
-      <a>
-        <StyledGrid container>
-          <Grid item sm={6} xs={6}>
-            <BazaarImage
-              src={imgUrl}
-              alt='apple-watch-1'
-              sx={{
-                mx: 'auto',
-                maxWidth: '100%',
-                maxHeight: '155px',
-                p: '0.5rem',
-              }}
-            />
-          </Grid>
+    (<Link href='/sale-page-1'>
 
-          <Grid item sm={6} xs={6}>
-            <H3 lineHeight={1.3}>{title}</H3>
+      <StyledGrid container>
+        <Grid item sm={6} xs={6}>
+          <BazaarImage
+            src={imgUrl}
+            alt='apple-watch-1'
+            sx={{
+              mx: 'auto',
+              maxWidth: '100%',
+              maxHeight: '155px',
+              p: '0.5rem',
+            }}
+          />
+        </Grid>
 
-            <Paragraph color='grey.600' mt='0.5rem' mb='1rem' maxWidth='150px'>
-              {body}
-            </Paragraph>
+        <Grid item sm={6} xs={6}>
+          <H3 lineHeight={1.3}>{title}</H3>
 
-            <NavLink2 title='SHOP NOW' />
-          </Grid>
-        </StyledGrid>
-      </a>
-    </Link>
+          <Paragraph color='grey.600' mt='0.5rem' mb='1rem' maxWidth='150px'>
+            {body}
+          </Paragraph>
+
+          <NavLink2 title='SHOP NOW' />
+        </Grid>
+      </StyledGrid>
+
+    </Link>)
   );
 };
 

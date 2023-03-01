@@ -42,35 +42,33 @@ const Section13: FC<Props> = ({ bigDiscountList }) => {
               <Box py={0.5} key={id}>
                 <BazaarCard sx={{ p: '1rem' }}>
                   <Link href={`/product/${slug}`} passHref>
-                    <a>
-                      <HoverBox borderRadius='8px' mb={1}>
-                        <LazyImage
-                          width={100}
-                          height={100}
-                          alt={title}
-                          src={thumbnail}
-                          layout='responsive'
-                        />
-                      </HoverBox>
 
-                      <H4 fontWeight='600' fontSize='14px' mb={0.5}>
-                        {title}
+                    <HoverBox borderRadius='8px' mb={1}>
+                      <LazyImage
+                        width={100}
+                        height={100}
+                        alt={title}
+                        src={thumbnail}
+                        layout='responsive'
+                      />
+                    </HoverBox>
+                    <H4 fontWeight='600' fontSize='14px' mb={0.5}>
+                      {title}
+                    </H4>
+                    <FlexBox gap={1}>
+                      <H4
+                        fontWeight='600'
+                        fontSize='14px'
+                        color='primary.main'
+                      >
+                        {calculateDiscount(price, discount)}
                       </H4>
 
-                      <FlexBox gap={1}>
-                        <H4
-                          fontWeight='600'
-                          fontSize='14px'
-                          color='primary.main'
-                        >
-                          {calculateDiscount(price, discount)}
-                        </H4>
+                      <H4 fontWeight='600' fontSize='14px' color='grey.600'>
+                        <del>{currency(price)}</del>
+                      </H4>
+                    </FlexBox>
 
-                        <H4 fontWeight='600' fontSize='14px' color='grey.600'>
-                          <del>{currency(price)}</del>
-                        </H4>
-                      </FlexBox>
-                    </a>
                   </Link>
                 </BazaarCard>
               </Box>

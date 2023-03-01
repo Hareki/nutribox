@@ -118,13 +118,13 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
             </FlexBox>
 
             <Link href={`/product/${item.id}`}>
-              <a>
-                <Avatar
-                  alt={item.name}
-                  src={item.imgUrl}
-                  sx={{ mx: 2, width: 76, height: 76 }}
-                />
-              </a>
+
+              <Avatar
+                alt={item.name}
+                src={item.imgUrl}
+                sx={{ mx: 2, width: 76, height: 76 }}
+              />
+
             </Link>
 
             <Box
@@ -136,11 +136,11 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
               }}
             >
               <Link href={`/product/${item.slug}`}>
-                <a>
-                  <H5 ellipsis fontSize='14px' className='title'>
-                    {item.name}
-                  </H5>
-                </a>
+
+                <H5 ellipsis fontSize='14px' className='title'>
+                  {item.name}
+                </H5>
+
               </Link>
 
               <Tiny color='grey.600'>
@@ -170,7 +170,7 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
 
       {cartList.length > 0 && (
         <Box p={2.5}>
-          <Link href='/checkout-alternative' passHref>
+          <Link href='/checkout-alternative' passHref legacyBehavior>
             <Button
               fullWidth
               color='primary'
@@ -182,7 +182,7 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
             </Button>
           </Link>
 
-          <Link href='/cart' passHref>
+          <Link href='/cart' passHref legacyBehavior>
             <Button
               fullWidth
               color='primary'

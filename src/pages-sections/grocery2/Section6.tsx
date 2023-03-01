@@ -49,11 +49,11 @@ const Section6: FC<Props> = ({ cardList = [] }) => {
             </H3>
 
             <Link href={item.shopUrl}>
-              <a>
-                <Button variant='contained' color='primary'>
-                  Shop Now
-                </Button>
-              </a>
+
+              <Button variant='contained' color='primary'>
+                Shop Now
+              </Button>
+
             </Link>
           </Grid>
 

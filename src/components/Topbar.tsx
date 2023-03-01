@@ -127,11 +127,11 @@ const Topbar: FC<TopbarProps> = ({ bgColor }) => {
 
           <FlexBox alignItems='center' gap={1.5}>
             {socialLinks.map(({ id, Icon, url }) => (
-              <Link href={url} key={id}>
-                <a style={{ lineHeight: 0 }}>
-                  <Icon sx={{ fontSize: 16 }} />
-                </a>
-              </Link>
+              (<Link href={url} key={id} style={{ lineHeight: 0 }}>
+
+                <Icon sx={{ fontSize: 16 }} />
+
+              </Link>)
             ))}
           </FlexBox>
         </FlexBox>

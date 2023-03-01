@@ -63,33 +63,33 @@ const MegaMenu1: FC<MegaMenuProps> = ({
           {rightImage && (
             <Box mt={1.5}>
               <Link href={rightImage.href}>
-                <a>
-                  <LazyImage
-                    src={rightImage.imgUrl}
-                    objectFit='contain'
-                    width={137}
-                    height={318}
-                    alt='banner'
-                  />
-                </a>
+
+                <LazyImage
+                  src={rightImage.imgUrl}
+                  objectFit='contain'
+                  width={137}
+                  height={318}
+                  alt='banner'
+                />
+
               </Link>
             </Box>
           )}
         </FlexBox>
 
         {bottomImage && (
-          <Link href={bottomImage.href}>
-            <a>
-              <Box position='relative' height='170px'>
-                <LazyImage
-                  src={bottomImage.imgUrl}
-                  layout='fill'
-                  objectFit='cover'
-                  alt='banner'
-                />
-              </Box>
-            </a>
-          </Link>
+          (<Link href={bottomImage.href}>
+
+            <Box position='relative' height='170px'>
+              <LazyImage
+                src={bottomImage.imgUrl}
+                layout='fill'
+                objectFit='cover'
+                alt='banner'
+              />
+            </Box>
+
+          </Link>)
         )}
       </Card>
     </StyledMegaMenu>

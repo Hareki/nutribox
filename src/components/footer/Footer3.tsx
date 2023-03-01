@@ -48,14 +48,14 @@ const Footer3: FC<Props> = ({ sx, id, bgcolor }) => {
     <StyledFooter id={id} sx={sx} bgcolor={bgcolor}>
       <Container>
         <Link href='/'>
-          <a>
-            <BazaarImage
-              height={50}
-              mb={2.5}
-              src='/assets/images/logo.svg'
-              alt='logo'
-            />
-          </a>
+
+          <BazaarImage
+            height={50}
+            mb={2.5}
+            src='/assets/images/logo.svg'
+            alt='logo'
+          />
+
         </Link>
 
         <Grid container spacing={6}>
@@ -72,7 +72,7 @@ const Footer3: FC<Props> = ({ sx, id, bgcolor }) => {
           <Grid item md={6} sm={6} xs={12}>
             <Box mt={-0.6}>
               {customerCareLinks.map((item, ind) => (
-                <Link href='/' key={ind} passHref>
+                <Link href='/' key={ind} passHref legacyBehavior>
                   <StyledLink>{item}</StyledLink>
                 </Link>
               ))}

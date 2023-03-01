@@ -32,14 +32,14 @@ const Footer1: FC = () => {
             <Grid container spacing={3}>
               <Grid item lg={4} md={6} sm={6} xs={12}>
                 <Link href='/'>
-                  <a>
-                    <Image
-                      mb={2.5}
-                      height={50}
-                      src='/assets/images/logo.svg'
-                      alt='logo'
-                    />
-                  </a>
+
+                  <Image
+                    mb={2.5}
+                    height={50}
+                    src='/assets/images/logo.svg'
+                    alt='logo'
+                  />
+
                 </Link>
 
                 <Paragraph mb={2.5} color='grey.500'>
@@ -64,7 +64,7 @@ const Footer1: FC = () => {
 
                 <div>
                   {aboutLinks.map((item, ind) => (
-                    <Link href='/' key={ind} passHref>
+                    <Link href='/' key={ind} passHref legacyBehavior>
                       <StyledLink>{item}</StyledLink>
                     </Link>
                   ))}
@@ -84,7 +84,7 @@ const Footer1: FC = () => {
 
                 <div>
                   {customerCareLinks.map((item, ind) => (
-                    <Link href='/' key={ind} passHref>
+                    <Link href='/' key={ind} passHref legacyBehavior>
                       <StyledLink>{item}</StyledLink>
                     </Link>
                   ))}

@@ -45,9 +45,9 @@ const CarouselCard3: FC<Props> = ({ product }) => {
         </Paragraph>
 
         <Link href={`/product/${product.slug}`}>
-          <a>
-            <StyledShopButton>SHOP NOW</StyledShopButton>
-          </a>
+
+          <StyledShopButton>SHOP NOW</StyledShopButton>
+
         </Link>
       </StyledFlexBox>
 

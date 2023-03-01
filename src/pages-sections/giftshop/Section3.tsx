@@ -52,19 +52,19 @@ const Section3: FC = () => {
     <Grid container spacing={3}>
       <Grid item xs={12} sm={7} md={7}>
         <Link href='/sale-page-1'>
-          <a>
-            <LeftContentBox>
-              <RightContent px='20px'>
-                <H6>Holiday’s Offer!</H6>
-                <H3>Sale 50% Off</H3>
-                <Paragraph sx={{ mt: 1 }}>Use Code : Holi50</Paragraph>
 
-                <Box>
-                  <StyledButton>Shop Now</StyledButton>
-                </Box>
-              </RightContent>
-            </LeftContentBox>
-          </a>
+          <LeftContentBox>
+            <RightContent px='20px'>
+              <H6>Holiday’s Offer!</H6>
+              <H3>Sale 50% Off</H3>
+              <Paragraph sx={{ mt: 1 }}>Use Code : Holi50</Paragraph>
+
+              <Box>
+                <StyledButton>Shop Now</StyledButton>
+              </Box>
+            </RightContent>
+          </LeftContentBox>
+
         </Link>
       </Grid>
 
@@ -79,16 +79,16 @@ const Section3: FC = () => {
         }}
       >
         <Link href='/sale-page-1'>
-          <a>
-            <RightContentBox sx={{ p: '20px' }}>
-              <Box textAlign='center'>
-                <H6>Shop Online Gift Under</H6>
-                <H3>$20.00</H3>
-                <StyledButton>Shop Now</StyledButton>
-              </Box>
-              <Box className='content' />
-            </RightContentBox>
-          </a>
+
+          <RightContentBox sx={{ p: '20px' }}>
+            <Box textAlign='center'>
+              <H6>Shop Online Gift Under</H6>
+              <H3>$20.00</H3>
+              <StyledButton>Shop Now</StyledButton>
+            </Box>
+            <Box className='content' />
+          </RightContentBox>
+
         </Link>
       </Grid>
     </Grid>

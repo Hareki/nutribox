@@ -74,11 +74,11 @@ const ProductCard7: FC<ProductCardProps> = ({
 
       <FlexBox p={2} rowGap={2} width='100%' flexDirection='column'>
         <Link href={`/product/${slug}`}>
-          <a>
-            <Span ellipsis fontWeight='600' fontSize={18}>
-              {name}
-            </Span>
-          </a>
+
+          <Span ellipsis fontWeight='600' fontSize={18}>
+            {name}
+          </Span>
+
         </Link>
 
         <FlexBox gap={1} flexWrap='wrap' alignItems='center'>

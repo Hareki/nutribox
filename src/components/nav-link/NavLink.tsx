@@ -37,7 +37,7 @@ const NavLink: FC<NavLinkProps> = ({
   const currentRoute = checkRouteMatch();
 
   return (
-    <Link href={href} passHref>
+    <Link href={href} passHref legacyBehavior>
       <StyledLink
         href={href}
         style={style}

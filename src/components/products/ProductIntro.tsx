@@ -176,9 +176,9 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
           <FlexBox alignItems='center' mb={2}>
             <Box>Sold By:</Box>
             <Link href='/shops/scarlett-beauty' passHref>
-              <a>
-                <H6 ml={1}>Mobile Store</H6>
-              </a>
+
+              <H6 ml={1}>Mobile Store</H6>
+
             </Link>
           </FlexBox>
         </Grid>
