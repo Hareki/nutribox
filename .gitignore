@@ -30,5 +30,6 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+next-env.d.ts
 # vercel
 .vercel
