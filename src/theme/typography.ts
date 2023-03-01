@@ -1,5 +1,6 @@
 export const fontSize = 14;
 export const fontFamily = [
+  'SVN-Rubik',
   'Open Sans',
   'Roboto',
   '-apple-system',

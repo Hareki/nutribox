@@ -6,6 +6,7 @@ import { appWithTranslation } from 'next-i18next';
 import nProgress from 'nprogress';
 import { Fragment, ReactElement, ReactNode } from 'react';
 
+import '../src/fonts/SVN-Rubik/index.css';
 import nextI18NextConfig from '../next-i18next.config';
 
 import RTL from 'components/RTL';

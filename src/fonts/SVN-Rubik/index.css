@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'SVN-Rubik';
+  src: url('SVNRubik-SemiBold.woff2') format('woff2'),
+    url('SVNRubik-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SVN-Rubik';
+  src: url('SVN-Rubik-Italic.woff2') format('woff2'),
+    url('SVN-Rubik-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SVN-Rubik';
+  src: url('SVN-Rubik-Regular.woff2') format('woff2'),
+    url('SVN-Rubik-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SVN-Rubik';
+  src: url('SVNRubik-Medium.woff2') format('woff2'),
+    url('SVNRubik-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SVN-Rubik';
+  src: url('SVNRubik-Bold.woff2') format('woff2'),
+    url('SVNRubik-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
