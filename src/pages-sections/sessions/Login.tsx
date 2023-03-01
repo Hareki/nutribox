@@ -58,7 +58,7 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
         <BazaarImage
           src='/assets/images/bazaar-black-sm.svg'
-          sx={{ m: 'auto' }}
+          sx={{ m: 'auto', height: 50 }}
         />
 
         <H1 textAlign='center' mt={1} mb={4} fontSize={16}>
