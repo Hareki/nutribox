@@ -6,9 +6,11 @@
     "notistack",
     "nprogress",
     "nutribox",
+    "Sidenav",
     "simplebar",
     "stylis",
     "svgr",
-    "tanstack"
+    "tanstack",
+    "Topbar"
   ]
 }
