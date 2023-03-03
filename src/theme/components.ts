@@ -1,6 +1,6 @@
 import { Components, Theme } from '@mui/material';
 
-import { dark, grey } from './themeColors';
+import { dark, grey, white } from './themeColors';
 import { fontFamily, fontSize } from './typography';
 
 // ========================================================
@@ -106,6 +106,10 @@ export const components: Components = {
             borderRadius: '3px',
             transition: 'all 0.3s',
             ':hover': { backgroundColor: dark.main, color: 'white' },
+          }),
+        ...(ownerState.color === 'primary' &&
+          ownerState.variant === 'contained' && {
+            color: white.main,
           }),
       }),
       sizeLarge: { padding: '.6rem 2.5rem' },
