@@ -8,7 +8,6 @@ import AvailableShops from 'components/products/AvailableShops';
 import FrequentlyBought from 'components/products/FrequentlyBought';
 import ProductDescription from 'components/products/ProductDescription';
 import ProductIntro from 'components/products/ProductIntro';
-import ProductReview from 'components/products/ProductReview';
 import RelatedProducts from 'components/products/RelatedProducts';
 import { H2 } from 'components/Typography';
 import Product from 'models/Product.model';
@@ -69,10 +68,7 @@ const ProductDetails: FC<ProductDetailsProps> = (props) => {
           <Tab className='inner-tab' label='Review (3)' />
         </StyledTabs>
 
-        <Box mb={6}>
-          {selectedOption === 0 && <ProductDescription />}
-          {selectedOption === 1 && <ProductReview />}
-        </Box>
+        <Box mb={6}>{selectedOption === 0 && <ProductDescription />}</Box>
 
         {frequentlyBought && (
           <FrequentlyBought productsData={frequentlyBought} />
