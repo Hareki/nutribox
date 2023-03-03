@@ -34,6 +34,7 @@ export const grey = {
   700: '#4B566B',
   600: '#7D879C', // Low Priority form Title/Text
   500: '#AEB4BE',
+  450: '#EFEFEF',
   400: '#DAE1E7', // Border
   300: '#E3E9EF',
   200: '#F3F5F9', // Line Stroke

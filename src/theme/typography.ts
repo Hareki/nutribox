@@ -1,4 +1,4 @@
-export const fontSize = 14;
+export const fontSize = 15;
 export const fontFamily = [
   'SVN-Rubik',
   'Open Sans',
