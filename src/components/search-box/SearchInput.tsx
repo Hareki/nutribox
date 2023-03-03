@@ -50,7 +50,7 @@ const SearchInput: FC = () => {
       <TextField
         fullWidth
         variant='outlined'
-        placeholder='Searching for...'
+        placeholder='Tìm sản phẩm...'
         onChange={handleSearch}
         InputProps={{
           sx: {
@@ -74,7 +74,7 @@ const SearchInput: FC = () => {
                 borderRadius: '0 300px 300px 0',
               }}
             >
-              Search
+              Tìm
             </Button>
           ),
           startAdornment: <SearchOutlinedIcon fontSize='small' />,
@@ -84,7 +84,12 @@ const SearchInput: FC = () => {
       {resultList.length > 0 && (
         <SearchResultCard elevation={2}>
           {resultList.map((item) => (
-            <Link href={`/product/search/${item}`} key={item} passHref legacyBehavior>
+            <Link
+              href={`/product/search/${item}`}
+              key={item}
+              passHref
+              legacyBehavior
+            >
               <MenuItem key={item}>{item}</MenuItem>
             </Link>
           ))}

@@ -48,10 +48,12 @@ const StyledDrawer = styled(Drawer)<{ totalheight: number }>(
     flexShrink: 0,
     '& .MuiDrawer-paper': {
       width: 250,
-      // top: totalheight,
+      top: totalheight,
       boxSizing: 'border-box',
       boxShadow: theme.shadows[2],
-      // height: `calc(100% - ${totalheight + layoutConstant.mobileHeaderHeight}px)`,
+      height: `calc(100% - ${
+        totalheight + layoutConstant.mobileHeaderHeight
+      }px)`,
     },
   }),
 );

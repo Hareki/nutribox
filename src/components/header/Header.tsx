@@ -101,13 +101,11 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
 
             {/* MIDDLE CONTENT - LOGO */}
             <Link href='/'>
-
               <Image
                 height={44}
                 src='/assets/images/bazaar-black-sm.svg'
                 alt='logo'
               />
-
             </Link>
 
             {/* RIGHT CONTENT - LOGIN, CART, SEARCH BUTTON */}
@@ -162,22 +160,8 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
         {/* LEFT CONTENT - LOGO AND CATEGORY */}
         <FlexBox mr={2} minWidth='170px' alignItems='center'>
           <Link href='/'>
-
             <Image height={44} src='/assets/images/logo2.svg' alt='logo' />
-
           </Link>
-
-          {/* SHOW DROP DOWN CATEGORY BUTTON WHEN HEADER FIXED */}
-          {isFixed && (
-            <CategoryMenu>
-              <FlexBox color='grey.600' alignItems='center' ml={2}>
-                <Button color='inherit'>
-                  <Category fontSize='small' color='inherit' />
-                  <KeyboardArrowDown fontSize='small' color='inherit' />
-                </Button>
-              </FlexBox>
-            </CategoryMenu>
-          )}
         </FlexBox>
 
         {/* SEARCH FORM */}

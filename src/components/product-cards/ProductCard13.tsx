@@ -142,12 +142,11 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
   return (
     <StyledBazaarCard hoverEffect={hoverEffect}>
       <ImageWrapper>
-        {off !== 0 && (
+        {/* {off !== 0 && (
           <StyledChip color='primary' size='small' label={`${off}% off`} />
-        )}
+        )} */}
 
         <Link href={`/product/${slug}`}>
-
           <LazyImage
             alt={title}
             width={190}
@@ -156,7 +155,6 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
             layout='responsive'
             objectFit='contain'
           />
-
         </Link>
 
         <HoverWrapper className='controller'>
@@ -194,7 +192,6 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
       <ContentWrapper>
         <Box flex='1 1 0' minWidth='0px' mr={1}>
           <Link href={`/product/${slug}`}>
-
             <H3
               mb={1}
               title={title}
@@ -206,26 +203,25 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
             >
               {title}
             </H3>
-
           </Link>
 
-          {!hideRating && (
+          {/* {!hideRating && (
             <FlexBox gap={1} alignItems='center'>
               <BazaarRating value={rating || 0} color='warn' readOnly />
               <Span color='grey.600'>{`(${rating})`}</Span>
             </FlexBox>
-          )}
+          )} */}
 
           <FlexBox gap={1} alignItems='center' mt={0.5}>
             <Box fontWeight={600} color='primary.main'>
               {calculateDiscount(price, off)}
             </Box>
 
-            {off !== 0 && (
+            {/* {off !== 0 && (
               <Box color='grey.600' fontWeight={600}>
                 <del>{currency(price)}</del>
               </Box>
-            )}
+            )} */}
           </FlexBox>
         </Box>
 

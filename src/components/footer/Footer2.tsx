@@ -39,25 +39,21 @@ const Footer2: FC = () => {
         }}
       >
         <Link href='/'>
-
           <BazaarImage
             height={50}
             mb={2.5}
             src='/assets/images/logo.svg'
             alt='logo'
           />
-
         </Link>
 
         <Grid container spacing={6}>
           <Grid item md={6} sm={6} xs={12}>
-            <Paragraph mb={2.5} color='grey.500' maxWidth='370px'>
+            <Paragraph mb={2.5} color='grey.700' maxWidth='370px'>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor
               libero id et, in gravida. Sit diam duis mauris nulla cursus. Erat
               et lectus vel ut sollicitudin elit at amet.
             </Paragraph>
-
-            <AppStore />
           </Grid>
 
           <Grid item md={6} sm={6} xs={12}>

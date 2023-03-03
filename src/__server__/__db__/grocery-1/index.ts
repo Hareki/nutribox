@@ -65,3 +65,21 @@ Mock.onGet('/api/grocery-1/category-based-products').reply(async () => {
     return [500, { message: 'Internal server error' }];
   }
 });
+
+Mock.onGet('/api/grocery-1/main-carousel').reply(async () => {
+  try {
+    return [200, db.mainCarouselData];
+  } catch (err) {
+    console.error(err);
+    return [500, { message: 'Internal server error' }];
+  }
+});
+
+Mock.onGet('/api/grocery-1/testimonial-list').reply(() => {
+  try {
+    return [200, db.testimonialList];
+  } catch (err) {
+    console.error(err);
+    return [500, { message: 'Internal server error' }];
+  }
+});

@@ -28,10 +28,22 @@ const getServices = async (): Promise<Service[]> => {
   return response.data;
 };
 
+const getMainCarousel = async () => {
+  const response = await axios.get('/api/grocery-1/main-carousel');
+  return response.data;
+};
+
+const getTestimonials = async () => {
+  const response = await axios.get('/api/grocery-1/testimonial-list');
+  return response.data;
+};
+
 export default {
   getServices,
   getProducts,
   getPopularProducts,
   getTrendingProducts,
   getGrocery1Navigation,
+  getMainCarousel,
+  getTestimonials,
 };

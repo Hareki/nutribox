@@ -44,7 +44,12 @@ const Section8: FC = () => {
                 disableElevation
                 color='primary'
                 variant='contained'
-                sx={{ px: '3rem', height: '100%', borderRadius: '0 8px 8px 0' }}
+                sx={{
+                  px: '3rem',
+                  height: '100%',
+                  borderRadius: '0 8px 8px 0',
+                  color: '#fff',
+                }}
               >
                 SUBSCRIBE
               </Button>

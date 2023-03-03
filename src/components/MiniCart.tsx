@@ -118,13 +118,11 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
             </FlexBox>
 
             <Link href={`/product/${item.id}`}>
-
               <Avatar
                 alt={item.name}
                 src={item.imgUrl}
                 sx={{ mx: 2, width: 76, height: 76 }}
               />
-
             </Link>
 
             <Box
@@ -136,11 +134,9 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
               }}
             >
               <Link href={`/product/${item.slug}`}>
-
                 <H5 ellipsis fontSize='14px' className='title'>
                   {item.name}
                 </H5>
-
               </Link>
 
               <Tiny color='grey.600'>
@@ -175,7 +171,7 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
               fullWidth
               color='primary'
               variant='contained'
-              sx={{ mb: '0.75rem', height: '40px' }}
+              sx={{ mb: '0.75rem', height: '40px', color: '#fff' }}
               onClick={toggleSidenav}
             >
               Checkout Now ({currency(getTotalPrice())})

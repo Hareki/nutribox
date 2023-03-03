@@ -1,93 +1,121 @@
-import { Box, Button, styled, TextField } from '@mui/material';
+import { Box, Button, Grid, styled, useTheme } from '@mui/material';
 import { FC } from 'react';
 
-import { SearchOutlinedIcon } from 'components/search-box/styled';
+import Carousel from 'components/carousel/Carousel';
+import LazyImage from 'components/LazyImage';
 import { H1 } from 'components/Typography';
+import { MainCarouselItem } from 'models/Grocery-3.model';
 
-const leftImg = '/assets/images/headers/Header BG1.png';
-const rightImg = '/assets/images/headers/Header BG2.png';
-
-// styled component
-const Container = styled(Box)(({ theme }) => ({
-  width: '100%',
-  height: 650,
-  padding: 20,
-  paddingTop: 160,
-  backgroundColor: theme.palette.grey[100],
-  backgroundSize: '40%, 40%',
-  backgroundPosition: 'left bottom, right bottom',
-  backgroundRepeat: 'no-repeat, no-repeat',
-  transition: 'all .3s',
-  backgroundImage:
-    theme.direction === 'ltr'
-      ? `url('${leftImg}'), url('${rightImg}')`
-      : `url('${rightImg}'), url('${leftImg}')`,
-
-  '& h1': {
-    fontSize: 42,
-    textAlign: 'center',
-    marginBottom: 40,
-    lineHeight: 1.3,
-  },
-  '& .searchBox': {
+// styled components
+const StyledBox = styled(Box)({
+  marginBottom: 60,
+  overflow: 'hidden',
+  '& .carousel-dot': {
+    left: 0,
+    right: 0,
+    bottom: '30px',
     margin: 'auto',
-    maxWidth: '600px',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    boxShadow: theme.shadows[2],
+    position: 'absolute',
   },
-  [theme.breakpoints.up('md')]: {
-    backgroundSize: '450px, 450px',
+  '& img': {
+    minHeight: 'auto !important',
+    height: '450px !important',
+    borderRadius: '24px',
   },
-  [theme.breakpoints.down('md')]: {
-    height: 550,
-    paddingTop: 130,
-    '& h1': { fontSize: 38, textAlign: 'center' },
-  },
+});
+
+const Container = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.grey[450],
+}));
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  maxWidth: 1280,
+  alignItems: 'center',
+  margin: ' 0 auto',
   [theme.breakpoints.down('sm')]: {
-    height: 480,
-    paddingTop: 100,
-    '& h1': { fontSize: 30 },
-    '& .searchBox': { margin: 0 },
+    flexDirection: 'column-reverse',
   },
 }));
 
-const Section1: FC = () => {
-  const SEARCH_BUTTON = (
-    <Button
-      color='primary'
-      disableElevation
-      variant='contained'
-      sx={{ px: '2rem', height: '100%', borderRadius: '0 8px 8px 0' }}
-    >
-      Search
-    </Button>
-  );
+const GridItemTwo = styled(Grid)(({ theme }) => ({
+  paddingLeft: 80,
+  [theme.breakpoints.down('md')]: { paddingLeft: 40 },
+  [theme.breakpoints.down('sm')]: { paddingLeft: 0, textAlign: 'center' },
+}));
+
+const StyledButton = styled(Button)({
+  color: '#fff',
+  fontWeight: 400,
+  fontSize: '16px',
+});
+
+const GridItemOne = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: { width: '100%' },
+}));
+
+const TextBox = styled(Box)(({ theme }) => ({
+  marginBottom: 40,
+  '& h1': { fontSize: 50, fontWeight: 600, lineHeight: '1.35' },
+  [theme.breakpoints.down('lg')]: { '& h1': { fontSize: 45 } },
+  [theme.breakpoints.down('md')]: { '& h1': { fontSize: 38 } },
+  [theme.breakpoints.down('sm')]: { paddingTop: 30 },
+}));
+
+// ===================================================================
+type Props = { mainCarouselData: MainCarouselItem[] };
+// ===================================================================
+
+const Section1: FC<Props> = ({ mainCarouselData }) => {
+  const { palette } = useTheme();
 
   return (
-    <Container>
-      <H1 maxWidth={600} mx='auto'>
-        Get your grocery delivery within 30 minutes
-      </H1>
+    <StyledBox id='carouselBox'>
+      <Carousel
+        spacing='0px'
+        showDots={true}
+        autoPlay={true}
+        interval={2500}
+        showArrow={false}
+        visibleSlides={1}
+        dotClass='carousel-dot'
+        dotColor={palette.primary.main}
+        totalSlides={mainCarouselData.length}
+      >
+        {mainCarouselData.map((item, ind) => (
+          <Container key={ind}>
+            <StyledGrid container>
+              <GridItemOne item md={6} sm={6} xs={12}>
+                <Box pt={6}>
+                  <LazyImage
+                    priority
+                    width={100}
+                    height={100}
+                    alt={item.title}
+                    src={item.imgUrl}
+                    layout='responsive'
+                    objectFit='cover'
+                  />
+                </Box>
+              </GridItemOne>
 
-      <Box className='searchBox'>
-        <TextField
-          placeholder='Searching for...'
-          fullWidth
-          InputProps={{
-            sx: {
-              height: 50,
-              paddingRight: 0,
-              color: 'grey.700',
-              background: '#fff',
-              '& fieldset': { border: 'none' },
-            },
-            endAdornment: SEARCH_BUTTON,
-            startAdornment: <SearchOutlinedIcon fontSize='small' />,
-          }}
-        />
-      </Box>
-    </Container>
+              <GridItemTwo item md={6} sm={6} xs={12}>
+                <TextBox>
+                  <H1 maxWidth={400}>{item.title}</H1>
+                </TextBox>
+
+                <StyledButton
+                  variant='contained'
+                  color='primary'
+                  sx={{ px: '30px', py: '6px' }}
+                >
+                  {item.buttonText}
+                </StyledButton>
+              </GridItemTwo>
+            </StyledGrid>
+          </Container>
+        ))}
+      </Carousel>
+    </StyledBox>
   );
 };
 

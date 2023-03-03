@@ -15,7 +15,8 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     position: 'relative',
     width: layoutConstant.grocerySidenavWidth,
     minWidth: layoutConstant.grocerySidenavWidth,
-    height: `calc(100vh - ${layoutConstant.headerHeight}px)`,
+    // height: `calc(100vh - ${layoutConstant.headerHeight}px)`,
+    height: `fit-content`,
     '& .MuiPaper-root': { borderRadius: 5 },
   },
   '.fixed': {

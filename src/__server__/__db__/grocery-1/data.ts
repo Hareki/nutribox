@@ -1,134 +1,23 @@
 // categories navigations
 export const categoryNavigation = [
   {
-    category: 'Top Categories',
+    category: 'Danh mục món ăn',
     categoryItem: [
-      {
-        icon: 'Milk',
-        title: 'Dariry & Eggs',
-        href: '/product/search/Dariry & Eggs',
-      },
-      {
-        icon: 'Breakfast',
-        title: 'Breakfast',
-        href: '/product/search/Breakfast',
-      },
-      { icon: 'Yogurt', title: 'Frozen', href: '/product/search/Frozen' },
-      {
-        icon: 'Carrot',
-        title: 'Vegetables',
-        href: '/product/search/vegetables',
-        child: [
-          {
-            title: 'Pears, apples, quinces',
-            href: '/product/search/Pears, apples, quinces',
-          },
-          {
-            title: 'Peaches, plums, apricots',
-            href: '/product/search/Peaches, plums, apricots',
-          },
-          { title: 'Grapes', href: '/product/search/Grapes' },
-        ],
-      },
-      {
-        icon: 'Apple',
-        title: 'Fruits & Vegetables',
-        href: '/product/search/Fruits & Vegetables',
-        child: [
-          { title: 'Onion', href: '/product/search/Onion' },
-          { title: 'Potato', href: '/product/search/Potato' },
-          { title: 'Vegetable Pack', href: '/product/search/Vegetable Pack' },
-        ],
-      },
-      {
-        icon: 'Milk',
-        title: 'Dariry & Eggs',
-        href: '/product/search/Dariry & Eggs',
-        child: [
-          {
-            title: 'Pears, apples, quinces',
-            href: '/product/search/Pears, apples, quinces',
-          },
-          {
-            title: 'Peaches, plums, apricots',
-            href: '/product/search/Peaches, plums, apricots',
-          },
-          { title: 'Grapes', href: '/product/search/Grapes' },
-        ],
-      },
-    ],
-  },
-  {
-    category: 'Top Categories',
-    categoryItem: [
-      {
-        icon: 'Carrot',
-        title: 'Fish and Mil',
-        href: '/product/search/vegetables',
-        child: [
-          {
-            title: 'Pears, apples, quinces',
-            href: '/product/search/Pears, apples, quinces',
-          },
-          {
-            title: 'Peaches, plums, apricots',
-            href: '/product/search/Peaches, plums, apricots',
-          },
-          { title: 'Grapes', href: '/product/search/Grapes' },
-        ],
-      },
-      {
-        icon: 'Apple',
-        title: 'Health and beauty',
-        href: '/product/search/Fruits & Vegetables',
-        child: [
-          { title: 'Onion', href: '/product/search/Onion' },
-          { title: 'Potato', href: '/product/search/Potato' },
-          { title: 'Vegetable Pack', href: '/product/search/Vegetable Pack' },
-        ],
-      },
-      {
-        icon: 'Milk',
-        title: 'Dress and something',
-        href: '/product/search/Dariry & Eggs',
-        child: [
-          {
-            title: 'Pears, apples, quinces',
-            href: '/product/search/Pears, apples, quinces',
-          },
-          {
-            title: 'Peaches, plums, apricots',
-            href: '/product/search/Peaches, plums, apricots',
-          },
-          { title: 'Grapes', href: '/product/search/Grapes' },
-        ],
-      },
-      {
-        icon: 'Milk',
-        title: 'Dariry & Eggs',
-        href: '/product/search/Dariry & Eggs',
-      },
-      {
-        icon: 'Breakfast',
-        title: 'Breakfast',
-        href: '/product/search/Breakfast',
-      },
-      { icon: 'Yogurt', title: 'Frozen', href: '/product/search/Frozen' },
-      { icon: 'Honey', title: 'Organic', href: '/product/search/Organic' },
-      {
-        icon: 'Beer',
-        title: 'Canned Food',
-        href: '/product/search/Canned Food',
-      },
       {
         icon: 'Snack',
-        title: 'Coffee & Snacks',
-        href: '/product/search/Coffee & Snacks',
+        title: 'Khai vị',
+        href: '/product/search/Breakfast',
       },
       {
-        icon: 'Bottle',
-        title: 'Sauces & Jems',
-        href: '/product/search/Sauces & Jems',
+        icon: 'Breakfast',
+        title: 'Món chính',
+        href: '/product/search/Breakfast',
+      },
+      { icon: 'Yogurt', title: 'Tráng miệng', href: '/product/search/Frozen' },
+      {
+        icon: 'Milk',
+        title: 'Thức uống',
+        href: '/product/search/Dariry & Eggs',
       },
     ],
   },
@@ -138,33 +27,27 @@ export const categoryNavigation = [
 export const serviceList = [
   {
     id: 'b774ce8e-439e-44be-9516-129e0ad8be18',
-    icon: 'Truck',
-    title: 'Fast Delivery',
-    description: 'Start from $10',
+    icon: 'AlarmClock',
+    title: 'Giao hàng nhanh',
+    description: 'Trong vòng 30 phút',
   },
   {
     id: 'cb0f797d-07ef-40f2-9de7-dd5eb8f1d6fd',
     icon: 'MoneyGuarantee',
-    title: 'Money Guarantee',
-    description: '7 Days Back',
-  },
-  {
-    id: 'dbb26e7b-b0eb-4133-896b-671ad71edf47',
-    icon: 'AlarmClock',
-    title: '365 Days',
-    description: 'For free return',
+    title: 'Tiết kiệm',
+    description: 'Giá thành phải chăng',
   },
   {
     id: '16265099-6150-4b44-80e5-1790383ada5f',
     icon: 'Payment',
-    title: 'Payment',
-    description: 'Secure system',
+    title: 'Thanh toán',
+    description: 'Nhanh và bảo mật',
   },
   {
     id: '347e809a-a479-4895-9344-5660aeb00638',
     icon: 'OnlineSupport',
-    title: 'Online Support',
-    description: '24/7 daily',
+    title: 'Hệ thống CSKH',
+    description: 'Phục vụ tận tâm',
   },
 ];
 
@@ -1197,5 +1080,51 @@ export const products = [
       demo: 'grocery-1',
       type: 'trending-products',
     },
+  },
+];
+
+export const mainCarouselData = [
+  {
+    title: 'Đặt hàng và lấy ngay trong vòng 30 phút',
+    imgUrl: '/assets/images/Groceries Shop/custom-3.jpg',
+    description: null,
+    buttonText: 'Chọn món ngay',
+    buttonLink: '#',
+  },
+  {
+    title: 'Chất lượng luôn được đặt lên hàng đầu',
+    imgUrl: '/assets/images/Groceries Shop/custom-1.jpg',
+    description: null,
+    buttonText: 'Chọn món ngay',
+    buttonLink: '#',
+  },
+  {
+    title: 'Nguyên liệu hữu cơ tốt cho sức khoẻ',
+    imgUrl: '/assets/images/Groceries Shop/custom-2.jpg',
+    description: null,
+    buttonText: 'Chọn món ngay',
+    buttonLink: '#',
+  },
+];
+
+// testimonial list
+export const testimonialList = [
+  {
+    rating: 4.5,
+    id: 'aa95e3fd-c170-431a-b9cd-abaac45a048f',
+    user: { name: 'Jonathon Doe', avatar: '/assets/images/faces/7.png' },
+    comment: `Satisfied by their professionalism ! Got my tea bags in time. Didn't have to pay any delivery charge. I can't believe that. Keep it up !`,
+  },
+  {
+    rating: 5,
+    id: '72c79d90-abc7-467d-b7b2-e94905a9e18a',
+    user: { name: 'Emily Johnson', avatar: '/assets/images/faces/4.jpg' },
+    comment: `Satisfied by their professionalism ! Got my tea bags in time. Didn't have to pay any delivery charge. I can't believe that. Keep it up !`,
+  },
+  {
+    rating: 4,
+    id: 'fc39e3b3-de7b-4ffa-aa64-63ca0c21c5c8',
+    user: { name: 'James Smith', avatar: '/assets/images/faces/5.jpg' },
+    comment: `Satisfied by their professionalism ! Got my tea bags in time. Didn't have to pay any delivery charge. I can't believe that. Keep it up !`,
   },
 ];
