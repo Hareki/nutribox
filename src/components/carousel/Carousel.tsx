@@ -93,8 +93,8 @@ const Carousel: FC<CarouselProps> = ({
       naturalSlideHeight={naturalSlideHeight || 125}
     >
       <StyledSlider spacing={spacing}>
-        {Children.map(children, (child, ind) => (
-          <Slide index={ind}>{child}</Slide>
+        {Children.map(children, (child, index) => (
+          <Slide index={index}>{child}</Slide>
         ))}
       </StyledSlider>
 
@@ -112,7 +112,9 @@ const Carousel: FC<CarouselProps> = ({
             id='backArrowButton'
             sx={{ left: '-20px' }}
             style={leftButtonStyle || {}}
-            className={clsx(leftButtonClass, arrowButtonClass)}
+            showDots
+            dot_margin_top='20px'
+            className={clsx(arrowButtonClass, leftButtonClass)}
           >
             {settings.direction === 'ltr' ? (
               <ArrowBack fontSize='small' color='inherit' />
@@ -125,6 +127,8 @@ const Carousel: FC<CarouselProps> = ({
             id='backForwardButton'
             sx={{ right: '-20px' }}
             style={rightButtonStyle || {}}
+            showDots
+            dot_margin_top='20px'
             className={clsx(arrowButtonClass, rightButtonClass)}
           >
             {settings.direction === 'ltr' ? (

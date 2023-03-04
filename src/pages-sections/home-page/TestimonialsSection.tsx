@@ -1,4 +1,4 @@
-import { Avatar, Grid, styled } from '@mui/material';
+import { Avatar, Grid, styled, Theme } from '@mui/material';
 import { FC } from 'react';
 
 import BazaarCard from 'components/BazaarCard';
@@ -8,12 +8,14 @@ import { FlexBox } from 'components/flex-box';
 import Quote from 'components/icons/Quote';
 import { H5, Paragraph } from 'components/Typography';
 
+const cardBorderRadius = '12px';
 // styled components
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   overflow: 'hidden',
-  borderRadius: '8px',
+  borderRadius: cardBorderRadius,
   position: 'relative',
   padding: '2rem 4rem',
+  boxShadow: 'none',
   [theme.breakpoints.down('sm')]: { padding: '2rem' },
 }));
 
@@ -61,9 +63,17 @@ const TestimonialsSection: FC<Props> = ({ testimonials = [] }) => {
       visibleSlides={1}
       showArrowOnHover
       arrowButtonColor='inherit'
+      sx={{
+        '.carousel__slider--horizontal': (theme: Theme) => {
+          return {
+            borderRadius: cardBorderRadius,
+            boxShadow: theme.shadows[2],
+          };
+        },
+      }}
     >
-      {testimonials.map((data, ind) => (
-        <StyledBazaarCard key={ind}>
+      {testimonials.map((data, index) => (
+        <StyledBazaarCard key={index}>
           <StyledFlexBox position='relative' flexWrap='wrap'>
             <StyledQuote sx={{ left: 0, top: 0 }} />
 
