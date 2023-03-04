@@ -16,11 +16,11 @@ import CategoryNavList from 'models/CategoryNavList.model';
 import { MainCarouselItem } from 'models/Grocery-3.model';
 import Product from 'models/Product.model';
 import Service from 'models/Service.model';
-import AllProducts from 'pages-sections/grocery1/AllProducts';
-import HeroSection from 'pages-sections/grocery1/HeroSection';
-import ProductCarousel from 'pages-sections/grocery1/ProductCarousel';
-import ServicesSection from 'pages-sections/grocery1/ServicesSection';
-import TestimonialsSection from 'pages-sections/grocery1/TestimonialsSection';
+import AllProducts from 'pages-sections/home-page/AllProducts';
+import HeroSection from 'pages-sections/home-page/HeroSection';
+import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
+import ServicesSection from 'pages-sections/home-page/ServicesSection';
+import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
 
 type HomePageProps = {
