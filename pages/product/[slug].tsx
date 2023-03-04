@@ -3,12 +3,10 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 
-import ShopLayout1 from 'components/layouts/ShopLayout1';
-import AvailableShops from 'components/products/AvailableShops';
-import FrequentlyBought from 'components/products/FrequentlyBought';
+import ShopLayout2 from 'components/layouts/ShopLayout2';
 import ProductDescription from 'components/products/ProductDescription';
 import ProductIntro from 'components/products/ProductIntro';
-import RelatedProducts from 'components/products/RelatedProducts';
+import RelatedProductsSection from 'components/products/RelatedProductsSection';
 import { H2 } from 'components/Typography';
 import Product from 'models/Product.model';
 import api from 'utils/__api__/products';
@@ -52,12 +50,12 @@ const ProductDetails: FC<ProductDetailsProps> = (props) => {
   }
 
   return (
-    <ShopLayout1>
+    <ShopLayout2>
       <Container sx={{ my: 4 }}>
         {/* PRODUCT DETAILS INFO AREA */}
         {product ? <ProductIntro product={product} /> : <H2>Loading...</H2>}
 
-        {/* PRODUCT DESCRIPTION AND REVIEW */}
+        {/* PRODUCT DESCRIPTION */}
         <StyledTabs
           textColor='primary'
           value={selectedOption}
@@ -65,20 +63,15 @@ const ProductDetails: FC<ProductDetailsProps> = (props) => {
           onChange={handleOptionClick}
         >
           <Tab className='inner-tab' label='Description' />
-          <Tab className='inner-tab' label='Review (3)' />
         </StyledTabs>
 
         <Box mb={6}>{selectedOption === 0 && <ProductDescription />}</Box>
 
-        {frequentlyBought && (
-          <FrequentlyBought productsData={frequentlyBought} />
+        {relatedProducts && (
+          <RelatedProductsSection productsData={relatedProducts} />
         )}
-
-        <AvailableShops />
-
-        {relatedProducts && <RelatedProducts productsData={relatedProducts} />}
       </Container>
-    </ShopLayout1>
+    </ShopLayout2>
   );
 };
 

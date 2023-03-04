@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 import CategorySectionCreator from 'components/CategorySectionCreator';
 import { FlexRowCenter } from 'components/flex-box';
-import ProductCard13 from 'components/product-cards/ProductCard13';
+import ProductCard from 'components/product-cards/ProductCard';
 import { Paragraph } from 'components/Typography';
 import Product from 'models/Product.model';
 
@@ -29,7 +29,7 @@ const AllProducts: FC<AllProductsProps> = ({
       <Grid container spacing={3}>
         {products.map((item) => (
           <Grid key={item.id} item md={4} sm={6} xs={12}>
-            <ProductCard13
+            <ProductCard
               id={item.id}
               slug={item.slug}
               title={item.title}

@@ -111,7 +111,7 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
                 <H5>{item.category}</H5>
 
                 <BorderBox linestyle={lineStyle}>
-                  <ColorBorder />
+                  <ColorBorder width='140% !important' />
                   <ColorBorder grey={1} />
                 </BorderBox>
               </Box>

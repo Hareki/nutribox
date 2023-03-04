@@ -18,7 +18,7 @@ const Cart: NextPage = () => {
   const cartList: CartItem[] = state.cart;
 
   const getTotalPrice = () =>
-    cartList.reduce((accum, item) => accum + item.price * item.qty, 0);
+    cartList.reduce((accumulat, item) => accumulat + item.price * item.qty, 0);
 
   return (
     <CheckoutNavLayout>

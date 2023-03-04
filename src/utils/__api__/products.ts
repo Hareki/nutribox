@@ -14,7 +14,7 @@ const getProduct = async (slug: string): Promise<Product> => {
   return response.data;
 };
 
-// search profucts
+// search products
 const searchProducts = async (
   name?: string,
   category?: string,

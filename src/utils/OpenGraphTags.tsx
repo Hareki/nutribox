@@ -12,7 +12,7 @@ const OpenGraphTags: React.FC = () => {
       <meta property='og:title' content='Bazaar - React Ecommerce Template' />
       <meta
         property='og:description'
-        content='React Next.js ecommerce template. Build SEO friendly Online store, delivery app and Multivendor store'
+        content='React Next.js ecommerce template. Build SEO friendly Online store, delivery app and Multi vendor store'
       />
       <meta property='og:image' content='/assets/images/landing/preview.png' />
     </React.Fragment>

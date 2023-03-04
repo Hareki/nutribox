@@ -27,7 +27,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
     type: 'type 1',
   });
 
-  // HANDLE CHAMGE TYPE AND OPTIONS
+  // HANDLE CHANGE TYPE AND OPTIONS
   const handleChangeVariant = (variantName: string, value: string) => () => {
     setSelectVariants((state) => ({
       ...state,
@@ -176,9 +176,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
           <FlexBox alignItems='center' mb={2}>
             <Box>Sold By:</Box>
             <Link href='/shops/scarlett-beauty' passHref>
-
               <H6 ml={1}>Mobile Store</H6>
-
             </Link>
           </FlexBox>
         </Grid>

@@ -27,7 +27,6 @@ const DiscountSection: FC = () => {
   return (
     <Container>
       <Link href='/sale-page-1'>
-
         <Grid container>
           <Grid className='content' item sm={7} xs={12}>
             <Paragraph>Till 10 Dec, 2021</Paragraph>
@@ -47,11 +46,10 @@ const DiscountSection: FC = () => {
             <Image
               width='100%'
               alt='discount'
-              src='/assets/images/Groceries Shop/vagitable.png'
+              src='/assets/images/Groceries Shop/vegetable.png'
             />
           </Grid>
         </Grid>
-
       </Link>
     </Container>
   );

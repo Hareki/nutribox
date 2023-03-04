@@ -1,14 +1,14 @@
 import { Container, Grid } from '@mui/material';
 import { NextPage } from 'next';
 
-import ShopLayout from 'components/layouts/ShopLayout';
+import ShopLayout1 from 'components/layouts/ShopLayout1';
 import SEO from 'components/SEO';
 import CheckoutForm2 from 'pages-sections/checkout/CheckoutForm2';
 import CheckoutSummary2 from 'pages-sections/checkout/CheckoutSummary2';
 
 const CheckoutAlternative: NextPage = () => {
   return (
-    <ShopLayout>
+    <ShopLayout1>
       <SEO title='Checkout alternative' />
       <Container sx={{ my: '1.5rem' }}>
         <Grid container spacing={3}>
@@ -21,7 +21,7 @@ const CheckoutAlternative: NextPage = () => {
           </Grid>
         </Grid>
       </Container>
-    </ShopLayout>
+    </ShopLayout1>
   );
 };
 

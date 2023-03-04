@@ -2,7 +2,7 @@ import { Box, Container, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FC, ReactNode, useEffect, useState } from 'react';
 
-import ShopLayout1 from './ShopLayout1';
+import ShopLayout2 from './ShopLayout2';
 
 import Stepper from 'components/Stepper';
 
@@ -59,7 +59,7 @@ const CheckoutNavLayout: FC<CheckoutNavLayoutProps> = ({ children }) => {
   }, [pathname]);
 
   return (
-    <ShopLayout1>
+    <ShopLayout2>
       <Container sx={{ my: 4 }}>
         <Box mb={3} display={{ sm: 'block', xs: 'none' }}>
           <Grid container spacing={3}>
@@ -75,7 +75,7 @@ const CheckoutNavLayout: FC<CheckoutNavLayoutProps> = ({ children }) => {
 
         {children}
       </Container>
-    </ShopLayout1>
+    </ShopLayout2>
   );
 };
 

@@ -1,36 +1,27 @@
+import { Box } from '@mui/material';
 import { FC, Fragment, ReactNode, useCallback, useState } from 'react';
 
-import { Footer1 } from 'components/footer';
 import Header from 'components/header/Header';
-import { MobileNavigationBar } from 'components/mobile-navigation';
 import Navbar from 'components/navbar/Navbar';
-import SearchInputWithCategory from 'components/search-box/SearchInputWithCategory';
+import SearchInput from 'components/search-box/SearchInput';
 import Sticky from 'components/Sticky';
 import Topbar from 'components/Topbar';
 
 /**
  *  Used in:
- *  1. market-1, matket-2, gadget-shop,
- *     fashion-shop, fashion-shop-2, fashion-shop-3, furniture-shop, grocery3, gift-shop
- *  2. product details page
- *  3. order-confirmation page
- *  4. product-search page
- *  5. shops and shops-details page
- *  6. checkoutNavLayout and CustomerDashboadLayout component
+ *  1. checkout-alternative
  */
 
-// ===================================================
+// =======================================================
 type ShopLayout1Props = {
   children: ReactNode;
-  showTopbar?: boolean;
   showNavbar?: boolean;
-  topbarBgColor?: string;
+  showTopbar?: boolean;
 };
-// ===================================================
+// =======================================================
 
 const ShopLayout1: FC<ShopLayout1Props> = ({
   children,
-  topbarBgColor,
   showTopbar = true,
   showNavbar = true,
 }) => {
@@ -40,26 +31,20 @@ const ShopLayout1: FC<ShopLayout1Props> = ({
   return (
     <Fragment>
       {/* TOPBAR */}
-      {showTopbar && <Topbar bgColor={topbarBgColor} />}
+      {showTopbar && <Topbar />}
 
       {/* HEADER */}
-      <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={300}>
-        <Header isFixed={isFixed} searchInput={<SearchInputWithCategory />} />
+      <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={70}>
+        <Header isFixed={isFixed} searchInput={<SearchInput />} />
       </Sticky>
 
-      <div className='section-after-sticky'>
+      <Box zIndex={4} position='relative' className='section-after-sticky'>
         {/* NAVIGATION BAR */}
-        {showNavbar && <Navbar elevation={0} border={1} />}
+        {showNavbar && <Navbar elevation={0} />}
 
         {/* BODY CONTENT */}
         {children}
-      </div>
-
-      {/* SMALL DEVICE BOTTOM NAVIGATION */}
-      <MobileNavigationBar />
-
-      {/* FOOTER */}
-      <Footer1 />
+      </Box>
     </Fragment>
   );
 };

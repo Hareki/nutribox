@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 
 import BazaarCard from 'components/BazaarCard';
-import ShopLayout1 from 'components/layouts/ShopLayout1';
+import ShopLayout2 from 'components/layouts/ShopLayout2';
 import LazyImage from 'components/LazyImage';
 import SEO from 'components/SEO';
 import { H1, Paragraph } from 'components/Typography';
@@ -23,7 +23,7 @@ const StyledButton = styled(Button)({
 
 const OrderConfirmation: NextPage = () => {
   return (
-    <ShopLayout1>
+    <ShopLayout2>
       <SEO title='Order Confirmation' />
 
       <Container sx={{ mt: 4, mb: 20 }}>
@@ -54,7 +54,7 @@ const OrderConfirmation: NextPage = () => {
           </Link>
         </Wrapper>
       </Container>
-    </ShopLayout1>
+    </ShopLayout2>
   );
 };
 

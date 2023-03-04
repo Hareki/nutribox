@@ -5,11 +5,17 @@
     "CSKH",
     "Dariry",
     "Ecommerce",
+    "FLCDXWTVMD",
+    "Formik",
+    "gtag",
     "imagekitio",
+    "isfixed",
+    "linestyle",
     "navigations",
     "notistack",
     "nprogress",
     "nutribox",
+    "sidebarstyle",
     "Sidenav",
     "simplebar",
     "sitename",
@@ -18,6 +24,10 @@
     "tanstack",
     "TNHH",
     "Topbar",
-    "TTTN"
+    "TTTN",
+    "Orderseries",
+    "xaxis",
+    "yaxis",
+    "signup"
   ]
 }

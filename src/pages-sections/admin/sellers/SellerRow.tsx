@@ -28,7 +28,7 @@ const SellerRow: FC<SellerRowProps> = ({ seller }) => {
     package: sellerPackage,
   } = seller;
 
-  const [shopPulish, setShopPublish] = useState(published);
+  const [shopPublish, setShopPublish] = useState(published);
 
   return (
     <StyledTableRow tabIndex={-1} role='checkbox'>
@@ -55,7 +55,7 @@ const SellerRow: FC<SellerRowProps> = ({ seller }) => {
       <StyledTableCell align='left'>
         <BazaarSwitch
           color='info'
-          checked={shopPulish}
+          checked={shopPublish}
           onChange={() => setShopPublish((state) => !state)}
         />
       </StyledTableCell>

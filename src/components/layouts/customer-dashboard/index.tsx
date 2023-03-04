@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react';
 
 import Navigations from './Navigations';
 
-import ShopLayout1 from 'components/layouts/ShopLayout1';
+import ShopLayout2 from 'components/layouts/ShopLayout2';
 
 /**
  *  Used in:
@@ -19,7 +19,7 @@ type Props = { children: ReactNode };
 // ======================================================
 
 const CustomerDashboardLayout: FC<Props> = ({ children }) => (
-  <ShopLayout1>
+  <ShopLayout2>
     <Container sx={{ my: '2rem' }}>
       <Grid container spacing={3}>
         <Grid
@@ -36,7 +36,7 @@ const CustomerDashboardLayout: FC<Props> = ({ children }) => (
         </Grid>
       </Grid>
     </Container>
-  </ShopLayout1>
+  </ShopLayout2>
 );
 
 export default CustomerDashboardLayout;

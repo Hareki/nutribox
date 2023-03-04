@@ -3,7 +3,7 @@ import { Container, Grid, Pagination } from '@mui/material';
 import { GetStaticProps, NextPage } from 'next';
 
 import { FlexBetween } from 'components/flex-box';
-import ShopLayout1 from 'components/layouts/ShopLayout1';
+import ShopLayout2 from 'components/layouts/ShopLayout2';
 import ShopCard1 from 'components/shop/ShopCard1';
 import { H2, Span } from 'components/Typography';
 import Shop from 'models/Shop.model';
@@ -15,7 +15,7 @@ type ShopListProps = { shopList: Shop[] };
 
 const ShopList: NextPage<ShopListProps> = ({ shopList }) => {
   return (
-    <ShopLayout1>
+    <ShopLayout2>
       <Container sx={{ mt: 4, mb: 6 }}>
         <H2 mb={3}>All Shops</H2>
 
@@ -46,7 +46,7 @@ const ShopList: NextPage<ShopListProps> = ({ shopList }) => {
           />
         </FlexBetween>
       </Container>
-    </ShopLayout1>
+    </ShopLayout2>
   );
 };
 

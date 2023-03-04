@@ -100,7 +100,7 @@ type ProductCardProps = {
 };
 // ===============================================================
 
-const ProductCard13: FC<ProductCardProps> = (props) => {
+const ProductCard: FC<ProductCardProps> = (props) => {
   const {
     off,
     id,
@@ -263,4 +263,4 @@ const ProductCard13: FC<ProductCardProps> = (props) => {
   );
 };
 
-export default ProductCard13;
+export default ProductCard;

@@ -6,7 +6,7 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 // Footer1
 import { Footer } from 'components/footer';
 // ShopLayout2
-import ShopLayout from 'components/layouts/ShopLayout';
+import ShopLayout1 from 'components/layouts/ShopLayout1';
 // MobileNavigationBar2
 import { MobileNavigationBar } from 'components/mobile-navigation';
 import SideNavbar from 'components/page-sidenav/SideNavbar';
@@ -57,7 +57,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
   );
 
   return (
-    <ShopLayout showNavbar={false} showTopbar={false}>
+    <ShopLayout1 showNavbar={false} showTopbar={false}>
       <SEO title='Nutribox - Nguồn dinh dưỡng tốt cho sức khoẻ' />
       <HeroSection mainCarouselData={props.mainCarouselData} />
       <ServicesSection id='services-section' services={props.serviceList} />
@@ -96,7 +96,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
       <MobileNavigationBar>
         <SideNavbar navList={props.navList} />
       </MobileNavigationBar>
-    </ShopLayout>
+    </ShopLayout1>
   );
 };
 

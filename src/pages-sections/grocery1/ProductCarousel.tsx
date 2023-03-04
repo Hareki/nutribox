@@ -3,7 +3,8 @@ import { FC, useEffect, useState } from 'react';
 
 import Carousel from 'components/carousel/Carousel';
 import CategorySectionCreator from 'components/CategorySectionCreator';
-import ProductCard13 from 'components/product-cards/ProductCard13';
+// ProductCard13
+import ProductCard from 'components/product-cards/ProductCard';
 import { Paragraph } from 'components/Typography';
 import useWindowSize from 'hooks/useWindowSize';
 import Product from 'models/Product.model';
@@ -51,7 +52,7 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
       >
         {products.map((item) => (
           <Box pb={2} key={item.id}>
-            <ProductCard13
+            <ProductCard
               id={item.id}
               slug={item.slug}
               title={item.title}
