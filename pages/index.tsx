@@ -23,6 +23,15 @@ import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
 
+function getElementHeightIncludingMargin(element: HTMLElement) {
+  if (!element) return 0;
+  const styles = window.getComputedStyle(element);
+  const marginTop = parseFloat(styles.marginTop);
+  const marginBottom = parseFloat(styles.marginBottom);
+  const rect = element.getBoundingClientRect();
+  return rect.height + marginTop + marginBottom;
+}
+
 type HomePageProps = {
   products: Product[];
   serviceList: Service[];
@@ -36,6 +45,21 @@ type HomePageProps = {
 const HomePage: NextPage<HomePageProps> = (props) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [filterProducts, setFilterProducts] = useState<Product[]>([]);
+
+  const [sideNavBottomOffset, setSideNavBottomOffset] = useState('0px');
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const mainContent = document.getElementById('main-content');
+      const productsSection = document.getElementById('products-section');
+
+      const mainContentHeight = getElementHeightIncludingMargin(mainContent);
+      const productsSectionHeight =
+        getElementHeightIncludingMargin(productsSection);
+
+      const result = `${mainContentHeight - productsSectionHeight}px`;
+      setSideNavBottomOffset(result);
+    }
+  }, []);
 
   // FETCH PRODUCTS BASED ON THE SELECTED CATEGORY
   useEffect(() => {
@@ -60,33 +84,34 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     <ShopLayout1 showNavbar={false} showTopbar={false}>
       <SEO title='Trang chủ' />
       <HeroSection mainCarouselData={props.mainCarouselData} />
-      <ServicesSection id='services-section' services={props.serviceList} />
+      <ServicesSection services={props.serviceList} />
 
       {/* SIDEBAR WITH OTHER CONTENTS */}
       <SidenavContainer
-        navFixedComponentID='services-section'
+        sideNavBottomOffset={sideNavBottomOffset}
         SideNav={SideNav}
       >
-        <Stack spacing={6} mt={2} mb={6}>
-          {selectedCategory ? (
-            // FILTERED PRODUCT LIST
-            <AllProducts products={filterProducts} title={selectedCategory} />
-          ) : (
-            <Fragment>
-              <ProductCarousel
-                title='Popular Products'
-                products={props.popularProducts}
-              />
+        <Stack id='main-content' spacing={6} mt={2} mb={6}>
+          <div id='products-section'>
+            {selectedCategory ? (
+              // FILTERED PRODUCT LIST
+              <AllProducts products={filterProducts} title={selectedCategory} />
+            ) : (
+              <Fragment>
+                <ProductCarousel
+                  title='Popular Products'
+                  products={props.popularProducts}
+                />
 
-              <ProductCarousel
-                title='Trending Products'
-                products={props.trendingProducts}
-              />
+                <ProductCarousel
+                  title='Trending Products'
+                  products={props.trendingProducts}
+                />
 
-              <AllProducts products={props.products} />
-            </Fragment>
-          )}
-
+                <AllProducts products={props.products} />
+              </Fragment>
+            )}
+          </div>
           <TestimonialsSection testimonials={props.testimonials} />
         </Stack>
       </SidenavContainer>
