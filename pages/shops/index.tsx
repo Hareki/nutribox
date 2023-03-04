@@ -36,7 +36,7 @@ const ShopList: NextPage<ShopListProps> = ({ shopList }) => {
           ))}
         </Grid>
 
-        {/* PAGINTAION AREA */}
+        {/* PAGINATION AREA */}
         <FlexBetween flexWrap='wrap' mt={4}>
           <Span color='grey.600'>Showing 1-9 of 300 Shops</Span>
           <Pagination

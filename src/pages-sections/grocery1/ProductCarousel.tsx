@@ -36,7 +36,7 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
       <SubTitle>Best collection in 2021 for you!</SubTitle>
 
       <Carousel
-        infinite={true}
+        infinite
         totalSlides={products.length}
         visibleSlides={visibleSlides}
         sx={{

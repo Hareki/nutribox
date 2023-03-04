@@ -6,11 +6,11 @@ import { shuffle } from 'lodash';
 
 import Mock from '../../mock';
 
-import { uniqueProudcts, slugs, search } from './data';
+import { uniqueProducts, slugs, search } from './data';
 
 Mock.onGet('/api/products').reply(async () => {
   try {
-    return [200, uniqueProudcts];
+    return [200, uniqueProducts];
   } catch (err) {
     console.error(err);
     return [500, { message: 'Internal server error' }];
@@ -21,13 +21,13 @@ Mock.onGet('/api/products').reply(async () => {
 Mock.onGet('/api/products/slug').reply(async (config) => {
   try {
     if (config?.params?.slug) {
-      const product = uniqueProudcts.find(
+      const product = uniqueProducts.find(
         (item) => item.slug === config.params.slug,
       );
       return [200, product];
     }
 
-    return [200, shuffle(uniqueProudcts)[0]];
+    return [200, shuffle(uniqueProducts)[0]];
   } catch (err) {
     console.error(err);
     return [500, { message: 'Internal server error' }];

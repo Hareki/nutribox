@@ -72,8 +72,8 @@ const Section1: FC<Props> = ({ mainCarouselData }) => {
     <StyledBox id='carouselBox'>
       <Carousel
         spacing='0px'
-        showDots={true}
-        autoPlay={true}
+        showDots
+        autoPlay
         interval={2500}
         showArrow={false}
         visibleSlides={1}

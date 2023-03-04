@@ -4,7 +4,6 @@ import { FC } from 'react';
 
 import BazaarImage from 'components/BazaarImage';
 import { H2, H3, H4, Paragraph } from 'components/Typography';
-import Countdown from 'pages-sections/fashion-shop-1/countdown';
 
 // styled component
 const ContentWrapper = styled(Box)(({ theme }) => ({
@@ -53,9 +52,6 @@ const CarouselCard2: FC<CarouselCard2Props> = ({
           <H4 mt='1.5rem' mb='0.3rem'>
             Fresh Deal Everyday, Get It Now!
           </H4>
-
-          {/* countdown time */}
-          <Countdown expireDate={expireDate} />
 
           <Box mt={3}>
             <Button

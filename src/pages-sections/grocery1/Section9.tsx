@@ -56,10 +56,10 @@ const Section9: FC<Props> = ({ testimonials = [] }) => {
   return (
     <Carousel
       spacing='0px'
-      showDots={true}
+      showDots
       totalSlides={3}
       visibleSlides={1}
-      showArrowOnHover={true}
+      showArrowOnHover
       arrowButtonColor='inherit'
     >
       {testimonials.map((data, ind) => (

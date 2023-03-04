@@ -234,7 +234,7 @@ export default [
   { label: 'Uzbekistan', value: 'UZ' },
   { label: 'Vanuatu', value: 'VU' },
   { label: 'Venezuela', value: 'VE' },
-  { label: 'Viet Nam', value: 'VN' },
+  { label: 'Vietnam', value: 'VN' },
   { label: 'Virgin Islands, British', value: 'VG' },
   { label: 'Virgin Islands, U.S.', value: 'VI' },
   { label: 'Wallis and Futuna', value: 'WF' },
