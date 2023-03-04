@@ -1,3 +1,4 @@
+// Shop Layout 1 Previously
 import { FC, Fragment, ReactNode, useCallback, useState } from 'react';
 
 import { Footer } from 'components/footer';

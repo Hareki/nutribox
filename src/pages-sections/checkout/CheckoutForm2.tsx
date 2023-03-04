@@ -192,8 +192,8 @@ const CheckoutForm2: FC = () => {
 
             <Typography mb={1.5}>Delivery Address</Typography>
             <Grid container spacing={3}>
-              {addressData.map((item, ind) => (
-                <Grid item md={4} sm={6} xs={12} key={ind}>
+              {addressData.map((item, index) => (
+                <Grid item md={4} sm={6} xs={12} key={index}>
                   <Card
                     sx={{
                       padding: 2,

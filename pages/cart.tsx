@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CheckoutNavLayout from 'components/layouts/CheckoutNavLayout';
-import ProductCard7 from 'components/product-cards/ProductCard7';
+import ProductCartItem from 'components/product-item/ProductCartItem';
 import SEO from 'components/SEO';
 import { Span } from 'components/Typography';
 import { CartItem, useAppContext } from 'contexts/AppContext';
@@ -18,7 +18,10 @@ const Cart: NextPage = () => {
   const cartList: CartItem[] = state.cart;
 
   const getTotalPrice = () =>
-    cartList.reduce((accumulat, item) => accumulat + item.price * item.qty, 0);
+    cartList.reduce(
+      (accumulate, item) => accumulate + item.price * item.qty,
+      0,
+    );
 
   return (
     <CheckoutNavLayout>
@@ -28,7 +31,7 @@ const Cart: NextPage = () => {
         {/* CART PRODUCT LIST */}
         <Grid item md={8} xs={12}>
           {cartList.map((item) => (
-            <ProductCard7 key={item.id} {...item} />
+            <ProductCartItem key={item.id} {...item} />
           ))}
         </Grid>
 

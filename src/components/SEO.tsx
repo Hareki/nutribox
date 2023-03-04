@@ -9,7 +9,11 @@ type SEOProps = {
 };
 // ====================================================================
 
-const SEO: FC<SEOProps> = ({ title, description, sitename = 'Đồ án TTTN' }) => {
+const SEO: FC<SEOProps> = ({
+  title,
+  description,
+  sitename = 'Nutribox - Bữa ăn dinh dưỡng tốt cho sức khoẻ!',
+}) => {
   return (
     <Head>
       <title>{`${title} | ${sitename}`}</title>

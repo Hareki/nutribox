@@ -41,8 +41,8 @@ const MegaMenu1: FC<MegaMenuProps> = ({
         <FlexBox px={2.5} py={1.75} alignItems='unset'>
           <Box flex='1 1 0'>
             <Grid container spacing={4}>
-              {categories?.map((item, ind) => (
-                <Grid item md={3} key={ind}>
+              {categories?.map((item, index) => (
+                <Grid item md={3} key={index}>
                   {item.href ? (
                     <NavLink className='title-link' href={item.href}>
                       {item.title}
@@ -50,8 +50,8 @@ const MegaMenu1: FC<MegaMenuProps> = ({
                   ) : (
                     <Box className='title-link'>{item.title}</Box>
                   )}
-                  {item.subCategories?.map((sub, ind) => (
-                    <NavLink className='child-link' href={sub.href} key={ind}>
+                  {item.subCategories?.map((sub, index) => (
+                    <NavLink className='child-link' href={sub.href} key={index}>
                       {sub.title}
                     </NavLink>
                   ))}
@@ -63,7 +63,6 @@ const MegaMenu1: FC<MegaMenuProps> = ({
           {rightImage && (
             <Box mt={1.5}>
               <Link href={rightImage.href}>
-
                 <LazyImage
                   src={rightImage.imgUrl}
                   objectFit='contain'
@@ -71,15 +70,13 @@ const MegaMenu1: FC<MegaMenuProps> = ({
                   height={318}
                   alt='banner'
                 />
-
               </Link>
             </Box>
           )}
         </FlexBox>
 
         {bottomImage && (
-          (<Link href={bottomImage.href}>
-
+          <Link href={bottomImage.href}>
             <Box position='relative' height='170px'>
               <LazyImage
                 src={bottomImage.imgUrl}
@@ -88,8 +85,7 @@ const MegaMenu1: FC<MegaMenuProps> = ({
                 alt='banner'
               />
             </Box>
-
-          </Link>)
+          </Link>
         )}
       </Card>
     </StyledMegaMenu>

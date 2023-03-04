@@ -83,21 +83,21 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
       {/* ORDER PROGRESS AREA */}
       <Card sx={{ p: '2rem 1.5rem', mb: '30px' }}>
         <StyledFlexbox>
-          {stepIconList.map((Icon, ind) => (
-            <Fragment key={ind}>
+          {stepIconList.map((Icon, index) => (
+            <Fragment key={index}>
               <Box position='relative'>
                 <Avatar
                   sx={{
                     width: 64,
                     height: 64,
-                    bgcolor: ind <= statusIndex ? 'primary.main' : 'grey.300',
-                    color: ind <= statusIndex ? 'grey.white' : 'primary.main',
+                    bgcolor: index <= statusIndex ? 'primary.main' : 'grey.300',
+                    color: index <= statusIndex ? 'grey.white' : 'primary.main',
                   }}
                 >
                   <Icon color='inherit' sx={{ fontSize: '32px' }} />
                 </Avatar>
 
-                {ind < statusIndex && (
+                {index < statusIndex && (
                   <Box position='absolute' right='0' top='0'>
                     <Avatar
                       sx={{
@@ -113,10 +113,10 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
                 )}
               </Box>
 
-              {ind < stepIconList.length - 1 && (
+              {index < stepIconList.length - 1 && (
                 <Box
                   className='line'
-                  bgcolor={ind < statusIndex ? 'primary.main' : 'grey.300'}
+                  bgcolor={index < statusIndex ? 'primary.main' : 'grey.300'}
                 />
               )}
             </Fragment>
@@ -176,13 +176,13 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
         </TableRow>
 
         <Box py={1}>
-          {order.items.map((item, ind) => (
+          {order.items.map((item, index) => (
             <FlexBox
               px={2}
               py={1}
               flexWrap='wrap'
               alignItems='center'
-              key={ind}
+              key={index}
             >
               <FlexBox flex='2 2 260px' m={0.75} alignItems='center'>
                 <Avatar src={item.product_img} sx={{ height: 64, width: 64 }} />

@@ -19,10 +19,10 @@ const Stepper: FC<StepperProps> = ({
 }) => {
   const [selected, setSelected] = useState(selectedStep - 1);
 
-  const handleStepClick = (step: Step, ind: number) => () => {
+  const handleStepClick = (step: Step, index: number) => () => {
     if (!step.disabled) {
-      setSelected(ind);
-      if (onChange) onChange(ind);
+      setSelected(index);
+      if (onChange) onChange(index);
     }
   };
 
@@ -32,16 +32,17 @@ const Stepper: FC<StepperProps> = ({
 
   return (
     <FlexRowCenter flexWrap='wrap' my='-4px'>
-      {stepperList.map((step, ind) => (
+      {stepperList.map((step, index) => (
         <Fragment key={step.title}>
           <Chip
             disabled={step.disabled}
-            label={`${ind + 1}. ${step.title}`}
-            onClick={handleStepClick(step, ind)}
+            label={`${index + 1}. ${step.title}`}
+            onClick={handleStepClick(step, index)}
             sx={{
               backgroundColor:
-                ind <= selected ? 'primary.main' : 'primary.light',
-              color: ind <= selected ? 'primary.contrastText' : 'primary.main',
+                index <= selected ? 'primary.main' : 'primary.light',
+              color:
+                index <= selected ? 'primary.contrastText' : 'primary.main',
               p: '0.5rem 1rem',
               fontSize: '14px',
               fontWeight: '600',
@@ -52,11 +53,11 @@ const Stepper: FC<StepperProps> = ({
               },
             }}
           />
-          {ind < stepperList.length - 1 && (
+          {index < stepperList.length - 1 && (
             <Box
               width='50px'
               height='4px'
-              bgcolor={ind < selected ? 'primary.main' : 'primary.light'}
+              bgcolor={index < selected ? 'primary.main' : 'primary.light'}
             />
           )}
         </Fragment>

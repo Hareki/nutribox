@@ -28,8 +28,8 @@ const MegaMenu3: FC<MegaMenuProps> = ({
         <FlexBox px={2.5} py={1.75}>
           <Box flex='1 1 0'>
             <Grid container spacing={4}>
-              {categories?.map((item, ind) => (
-                <Grid item md={3} key={ind}>
+              {categories?.map((item, index) => (
+                <Grid item md={3} key={index}>
                   {item.href ? (
                     <NavLink className='title-link' href={item.href}>
                       {item.title}
@@ -37,8 +37,8 @@ const MegaMenu3: FC<MegaMenuProps> = ({
                   ) : (
                     <Box className='title-link'>{item.title}</Box>
                   )}
-                  {item.subCategories?.map((sub, ind) => (
-                    <NavLink className='child-link' href={sub.href} key={ind}>
+                  {item.subCategories?.map((sub, index) => (
+                    <NavLink className='child-link' href={sub.href} key={index}>
                       {sub.title}
                     </NavLink>
                   ))}
@@ -48,8 +48,7 @@ const MegaMenu3: FC<MegaMenuProps> = ({
           </Box>
 
           {rightImage && (
-            (<Link href={rightImage.href}>
-
+            <Link href={rightImage.href}>
               <Box position='relative' width='153px' height='100%'>
                 <LazyImage
                   alt='banner'
@@ -58,13 +57,11 @@ const MegaMenu3: FC<MegaMenuProps> = ({
                   src={rightImage.imgUrl}
                 />
               </Box>
-
-            </Link>)
+            </Link>
           )}
         </FlexBox>
 
         <Link href='/sale-page-2'>
-
           <Grid
             className='h-full'
             container
@@ -105,7 +102,6 @@ const MegaMenu3: FC<MegaMenuProps> = ({
               </FlexBox>
             </Grid>
           </Grid>
-
         </Link>
       </BazaarCard>
     </StyledMegaMenu>

@@ -39,7 +39,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
   const cartItem = state.cart.find((item) => item.id === id);
 
   // HANDLE SELECT IMAGE
-  const handleImageClick = (ind: number) => () => setSelectedImage(ind);
+  const handleImageClick = (index: number) => () => setSelectedImage(index);
 
   // HANDLE CHANGE CART
   const handleCartAmountChange = (amount: number) => () => {
@@ -65,21 +65,21 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
           </FlexBox>
 
           <FlexBox overflow='auto'>
-            {images.map((url, ind) => (
+            {images.map((url, index) => (
               <FlexRowCenter
-                key={ind}
+                key={index}
                 width={64}
                 height={64}
                 minWidth={64}
                 bgcolor='white'
                 border='1px solid'
                 borderRadius='10px'
-                ml={ind === 0 ? 'auto' : 0}
+                ml={index === 0 ? 'auto' : 0}
                 style={{ cursor: 'pointer' }}
-                onClick={handleImageClick(ind)}
-                mr={ind === images.length - 1 ? 'auto' : '10px'}
+                onClick={handleImageClick(index)}
+                mr={index === images.length - 1 ? 'auto' : '10px'}
                 borderColor={
-                  selectedImage === ind ? 'primary.main' : 'grey.400'
+                  selectedImage === index ? 'primary.main' : 'grey.400'
                 }
               >
                 <Avatar src={url} variant='square' sx={{ height: 40 }} />

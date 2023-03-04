@@ -1,3 +1,4 @@
+// Product Card 7
 import { Add, Close, Remove } from '@mui/icons-material';
 import { Button, Card, IconButton, styled } from '@mui/material';
 import Link from 'next/link';
@@ -27,7 +28,7 @@ const Wrapper = styled(Card)(({ theme }) => ({
 }));
 
 // =========================================================
-type ProductCardProps = {
+type ProductCartItemProps = {
   qty: number;
   name: string;
   slug: string;
@@ -37,7 +38,7 @@ type ProductCardProps = {
 };
 // =========================================================
 
-const ProductCard7: FC<ProductCardProps> = ({
+const ProductCartItem: FC<ProductCartItemProps> = ({
   id,
   name,
   qty,
@@ -74,11 +75,9 @@ const ProductCard7: FC<ProductCardProps> = ({
 
       <FlexBox p={2} rowGap={2} width='100%' flexDirection='column'>
         <Link href={`/product/${slug}`}>
-
           <Span ellipsis fontWeight='600' fontSize={18}>
             {name}
           </Span>
-
         </Link>
 
         <FlexBox gap={1} flexWrap='wrap' alignItems='center'>
@@ -119,4 +118,4 @@ const ProductCard7: FC<ProductCardProps> = ({
   );
 };
 
-export default ProductCard7;
+export default ProductCartItem;

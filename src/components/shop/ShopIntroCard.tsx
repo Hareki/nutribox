@@ -62,12 +62,12 @@ const ShopIntroCard: FC<ShopIntroCardProps> = (props) => {
             </Box>
 
             <FlexBox my={1} gap={1.5}>
-              {socialLinks.map((item, ind) => (
+              {socialLinks.map((item, index) => (
                 <a
                   href={item.url}
                   target='_blank'
                   rel='noreferrer noopener'
-                  key={ind}
+                  key={index}
                 >
                   <item.icon sx={{ fontSize: 27 }} />
                 </a>

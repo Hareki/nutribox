@@ -47,8 +47,8 @@ const Accordion: FC<AccordionProps> = ({ expanded = false, children }) => {
     }
   }, []);
 
-  const modifiedChildren = Children.map(children, (child, ind) => {
-    if (ind === 0) return cloneElement(child, { open, onClick: toggle });
+  const modifiedChildren = Children.map(children, (child, index) => {
+    if (index === 0) return cloneElement(child, { open, onClick: toggle });
     else return child;
   });
 

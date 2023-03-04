@@ -64,12 +64,12 @@ const Footer: FC = () => {
                 </Link>
 
                 <FlexBox mb={4} className='flex'>
-                  {iconList.map((item, ind) => (
+                  {iconList.map((item, index) => (
                     <a
                       href={item.url}
                       target='_blank'
                       rel='noreferrer noopenner'
-                      key={ind}
+                      key={index}
                     >
                       <IconButton
                         sx={{
@@ -140,8 +140,8 @@ const Footer: FC = () => {
                   }
                   spacing={2}
                 >
-                  {workHours.map((item, ind) => (
-                    <FlexBox key={ind} justifyContent='space-between'>
+                  {workHours.map((item, index) => (
+                    <FlexBox key={index} justifyContent='space-between'>
                       <Typography color='grey.600'>{item.day}</Typography>
                       <Typography color='grey.600'>{item.time}</Typography>
                     </FlexBox>

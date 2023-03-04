@@ -58,7 +58,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
 
   return (
     <ShopLayout1 showNavbar={false} showTopbar={false}>
-      <SEO title='Nutribox - Nguồn dinh dưỡng tốt cho sức khoẻ' />
+      <SEO title='Trang chủ' />
       <HeroSection mainCarouselData={props.mainCarouselData} />
       <ServicesSection id='services-section' services={props.serviceList} />
 

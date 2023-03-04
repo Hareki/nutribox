@@ -81,8 +81,8 @@ const HeroSection: FC<Props> = ({ mainCarouselData }) => {
         dotColor={palette.primary.main}
         totalSlides={mainCarouselData.length}
       >
-        {mainCarouselData.map((item, ind) => (
-          <Container key={ind}>
+        {mainCarouselData.map((item, index) => (
+          <Container key={index}>
             <StyledGrid container>
               <GridItemOne item md={6} sm={6} xs={12}>
                 <Box pt={6}>

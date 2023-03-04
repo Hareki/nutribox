@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 import CategorySectionCreator from 'components/CategorySectionCreator';
 import { FlexRowCenter } from 'components/flex-box';
-import ProductCard from 'components/product-cards/ProductCard';
+import ProductCard from 'components/product-item/ProductCard';
 import { Paragraph } from 'components/Typography';
 import Product from 'models/Product.model';
 

@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import Carousel from 'components/carousel/Carousel';
 import CategorySectionCreator from 'components/CategorySectionCreator';
 // ProductCard13
-import ProductCard from 'components/product-cards/ProductCard';
+import ProductCard from 'components/product-item/ProductCard';
 import { Paragraph } from 'components/Typography';
 import useWindowSize from 'hooks/useWindowSize';
 import Product from 'models/Product.model';

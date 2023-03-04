@@ -104,9 +104,9 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
   return (
     <Scrollbar autoHide={false} sx={{ maxHeight: sidebarHeight }}>
       <NavbarRoot isfixed={isFixed} sidebarstyle={sidebarStyle}>
-        {navList.map((item, ind) => {
+        {navList.map((item, index) => {
           return (
-            <Box key={ind}>
+            <Box key={index}>
               <Box padding='16px 20px 5px 20px'>
                 <H5>{item.category}</H5>
 
@@ -116,11 +116,11 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
                 </BorderBox>
               </Box>
 
-              {item.categoryItem.map((item, ind) => {
+              {item.categoryItem.map((item, index) => {
                 const Icon = appIcons[item.icon];
 
                 return (
-                  <Box mb='2px' color='grey.700' key={ind}>
+                  <Box mb='2px' color='grey.700' key={index}>
                     {item.child ? (
                       <Accordion>
                         <AccordionHeader
