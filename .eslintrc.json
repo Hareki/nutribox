@@ -18,6 +18,8 @@
     "@next/next/no-img-element": 0,
     "spaced-comment": "error",
     "no-undef": "error",
+    "react/jsx-curly-brace-presence": "error",
+    "react/jsx-boolean-value": "error",
     "no-unused-vars": "off",
     "import/named": "off",
     "import/order": [
