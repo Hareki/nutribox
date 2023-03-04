@@ -65,7 +65,7 @@ const TextBox = styled(Box)(({ theme }) => ({
 type Props = { mainCarouselData: MainCarouselItem[] };
 // ===================================================================
 
-const Section1: FC<Props> = ({ mainCarouselData }) => {
+const HeroSection: FC<Props> = ({ mainCarouselData }) => {
   const { palette } = useTheme();
 
   return (
@@ -119,4 +119,4 @@ const Section1: FC<Props> = ({ mainCarouselData }) => {
   );
 };
 
-export default Section1;
+export default HeroSection;

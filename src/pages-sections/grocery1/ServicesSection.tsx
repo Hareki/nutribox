@@ -24,7 +24,7 @@ const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
 type Props = { id?: string; services: Service[] };
 // =============================================================
 
-const Section2: FC<Props> = ({ id, services }) => {
+const ServicesSection: FC<Props> = ({ id, services }) => {
   const servicesData = services.slice(0, 4);
 
   return (
@@ -57,4 +57,4 @@ const Section2: FC<Props> = ({ id, services }) => {
   );
 };
 
-export default Section2;
+export default ServicesSection;

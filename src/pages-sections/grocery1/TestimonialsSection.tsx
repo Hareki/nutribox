@@ -52,7 +52,7 @@ const StyledGridContainer = styled(Grid)(({ theme }) => ({
 type Props = { testimonials: any[] };
 // ======================================================================
 
-const Section9: FC<Props> = ({ testimonials = [] }) => {
+const TestimonialsSection: FC<Props> = ({ testimonials = [] }) => {
   return (
     <Carousel
       spacing='0px'
@@ -96,4 +96,4 @@ const Section9: FC<Props> = ({ testimonials = [] }) => {
   );
 };
 
-export default Section9;
+export default TestimonialsSection;

@@ -3,9 +3,12 @@ import axios from 'axios';
 import { GetStaticProps, NextPage } from 'next';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
-import { Footer1 } from 'components/footer';
-import ShopLayout2 from 'components/layouts/ShopLayout2';
-import { MobileNavigationBar2 } from 'components/mobile-navigation';
+// Footer1
+import { Footer } from 'components/footer';
+// ShopLayout2
+import ShopLayout from 'components/layouts/ShopLayout';
+// MobileNavigationBar2
+import { MobileNavigationBar } from 'components/mobile-navigation';
 import SideNavbar from 'components/page-sidenav/SideNavbar';
 import SEO from 'components/SEO';
 import SidenavContainer from 'components/SidenavContainer';
@@ -14,25 +17,23 @@ import { MainCarouselItem } from 'models/Grocery-3.model';
 import Product from 'models/Product.model';
 import Service from 'models/Service.model';
 import AllProducts from 'pages-sections/grocery1/AllProducts';
+import HeroSection from 'pages-sections/grocery1/HeroSection';
 import ProductCarousel from 'pages-sections/grocery1/ProductCarousel';
-import Section1 from 'pages-sections/grocery1/Section1';
-import Section2 from 'pages-sections/grocery1/Section2';
-import Section9 from 'pages-sections/grocery1/Section9';
+import ServicesSection from 'pages-sections/grocery1/ServicesSection';
+import TestimonialsSection from 'pages-sections/grocery1/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
 
-// =====================================================
-type Grocery1Props = {
+type HomePageProps = {
   products: Product[];
   serviceList: Service[];
   popularProducts: Product[];
   trendingProducts: Product[];
-  grocery1NavList: CategoryNavList[];
+  navList: CategoryNavList[];
   mainCarouselData: MainCarouselItem[];
   testimonials: any[];
 };
-// =====================================================
 
-const Grocery1: NextPage<Grocery1Props> = (props) => {
+const HomePage: NextPage<HomePageProps> = (props) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [filterProducts, setFilterProducts] = useState<Product[]>([]);
 
@@ -45,33 +46,25 @@ const Grocery1: NextPage<Grocery1Props> = (props) => {
       .then(({ data }) => setFilterProducts(data));
   }, [selectedCategory]);
 
-  // HANDLE CHANGE CATEGORY
   const handleSelectCategory = (category: string) =>
     setSelectedCategory(category);
 
-  // SIDE NAVBAR COMPONENT
   const SideNav = useCallback(
     () => (
-      <SideNavbar
-        navList={props.grocery1NavList}
-        handleSelect={handleSelectCategory}
-      />
+      <SideNavbar navList={props.navList} handleSelect={handleSelectCategory} />
     ),
-    [props.grocery1NavList],
+    [props.navList],
   );
 
   return (
-    <ShopLayout2 showNavbar={false} showTopbar={false}>
+    <ShopLayout showNavbar={false} showTopbar={false}>
       <SEO title='Nutribox - Nguồn dinh dưỡng tốt cho sức khoẻ' />
-      {/* TOP HERO AREA */}
-      <Section1 mainCarouselData={props.mainCarouselData} />
-
-      {/* SERVICE AREA */}
-      <Section2 id='grocery1Services' services={props.serviceList} />
+      <HeroSection mainCarouselData={props.mainCarouselData} />
+      <ServicesSection id='services-section' services={props.serviceList} />
 
       {/* SIDEBAR WITH OTHER CONTENTS */}
       <SidenavContainer
-        navFixedComponentID='grocery1Services'
+        navFixedComponentID='services-section'
         SideNav={SideNav}
       >
         <Stack spacing={6} mt={2} mb={6}>
@@ -80,36 +73,30 @@ const Grocery1: NextPage<Grocery1Props> = (props) => {
             <AllProducts products={filterProducts} title={selectedCategory} />
           ) : (
             <Fragment>
-              {/* POPULAR PRODUCTS AREA */}
               <ProductCarousel
                 title='Popular Products'
                 products={props.popularProducts}
               />
 
-              {/* TRENDING PRODUCTS AREA */}
               <ProductCarousel
                 title='Trending Products'
                 products={props.trendingProducts}
               />
 
-              {/* ALL PRODUCTS AREA */}
               <AllProducts products={props.products} />
             </Fragment>
           )}
 
-          {/* CLIENT TESTIMONIALS AREA */}
-          <Section9 testimonials={props.testimonials} />
-
-          {/* FOOTER AREA */}
+          <TestimonialsSection testimonials={props.testimonials} />
         </Stack>
       </SidenavContainer>
-      <Footer1 />
+      <Footer />
 
       {/* MOBILE NAVIGATION WITH SIDE NAVBAR */}
-      <MobileNavigationBar2>
-        <SideNavbar navList={props.grocery1NavList} />
-      </MobileNavigationBar2>
-    </ShopLayout2>
+      <MobileNavigationBar>
+        <SideNavbar navList={props.navList} />
+      </MobileNavigationBar>
+    </ShopLayout>
   );
 };
 
@@ -119,7 +106,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const serviceList = await api.getServices();
   const popularProducts = await api.getPopularProducts();
   const trendingProducts = await api.getTrendingProducts();
-  const grocery1NavList = await api.getGrocery1Navigation();
+  const navList = await api.getNavList();
   const testimonials = await api.getTestimonials();
 
   return {
@@ -127,7 +114,7 @@ export const getStaticProps: GetStaticProps = async () => {
       mainCarouselData,
       products,
       serviceList,
-      grocery1NavList,
+      navList,
       popularProducts,
       trendingProducts,
       testimonials,
@@ -135,4 +122,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default Grocery1;
+export default HomePage;

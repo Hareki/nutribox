@@ -14,14 +14,14 @@ import Topbar from 'components/Topbar';
  */
 
 // =======================================================
-type ShopLayout2Props = {
+type ShopLayoutProps = {
   children: ReactNode;
   showNavbar?: boolean;
   showTopbar?: boolean;
 };
 // =======================================================
 
-const ShopLayout2: FC<ShopLayout2Props> = ({
+const ShopLayout: FC<ShopLayoutProps> = ({
   children,
   showTopbar = true,
   showNavbar = true,
@@ -50,4 +50,4 @@ const ShopLayout2: FC<ShopLayout2Props> = ({
   );
 };
 
-export default ShopLayout2;
+export default ShopLayout;

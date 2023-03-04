@@ -3,7 +3,7 @@ import axios from 'axios';
 import Product from 'models/Product.model';
 import Service from 'models/Service.model';
 
-const getGrocery1Navigation = async () => {
+const getNavList = async () => {
   const response = await axios.get('/api/grocery-1/navigation');
   return response.data;
 };
@@ -43,7 +43,7 @@ export default {
   getProducts,
   getPopularProducts,
   getTrendingProducts,
-  getGrocery1Navigation,
+  getNavList,
   getMainCarousel,
   getTestimonials,
 };

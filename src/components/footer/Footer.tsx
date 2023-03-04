@@ -31,7 +31,7 @@ const StyledHeader = styled(H3)({
   marginBottom: '1.25rem',
 });
 
-const Footer1: FC = () => {
+const Footer: FC = () => {
   return (
     <footer>
       <Box bgcolor='grey.450'>
@@ -198,4 +198,4 @@ const iconList = [
   { icon: Instagram, url: 'https://www.instagram.com' },
 ];
 
-export default Footer1;
+export default Footer;
