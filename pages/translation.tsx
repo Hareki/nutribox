@@ -17,7 +17,7 @@ import { H2, Paragraph } from 'components/Typography';
 
 const languageList = [
   { title: 'EN', value: 'en' },
-  { title: 'DE', value: 'de' },
+  { title: 'VN', value: 'vn' },
 ];
 
 const Translation = () => {
