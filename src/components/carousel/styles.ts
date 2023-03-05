@@ -11,8 +11,8 @@ import {
 type StyledProps = { spacing: string | undefined };
 // StyledArrowButton components props type
 type ArrowButtonProps = {
-  show_dots?: boolean;
-  show_arrow_on_hover?: boolean;
+  show_dots?: 'true';
+  show_arrow_on_hover?: 'true';
   dot_margin_top?: string | number;
 };
 

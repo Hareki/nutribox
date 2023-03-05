@@ -37,7 +37,6 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
   return (
     <CategorySectionCreator title={title} seeMoreLink='#' mb={0}>
       <SubTitle>Best collection in 2021 for you!</SubTitle>
-
       <Carousel
         dragEnabled={dragEnabled}
         infinite
