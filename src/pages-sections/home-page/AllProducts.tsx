@@ -20,7 +20,7 @@ type AllProductsProps = { products: Product[]; title?: string };
 
 const AllProducts: FC<AllProductsProps> = ({
   products,
-  title = 'All Products',
+  title = 'Tất cả món ăn',
 }) => {
   return (
     <CategorySectionCreator title={title} seeMoreLink='#'>

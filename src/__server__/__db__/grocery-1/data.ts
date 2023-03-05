@@ -4,6 +4,11 @@ export const categoryNavigation = [
     category: 'Danh mục món ăn',
     categoryItem: [
       {
+        icon: 'PickUpBox',
+        title: 'Tất cả',
+        href: '/product/search/Breakfast',
+      },
+      {
         icon: 'Snack',
         title: 'Khai vị',
         href: '/product/search/Breakfast',

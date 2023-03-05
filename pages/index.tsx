@@ -70,8 +70,13 @@ const HomePage: NextPage<HomePageProps> = (props) => {
       .then(({ data }) => setFilterProducts(data));
   }, [selectedCategory]);
 
-  const handleSelectCategory = (category: string) =>
-    setSelectedCategory(category);
+  const handleSelectCategory = (category: string) => {
+    if (category === 'Tất cả') {
+      setSelectedCategory('');
+    } else {
+      setSelectedCategory(category);
+    }
+  };
 
   const SideNav = useCallback(
     () => (
@@ -98,13 +103,13 @@ const HomePage: NextPage<HomePageProps> = (props) => {
               <AllProducts products={filterProducts} title={selectedCategory} />
             ) : (
               <Fragment>
-                <ProductCarousel
+                {/* <ProductCarousel
                   title='Popular Products'
                   products={props.popularProducts}
-                />
+                /> */}
 
                 <ProductCarousel
-                  title='Trending Products'
+                  title='Món ăn mới'
                   products={props.trendingProducts}
                 />
 

@@ -1,5 +1,5 @@
-import { Box, styled, useTheme } from '@mui/material';
-import { FC } from 'react';
+import { Box, styled, Theme, useTheme } from '@mui/material';
+import { FC, useState } from 'react';
 
 import Accordion from 'components/accordion/Accordion';
 import AccordionHeader from 'components/accordion/AccordionHeader';
@@ -81,24 +81,14 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
     lineStyle,
     sidebarStyle,
     sidebarHeight,
-    handleSelect = () => {},
+    handleSelect = () => undefined,
   } = props;
-
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const { palette } = useTheme();
 
-  const renderChild = (childList: any[]) => {
-    return childList.map((item) => (
-      <StyledList
-        key={item.title}
-        onClick={() => handleSelect(item.title)}
-        sx={{ color: 'grey.700', cursor: 'pointer' }}
-      >
-        <Circle className='listCircle' />
-        <Span py={0.75} flex='1 1 0'>
-          {item.title}
-        </Span>
-      </StyledList>
-    ));
+  const selectHandler = (index: number, title: string) => {
+    setSelectedIndex(index);
+    handleSelect(title);
   };
 
   return (
@@ -121,34 +111,23 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
 
                 return (
                   <Box mb='2px' color='grey.700' key={index}>
-                    {item.child ? (
-                      <Accordion>
-                        <AccordionHeader
-                          px={0}
-                          py={0.75}
-                          className='linkList'
-                          sx={{ ':hover': { color: palette.primary.main } }}
-                        >
-                          <FlexBox gap={1.5} alignItems='center'>
-                            <Icon fontSize='small' />
-                            <Span fontWeight='600'>{item.title}</Span>
-                          </FlexBox>
-                        </AccordionHeader>
-
-                        {item.child ? renderChild(item.child) : null}
-                      </Accordion>
-                    ) : (
-                      <Box
-                        key={item.title}
-                        onClick={() => handleSelect(item.title)}
-                        sx={{ color: 'grey.700', cursor: 'pointer' }}
-                      >
-                        <FlexBox gap={1.5} className='linkList' py={0.75}>
-                          <Icon fontSize='small' />
-                          <Span fontWeight='600'>{item.title}</Span>
-                        </FlexBox>
-                      </Box>
-                    )}
+                    <Box
+                      key={item.title}
+                      onClick={() => selectHandler(index, item.title)}
+                      sx={{
+                        color:
+                          selectedIndex === index ? 'primary.500' : 'grey.700',
+                        cursor: 'pointer',
+                        '&:hover': {
+                          color: 'primary.500',
+                        },
+                      }}
+                    >
+                      <FlexBox gap={1.5} className='linkList' py={0.75}>
+                        <Icon fontSize='small' />
+                        <Span fontWeight='600'>{item.title}</Span>
+                      </FlexBox>
+                    </Box>
                   </Box>
                 );
               })}
