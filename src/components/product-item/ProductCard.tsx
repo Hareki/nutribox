@@ -98,6 +98,7 @@ type ProductCardProps = {
   id: string | number;
   hideRating?: boolean;
   hoverEffect?: boolean;
+  onPreview?: () => void;
 };
 // ===============================================================
 
@@ -112,6 +113,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     hideRating,
     hoverEffect,
     slug,
+    onPreview,
   } = props;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -120,7 +122,10 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const toggleIsFavorite = () => setIsFavorite((fav) => !fav);
-  const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
+  const toggleDialog = useCallback(() => {
+    onPreview?.();
+    setOpenModal((open) => !open);
+  }, []);
 
   const cartItem: CartItem | undefined = state.cart.find(
     (item) => item.slug === slug,
@@ -147,7 +152,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           <StyledChip color='primary' size='small' label={`${off}% off`} />
         )} */}
 
-        <Link href={`/product/${slug}`}>
+        <Link href={`/dish/${slug}`}>
           <LazyImage
             alt={title}
             width={190}

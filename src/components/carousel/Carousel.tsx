@@ -44,6 +44,7 @@ export interface CarouselProps {
   leftButtonStyle?: CSSProperties;
   rightButtonStyle?: CSSProperties;
   arrowButtonColor?: 'primary' | 'secondary' | 'inherit';
+  dragEnabled?: boolean;
 }
 // ===================================================================
 
@@ -72,12 +73,14 @@ const Carousel: FC<CarouselProps> = ({
   naturalSlideWidth,
   dotGroupMarginTop,
   naturalSlideHeight,
+  dragEnabled,
 }) => {
   // site settings
   const { settings } = useSettings();
 
   return (
     <StyledCarouselProvider
+      dragEnabled={dragEnabled}
       sx={sx}
       step={step}
       spacing={spacing}
@@ -112,7 +115,7 @@ const Carousel: FC<CarouselProps> = ({
             id='backArrowButton'
             sx={{ left: '-20px' }}
             style={leftButtonStyle || {}}
-            showDots
+            show_dots='true'
             dot_margin_top='20px'
             className={clsx(arrowButtonClass, leftButtonClass)}
           >
@@ -127,7 +130,7 @@ const Carousel: FC<CarouselProps> = ({
             id='backForwardButton'
             sx={{ right: '-20px' }}
             style={rightButtonStyle || {}}
-            showDots
+            show_dots='true'
             dot_margin_top='20px'
             className={clsx(arrowButtonClass, rightButtonClass)}
           >
@@ -202,6 +205,7 @@ Carousel.defaultProps = {
   isIntrinsicHeight: true,
   dotGroupMarginTop: '2rem',
   arrowButtonColor: 'secondary',
+  dragEnabled: true,
 };
 
 export default Carousel;

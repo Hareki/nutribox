@@ -24,8 +24,10 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
   const width = useWindowSize();
   const { palette, shadows } = useTheme();
   const [visibleSlides, setVisibleSlides] = useState(3);
+  const [dragEnabled, setDragEnabled] = useState(true);
 
   useEffect(() => {
+    if (width === 0) return;
     if (width < 500) setVisibleSlides(1);
     else if (width < 650) setVisibleSlides(2);
     else if (width < 950) setVisibleSlides(3);
@@ -37,6 +39,7 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
       <SubTitle>Best collection in 2021 for you!</SubTitle>
 
       <Carousel
+        dragEnabled={dragEnabled}
         infinite
         totalSlides={products.length}
         visibleSlides={visibleSlides}
@@ -60,6 +63,7 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
               off={item.discount}
               rating={item.rating}
               imgUrl={item.thumbnail}
+              onPreview={() => setDragEnabled((prev) => !prev)}
             />
           </Box>
         ))}

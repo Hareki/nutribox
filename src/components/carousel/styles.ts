@@ -11,8 +11,8 @@ import {
 type StyledProps = { spacing: string | undefined };
 // StyledArrowButton components props type
 type ArrowButtonProps = {
-  showDots?: boolean;
-  showArrowOnHover?: boolean;
+  show_dots?: boolean;
+  show_arrow_on_hover?: boolean;
   dot_margin_top?: string | number;
 };
 
@@ -103,11 +103,11 @@ const StyledDot = styled('div')<{ dot_color?: string; dot_active?: any }>(
 );
 
 const StyledArrowBackButton = styled(ButtonBack)<ArrowButtonProps>(
-  ({ theme, showArrowOnHover, showDots, dot_margin_top }) => ({
+  ({ theme, show_arrow_on_hover, show_dots, dot_margin_top }) => ({
     ...commonArrowBtnStyle({
       theme,
-      showDots,
-      showArrowOnHover,
+      showDots: show_dots,
+      showArrowOnHover: show_arrow_on_hover,
       dot_margin_top,
     }),
     [theme.breakpoints.down('md')]: {
@@ -119,11 +119,11 @@ const StyledArrowBackButton = styled(ButtonBack)<ArrowButtonProps>(
 );
 
 const StyledArrowNextButton = styled(ButtonNext)<ArrowButtonProps>(
-  ({ theme, showArrowOnHover, showDots, dot_margin_top }) => ({
+  ({ theme, show_arrow_on_hover, show_dots, dot_margin_top }) => ({
     ...commonArrowBtnStyle({
       theme,
-      showDots,
-      showArrowOnHover,
+      showDots: show_dots,
+      showArrowOnHover: show_arrow_on_hover,
       dot_margin_top,
     }),
     [theme.breakpoints.down('md')]: {
