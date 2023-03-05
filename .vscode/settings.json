@@ -15,8 +15,10 @@
     "notistack",
     "nprogress",
     "nutribox",
+    "Orderseries",
     "sidebarstyle",
     "Sidenav",
+    "signup",
     "simplebar",
     "sitename",
     "stylis",
@@ -25,9 +27,8 @@
     "TNHH",
     "Topbar",
     "TTTN",
-    "Orderseries",
+    "virtuals",
     "xaxis",
-    "yaxis",
-    "signup"
+    "yaxis"
   ]
 }
