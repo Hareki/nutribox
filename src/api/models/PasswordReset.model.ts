@@ -4,13 +4,13 @@ import { IAccount } from './Account.model';
 
 export interface IPasswordReset {
   _id: Schema.Types.ObjectId;
+  status: 'PENDING' | 'RESOLVED' | 'EXPIRED';
   account: IAccount;
-  token: string;
-  status: 'pending' | 'resolved' | 'expired';
-  expirationDate: Date;
 
+  token: string;
   createdAt: Date;
   updatedAt: Date;
+  expirationDate: Date;
 }
 
 const passwordResetSchema = new Schema(
@@ -31,7 +31,7 @@ const passwordResetSchema = new Schema(
       type: String,
       required: [true, 'Password reset status is required'],
       enum: {
-        values: ['pending', 'resolved', 'expired'],
+        values: ['PENDING', 'RESOLVED', 'EXPIRED'],
         message: '{VALUE} is not supported',
       },
     },

@@ -1,40 +1,36 @@
 import { Schema, model, models } from 'mongoose';
 
-import { IIngredient } from './Ingredient.model';
-import { IUnit } from './Unit.model';
+import { IProduct } from './Product.model';
 
 export interface IExpiration {
   _id: Schema.Types.ObjectId;
-  ingredient: IIngredient;
+  product: IProduct;
 
-  quantity: number;
-  unit: IUnit;
   expirationDate: Date;
+  quantity: number;
 }
 
 const expirationSchema = new Schema(
   {
-    ingredient: {
+    product: {
+      ref: 'Product',
       type: Schema.Types.ObjectId,
-      ref: 'Ingredient',
-      required: [true, 'Expiration ingredient is required'],
-    },
-
-    quantity: {
-      type: Number,
-      required: [true, 'Expiration quantity is required'],
-      min: [0, 'Expiration quantity must be greater than or equal to zero'],
-    },
-
-    unit: {
-      type: Schema.Types.ObjectId,
-      ref: 'Unit',
-      required: [true, 'Ingredient unit is required'],
+      required: [true, 'Expiration/Product is required'],
     },
 
     expirationDate: {
       type: Date,
-      required: [true, 'Expiration date is required'],
+      required: [true, 'Expiration/ExpirationDate is required'],
+      min: [
+        new Date(new Date().getTime() + 86400000),
+        'Expiration/ExpirationDate should be at least 1 day from now',
+      ],
+    },
+
+    quantity: {
+      type: Number,
+      required: [true, 'Expiration/Quantity is required'],
+      min: [1, 'Expiration/Quantity should be at least 1'],
     },
   },
   { timestamps: true },

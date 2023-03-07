@@ -1,11 +1,20 @@
 import { Schema, model, models } from 'mongoose';
 import validator from 'validator';
 
+import { IProductOrder } from './ProductOrder.model';
+
+import {
+  getAddressSchema,
+  getEmailSchema,
+  getPhoneSchema,
+} from 'api/helpers/schema.helper';
 import { IAddress } from 'api/types';
-import { phoneRegex } from 'helpers/regex';
 
 export interface ISupplier extends IAddress {
   _id: Schema.Types.ObjectId;
+  // NOTE: We might want to see all the orders of a supplier in the future
+  productOrders: IProductOrder[];
+
   name: string;
   phone: string;
   email: string;
@@ -13,59 +22,27 @@ export interface ISupplier extends IAddress {
 
 const supplierSchema = new Schema(
   {
+    productOrders: [
+      {
+        ref: 'ProductOrder',
+        type: Schema.Types.ObjectId,
+        default: [],
+      },
+    ],
+
     name: {
       type: String,
-      required: [true, 'Supplier name is required'],
-      trim: true,
-      unique: true,
-    },
-
-    phone: {
-      type: String,
-      required: [true, 'Supplier Phone is required'],
-      validate: {
-        validator: (value: string) => value && phoneRegex.test(value),
-        message: 'Invalid supplier phone number format',
-      },
+      required: [true, 'Supplier/Name is required'],
+      maxLength: [100, 'Supplier/Name should be at most 100 characters'],
       unique: true,
       trim: true,
     },
 
-    email: {
-      type: String,
-      required: [true, 'Supplier email is required'],
-      validate: {
-        validator: validator.isEmail,
-        message: 'Invalid supplier email format',
-      },
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
+    ...getPhoneSchema('Supplier'),
 
-    province: {
-      type: String,
-      required: [true, 'Supplier province is required'],
-      trim: true,
-    },
+    ...getEmailSchema('Supplier'),
 
-    district: {
-      type: String,
-      required: [true, 'Supplier district is required'],
-      trim: true,
-    },
-
-    ward: {
-      type: String,
-      required: [true, 'Supplier ward is required'],
-      trim: true,
-    },
-
-    streetAddress: {
-      type: String,
-      required: [true, 'Supplier street address is required'],
-      trim: true,
-    },
+    ...getAddressSchema('Supplier'),
   },
   { timestamps: true },
 );

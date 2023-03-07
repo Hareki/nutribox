@@ -8,9 +8,10 @@ export interface IOrderStatus {
 const orderStatusSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Order status name is required'],
-    trim: true,
+    required: [true, 'OrderStatus/Name is required'],
+    maxLength: [50, 'OrderStatus/Name should be at most 50 characters'],
     unique: true,
+    trim: true,
   },
 });
 
