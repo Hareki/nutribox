@@ -13,5 +13,5 @@ export const accountAddressSchema = new Schema(
   {
     ...getAddressSchema('AccountAddress'),
   },
-  { timestamps: true },
+  { timestamps: true, collection: 'accountAddresses' },
 );

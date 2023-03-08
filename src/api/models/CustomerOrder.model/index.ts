@@ -75,7 +75,7 @@ const customerOrderSchema = new Schema(
 
     ...getAddressSchema('CustomerOrder'),
   },
-  { timestamps: true },
+  { timestamps: true, collection: 'customerOrders' },
 );
 
 const CustomerOrder =

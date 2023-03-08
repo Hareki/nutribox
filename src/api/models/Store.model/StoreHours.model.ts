@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-export interface IStoreHours {
+export interface IStoreHour {
   _id: Schema.Types.ObjectId;
 
   dayOfWeek:
@@ -15,44 +15,47 @@ export interface IStoreHours {
   closeTime: Date;
 }
 
-export const storeHoursSchema = new Schema({
-  dayOfWeek: {
-    type: String,
-    required: [true, 'StoreHours/DayOfWeek is required'],
-    trim: true,
-    enum: {
-      values: [
-        'MONDAY',
-        'TUESDAY',
-        'WEDNESDAY',
-        'THURSDAY',
-        'FRIDAY',
-        'SATURDAY',
-        'SUNDAY',
-      ],
-      message: '{VALUE} in StoreHours/DayOfWeek is not supported.',
-    },
-  },
-
-  openTime: {
-    type: Date,
-    required: [true, 'StoreHours/OpenTime is required'],
-    validate: {
-      validator: function (openTime: Date) {
-        return openTime.getTime() < this.closeTime.getTime();
+export const storeHourSchema = new Schema(
+  {
+    dayOfWeek: {
+      type: String,
+      required: [true, 'StoreHour/DayOfWeek is required'],
+      trim: true,
+      enum: {
+        values: [
+          'MONDAY',
+          'TUESDAY',
+          'WEDNESDAY',
+          'THURSDAY',
+          'FRIDAY',
+          'SATURDAY',
+          'SUNDAY',
+        ],
+        message: '{VALUE} in StoreHour/DayOfWeek is not supported.',
       },
-      message: 'StoreHours/OpenTime should be before StoreHours/CloseTime',
     },
-  },
 
-  closeTime: {
-    type: Date,
-    required: [true, 'StoreHours/CloseTime is required'],
-    validate: {
-      validator: function (closeTime: Date) {
-        return closeTime.getTime() > this.openTime.getTime();
+    openTime: {
+      type: Date,
+      required: [true, 'StoreHour/OpenTime is required'],
+      validate: {
+        validator: function (openTime: Date) {
+          return openTime.getTime() < this.closeTime.getTime();
+        },
+        message: 'StoreHour/OpenTime should be before StoreHour/CloseTime',
       },
-      message: 'StoreHours/CloseTime should be after StoreHours/OpenTime',
+    },
+
+    closeTime: {
+      type: Date,
+      required: [true, 'StoreHour/CloseTime is required'],
+      validate: {
+        validator: function (closeTime: Date) {
+          return closeTime.getTime() > this.openTime.getTime();
+        },
+        message: 'StoreHour/CloseTime should be after StoreHour/OpenTime',
+      },
     },
   },
-});
+  { collection: 'storeHours' },
+);

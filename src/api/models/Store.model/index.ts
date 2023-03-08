@@ -1,13 +1,13 @@
 import { Schema, model, models } from 'mongoose';
 
-import { IStoreHours, storeHoursSchema } from './StoreHours.model';
+import { IStoreHour, storeHourSchema } from './StoreHours.model';
 
 import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 import { IAddress } from 'api/types/schema.type';
 
 export interface IStore extends IAddress {
   _id: Schema.Types.ObjectId;
-  storeHours: IStoreHours[];
+  storeHours: IStoreHour[];
 
   phone: string;
 }
@@ -15,10 +15,10 @@ export interface IStore extends IAddress {
 const storeSchema = new Schema(
   {
     storeHours: {
-      type: [storeHoursSchema],
+      type: [storeHourSchema],
       required: [true, 'Store/StoreHours is required'],
       validate: {
-        validator: (storeHours: IStoreHours[]) => {
+        validator: (storeHours: IStoreHour[]) => {
           const daysOfWeek = storeHours.map((storeHour) => storeHour.dayOfWeek);
           const uniqueDaysOfWeek = [...new Set(daysOfWeek)];
 

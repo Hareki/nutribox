@@ -47,7 +47,7 @@ const productOrderSchema = new Schema(
       min: [1, 'ProductOrder/UnitWholesalePrice should be at least 1'],
     },
   },
-  { timestamps: true },
+  { timestamps: true, collection: 'productOrders' },
 );
 
 const ProductOrder =

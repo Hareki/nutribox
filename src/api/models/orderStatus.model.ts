@@ -9,15 +9,18 @@ export interface IOrderStatus {
   // customersOrders: ICustomerOrder[];
 }
 
-const orderStatusSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, 'OrderStatus/Name is required'],
-    maxLength: [50, 'OrderStatus/Name should be at most 50 characters'],
-    unique: true,
-    trim: true,
+const orderStatusSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'OrderStatus/Name is required'],
+      maxLength: [50, 'OrderStatus/Name should be at most 50 characters'],
+      unique: true,
+      trim: true,
+    },
   },
-});
+  { collection: 'orderStatuses' },
+);
 
 const OrderStatus =
   models?.OrderStatus || model('OrderStatus', orderStatusSchema);

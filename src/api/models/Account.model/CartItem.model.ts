@@ -25,5 +25,5 @@ export const cartItemSchema = new Schema(
       min: [1, 'CartItem/Quantity should be at least 1'],
     },
   },
-  { timestamps: true },
+  { timestamps: true, collection: 'cartItems' },
 );

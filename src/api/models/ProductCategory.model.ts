@@ -30,7 +30,7 @@ const productCategorySchema = new Schema<IProductCategory>(
       },
     ],
   },
-  { timestamps: true },
+  { timestamps: true, collection: 'productCategories' },
 );
 
 productCategorySchema.virtual('slug').get(function () {
