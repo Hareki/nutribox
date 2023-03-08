@@ -30,8 +30,7 @@ const CategorySectionHeader: FC<CategorySectionHeaderProps> = (props) => {
       </FlexBox>
 
       {seeMoreLink && (
-        (<Link href={seeMoreLink}>
-
+        <Link href={seeMoreLink}>
           <FlexBox alignItems='center' color='grey.600'>
             View all
             {settings.direction === 'ltr' ? (
@@ -40,8 +39,7 @@ const CategorySectionHeader: FC<CategorySectionHeaderProps> = (props) => {
               <ArrowLeft fontSize='small' color='inherit' />
             )}
           </FlexBox>
-
-        </Link>)
+        </Link>
       )}
     </FlexBetween>
   );

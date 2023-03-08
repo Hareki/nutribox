@@ -76,9 +76,7 @@ const BannerCard1: FC<BannerCard1Props & BoxProps> = ({
         <Divider sx={{ borderWidth: 2, my: 1.5, width: 50 }} />
 
         <Link href={url}>
-
           <CardLink>Shop Now</CardLink>
-
         </Link>
       </CardContent>
     </CardWrapper>

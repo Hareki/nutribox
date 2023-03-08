@@ -1,6 +1,6 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { IStoreHour, storeHourSchema } from './StoreHours.model';
+import { IStoreHour, storeHourSchema } from './StoreHour.model';
 
 import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 import { IAddress } from 'api/types/schema.type';

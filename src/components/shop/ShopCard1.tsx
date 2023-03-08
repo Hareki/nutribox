@@ -71,7 +71,6 @@ const ShopCard1: FC<Partial<Shop>> = (props) => {
           }}
         />
         <Link href={`/shops/${slug}`}>
-
           <IconButton sx={{ my: 0.5 }}>
             <East
               sx={{
@@ -81,7 +80,6 @@ const ShopCard1: FC<Partial<Shop>> = (props) => {
               }}
             />
           </IconButton>
-
         </Link>
       </FlexBetween>
     </Card>

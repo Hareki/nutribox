@@ -1,5 +1,5 @@
 import { Box, Card, styled } from '@mui/material';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { FC } from 'react';
 
@@ -58,9 +58,7 @@ const BlogCard2: FC<BlogCard2Props> = ({ image, title, date, description }) => {
 
       <Box px={2} pt={1} pb={3}>
         <Link href='#'>
-
           <H4 fontWeight={700}>{title}</H4>
-
         </Link>
 
         <Paragraph mt={0.5} mb={3}>

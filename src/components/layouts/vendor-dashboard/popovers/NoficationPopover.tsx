@@ -153,7 +153,7 @@ const NotificationsPopover: FC = () => {
               <Paper>
                 <TabContext value={tabValue}>
                   <StyledTabList onChange={handleTabChange}>
-                    <StyledTab disableRipple value='1' label="Unread (2)" />
+                    <StyledTab disableRipple value='1' label='Unread (2)' />
                     <StyledTab disableRipple value='2' label='Archived' />
                   </StyledTabList>
 

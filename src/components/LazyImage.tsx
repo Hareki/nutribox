@@ -7,7 +7,7 @@ import {
   SpacingProps,
   BordersProps,
 } from '@mui/system';
-import NextImage, { ImageProps } from "next/legacy/image";
+import NextImage, { ImageProps } from 'next/legacy/image';
 import { FC } from 'react';
 
 type Props = ImageProps & BordersProps & SpacingProps;

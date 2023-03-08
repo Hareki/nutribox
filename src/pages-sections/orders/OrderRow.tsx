@@ -34,8 +34,7 @@ const OrderRow: FC<OrderRowProps> = ({ order }) => {
   };
 
   return (
-    (<Link href={`/orders/${order.id}`} passHref>
-
+    <Link href={`/orders/${order.id}`} passHref>
       <TableRow sx={{ my: '1rem', padding: '6px 18px' }}>
         <H5 m={0.75} textAlign='left'>
           {order.id.split('-')[0]}
@@ -86,8 +85,7 @@ const OrderRow: FC<OrderRowProps> = ({ order }) => {
           </IconButton>
         </Typography>
       </TableRow>
-
-    </Link>)
+    </Link>
   );
 };
 

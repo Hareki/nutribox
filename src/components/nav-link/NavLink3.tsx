@@ -21,8 +21,7 @@ const NavLink3: FC<NavLink3Props> = ({
   ...props
 }) => {
   return (
-    (<Link href={href}>
-
+    <Link href={href}>
       <Span
         sx={{
           color,
@@ -60,8 +59,7 @@ const NavLink3: FC<NavLink3Props> = ({
           }}
         />
       </Span>
-
-    </Link>)
+    </Link>
   );
 };
 
