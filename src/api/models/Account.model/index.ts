@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 import { accountAddressSchema, IAccountAddress } from './AccountAddress.model';
 import { cartItemSchema, ICartItem } from './CartItem.model';
@@ -117,5 +117,7 @@ const accountSchema = new Schema(
   { timestamps: true },
 );
 
-const Account = models?.Account || model('Account', accountSchema);
+const Account =
+  (models?.Account as Model<IAccount>) ||
+  model<IAccount>('Account', accountSchema);
 export default Account;

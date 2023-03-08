@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 import {
   customerOrderItemSchema,
@@ -79,5 +79,6 @@ const customerOrderSchema = new Schema(
 );
 
 const CustomerOrder =
-  models?.CustomerOrder || model('CustomerOrder', customerOrderSchema);
+  (models?.CustomerOrder as Model<ICustomerOrder>) ||
+  model<ICustomerOrder>('CustomerOrder', customerOrderSchema);
 export default CustomerOrder;

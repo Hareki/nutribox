@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 import { IStoreHour, storeHourSchema } from './StoreHour.model';
 
@@ -40,5 +40,6 @@ const storeSchema = new Schema(
   { timestamps: true },
 );
 
-const Store = models?.Store || model('Store', storeSchema);
+const Store =
+  (models?.Store as Model<IStore>) || model<IStore>('Store', storeSchema);
 export default Store;

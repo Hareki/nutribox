@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 export interface IOrderStatus {
   _id: Types.ObjectId;
@@ -25,5 +25,6 @@ const orderStatusSchema = new Schema<IOrderStatus>(
 );
 
 const OrderStatus =
-  models?.OrderStatus || model<IOrderStatus>('OrderStatus', orderStatusSchema);
+  (models?.OrderStatus as Model<IOrderStatus>) ||
+  model<IOrderStatus>('OrderStatus', orderStatusSchema);
 export default OrderStatus;

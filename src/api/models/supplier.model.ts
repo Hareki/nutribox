@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 import {
   getAddressSchema,
@@ -50,5 +50,6 @@ const supplierSchema = new Schema<ISupplier>(
 );
 
 const Supplier =
-  models?.Supplier || model<ISupplier>('Supplier', supplierSchema);
+  (models?.Supplier as Model<ISupplier>) ||
+  model<ISupplier>('Supplier', supplierSchema);
 export default Supplier;

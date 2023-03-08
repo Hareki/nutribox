@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 export interface IExpiration {
   _id: Types.ObjectId;
@@ -37,5 +37,6 @@ const expirationSchema = new Schema<IExpiration>(
 );
 
 const Expiration =
-  models?.Expiration || model<IExpiration>('Expiration', expirationSchema);
+  (models?.Expiration as Model<IExpiration>) ||
+  model<IExpiration>('Expiration', expirationSchema);
 export default Expiration;

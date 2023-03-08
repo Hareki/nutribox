@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 import { getSlug } from 'api/helpers/slug.helper';
 
@@ -41,6 +41,6 @@ productCategorySchema.virtual('slug').get(function () {
 });
 
 const ProductCategory =
-  models?.ProductCategory ||
+  (models?.ProductCategory as Model<IProductCategory>) ||
   model<IProductCategory>('ProductCategory', productCategorySchema);
 export default ProductCategory;

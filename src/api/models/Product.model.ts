@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 import { getSlug } from 'api/helpers/slug.helper';
 
@@ -129,5 +129,7 @@ productSchema.virtual('slug').get(function () {
   return getSlug(this.name);
 });
 
-const Product = models?.Product || model<IProduct>('Product', productSchema);
+const Product =
+  (models?.Product as Model<IProduct>) ||
+  model<IProduct>('Product', productSchema);
 export default Product;

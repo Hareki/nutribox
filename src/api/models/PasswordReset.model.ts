@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 export interface IPasswordReset {
   _id: Types.ObjectId;
@@ -55,6 +55,6 @@ passwordResetSchema.virtual('expirationDate').get(function () {
 });
 
 const PasswordReset =
-  models?.PasswordReset ||
+  (models?.PasswordReset as Model<IPasswordReset>) ||
   model<IPasswordReset>('PasswordReset', passwordResetSchema);
 export default PasswordReset;

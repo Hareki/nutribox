@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from 'mongoose';
+import { Schema, model, models, Types, Model } from 'mongoose';
 
 export interface IProductOrder {
   _id: Types.ObjectId;
@@ -50,6 +50,6 @@ const productOrderSchema = new Schema<IProductOrder>(
 );
 
 const ProductOrder =
-  models?.ProductOrder ||
+  (models?.ProductOrder as Model<IProductOrder>) ||
   model<IProductOrder>('ProductOrder', productOrderSchema);
 export default ProductOrder;
