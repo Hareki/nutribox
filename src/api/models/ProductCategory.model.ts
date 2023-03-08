@@ -2,14 +2,17 @@ import { Schema, model, models } from 'mongoose';
 
 import { IProduct } from './Product.model';
 
+import { getSlug } from 'api/helpers/slug.helper';
+
 export interface IProductCategory {
   _id: Schema.Types.ObjectId;
+  slug: string;
   name: string;
 
   products: IProduct[];
 }
 
-const productCategorySchema = new Schema(
+const productCategorySchema = new Schema<IProductCategory>(
   {
     name: {
       type: String,
@@ -30,6 +33,11 @@ const productCategorySchema = new Schema(
   { timestamps: true },
 );
 
+productCategorySchema.virtual('slug').get(function () {
+  return getSlug(this.name);
+});
+
 const ProductCategory =
-  models?.ProductCategory || model('ProductCategory', productCategorySchema);
+  models?.ProductCategory ||
+  model<IProductCategory>('ProductCategory', productCategorySchema);
 export default ProductCategory;

@@ -3,8 +3,11 @@ import { Schema, model, models } from 'mongoose';
 import { IExpiration } from './Expiration.model';
 import { IProductCategory } from './ProductCategory.model';
 
+import { getSlug } from 'api/helpers/slug.helper';
+
 export interface IProduct {
   _id: Schema.Types.ObjectId;
+  slug: string;
   imageUrls: string[];
   category: IProductCategory;
   // NOTE: Can't embed Expiration into Product
@@ -27,14 +30,6 @@ export interface IProduct {
 
 const productSchema = new Schema(
   {
-    _id: {
-      type: String,
-      required: [true, 'Product/Id is required'],
-      maxLength: [100, 'Product/Id should be at most 100 characters'],
-      unique: true,
-      trim: true,
-    },
-
     imageUrls: {
       type: [String],
       required: [true, 'Product/ImageUrls should have at least 1 image'],
@@ -119,8 +114,16 @@ const productSchema = new Schema(
       trim: true,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 );
+
+productSchema.virtual('slug').get(function () {
+  return getSlug(this.name);
+});
 
 const Product = models?.Product || model('Product', productSchema);
 export default Product;
