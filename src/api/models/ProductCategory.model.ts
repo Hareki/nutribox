@@ -1,15 +1,13 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { IProduct } from './Product.model';
-
 import { getSlug } from 'api/helpers/slug.helper';
 
 export interface IProductCategory {
   _id: Types.ObjectId;
+  products: Types.ObjectId[]; // IProduct
+
   slug: string;
   name: string;
-
-  products: IProduct[];
 }
 
 const productCategorySchema = new Schema<IProductCategory>(

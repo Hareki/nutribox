@@ -1,8 +1,5 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { IAccount } from '../Account.model';
-import { IOrderStatus } from '../OrderStatus.model';
-
 import {
   customerOrderItemSchema,
   ICustomerOrderItem,
@@ -13,9 +10,9 @@ import { IAddress } from 'api/types/schema.type';
 
 export interface ICustomerOrder extends IAddress {
   _id: Types.ObjectId;
-  items: ICustomerOrderItem[];
-  account: IAccount;
-  status: IOrderStatus;
+  items: Types.DocumentArray<ICustomerOrderItem>; // ICustomerOrderItem
+  account: Types.ObjectId; // IAccount
+  status: Types.ObjectId; // IOrderStatus
 
   createdAt: Date;
   phone: string;

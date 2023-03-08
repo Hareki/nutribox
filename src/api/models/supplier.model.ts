@@ -1,7 +1,5 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { IProductOrder } from './ProductOrder.model';
-
 import {
   getAddressSchema,
   getEmailSchema,
@@ -12,7 +10,7 @@ import { IAddress } from 'api/types/schema.type';
 export interface ISupplier extends IAddress {
   _id: Types.ObjectId;
   // NOTE: We might want to see all the orders of a supplier in the future
-  productOrders: IProductOrder[];
+  productOrders: Types.ObjectId[]; // IProductOrder
 
   name: string;
   phone: string;

@@ -1,8 +1,5 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { ICustomerOrder } from '../CustomerOrder.model';
-import { IPasswordReset } from '../PasswordReset.model';
-
 import { accountAddressSchema, IAccountAddress } from './AccountAddress.model';
 import { cartItemSchema, ICartItem } from './CartItem.model';
 
@@ -11,10 +8,13 @@ import { getEmailSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 export interface IAccount {
   _id: Types.ObjectId;
   role: 'ADMIN' | 'CUSTOMER' | 'SUPPLIER';
-  cartItems: ICartItem[];
-  customerOrders: ICustomerOrder[];
-  addresses: IAccountAddress[];
-  passwordReset: IPasswordReset;
+  // Embedded documents can be accessed directly this way
+  cartItems: Types.DocumentArray<ICartItem>; // ICartItem
+  addresses: Types.DocumentArray<IAccountAddress>; // IAccountAddress
+
+  // Populated documents need to be accessed this way
+  customerOrders: Types.ObjectId[]; // ICustomerOrder
+  passwordReset: Types.ObjectId; // IPasswordReset
 
   firstName: string;
   lastName: string;
@@ -41,6 +41,11 @@ const accountSchema = new Schema(
       default: [],
     },
 
+    addresses: {
+      type: [accountAddressSchema],
+      default: [],
+    },
+
     customerOrders: {
       type: [
         {
@@ -48,11 +53,6 @@ const accountSchema = new Schema(
           type: Schema.Types.ObjectId,
         },
       ],
-      default: [],
-    },
-
-    addresses: {
-      type: [accountAddressSchema],
       default: [],
     },
 

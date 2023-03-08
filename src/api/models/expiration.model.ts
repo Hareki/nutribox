@@ -1,10 +1,8 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { IProduct } from './Product.model';
-
 export interface IExpiration {
   _id: Types.ObjectId;
-  product: IProduct;
+  product: Types.ObjectId; // IProduct
 
   expirationDate: Date;
   quantity: number;

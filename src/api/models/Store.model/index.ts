@@ -7,7 +7,7 @@ import { IAddress } from 'api/types/schema.type';
 
 export interface IStore extends IAddress {
   _id: Types.ObjectId;
-  storeHours: IStoreHour[];
+  storeHours: Types.DocumentArray<IStoreHour>; // IStoreHour
 
   phone: string;
 }

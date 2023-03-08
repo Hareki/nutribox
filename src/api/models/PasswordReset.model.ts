@@ -5,7 +5,7 @@ import { IAccount } from './Account.model';
 export interface IPasswordReset {
   _id: Types.ObjectId;
   status: 'PENDING' | 'RESOLVED' | 'EXPIRED';
-  account: IAccount;
+  account: Types.ObjectId; // IAccount
 
   token: string;
   createdAt: Date;

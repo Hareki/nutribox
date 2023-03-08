@@ -1,14 +1,10 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { IOrderStatus } from './OrderStatus.model';
-import { IProduct } from './Product.model';
-import { ISupplier } from './Supplier.model';
-
 export interface IProductOrder {
   _id: Types.ObjectId;
-  product: IProduct;
-  supplier: ISupplier;
-  status: IOrderStatus;
+  product: Types.ObjectId; // IProduct
+  supplier: Types.ObjectId; // ISupplier
+  status: Types.ObjectId; // IOrderStatus
 
   quantity: number;
   unitWholesalePrice: number;

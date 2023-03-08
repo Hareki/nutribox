@@ -1,18 +1,15 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { IExpiration } from './Expiration.model';
-import { IProductCategory } from './ProductCategory.model';
-
 import { getSlug } from 'api/helpers/slug.helper';
 
 export interface IProduct {
   _id: Types.ObjectId;
   slug: string;
   imageUrls: string[];
-  category: IProductCategory;
+  category: Types.ObjectId; // IProductCategory
   // NOTE: Can't embed Expiration into Product
   //       Because We need to loop through all the expirations and find the top 5 closest expirations to the current date for STATISTICS
-  expirations: IExpiration[];
+  expirations: Types.ObjectId[]; // IExpiration
 
   // NOTE: No need to include these, no task requires it for now
   // cartItems: ICartItem[]
