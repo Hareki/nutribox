@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URL = `...`;
+const MONGODB_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.w0h7hr3.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -28,8 +28,8 @@ async function connectToDB(): Promise<mongoose.Mongoose> {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       bufferCommands: false,
-      bufferMaxEntries: 0,
-      useCreateIndex: true,
+      // bufferMaxEntries: 0,
+      // useCreateIndex: true,
     };
 
     cached.promise = mongoose.connect(MONGODB_URL, opts).then((mongoose) => {

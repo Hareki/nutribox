@@ -1,7 +1,7 @@
 import { SchemaDefinitionProperty } from 'mongoose';
 import validator from 'validator';
 
-import { phoneRegex } from 'helpers/regex';
+import { phoneRegex } from 'helpers/regex.helper';
 
 export const getAddressSchema = (
   prefix: string,

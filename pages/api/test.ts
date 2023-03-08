@@ -4,13 +4,16 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base';
 import connectToDB from 'api/database/databaseConnection';
+import ProductCategory from 'api/models/ProductCategory.model';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
-}).get((req, res) => {
-  connectToDB();
+}).get(async (req, res) => {
+  await connectToDB();
 
+  const result = new ProductCategory({ name: 'Rau củ' });
+  result.save();
   res.status(StatusCodes.OK).end('Hello World!');
 });
 
