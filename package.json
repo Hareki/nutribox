@@ -47,7 +47,7 @@
     "imagekitio-react": "^2.0.0",
     "lodash": "^4.17.21",
     "merge": "^2.1.1",
-    "mongoose": "^7.0.0",
+    "mongoose": "^6.10.2",
     "next": "^13.2.3",
     "next-auth": "^4.19.2",
     "next-connect": "^0.13.0",
