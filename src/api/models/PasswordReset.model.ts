@@ -1,7 +1,5 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-import { IAccount } from './Account.model';
-
 export interface IPasswordReset {
   _id: Types.ObjectId;
   status: 'PENDING' | 'RESOLVED' | 'EXPIRED';
@@ -12,6 +10,12 @@ export interface IPasswordReset {
   updatedAt: Date;
   expirationDate: Date;
 }
+
+export interface IPasswordResetInput
+  extends Omit<
+    IPasswordReset,
+    '_id' | 'createdAt' | 'updatedAt' | 'expirationDate'
+  > {}
 
 const passwordResetSchema = new Schema<IPasswordReset>(
   {

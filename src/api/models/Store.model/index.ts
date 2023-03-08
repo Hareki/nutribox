@@ -12,6 +12,8 @@ export interface IStore extends IAddress {
   phone: string;
 }
 
+export interface IStoreInput extends Omit<IStore, '_id'> {}
+
 const storeSchema = new Schema(
   {
     storeHours: {

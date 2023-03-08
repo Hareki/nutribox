@@ -4,7 +4,10 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base';
 import connectToDB from 'api/database/databaseConnection';
-import ProductCategory from 'api/models/ProductCategory.model';
+import Product from 'api/models/Product.model';
+import ProductCategory, {
+  IProductCategoryInput,
+} from 'api/models/ProductCategory.model';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,
@@ -12,8 +15,11 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 }).get(async (req, res) => {
   await connectToDB();
 
-  const result = new ProductCategory({ name: 'Rau củ' });
-  result.save();
+  // new ProductCategory({ name: 'Thịt tươi sống' }).save();
+  // new ProductCategory({ name: 'Nước giải khát' }).save();
+  // new ProductCategory({ name: 'Sữa các loại' }).save();
+  // new ProductCategory({ name: 'Mì, miến, cháo, phở' }).save();
+
   res.status(StatusCodes.OK).end('Hello World!');
 });
 

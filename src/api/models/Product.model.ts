@@ -25,6 +25,13 @@ export interface IProduct {
   name: string;
 }
 
+export interface IProductInput
+  extends Omit<IProduct, '_id' | 'slug' | 'expirations' | 'available' | 'hot'> {
+  expirations?: Types.ObjectId[]; // IExpiration
+  available?: boolean;
+  hot?: boolean;
+}
+
 const productSchema = new Schema<IProduct>(
   {
     imageUrls: {

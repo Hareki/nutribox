@@ -17,6 +17,11 @@ export interface ISupplier extends IAddress {
   email: string;
 }
 
+export interface ISupplierInput
+  extends Omit<ISupplier, '_id' | 'productOrders'> {
+  productOrders?: Types.ObjectId[]; // IProductOrder
+}
+
 const supplierSchema = new Schema<ISupplier>(
   {
     productOrders: [

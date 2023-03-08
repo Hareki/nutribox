@@ -8,7 +8,7 @@ interface JSendFailResponse<T> {
   data: T;
 }
 
-interface JSendErrorResponse {
+export interface JSendErrorResponse {
   status: 'error';
   message: string;
   code?: number;

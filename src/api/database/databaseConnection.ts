@@ -32,6 +32,7 @@ async function connectToDB(): Promise<mongoose.Mongoose> {
       // useCreateIndex: true,
     };
 
+    mongoose.set('strictQuery', false);
     cached.promise = mongoose.connect(MONGODB_URL, opts).then((mongoose) => {
       return mongoose;
     });

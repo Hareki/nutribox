@@ -9,6 +9,8 @@ export interface ICartItem {
   quantity: number;
 }
 
+export interface ICartItemInput extends Omit<ICartItem, '_id'> {}
+
 export const cartItemSchema = new Schema(
   {
     product: {

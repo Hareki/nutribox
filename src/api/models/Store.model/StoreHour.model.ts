@@ -15,6 +15,8 @@ export interface IStoreHour {
   closeTime: Date;
 }
 
+export interface IStoreHourInput extends Omit<IStoreHour, '_id'> {}
+
 export const storeHourSchema = new Schema(
   {
     dayOfWeek: {

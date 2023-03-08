@@ -9,6 +9,8 @@ export interface IAccountAddress extends IAddress {
   // account: IAccount;
 }
 
+export interface IAccountAddressInput extends Omit<IAccountAddress, '_id'> {}
+
 export const accountAddressSchema = new Schema(
   {
     ...getAddressSchema('AccountAddress'),

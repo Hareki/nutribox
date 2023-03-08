@@ -11,6 +11,9 @@ export interface IProductOrder {
   createdAt: Date;
 }
 
+export interface IProductOrderInput
+  extends Omit<IProductOrder, '_id' | 'createdAt'> {}
+
 const productOrderSchema = new Schema<IProductOrder>(
   {
     product: {

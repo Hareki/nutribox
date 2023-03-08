@@ -10,6 +10,9 @@ export interface ICustomerOrderItem {
   unitRetailPrice: number;
 }
 
+export interface ICustomerOrderItemInput
+  extends Omit<ICustomerOrderItem, '_id'> {}
+
 export const customerOrderItemSchema = new Schema(
   {
     product: {

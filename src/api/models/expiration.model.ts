@@ -8,6 +8,8 @@ export interface IExpiration {
   quantity: number;
 }
 
+export interface IExpirationInput extends Omit<IExpiration, '_id'> {}
+
 const expirationSchema = new Schema<IExpiration>(
   {
     product: {

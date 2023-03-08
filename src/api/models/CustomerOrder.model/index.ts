@@ -21,6 +21,9 @@ export interface ICustomerOrder extends IAddress {
   profit: number;
 }
 
+export interface ICustomerOrderInput
+  extends Omit<ICustomerOrder, '_id' | 'note'> {}
+
 const customerOrderSchema = new Schema(
   {
     items: {

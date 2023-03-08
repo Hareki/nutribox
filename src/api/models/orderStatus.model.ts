@@ -9,6 +9,8 @@ export interface IOrderStatus {
   // customersOrders: ICustomerOrder[];
 }
 
+export interface IOrderStatusInput extends Omit<IOrderStatus, '_id'> {}
+
 const orderStatusSchema = new Schema<IOrderStatus>(
   {
     name: {

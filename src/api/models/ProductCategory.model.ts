@@ -10,6 +10,11 @@ export interface IProductCategory {
   name: string;
 }
 
+export interface IProductCategoryInput
+  extends Omit<IProductCategory, '_id' | 'products' | 'slug'> {
+  products?: Types.ObjectId[]; // IProduct
+}
+
 const productCategorySchema = new Schema<IProductCategory>(
   {
     name: {
