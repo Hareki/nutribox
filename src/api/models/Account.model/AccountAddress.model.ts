@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 import { getAddressSchema } from 'api/helpers/schema.helper';
-import { IAddress } from 'api/types';
+import { IAddress } from 'api/types/schema.type';
 
 export interface IAccountAddress extends IAddress {
   _id: Schema.Types.ObjectId;

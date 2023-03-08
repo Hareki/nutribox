@@ -11,6 +11,7 @@
     "imagekitio",
     "isfixed",
     "linestyle",
+    "middlewares",
     "navigations",
     "notistack",
     "nprogress",

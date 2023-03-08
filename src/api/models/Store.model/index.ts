@@ -3,7 +3,7 @@ import { Schema, model, models } from 'mongoose';
 import { IStoreHours, storeHoursSchema } from './StoreHours.model';
 
 import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
-import { IAddress } from 'api/types';
+import { IAddress } from 'api/types/schema.type';
 
 export interface IStore extends IAddress {
   _id: Schema.Types.ObjectId;

@@ -9,7 +9,7 @@ import {
 } from './CustomerOrderItem.model';
 
 import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
-import { IAddress } from 'api/types';
+import { IAddress } from 'api/types/schema.type';
 
 export interface ICustomerOrder extends IAddress {
   _id: Schema.Types.ObjectId;
