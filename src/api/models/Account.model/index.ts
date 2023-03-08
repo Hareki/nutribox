@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { ICustomerOrder } from '../CustomerOrder.model';
 import { IPasswordReset } from '../PasswordReset.model';
@@ -9,7 +9,7 @@ import { cartItemSchema, ICartItem } from './CartItem.model';
 import { getEmailSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 
 export interface IAccount {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   role: 'ADMIN' | 'CUSTOMER' | 'SUPPLIER';
   cartItems: ICartItem[];
   customerOrders: ICustomerOrder[];

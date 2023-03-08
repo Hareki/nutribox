@@ -1,9 +1,9 @@
-import { model, models, Schema } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { IAccount } from './Account.model';
 
 export interface IPasswordReset {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   status: 'PENDING' | 'RESOLVED' | 'EXPIRED';
   account: IAccount;
 
@@ -13,7 +13,7 @@ export interface IPasswordReset {
   expirationDate: Date;
 }
 
-const passwordResetSchema = new Schema(
+const passwordResetSchema = new Schema<IPasswordReset>(
   {
     account: {
       type: Schema.Types.ObjectId,
@@ -51,5 +51,6 @@ passwordResetSchema.virtual('expirationDate').get(function () {
 });
 
 const PasswordReset =
-  models?.PasswordReset || model('PasswordReset', passwordResetSchema);
+  models?.PasswordReset ||
+  model<IPasswordReset>('PasswordReset', passwordResetSchema);
 export default PasswordReset;

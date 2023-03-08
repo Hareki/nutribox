@@ -1,16 +1,16 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { IProduct } from './Product.model';
 
 export interface IExpiration {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   product: IProduct;
 
   expirationDate: Date;
   quantity: number;
 }
 
-const expirationSchema = new Schema(
+const expirationSchema = new Schema<IExpiration>(
   {
     product: {
       ref: 'Product',
@@ -36,5 +36,6 @@ const expirationSchema = new Schema(
   { timestamps: true },
 );
 
-const Expiration = models?.Expiration || model('Expiration', expirationSchema);
+const Expiration =
+  models?.Expiration || model<IExpiration>('Expiration', expirationSchema);
 export default Expiration;

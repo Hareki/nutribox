@@ -1,9 +1,9 @@
-import { Schema } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { IProduct } from '../Product.model';
 
 export interface ICustomerOrderItem {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   product: IProduct;
   // Note: No need, because it's already embedded in the customerOrder
   // customerOrder: ICustomerOrder;

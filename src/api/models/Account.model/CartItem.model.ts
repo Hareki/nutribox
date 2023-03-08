@@ -1,9 +1,9 @@
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 
 import { IProduct } from '../Product.model';
 
 export interface ICartItem {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   product: IProduct;
   // Note: No need, because it's already embedded in the account
   // account: IAccount;

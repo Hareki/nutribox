@@ -1,7 +1,7 @@
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 
 export interface IStoreHour {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
 
   dayOfWeek:
     | 'MONDAY'

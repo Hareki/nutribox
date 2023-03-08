@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { IProductOrder } from './ProductOrder.model';
 
@@ -10,7 +10,7 @@ import {
 import { IAddress } from 'api/types/schema.type';
 
 export interface ISupplier extends IAddress {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   // NOTE: We might want to see all the orders of a supplier in the future
   productOrders: IProductOrder[];
 
@@ -19,7 +19,7 @@ export interface ISupplier extends IAddress {
   email: string;
 }
 
-const supplierSchema = new Schema(
+const supplierSchema = new Schema<ISupplier>(
   {
     productOrders: [
       {
@@ -46,5 +46,6 @@ const supplierSchema = new Schema(
   { timestamps: true },
 );
 
-const Supplier = models?.Supplier || model('Supplier', supplierSchema);
+const Supplier =
+  models?.Supplier || model<ISupplier>('Supplier', supplierSchema);
 export default Supplier;

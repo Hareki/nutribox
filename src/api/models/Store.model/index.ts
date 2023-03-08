@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { IStoreHour, storeHourSchema } from './StoreHours.model';
 
@@ -6,7 +6,7 @@ import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 import { IAddress } from 'api/types/schema.type';
 
 export interface IStore extends IAddress {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   storeHours: IStoreHour[];
 
   phone: string;

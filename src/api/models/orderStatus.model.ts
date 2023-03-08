@@ -1,7 +1,7 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 export interface IOrderStatus {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   name: string;
 
   // NOTE: No need to include these, no task requires it for now
@@ -9,7 +9,7 @@ export interface IOrderStatus {
   // customersOrders: ICustomerOrder[];
 }
 
-const orderStatusSchema = new Schema(
+const orderStatusSchema = new Schema<IOrderStatus>(
   {
     name: {
       type: String,
@@ -23,5 +23,5 @@ const orderStatusSchema = new Schema(
 );
 
 const OrderStatus =
-  models?.OrderStatus || model('OrderStatus', orderStatusSchema);
+  models?.OrderStatus || model<IOrderStatus>('OrderStatus', orderStatusSchema);
 export default OrderStatus;

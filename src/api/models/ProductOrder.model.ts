@@ -1,11 +1,11 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { IOrderStatus } from './OrderStatus.model';
 import { IProduct } from './Product.model';
 import { ISupplier } from './Supplier.model';
 
 export interface IProductOrder {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   product: IProduct;
   supplier: ISupplier;
   status: IOrderStatus;
@@ -15,7 +15,7 @@ export interface IProductOrder {
   createdAt: Date;
 }
 
-const productOrderSchema = new Schema(
+const productOrderSchema = new Schema<IProductOrder>(
   {
     product: {
       ref: 'Product',
@@ -51,5 +51,6 @@ const productOrderSchema = new Schema(
 );
 
 const ProductOrder =
-  models?.ProductOrder || model('ProductOrder', productOrderSchema);
+  models?.ProductOrder ||
+  model<IProductOrder>('ProductOrder', productOrderSchema);
 export default ProductOrder;

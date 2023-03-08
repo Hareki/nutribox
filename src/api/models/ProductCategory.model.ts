@@ -1,11 +1,11 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { IProduct } from './Product.model';
 
 import { getSlug } from 'api/helpers/slug.helper';
 
 export interface IProductCategory {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   slug: string;
   name: string;
 

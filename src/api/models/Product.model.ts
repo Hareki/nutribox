@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 import { IExpiration } from './Expiration.model';
 import { IProductCategory } from './ProductCategory.model';
@@ -6,7 +6,7 @@ import { IProductCategory } from './ProductCategory.model';
 import { getSlug } from 'api/helpers/slug.helper';
 
 export interface IProduct {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   slug: string;
   imageUrls: string[];
   category: IProductCategory;
@@ -28,7 +28,7 @@ export interface IProduct {
   name: string;
 }
 
-const productSchema = new Schema(
+const productSchema = new Schema<IProduct>(
   {
     imageUrls: {
       type: [String],
@@ -125,5 +125,5 @@ productSchema.virtual('slug').get(function () {
   return getSlug(this.name);
 });
 
-const Product = models?.Product || model('Product', productSchema);
+const Product = models?.Product || model<IProduct>('Product', productSchema);
 export default Product;
