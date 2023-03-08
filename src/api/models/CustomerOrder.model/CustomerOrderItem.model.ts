@@ -25,6 +25,7 @@ export const customerOrderItemSchema = new Schema({
     min: [1, 'CustomerOrderItem/Quantity should be greater than 0'],
   },
 
+  // Price is in VND
   unitRetailPrice: {
     type: Number,
     required: [true, 'CustomerOrderItem/UnitRetailPrice is required'],

@@ -1,12 +1,16 @@
 import { Schema } from 'mongoose';
 
-import { IStore } from '.';
-
 export interface IStoreHours {
   _id: Schema.Types.ObjectId;
-  store: IStore;
 
-  dayOfWeek: string;
+  dayOfWeek:
+    | 'MONDAY'
+    | 'TUESDAY'
+    | 'WEDNESDAY'
+    | 'THURSDAY'
+    | 'FRIDAY'
+    | 'SATURDAY'
+    | 'SUNDAY';
   openTime: Date;
   closeTime: Date;
 }
@@ -26,23 +30,29 @@ export const storeHoursSchema = new Schema({
         'SATURDAY',
         'SUNDAY',
       ],
-      message: '{VALUE} is not supported.',
+      message: '{VALUE} in StoreHours/DayOfWeek is not supported.',
     },
-  },
-
-  store: {
-    type: Schema.Types.ObjectId,
-    ref: 'Store',
-    required: [true, 'StoreHours/Store is required'],
   },
 
   openTime: {
     type: Date,
     required: [true, 'StoreHours/OpenTime is required'],
+    validate: {
+      validator: function (openTime: Date) {
+        return openTime.getTime() < this.closeTime.getTime();
+      },
+      message: 'StoreHours/OpenTime should be before StoreHours/CloseTime',
+    },
   },
 
   closeTime: {
     type: Date,
     required: [true, 'StoreHours/CloseTime is required'],
+    validate: {
+      validator: function (closeTime: Date) {
+        return closeTime.getTime() > this.openTime.getTime();
+      },
+      message: 'StoreHours/CloseTime should be after StoreHours/OpenTime',
+    },
   },
 });

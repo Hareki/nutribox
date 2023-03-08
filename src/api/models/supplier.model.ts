@@ -1,5 +1,4 @@
 import { Schema, model, models } from 'mongoose';
-import validator from 'validator';
 
 import { IProductOrder } from './ProductOrder.model';
 

@@ -18,21 +18,21 @@ const passwordResetSchema = new Schema(
     account: {
       type: Schema.Types.ObjectId,
       ref: 'Account',
-      required: [true, 'Account for password reset is required'],
+      required: [true, 'PasswordReset/Account is required'],
     },
 
     token: {
       type: String,
-      required: [true, 'Password reset token is required'],
+      required: [true, 'PasswordReset/Token is required'],
       trim: true,
     },
 
     status: {
       type: String,
-      required: [true, 'Password reset status is required'],
+      required: [true, 'PasswordReset/Status is required'],
       enum: {
         values: ['PENDING', 'RESOLVED', 'EXPIRED'],
-        message: '{VALUE} is not supported',
+        message: '{VALUE} in PasswordReset/Status is not supported',
       },
     },
   },
@@ -50,5 +50,5 @@ passwordResetSchema.virtual('expirationDate').get(function () {
 });
 
 const PasswordReset =
-  models['PasswordReset'] || model('PasswordReset', passwordResetSchema);
+  models?.PasswordReset || model('PasswordReset', passwordResetSchema);
 export default PasswordReset;

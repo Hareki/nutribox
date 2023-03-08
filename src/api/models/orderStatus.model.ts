@@ -3,6 +3,10 @@ import { Schema, model, models } from 'mongoose';
 export interface IOrderStatus {
   _id: Schema.Types.ObjectId;
   name: string;
+
+  // NOTE: No need to include these, no task requires it for now
+  // productOrders: IProductOrder[];
+  // customersOrders: ICustomerOrder[];
 }
 
 const orderStatusSchema = new Schema({

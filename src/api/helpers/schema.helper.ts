@@ -61,7 +61,7 @@ export const getPhoneSchema = (
       required: [true, `${prefix}/Phone is required`],
       validate: {
         validator: (phone: string) => phoneRegex.test(phone),
-        message: `Invalid ${prefix}/Phone number format`,
+        message: `Invalid ${prefix}/Phone format`,
       },
       unique: true,
       trim: true,

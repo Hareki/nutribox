@@ -32,7 +32,7 @@ const accountSchema = new Schema(
       required: [true, 'Account/Role is required'],
       enum: {
         values: ['ADMIN', 'CUSTOMER', 'SUPPLIER'],
-        message: '{VALUE} is not supported.',
+        message: '{VALUE} in Account/Role is not supported.',
       },
     },
 

@@ -32,9 +32,9 @@ const customerOrderSchema = new Schema(
         validator: function (items: ICustomerOrderItem[]) {
           return items.length > 0;
         },
-        message: 'CustomerOrder/Items should have at least one item',
+        message: 'CustomerOrder/Items should have at least 1 item',
       },
-      required: [true, 'CustomerOrder/Items should have at least one item'],
+      required: [true, 'CustomerOrder/Items should have at least 1 item'],
     },
 
     account: {

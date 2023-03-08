@@ -12,28 +12,31 @@ export interface IStore extends IAddress {
   phone: string;
 }
 
-const storeSchema = new Schema({
-  storeHours: {
-    type: [storeHoursSchema],
-    required: [true, 'Store/StoreHours is required'],
-    validate: {
-      validator: (storeHours: IStoreHours[]) => {
-        const daysOfWeek = storeHours.map((storeHour) => storeHour.dayOfWeek);
-        const uniqueDaysOfWeek = [...new Set(daysOfWeek)];
+const storeSchema = new Schema(
+  {
+    storeHours: {
+      type: [storeHoursSchema],
+      required: [true, 'Store/StoreHours is required'],
+      validate: {
+        validator: (storeHours: IStoreHours[]) => {
+          const daysOfWeek = storeHours.map((storeHour) => storeHour.dayOfWeek);
+          const uniqueDaysOfWeek = [...new Set(daysOfWeek)];
 
-        return (
-          uniqueDaysOfWeek.length === daysOfWeek.length &&
-          uniqueDaysOfWeek.length === 7
-        );
+          return (
+            uniqueDaysOfWeek.length === daysOfWeek.length &&
+            uniqueDaysOfWeek.length === 7
+          );
+        },
+        message: 'Store/StoreHours should have 7 unique days of the week.',
       },
-      message: 'Store/StoreHours should have 7 unique days of the week.',
     },
+
+    ...getPhoneSchema('Store'),
+
+    ...getAddressSchema('Store'),
   },
-
-  ...getPhoneSchema('Store'),
-
-  ...getAddressSchema('Store'),
-});
+  { timestamps: true },
+);
 
 const Store = models?.Store || model('Store', storeSchema);
 export default Store;
