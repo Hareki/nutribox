@@ -31,5 +31,6 @@
     "virtuals",
     "xaxis",
     "yaxis"
-  ]
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
