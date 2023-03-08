@@ -28,9 +28,11 @@
         "alphabetize": { "order": "asc", "caseInsensitive": true },
         "newlines-between": "always"
       }
-    ]
+    ],
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": "off"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "unused-imports"],
   "parser": "@typescript-eslint/parser",
   "globals": {
     "Promise": true,
