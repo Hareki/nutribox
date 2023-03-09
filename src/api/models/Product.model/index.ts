@@ -1,5 +1,8 @@
 import { Schema, model, models, Types, Model } from 'mongoose';
 
+import ProductCategory from '../ProductCategory.model';
+
+import { updateDependentDoc } from 'api/base/mongoose';
 import { getSlug } from 'api/helpers/slug.helper';
 
 export interface IProduct {
@@ -127,6 +130,16 @@ const productSchema = new Schema<IProduct>(
 
 productSchema.virtual('slug').get(function () {
   return getSlug(this.name);
+});
+
+productSchema.pre('save', async function (next) {
+  try {
+    const categoryDoc = await ProductCategory.findById(this.category);
+    await updateDependentDoc(this._id, categoryDoc, 'products');
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 const Product =
