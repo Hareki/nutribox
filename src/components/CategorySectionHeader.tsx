@@ -32,7 +32,7 @@ const CategorySectionHeader: FC<CategorySectionHeaderProps> = (props) => {
       {seeMoreLink && (
         <Link href={seeMoreLink}>
           <FlexBox alignItems='center' color='grey.600'>
-            View all
+            Xem tất cả
             {settings.direction === 'ltr' ? (
               <ArrowRight fontSize='small' color='inherit' />
             ) : (

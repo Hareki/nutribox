@@ -28,11 +28,12 @@
         "alphabetize": { "order": "asc", "caseInsensitive": true },
         "newlines-between": "always"
       }
-    ],
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": "off"
+    ]
+    // "unused-imports/no-unused-imports": "error",
+    // "unused-imports/no-unused-vars": "off"
   },
-  "plugins": ["@typescript-eslint", "unused-imports"],
+  // "plugins": ["@typescript-eslint", "unused-imports"],
+  "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "globals": {
     "Promise": true,
@@ -49,15 +50,5 @@
     "out/",
     "*.test.ts",
     "*.spec.ts"
-  ],
-  "parserOptions": {
-    "ecmaVersion": 2021,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "project": "./tsconfig.json",
-    "tsconfigRootDir": ".",
-    "createDefaultProgram": true
-  }
+  ]
 }

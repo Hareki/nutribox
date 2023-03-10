@@ -66,7 +66,7 @@ function calculateDiscount(price: number, discount: number) {
  * @returns - RETURN PRICE WITH CURRENCY
  */
 
-function currency(price: number, fraction = 2) {
+function currency(price: number, fraction = 0) {
   const { publicRuntimeConfig } = getConfig();
 
   const formatCurrency = new Intl.NumberFormat(undefined, {

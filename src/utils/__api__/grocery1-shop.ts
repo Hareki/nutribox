@@ -1,11 +1,18 @@
 import axios from 'axios';
 
+import { CategoryNavList } from 'components/page-sidenav/types';
 import Product from 'models/Product.model';
 import Service from 'models/Service.model';
+import axiosInstance from 'utils/axiosInstance';
 
-const getNavList = async () => {
-  const response = await axios.get('/api/grocery-1/navigation');
-  return response.data;
+const getNavList = async (): Promise<CategoryNavList> => {
+  // const response = await axios.get('/api/grocery-1/navigation');
+  const response = await axiosInstance.get('/category/all', {
+    params: { populate: true },
+  });
+
+  // console.log(response.data.data);
+  return { listItems: response.data.data };
 };
 
 const getPopularProducts = async (): Promise<Product[]> => {
@@ -28,11 +35,6 @@ const getServices = async (): Promise<Service[]> => {
   return response.data;
 };
 
-const getMainCarousel = async () => {
-  const response = await axios.get('/api/grocery-1/main-carousel');
-  return response.data;
-};
-
 const getTestimonials = async () => {
   const response = await axios.get('/api/grocery-1/testimonial-list');
   return response.data;
@@ -44,6 +46,5 @@ export default {
   getPopularProducts,
   getTrendingProducts,
   getNavList,
-  getMainCarousel,
   getTestimonials,
 };

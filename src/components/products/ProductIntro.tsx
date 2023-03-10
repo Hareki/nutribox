@@ -45,7 +45,14 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
   const handleCartAmountChange = (amount: number) => () => {
     dispatch({
       type: 'CHANGE_CART_AMOUNT',
-      payload: { price, qty: amount, name: title, imgUrl: thumbnail, id, slug },
+      payload: {
+        retailPrice: price,
+        quantity: amount,
+        name: title,
+        imageUrl: thumbnail,
+        id,
+        slug,
+      },
     });
   };
 
@@ -136,7 +143,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
             <Box color='inherit'>Stock Available</Box>
           </Box>
 
-          {!cartItem?.qty ? (
+          {!cartItem?.quantity ? (
             <Button
               color='primary'
               variant='contained'
@@ -152,13 +159,13 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
                 sx={{ p: 1 }}
                 color='primary'
                 variant='outlined'
-                onClick={handleCartAmountChange(cartItem?.qty - 1)}
+                onClick={handleCartAmountChange(cartItem?.quantity - 1)}
               >
                 <Remove fontSize='small' />
               </Button>
 
               <H3 fontWeight='600' mx={2.5}>
-                {cartItem?.qty.toString().padStart(2, '0')}
+                {cartItem?.quantity.toString().padStart(2, '0')}
               </H3>
 
               <Button
@@ -166,7 +173,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
                 sx={{ p: 1 }}
                 color='primary'
                 variant='outlined'
-                onClick={handleCartAmountChange(cartItem?.qty + 1)}
+                onClick={handleCartAmountChange(cartItem?.quantity + 1)}
               >
                 <Add fontSize='small' />
               </Button>

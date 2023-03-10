@@ -1,14 +1,12 @@
-import { Box, styled, Theme, useTheme } from '@mui/material';
+import { Box, styled, useTheme } from '@mui/material';
 import { FC, useState } from 'react';
 
-import Accordion from 'components/accordion/Accordion';
-import AccordionHeader from 'components/accordion/AccordionHeader';
+import { CategoryNavList } from './types';
+
 import BazaarCard from 'components/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
-import appIcons from 'components/icons';
 import Scrollbar from 'components/Scrollbar';
 import { H5, Span } from 'components/Typography';
-import CategoryNavList from 'models/CategoryNavList.model';
 
 const NavbarRoot = styled(BazaarCard)<{
   isfixed: boolean;
@@ -66,7 +64,7 @@ const Circle = styled('span')({
 // ==================================================================
 type SideNavbarProps = {
   isFixed?: boolean;
-  navList: CategoryNavList[];
+  navList: CategoryNavList;
   lineStyle?: 'dash' | 'solid';
   sidebarHeight?: string | number;
   sidebarStyle?: 'style1' | 'style2';
@@ -94,46 +92,37 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
   return (
     <Scrollbar autoHide={false} sx={{ maxHeight: sidebarHeight }}>
       <NavbarRoot isfixed={isFixed} sidebarstyle={sidebarStyle}>
-        {navList.map((item, index) => {
-          return (
-            <Box key={index}>
-              <Box padding='16px 20px 5px 20px'>
-                <H5>{item.category}</H5>
+        <Box>
+          <Box padding='16px 20px 5px 20px'>
+            <H5>Danh mục món ăn</H5>
 
-                <BorderBox linestyle={lineStyle}>
-                  <ColorBorder width='140% !important' />
-                  <ColorBorder grey={1} />
-                </BorderBox>
+            <BorderBox linestyle={lineStyle}>
+              <ColorBorder width='140% !important' />
+              <ColorBorder grey={1} />
+            </BorderBox>
+          </Box>
+          {navList.listItems?.map((item, index) => {
+            return (
+              <Box mb='2px' color='grey.700' key={index}>
+                <Box
+                  // key={item}
+                  onClick={() => selectHandler(index, item.name)}
+                  sx={{
+                    color: selectedIndex === index ? 'primary.500' : 'grey.700',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      color: 'primary.500',
+                    },
+                  }}
+                >
+                  <FlexBox gap={1.5} className='linkList' py={0.75}>
+                    <Span fontWeight='600'>{item.name}</Span>
+                  </FlexBox>
+                </Box>
               </Box>
-
-              {item.categoryItem.map((item, index) => {
-                const Icon = appIcons[item.icon];
-
-                return (
-                  <Box mb='2px' color='grey.700' key={index}>
-                    <Box
-                      key={item.title}
-                      onClick={() => selectHandler(index, item.title)}
-                      sx={{
-                        color:
-                          selectedIndex === index ? 'primary.500' : 'grey.700',
-                        cursor: 'pointer',
-                        '&:hover': {
-                          color: 'primary.500',
-                        },
-                      }}
-                    >
-                      <FlexBox gap={1.5} className='linkList' py={0.75}>
-                        <Icon fontSize='small' />
-                        <Span fontWeight='600'>{item.title}</Span>
-                      </FlexBox>
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
-          );
-        })}
+            );
+          })}
+        </Box>
       </NavbarRoot>
     </Scrollbar>
   );

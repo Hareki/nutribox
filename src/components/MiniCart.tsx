@@ -10,31 +10,33 @@ import {
 import Link from 'next/link';
 import { FC } from 'react';
 
+import { IProduct } from 'api/models/Product.model/types';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
 import { H5, Paragraph, Tiny } from 'components/Typography';
-import { CartItem, useAppContext } from 'contexts/AppContext';
+import { useAppContext } from 'contexts/AppContext';
 import { currency } from 'lib';
 
-// =========================================================
-type MiniCartProps = { toggleSidenav: () => void };
-// =========================================================
+type CartDrawerProps = { toggleCartDrawer: () => void };
 
-const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
+const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
   const { palette } = useTheme();
   const { state, dispatch } = useAppContext();
   const cartList = state.cart;
 
-  const handleCartAmountChange = (amount: number, product) => () => {
+  const handleCartAmountChange = (amount: number, product:IProduct) => () => {
     dispatch({
       type: 'CHANGE_CART_AMOUNT',
-      payload: { ...product, qty: amount },
+      payload: { ...product, quantity: amount },
     });
   };
 
   const getTotalPrice = () => {
-    return cartList.reduce((accum, item) => accum + item.price * item.qty, 0);
+    return cartList.reduce(
+      (accumulation, item) => accumulation + item.retailPrice * item.quantity,
+      0,
+    );
   };
 
   return (
@@ -52,7 +54,7 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
             </Paragraph>
           </FlexBox>
 
-          <IconButton onClick={toggleSidenav}>
+          <IconButton onClick={toggleCartDrawer}>
             <Clear />
           </IconButton>
         </FlexBetween>
@@ -79,12 +81,12 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
               textAlign='center'
               maxWidth='200px'
             >
-              Your shopping bag is empty. Start shopping
+              Giỏ hàng của bạn đang trống, hãy đặt món ngay!
             </Box>
           </FlexBox>
         )}
 
-        {cartList.map((item: CartItem) => (
+        {cartList.map((item) => (
           <FlexBox
             py={2}
             px={2.5}
@@ -96,21 +98,21 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
               <Button
                 color='primary'
                 variant='outlined'
-                onClick={handleCartAmountChange(item.qty + 1, item)}
+                onClick={handleCartAmountChange(item.quantity + 1, item)}
                 sx={{ height: '32px', width: '32px', borderRadius: '300px' }}
               >
                 <Add fontSize='small' />
               </Button>
 
               <Box fontWeight={600} fontSize='15px' my='3px'>
-                {item.qty}
+                {item.quantity}
               </Box>
 
               <Button
                 color='primary'
                 variant='outlined'
-                disabled={item.qty === 1}
-                onClick={handleCartAmountChange(item.qty - 1, item)}
+                disabled={item.quantity === 1}
+                onClick={handleCartAmountChange(item.quantity - 1, item)}
                 sx={{ height: '32px', width: '32px', borderRadius: '300px' }}
               >
                 <Remove fontSize='small' />
@@ -120,7 +122,8 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
             <Link href={`/product/${item.id}`}>
               <Avatar
                 alt={item.name}
-                src={item.imgUrl}
+                // FIXME
+                // src={item.imageUrl}
                 sx={{ mx: 2, width: 76, height: 76 }}
               />
             </Link>
@@ -140,7 +143,7 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
               </Link>
 
               <Tiny color='grey.600'>
-                {currency(item.price)} x {item.qty}
+                {currency(item.retailPrice)} x {item.quantity}
               </Tiny>
 
               <Box
@@ -149,7 +152,7 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
                 color='primary.main'
                 mt={0.5}
               >
-                {currency(item.qty * item.price)}
+                {currency(item.quantity * item.retailPrice)}
               </Box>
             </Box>
 
@@ -172,7 +175,7 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
               color='primary'
               variant='contained'
               sx={{ mb: '0.75rem', height: '40px', color: '#fff' }}
-              onClick={toggleSidenav}
+              onClick={toggleCartDrawer}
             >
               Checkout Now ({currency(getTotalPrice())})
             </Button>
@@ -184,7 +187,7 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
               color='primary'
               variant='outlined'
               sx={{ height: 40 }}
-              onClick={toggleSidenav}
+              onClick={toggleCartDrawer}
             >
               View Cart
             </Button>
@@ -195,4 +198,4 @@ const MiniCart: FC<MiniCartProps> = ({ toggleSidenav }) => {
   );
 };
 
-export default MiniCart;
+export default CartDrawer;

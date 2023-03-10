@@ -48,6 +48,7 @@
     "lodash": "^4.17.21",
     "merge": "^2.1.1",
     "mongoose": "^6.10.2",
+    "mongoose-lean-virtuals": "^0.9.1",
     "next": "^13.2.3",
     "next-auth": "^4.19.2",
     "next-connect": "^0.13.0",

@@ -1,11 +1,11 @@
 import { Button, Grid, styled } from '@mui/material';
 import { FC } from 'react';
 
+import { IProduct } from 'api/models/Product.model/types';
 import CategorySectionCreator from 'components/CategorySectionCreator';
 import { FlexRowCenter } from 'components/flex-box';
 import ProductCard from 'components/product-item/ProductCard';
 import { Paragraph } from 'components/Typography';
-import Product from 'models/Product.model';
 
 const SubTitle = styled(Paragraph)(({ theme }) => ({
   fontSize: 12,
@@ -15,29 +15,26 @@ const SubTitle = styled(Paragraph)(({ theme }) => ({
 }));
 
 // ========================================================
-type AllProductsProps = { products: Product[]; title?: string };
+type AllProductsProps = {
+  products: IProduct[];
+  title?: string;
+  subtitle?: string;
+};
 // ========================================================
 
 const AllProducts: FC<AllProductsProps> = ({
   products,
   title = 'Tất cả món ăn',
+  subtitle,
 }) => {
   return (
     <CategorySectionCreator title={title} seeMoreLink='#'>
-      <SubTitle>Best collection in 2021 for you!</SubTitle>
+      {subtitle && <SubTitle>{subtitle}</SubTitle>}
 
       <Grid container spacing={3}>
         {products.map((item) => (
-          <Grid key={item.id} item md={4} sm={6} xs={12}>
-            <ProductCard
-              id={item.id}
-              slug={item.slug}
-              title={item.title}
-              price={item.price}
-              off={item.discount}
-              rating={item.rating}
-              imgUrl={item.thumbnail}
-            />
+          <Grid key={item._id.toString()} item md={4} sm={6} xs={12}>
+            <ProductCard product={item} />
           </Grid>
         ))}
       </Grid>

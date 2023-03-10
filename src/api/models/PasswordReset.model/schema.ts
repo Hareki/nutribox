@@ -1,23 +1,8 @@
-import { Schema, model, models, Types, Model } from 'mongoose';
+import { Schema } from 'mongoose';
 
-export interface IPasswordReset {
-  _id: Types.ObjectId;
-  status: 'PENDING' | 'RESOLVED' | 'EXPIRED';
-  account: Types.ObjectId; // IAccount
+import { IPasswordReset } from './types';
 
-  token: string;
-  createdAt: Date;
-  updatedAt: Date;
-  expirationDate: Date;
-}
-
-export interface IPasswordResetInput
-  extends Omit<
-    IPasswordReset,
-    '_id' | 'createdAt' | 'updatedAt' | 'expirationDate'
-  > {}
-
-const passwordResetSchema = new Schema<IPasswordReset>(
+export const passwordResetSchema = new Schema<IPasswordReset>(
   {
     account: {
       type: Schema.Types.ObjectId,
@@ -42,8 +27,6 @@ const passwordResetSchema = new Schema<IPasswordReset>(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
     collection: 'passwordResets',
   },
 );
@@ -53,8 +36,3 @@ passwordResetSchema.virtual('expirationDate').get(function () {
   const expirationAsMs = createdAtAsMs + 10 * 60 * 1000;
   return new Date(expirationAsMs);
 });
-
-const PasswordReset =
-  (models?.PasswordReset as Model<IPasswordReset>) ||
-  model<IPasswordReset>('PasswordReset', passwordResetSchema);
-export default PasswordReset;

@@ -1,45 +1,7 @@
-import { Schema, model, models, Types, Model } from 'mongoose';
+import '../../database/mongoose.config';
+import { Model, models } from 'mongoose';
 
-import { IStoreHour, storeHourSchema } from './StoreHour.model';
+import { IStore } from './types';
 
-import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
-import { IAddress } from 'api/types/schema.type';
-
-export interface IStore extends IAddress {
-  _id: Types.ObjectId;
-  storeHours: Types.DocumentArray<IStoreHour>; // IStoreHour
-
-  phone: string;
-}
-
-export interface IStoreInput extends Omit<IStore, '_id'> {}
-
-const storeSchema = new Schema(
-  {
-    storeHours: {
-      type: [storeHourSchema],
-      required: [true, 'Store/StoreHours is required'],
-      validate: {
-        validator: (storeHours: IStoreHour[]) => {
-          const daysOfWeek = storeHours.map((storeHour) => storeHour.dayOfWeek);
-          const uniqueDaysOfWeek = [...new Set(daysOfWeek)];
-
-          return (
-            uniqueDaysOfWeek.length === daysOfWeek.length &&
-            uniqueDaysOfWeek.length === 7
-          );
-        },
-        message: 'Store/StoreHours should have 7 unique days of the week.',
-      },
-    },
-
-    ...getPhoneSchema('Store'),
-
-    ...getAddressSchema('Store'),
-  },
-  { timestamps: true },
-);
-
-const Store =
-  (models?.Store as Model<IStore>) || model<IStore>('Store', storeSchema);
+const Store = models.Store as Model<IStore>;
 export default Store;

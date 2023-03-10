@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useSnackbar } from 'notistack';
 import { FC, Fragment, useCallback, useState } from 'react';
 
+import { IProduct } from 'api/models/Product.model/types';
 import BazaarCard from 'components/BazaarCard';
 import BazaarRating from 'components/BazaarRating';
 import { FlexBetween, FlexBox } from 'components/flex-box';
@@ -36,8 +37,9 @@ const ImageWrapper = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   textAlign: 'center',
   position: 'relative',
-  padding: '44px 40px',
-  background: '#efefef',
+  padding: '34px 30px',
+  // background: '#efefef',
+  background: 'white.main',
   display: 'inline-block',
   [theme.breakpoints.down('sm')]: { display: 'block' },
 }));
@@ -89,30 +91,14 @@ const ContentWrapper = styled(FlexBox)({
 
 // ===============================================================
 type ProductCardProps = {
-  off: number;
-  slug: string;
-  title: string;
-  price: number;
-  imgUrl: string;
-  rating?: number;
-  id: string | number;
-  hideRating?: boolean;
-  hoverEffect?: boolean;
+  product: IProduct;
   onPreview?: () => void;
 };
 // ===============================================================
 
 const ProductCard: FC<ProductCardProps> = (props) => {
   const {
-    off,
-    id,
-    title,
-    price,
-    imgUrl,
-    rating,
-    hideRating,
-    hoverEffect,
-    slug,
+    product: { description, _id, category, imageUrls, retailPrice, name, slug },
     onPreview,
   } = props;
 
@@ -131,32 +117,31 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     (item) => item.slug === slug,
   );
 
-  const handleCartAmountChange =
-    (amount: number, type?: 'add' | 'remove') => () => {
-      dispatch({
-        type: 'CHANGE_CART_AMOUNT',
-        payload: { price, imgUrl, id, name: title, qty: amount, slug },
-      });
+  // const handleCartAmountChange =
+  //   (amount: number, type?: 'add' | 'remove') => () => {
+  //     dispatch({
+  //       type: 'CHANGE_CART_AMOUNT',
+  //       payload: { price, imgUrl, id, name: title, qty: amount, slug },
+  //     });
 
-      if (type === 'remove') {
-        enqueueSnackbar('Remove from Cart', { variant: 'error' });
-      } else {
-        enqueueSnackbar('Added to Cart', { variant: 'success' });
-      }
-    };
+  //     if (type === 'remove') {
+  //       enqueueSnackbar('Remove from Cart', { variant: 'error' });
+  //     } else {
+  //       enqueueSnackbar('Added to Cart', { variant: 'success' });
+  //     }
+  //   };
 
   return (
-    <StyledBazaarCard hoverEffect={hoverEffect}>
+    <StyledBazaarCard hoverEffect>
       <ImageWrapper>
         {/* {off !== 0 && (
           <StyledChip color='primary' size='small' label={`${off}% off`} />
         )} */}
-
         <Link href={`/dish/${slug}`}>
           <LazyImage
-            alt={title}
+            alt={name}
             width={190}
-            src={imgUrl}
+            src={imageUrls[0]}
             height={190}
             layout='responsive'
             objectFit='contain'
@@ -183,7 +168,9 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             )}
           </Span>
 
-          <Span onClick={handleCartAmountChange((cartItem?.qty || 0) + 1)}>
+          <Span
+          // onClick={handleCartAmountChange((cartItem?.qty || 0) + 1)}
+          >
             <ShoppingCartIcon />
           </Span>
         </HoverWrapper>
@@ -192,7 +179,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
       <ProductViewDialog
         openDialog={openModal}
         handleCloseDialog={toggleDialog}
-        product={{ title, price, id, slug, imgGroup: [imgUrl, imgUrl] }}
+        product={props.product}
       />
 
       <ContentWrapper>
@@ -200,14 +187,14 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           <Link href={`/product/${slug}`}>
             <H3
               mb={1}
-              title={title}
+              title={name}
               fontSize='14px'
               textAlign='left'
               fontWeight='600'
               className='title'
               color='text.secondary'
             >
-              {title}
+              {name}
             </H3>
           </Link>
 
@@ -220,7 +207,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
 
           <FlexBox gap={1} alignItems='center' mt={0.5}>
             <Box fontWeight={600} color='primary.main'>
-              {calculateDiscount(price, off)}
+              {currency(retailPrice)}
             </Box>
 
             {/* {off !== 0 && (
@@ -236,28 +223,28 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           alignItems='center'
           className='add-cart'
           flexDirection='column-reverse'
-          justifyContent={cartItem?.qty ? 'space-between' : 'flex-start'}
+          justifyContent={cartItem?.quantity ? 'space-between' : 'flex-start'}
         >
           <Button
             color='primary'
             variant='outlined'
             sx={{ padding: '3px' }}
-            onClick={handleCartAmountChange((cartItem?.qty || 0) + 1)}
+            // onClick={handleCartAmountChange((cartItem?.qty || 0) + 1)}
           >
             <Add fontSize='small' />
           </Button>
 
-          {!!cartItem?.qty && (
+          {!!cartItem?.quantity && (
             <Fragment>
               <Box color='text.primary' fontWeight='600'>
-                {cartItem?.qty}
+                {cartItem?.quantity}
               </Box>
 
               <Button
                 color='primary'
                 variant='outlined'
                 sx={{ padding: '3px' }}
-                onClick={handleCartAmountChange(cartItem?.qty - 1, 'remove')}
+                // onClick={handleCartAmountChange(cartItem?.qty - 1, 'remove')}
               >
                 <Remove fontSize='small' />
               </Button>

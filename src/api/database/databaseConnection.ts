@@ -2,18 +2,18 @@ import mongoose from 'mongoose';
 
 const MONGODB_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.w0h7hr3.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
- */
 interface CachedMongoose {
   conn: mongoose.Mongoose | null;
   promise: Promise<mongoose.Mongoose> | null;
 }
 
-let cached: CachedMongoose = global.mongoose;
+/**
+ * Global is used here to maintain a cached connection across hot reloads
+ * in development. This prevents connections growing exponentially
+ * during API Route usage.
+ */
 
+let cached: CachedMongoose = global.mongoose;
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }

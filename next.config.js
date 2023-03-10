@@ -15,7 +15,7 @@ module.exports = {
         protocol: 'https',
         hostname: 'ik.imagekit.io',
         // FIXME
-        pathname: '/NaturentsCDN/**',
+        pathname: '/NutriboxCDN/**',
       },
       {
         protocol: 'https',

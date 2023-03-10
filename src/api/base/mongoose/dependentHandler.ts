@@ -1,10 +1,10 @@
 import { Document, Types } from 'mongoose';
 
-export async function updateDependentDoc(
+export const updateDependentDoc = async (
   referenceId: Types.ObjectId,
   dependentDoc: Document,
   dependentArrayName: string,
-) {
+) => {
   const dependentIdentifier = `${dependentDoc.baseModelName} with id ${dependentDoc._id}`;
 
   if (!dependentDoc) {
@@ -19,17 +19,17 @@ export async function updateDependentDoc(
       `There was an error while update dependent doc ${dependentIdentifier}.`,
     );
   }
-}
+};
 
-export async function revertUpdateDependentDoc(
+export const revertUpdateDependentDoc = async (
   referenceId: Types.ObjectId,
   dependentDoc: Document,
   dependentArrayName: string,
-) {
+) => {
   if (dependentDoc) {
     dependentDoc[dependentArrayName] = (
       dependentDoc[dependentArrayName] as Types.ObjectId[]
     ).filter((id) => id.toString() !== referenceId.toString());
     await dependentDoc.save();
   }
-}
+};

@@ -14,7 +14,7 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import Icon from 'components/icons';
 import Category from 'components/icons/Category';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
-import MiniCart from 'components/MiniCart';
+import CartDrawer from 'components/MiniCart';
 import MobileMenu from 'components/navbar/MobileMenu';
 import { Paragraph } from 'components/Typography';
 import { useAppContext } from 'contexts/AppContext';
@@ -59,10 +59,10 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
   const downMd = useMediaQuery(theme.breakpoints.down(1150));
 
   const toggleDialog = () => setDialogOpen(!dialogOpen);
-  const toggleSidenav = () => setSidenavOpen(!sidenavOpen);
+  const toggleCartDrawer = () => setSidenavOpen(!sidenavOpen);
   const toggleSearchBar = () => setSearchBarOpen(!searchBarOpen);
 
-  // LOGIN AND MINICART DRAWER
+  // Login Dialog and Cart Drawer
   const DIALOG_DRAWER = (
     <Fragment>
       <Dialog
@@ -78,15 +78,16 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
       <Drawer
         open={sidenavOpen}
         anchor='right'
-        onClose={toggleSidenav}
+        onClose={toggleCartDrawer}
         sx={{ zIndex: 9999 }}
       >
-        <MiniCart toggleSidenav={toggleSidenav} />
+        {/* MiniCart */}
+        <CartDrawer toggleCartDrawer={toggleCartDrawer} />
       </Drawer>
     </Fragment>
   );
 
-  // FOR SMALLER DEVICE
+  // For smaller device
   if (downMd) {
     const ICON_STYLE = { color: 'grey.600', fontSize: 20 };
 
@@ -118,7 +119,7 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
                 <Icon.User sx={ICON_STYLE} />
               </Box>
 
-              <Box component={IconButton} onClick={toggleSidenav}>
+              <Box component={IconButton} onClick={toggleCartDrawer}>
                 <Badge badgeContent={state.cart.length} color='primary'>
                   <Icon.CartBag sx={ICON_STYLE} />
                 </Badge>
@@ -185,7 +186,7 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
               p={1.25}
               bgcolor='grey.200'
               component={IconButton}
-              onClick={toggleSidenav}
+              onClick={toggleCartDrawer}
             >
               <ShoppingBagOutlined />
             </Box>

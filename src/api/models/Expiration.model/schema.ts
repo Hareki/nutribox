@@ -1,16 +1,8 @@
-import { Schema, model, models, Types, Model } from 'mongoose';
+import { Schema } from 'mongoose';
 
-export interface IExpiration {
-  _id: Types.ObjectId;
-  product: Types.ObjectId; // IProduct
+import { IExpiration } from './types';
 
-  expirationDate: Date;
-  quantity: number;
-}
-
-export interface IExpirationInput extends Omit<IExpiration, '_id'> {}
-
-const expirationSchema = new Schema<IExpiration>(
+export const expirationSchema = new Schema<IExpiration>(
   {
     product: {
       ref: 'Product',
@@ -33,10 +25,7 @@ const expirationSchema = new Schema<IExpiration>(
       min: [1, 'Expiration/Quantity should be at least 1'],
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
-
-const Expiration =
-  (models?.Expiration as Model<IExpiration>) ||
-  model<IExpiration>('Expiration', expirationSchema);
-export default Expiration;

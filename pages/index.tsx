@@ -4,15 +4,18 @@ import { GetStaticProps, NextPage } from 'next';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
 // Footer1
+
+import { IProduct } from 'api/models/Product.model/types';
+import { IPopulatedProductCategory } from 'api/models/ProductCategory.model/types';
 import { Footer } from 'components/footer';
 // ShopLayout2
 import ShopLayout1 from 'components/layouts/ShopLayout1';
 // MobileNavigationBar2
 import { MobileNavigationBar } from 'components/mobile-navigation';
 import SideNavbar from 'components/page-sidenav/SideNavbar';
+import { CategoryNavList } from 'components/page-sidenav/types';
 import SEO from 'components/SEO';
 import SidenavContainer from 'components/SidenavContainer';
-import CategoryNavList from 'models/CategoryNavList.model';
 import { MainCarouselItem } from 'models/Grocery-3.model';
 import Product from 'models/Product.model';
 import Service from 'models/Service.model';
@@ -32,12 +35,22 @@ function getElementHeightIncludingMargin(element: HTMLElement) {
   return rect.height + marginTop + marginBottom;
 }
 
+function getAllProducts(categories: IPopulatedProductCategory[]): IProduct[] {
+  const allProducts: IProduct[] = [];
+
+  categories.forEach((category) => {
+    allProducts.push(...category.products);
+  });
+
+  return allProducts;
+}
+
 type HomePageProps = {
   products: Product[];
   serviceList: Service[];
   popularProducts: Product[];
   trendingProducts: Product[];
-  navList: CategoryNavList[];
+  navList: CategoryNavList;
   mainCarouselData: MainCarouselItem[];
   testimonials: any[];
 };
@@ -61,7 +74,6 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     }
   }, []);
 
-  // FETCH PRODUCTS BASED ON THE SELECTED CATEGORY
   useEffect(() => {
     axios
       .get('/api/grocery-1/category-based-products', {
@@ -78,6 +90,10 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     }
   };
 
+  // console.log(getAllProducts(props.navList.listItems));
+  // props.navList.listItems.reduce;
+
+  const products = getAllProducts(props.navList.listItems);
   const SideNav = useCallback(
     () => (
       <SideNavbar navList={props.navList} handleSelect={handleSelectCategory} />
@@ -88,7 +104,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
   return (
     <ShopLayout1 showNavbar={false} showTopbar={false}>
       <SEO title='Trang chủ' />
-      <HeroSection mainCarouselData={props.mainCarouselData} />
+      <HeroSection />
       <ServicesSection services={props.serviceList} />
 
       {/* SIDEBAR WITH OTHER CONTENTS */}
@@ -100,7 +116,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
           <div id='products-section'>
             {selectedCategory ? (
               // FILTERED PRODUCT LIST
-              <AllProducts products={filterProducts} title={selectedCategory} />
+              <AllProducts products={products} title={selectedCategory} />
             ) : (
               <Fragment>
                 {/* <ProductCarousel
@@ -109,11 +125,12 @@ const HomePage: NextPage<HomePageProps> = (props) => {
                 /> */}
 
                 <ProductCarousel
-                  title='Món ăn mới'
-                  products={props.trendingProducts}
+                  title='Các món bán chạy'
+                  subtitle='Trải nghiệm các sản phẩm được nhiều khách hàng săn đón! '
+                  products={[]}
                 />
 
-                <AllProducts products={props.products} />
+                <AllProducts products={products} />
               </Fragment>
             )}
           </div>
@@ -131,7 +148,6 @@ const HomePage: NextPage<HomePageProps> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const mainCarouselData = await api.getMainCarousel();
   const products = await api.getProducts();
   const serviceList = await api.getServices();
   const popularProducts = await api.getPopularProducts();
@@ -141,7 +157,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      mainCarouselData,
       products,
       serviceList,
       navList,

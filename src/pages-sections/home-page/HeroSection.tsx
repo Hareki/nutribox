@@ -1,47 +1,10 @@
-import { Box, Button, Grid, styled, useTheme } from '@mui/material';
+import { Box, Button, styled } from '@mui/material';
 import { FC } from 'react';
 
-import Carousel from 'components/carousel/Carousel';
-import LazyImage from 'components/LazyImage';
 import { H1 } from 'components/Typography';
-import { MainCarouselItem } from 'models/Grocery-3.model';
 
-// styled components
-const StyledBox = styled(Box)({
-  marginBottom: 60,
-  overflow: 'hidden',
-  '& .carousel-dot': {
-    left: 0,
-    right: 0,
-    bottom: '30px',
-    margin: 'auto',
-    position: 'absolute',
-  },
-  '& img': {
-    minHeight: 'auto !important',
-    height: '450px !important',
-    borderRadius: '24px',
-  },
-});
-
-const Container = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.grey[450],
-}));
-
-const StyledGrid = styled(Grid)(({ theme }) => ({
-  maxWidth: 1280,
-  alignItems: 'center',
-  margin: ' 0 auto',
-  [theme.breakpoints.down('sm')]: {
-    flexDirection: 'column-reverse',
-  },
-}));
-
-const GridItemTwo = styled(Grid)(({ theme }) => ({
-  paddingLeft: 80,
-  [theme.breakpoints.down('md')]: { paddingLeft: 40 },
-  [theme.breakpoints.down('sm')]: { paddingLeft: 0, textAlign: 'center' },
-}));
+const leftImg = '/assets/images/headers/Header BG1.png';
+const rightImg = '/assets/images/headers/Header BG2.png';
 
 const StyledButton = styled(Button)({
   color: '#fff',
@@ -49,73 +12,70 @@ const StyledButton = styled(Button)({
   fontSize: '16px',
 });
 
-const GridItemOne = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: { width: '100%' },
+// styled component
+const Container = styled(Box)(({ theme }) => ({
+  width: '100%',
+  height: 650,
+  padding: 20,
+  paddingTop: 160,
+  backgroundColor: theme.palette.grey[100],
+  backgroundSize: '40%, 40%',
+  backgroundPosition: 'left bottom, right bottom',
+  backgroundRepeat: 'no-repeat, no-repeat',
+  transition: 'all .3s',
+  backgroundImage:
+    theme.direction === 'ltr'
+      ? `url('${leftImg}'), url('${rightImg}')`
+      : `url('${rightImg}'), url('${leftImg}')`,
+
+  '& h1': {
+    fontSize: 42,
+    textAlign: 'center',
+    marginBottom: 40,
+    lineHeight: 1.3,
+  },
+  '& .actionButton': {
+    margin: 'auto',
+    maxWidth: '600px',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    // boxShadow: theme.shadows[2],
+  },
+  [theme.breakpoints.up('md')]: {
+    backgroundSize: '450px, 450px',
+  },
+  [theme.breakpoints.down('md')]: {
+    height: 550,
+    paddingTop: 130,
+    '& h1': { fontSize: 38, textAlign: 'center' },
+  },
+  [theme.breakpoints.down('sm')]: {
+    height: 480,
+    paddingTop: 100,
+    '& h1': { fontSize: 30 },
+    '& .actionButton': { margin: 0 },
+  },
 }));
 
-const TextBox = styled(Box)(({ theme }) => ({
-  marginBottom: 40,
-  '& h1': { fontSize: 50, fontWeight: 600, lineHeight: '1.35' },
-  [theme.breakpoints.down('lg')]: { '& h1': { fontSize: 45 } },
-  [theme.breakpoints.down('md')]: { '& h1': { fontSize: 38 } },
-  [theme.breakpoints.down('sm')]: { paddingTop: 30 },
-}));
-
-// ===================================================================
-type Props = { mainCarouselData: MainCarouselItem[] };
-// ===================================================================
-
-const HeroSection: FC<Props> = ({ mainCarouselData }) => {
-  const { palette } = useTheme();
-
+const HeroSection: FC = () => {
   return (
-    <StyledBox id='carouselBox'>
-      <Carousel
-        spacing='0px'
-        showDots
-        autoPlay
-        interval={2500}
-        showArrow={false}
-        visibleSlides={1}
-        dotClass='carousel-dot'
-        dotColor={palette.primary.main}
-        totalSlides={mainCarouselData.length}
-      >
-        {mainCarouselData.map((item, index) => (
-          <Container key={index}>
-            <StyledGrid container>
-              <GridItemOne item md={6} sm={6} xs={12}>
-                <Box pt={6}>
-                  <LazyImage
-                    priority
-                    width={100}
-                    height={100}
-                    alt={item.title}
-                    src={item.imgUrl}
-                    layout='responsive'
-                    objectFit='cover'
-                  />
-                </Box>
-              </GridItemOne>
+    <Container>
+      <H1 maxWidth={600} mx='auto'>
+        Đặt mua và nhận hàng tận nơi trong vòng 30 phút
+      </H1>
 
-              <GridItemTwo item md={6} sm={6} xs={12}>
-                <TextBox>
-                  <H1 maxWidth={400}>{item.title}</H1>
-                </TextBox>
-
-                <StyledButton
-                  variant='contained'
-                  color='primary'
-                  sx={{ px: '30px', py: '6px' }}
-                >
-                  {item.buttonText}
-                </StyledButton>
-              </GridItemTwo>
-            </StyledGrid>
-          </Container>
-        ))}
-      </Carousel>
-    </StyledBox>
+      <Box className='actionButton'>
+        <StyledButton
+          variant='contained'
+          color='primary'
+          sx={{ px: '30px', py: '6px' }}
+        >
+          Đặt mua ngay
+        </StyledButton>
+      </Box>
+    </Container>
   );
 };
 

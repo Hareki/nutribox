@@ -1,20 +1,8 @@
-import { Schema, model, models, Types, Model } from 'mongoose';
+import { Schema } from 'mongoose';
 
-export interface IProductOrder {
-  _id: Types.ObjectId;
-  product: Types.ObjectId; // IProduct
-  supplier: Types.ObjectId; // ISupplier
-  status: Types.ObjectId; // IOrderStatus
+import { IProductOrder } from './types';
 
-  quantity: number;
-  unitWholesalePrice: number;
-  createdAt: Date;
-}
-
-export interface IProductOrderInput
-  extends Omit<IProductOrder, '_id' | 'createdAt'> {}
-
-const productOrderSchema = new Schema<IProductOrder>(
+export const productOrderSchema = new Schema<IProductOrder>(
   {
     product: {
       ref: 'Product',
@@ -46,10 +34,8 @@ const productOrderSchema = new Schema<IProductOrder>(
       min: [1, 'ProductOrder/UnitWholesalePrice should be at least 1'],
     },
   },
-  { timestamps: true, collection: 'productOrders' },
+  {
+    timestamps: true,
+    collection: 'productOrders',
+  },
 );
-
-const ProductOrder =
-  (models?.ProductOrder as Model<IProductOrder>) ||
-  model<IProductOrder>('ProductOrder', productOrderSchema);
-export default ProductOrder;

@@ -1,13 +1,13 @@
 import { Box, styled, useTheme } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 
+import { IProduct } from 'api/models/Product.model/types';
 import Carousel from 'components/carousel/Carousel';
 import CategorySectionCreator from 'components/CategorySectionCreator';
 // ProductCard13
 import ProductCard from 'components/product-item/ProductCard';
 import { Paragraph } from 'components/Typography';
 import useWindowSize from 'hooks/useWindowSize';
-import Product from 'models/Product.model';
 
 const SubTitle = styled(Paragraph)(({ theme }) => ({
   fontSize: 12,
@@ -17,10 +17,18 @@ const SubTitle = styled(Paragraph)(({ theme }) => ({
 }));
 
 // =================================================================
-type ProductCarouselProps = { title: string; products: Product[] };
+type ProductCarouselProps = {
+  title: string;
+  subtitle?: string;
+  products: IProduct[];
+};
 // =================================================================
 
-const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
+const ProductCarousel: FC<ProductCarouselProps> = ({
+  products,
+  title,
+  subtitle,
+}) => {
   const width = useWindowSize();
   const { palette, shadows } = useTheme();
   const [visibleSlides, setVisibleSlides] = useState(3);
@@ -36,7 +44,7 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
 
   return (
     <CategorySectionCreator title={title} seeMoreLink='#' mb={0}>
-      <SubTitle>Best collection in 2021 for you!</SubTitle>
+      {subtitle && <SubTitle>{subtitle}</SubTitle>}
       <Carousel
         dragEnabled={dragEnabled}
         infinite
@@ -53,15 +61,9 @@ const ProductCarousel: FC<ProductCarouselProps> = ({ products, title }) => {
         }}
       >
         {products.map((item) => (
-          <Box pb={2} key={item.id}>
+          <Box pb={2} key={item._id.toString()}>
             <ProductCard
-              id={item.id}
-              slug={item.slug}
-              title={item.title}
-              price={item.price}
-              off={item.discount}
-              rating={item.rating}
-              imgUrl={item.thumbnail}
+              product={item}
               onPreview={() => setDragEnabled((prev) => !prev)}
             />
           </Box>

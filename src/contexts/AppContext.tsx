@@ -7,80 +7,65 @@ import {
   useReducer,
 } from 'react';
 
-// =================================================================================
-type InitialState = { cart: CartItem[] };
+import { IProduct } from 'api/models/Product.model/types';
 
-export type CartItem = {
-  qty: number;
-  name: string;
-  slug: string;
-  price: number;
-  imgUrl?: string;
-  id: string | number;
-};
+// =================================================================================
+type GlobalStateType = { cart: CartItem[] };
+
+export interface CartItem extends IProduct {
+  quantity: number;
+}
 
 type CartActionType = { type: 'CHANGE_CART_AMOUNT'; payload: CartItem };
 type ActionType = CartActionType;
 
 // =================================================================================
 
-const INITIAL_CART = [
-  {
-    qty: 1,
-    price: 210,
-    slug: 'silver-high-neck-sweater',
-    name: 'Silver High Neck Sweater',
-    id: '6e8f151b-277b-4465-97b6-547f6a72e5c9',
-    imgUrl:
-      '/assets/images/products/Fashion/Clothes/1.SilverHighNeckSweater.png',
-  },
-  {
-    qty: 1,
-    price: 110,
-    slug: 'yellow-casual-sweater',
-    name: 'Yellow Casual Sweater',
-    id: '76d14d65-21d0-4b41-8ee1-eef4c2232793',
-    imgUrl:
-      '/assets/images/products/Fashion/Clothes/21.YellowCasualSweater.png',
-  },
-  {
-    qty: 1,
-    price: 140,
-    slug: 'denim-blue-jeans',
-    name: 'Denim Blue Jeans',
-    id: '0fffb188-98d8-47f7-8189-254f06cad488',
-    imgUrl: '/assets/images/products/Fashion/Clothes/4.DenimBlueJeans.png',
-  },
-];
+// const INITIAL_CART = [
+//   {
+//     qty: 1,
+//     price: 210,
+//     slug: 'silver-high-neck-sweater',
+//     name: 'Silver High Neck Sweater',
+//     id: '6e8f151b-277b-4465-97b6-547f6a72e5c9',
+//     imgUrl:
+//       '/assets/images/products/Fashion/Clothes/1.SilverHighNeckSweater.png',
+//   },
+// ];
 
-const INITIAL_STATE = { cart: INITIAL_CART };
+const initialState: GlobalStateType = { cart: [] };
 
 interface ContextProps {
-  state: InitialState;
+  state: GlobalStateType;
   dispatch: (args: ActionType) => void;
 }
 
 const AppContext = createContext<ContextProps>({
-  state: INITIAL_STATE,
+  state: initialState,
   dispatch: () => {},
 });
 
-const reducer = (state: InitialState, action: ActionType) => {
+const reducer = (state: GlobalStateType, action: ActionType) => {
   switch (action.type) {
     case 'CHANGE_CART_AMOUNT': {
       const cartList = state.cart;
       const cartItem = action.payload;
-      const exist = cartList.find((item) => item.id === cartItem.id);
+      const exist = cartList.find(
+        (item) => item._id.toString() === cartItem._id.toString(),
+      );
 
-      if (cartItem.qty < 1) {
-        const filteredCart = cartList.filter((item) => item.id !== cartItem.id);
+      if (cartItem.quantity < 1) {
+        const filteredCart = cartList.filter(
+          (item) => item._id.toString() !== cartItem._id.toString(),
+        );
         return { ...state, cart: filteredCart };
       }
 
-      // IF PRODUCT ALREADY EXITS IN CART
       if (exist) {
         const newCart = cartList.map((item) =>
-          item.id === cartItem.id ? { ...item, qty: cartItem.qty } : item,
+          item._id.toString() === cartItem._id.toString()
+            ? { ...item, quantity: cartItem.quantity }
+            : item,
         );
 
         return { ...state, cart: newCart };
@@ -99,7 +84,7 @@ type AppProviderProps = { children: ReactNode };
 // =======================================================
 
 export const AppProvider: FC<AppProviderProps> = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 

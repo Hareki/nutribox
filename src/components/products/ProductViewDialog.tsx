@@ -9,8 +9,9 @@ import {
   IconButton,
   styled,
 } from '@mui/material';
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 
+import { IProduct } from 'api/models/Product.model';
 import BazaarImage from 'components/BazaarImage';
 import BazaarRating from 'components/BazaarRating';
 import Carousel from 'components/carousel/Carousel';
@@ -18,6 +19,7 @@ import { FlexBox } from 'components/flex-box';
 import { H1, H2, H3, H6, Paragraph } from 'components/Typography';
 import { useAppContext } from 'contexts/AppContext';
 import { currency } from 'lib';
+import axiosInstance from 'utils/axiosInstance';
 
 // styled components
 const ContentWrapper = styled(Box)(({ theme }) => ({
@@ -44,29 +46,45 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
 
 // =====================================================
 type ProductViewDialogProps = {
-  product: any;
+  product: IProduct;
+  categoryName?: string;
   openDialog: boolean;
   handleCloseDialog: () => void;
 };
 // =====================================================
 
 const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
-  const { product, openDialog, handleCloseDialog } = props;
+  const { product, categoryName, openDialog, handleCloseDialog } = props;
+  const [finalCategoryName, setFinalCategoryName] = useState(
+    categoryName || 'loading',
+  );
+
+  useEffect(() => {
+    if (!categoryName) {
+      axiosInstance.get(`/category/${product.category}`).then((res) => {
+        setFinalCategoryName(res.data.data.name);
+        console.log(
+          'file: ProductViewDialog.tsx:66 - axiosInstance.get - res.data:',
+          res.data,
+        );
+      });
+    }
+  }, [categoryName, product.category]);
 
   const { state, dispatch } = useAppContext();
-  const cartItem = state.cart.find((item) => item.id === product.id);
+  // const cartItem = state.cart.find((item) => item.id === product._id.toString());
 
-  const handleCartAmountChange = (amount: number) => () => {
-    dispatch({
-      type: 'CHANGE_CART_AMOUNT',
-      payload: {
-        ...product,
-        qty: amount,
-        name: product.title,
-        imgUrl: product.imgGroup[0],
-      },
-    });
-  };
+  // const handleCartAmountChange = (amount: number) => () => {
+  //   dispatch({
+  //     type: 'CHANGE_CART_AMOUNT',
+  //     payload: {
+  //       ...product,
+  //       qty: amount,
+  //       name: product.title,
+  //       imgUrl: product.imgGroup[0],
+  //     },
+  //   });
+  // };
 
   return (
     <Dialog
@@ -79,8 +97,11 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
         <ContentWrapper>
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
-              <Carousel totalSlides={product.imgGroup.length} visibleSlides={1}>
-                {product.imgGroup.map((item: string, index: number) => (
+              <Carousel
+                totalSlides={product.imageUrls.length}
+                visibleSlides={1}
+              >
+                {product.imageUrls.map((item: string, index: number) => (
                   <BazaarImage
                     key={index}
                     src={item}
@@ -96,33 +117,19 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
             </Grid>
 
             <Grid item md={6} xs={12} alignSelf='center'>
-              <H2>{product.title}</H2>
+              <H2>{product.name}</H2>
 
               <Paragraph py={1} color='grey.500' fontWeight={600} fontSize={13}>
-                CATEGORY: Cosmetic
+                DANH MỤC: {finalCategoryName}
               </Paragraph>
 
-              <H1 color='primary.main'>{currency(product.price)}</H1>
+              <H1 color='primary.main'>{currency(product.retailPrice)}</H1>
 
-              <FlexBox alignItems='center' gap={1}>
-                <BazaarRating
-                  color='warn'
-                  fontSize='1.25rem'
-                  value={4}
-                  readOnly
-                />
-                <H6 lineHeight='1'>(50)</H6>
-              </FlexBox>
-
-              <Paragraph my={2}>
-                Sed egestas, ante et vulputate volutpat, eros pede semper est,
-                vitae luctus metus libero eu augue. Morbi purus liberpuro ate
-                vol faucibus adipiscing.
-              </Paragraph>
+              <Paragraph my={2}>{product.description}</Paragraph>
 
               <Divider sx={{ mb: 2 }} />
 
-              {!cartItem?.qty ? (
+              {/* {!cartItem?.qty ? (
                 <Button
                   size='large'
                   color='primary'
@@ -158,7 +165,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                     <Add fontSize='small' />
                   </Button>
                 </FlexBox>
-              )}
+              )} */}
             </Grid>
           </Grid>
         </ContentWrapper>

@@ -19,7 +19,7 @@ const Cart: NextPage = () => {
 
   const getTotalPrice = () =>
     cartList.reduce(
-      (accumulate, item) => accumulate + item.price * item.qty,
+      (accumulate, item) => accumulate + item.retailPrice * item.quantity,
       0,
     );
 

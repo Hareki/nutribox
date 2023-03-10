@@ -1,6 +1,5 @@
-import { Schema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
-import { getAddressSchema } from 'api/helpers/schema.helper';
 import { IAddress } from 'api/types/schema.type';
 
 export interface IAccountAddress extends IAddress {
@@ -10,10 +9,3 @@ export interface IAccountAddress extends IAddress {
 }
 
 export interface IAccountAddressInput extends Omit<IAccountAddress, '_id'> {}
-
-export const accountAddressSchema = new Schema(
-  {
-    ...getAddressSchema('AccountAddress'),
-  },
-  { timestamps: true, collection: 'accountAddresses' },
-);
