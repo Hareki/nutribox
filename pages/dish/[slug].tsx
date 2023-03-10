@@ -8,7 +8,7 @@ import ProductDescription from 'components/products/ProductDescription';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
 import { H2 } from 'components/Typography';
-import Product from 'models/Product.model';
+import Product from 'models/BazaarProduct.model';
 import api from 'utils/__api__/products';
 import {
   getFrequentlyBought,

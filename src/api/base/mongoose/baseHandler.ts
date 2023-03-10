@@ -19,16 +19,24 @@ export interface GetOneDocsOptions extends BaseGetOptions {
 
 export const getAllDocs = async ({
   model,
-  populate = [],
+  populate,
   lean = true,
+  ignoreFields,
   skip,
   limit,
-  ignoreFields = [],
 }: GetAllDocsOptions): Promise<any[]> => {
-  const query = model
-    .find()
-    .select(ignoreFields.map((field) => `-${field}`).join(' '))
-    .populate(populate);
+  const query = model.find();
+
+  if (ignoreFields) {
+    ignoreFields = ['__v', ...ignoreFields];
+  } else {
+    ignoreFields = ['__v'];
+  }
+  query.select(ignoreFields.map((field) => `-${field}`).join(' '));
+
+  if (populate) {
+    query.populate(populate);
+  }
 
   if (skip) {
     query.skip(skip);
@@ -47,16 +55,24 @@ export const getAllDocs = async ({
 };
 
 export const getOneDoc = async ({
-  id,
   model,
-  populate = [],
+  populate,
   lean = true,
-  ignoreFields = [],
+  ignoreFields,
+  id,
 }: GetOneDocsOptions): Promise<any> => {
-  const query = model
-    .findById(id)
-    .select(ignoreFields.map((field) => `-${field}`).join(' '))
-    .populate(populate);
+  const query = model.findById(id);
+
+  if (ignoreFields) {
+    ignoreFields = ['__v', ...ignoreFields];
+  } else {
+    ignoreFields = ['__v'];
+  }
+  query.select(ignoreFields.map((field) => `-${field}`).join(' '));
+
+  if (populate) {
+    query.populate(populate);
+  }
 
   if (lean) {
     query.lean({ virtuals: true });

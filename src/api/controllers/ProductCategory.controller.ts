@@ -1,45 +1,12 @@
-import {
-  getAllDocs,
-  GetAllDocsOptions,
-  getOneDoc,
-  GetOneDocsOptions,
-} from 'api/base/mongoose/baseHandler';
+import { getAllGenerator, getOneGenerator } from './base.controller';
+
 import ProductCategory from 'api/models/ProductCategory.model';
 
-interface GetAllOptions extends Omit<GetAllDocsOptions, 'model'> {}
-interface GetOneOptions extends Omit<GetOneDocsOptions, 'model'> {}
+export const getAll = getAllGenerator(ProductCategory);
+export const getOne = getOneGenerator(ProductCategory);
 
-export const getAll = async ({
-  populate,
-  lean = true,
-  ignoreFields = [],
-  skip,
-  limit,
-}: GetAllOptions): Promise<any[]> => {
-  ignoreFields = ['__v', ...ignoreFields];
-  const categories = await getAllDocs({
-    model: ProductCategory,
-    populate,
-    lean,
-    ignoreFields,
-    skip,
-    limit,
-  });
-  return categories;
-};
-
-export const getOne = async ({ id, populate, lean }: GetOneOptions) => {
-  const category = await getOneDoc({
-    id,
-    model: ProductCategory,
-    populate,
-    lean,
-  });
-  return category;
-};
-
-const ProductCategoryController = {
+const ProductController = {
   getAll,
   getOne,
 };
-export default ProductCategoryController;
+export default ProductController;

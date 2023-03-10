@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 
 export interface ICustomerOrderItem {
   _id: Types.ObjectId;
+  id: string;
   product: Types.ObjectId; // IProduct
   // Note: No need, because it's already embedded in the customerOrder
   // customerOrder: ICustomerOrder;

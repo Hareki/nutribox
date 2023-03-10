@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { CategoryNavList } from 'components/page-sidenav/types';
-import Product from 'models/Product.model';
+import Product from 'models/BazaarProduct.model';
 import Service from 'models/Service.model';
 import axiosInstance from 'utils/axiosInstance';
 

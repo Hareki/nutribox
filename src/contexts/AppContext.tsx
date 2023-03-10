@@ -50,20 +50,16 @@ const reducer = (state: GlobalStateType, action: ActionType) => {
     case 'CHANGE_CART_AMOUNT': {
       const cartList = state.cart;
       const cartItem = action.payload;
-      const exist = cartList.find(
-        (item) => item._id.toString() === cartItem._id.toString(),
-      );
+      const exist = cartList.find((item) => item.id === cartItem.id);
 
       if (cartItem.quantity < 1) {
-        const filteredCart = cartList.filter(
-          (item) => item._id.toString() !== cartItem._id.toString(),
-        );
+        const filteredCart = cartList.filter((item) => item.id !== cartItem.id);
         return { ...state, cart: filteredCart };
       }
 
       if (exist) {
         const newCart = cartList.map((item) =>
-          item._id.toString() === cartItem._id.toString()
+          item.id === cartItem.id
             ? { ...item, quantity: cartItem.quantity }
             : item,
         );

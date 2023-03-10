@@ -11,7 +11,7 @@ import { H1, H2, H3, H6 } from 'components/Typography';
 import { useAppContext } from 'contexts/AppContext';
 import productVariants from 'data/product-variants';
 import { currency } from 'lib';
-import Product from 'models/Product.model';
+import Product from 'models/BazaarProduct.model';
 
 // ================================================================
 type ProductIntroProps = { product: Product };

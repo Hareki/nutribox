@@ -1,4 +1,4 @@
-import Product from './Product.model';
+import Product from './BazaarProduct.model';
 import User from './User.model';
 
 interface Review {

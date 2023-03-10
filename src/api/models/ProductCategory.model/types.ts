@@ -4,7 +4,7 @@ import { IProduct } from '../Product.model/types';
 
 export interface IProductCategory {
   _id: Types.ObjectId;
-  id?: string;
+  id: string;
   products: Types.ObjectId[]; // IProduct
 
   slug: string;

@@ -17,12 +17,14 @@ const handler = nc<
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
   await connectToDB();
+  const { populate } = req.query;
 
   const id = req.query.id as string;
   const category = await ProductCategoryController.getOne({
     id,
-    lean: true,
+    populate: populate ? ['products'] : undefined,
   });
+
   res.status(StatusCodes.OK).json({
     status: 'success',
     data: category,

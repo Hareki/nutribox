@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 
 export interface IStoreHour {
   _id: Types.ObjectId;
+  id: string;
 
   dayOfWeek:
     | 'MONDAY'

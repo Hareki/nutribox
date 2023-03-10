@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Product from 'models/Product.model';
+import Product from 'models/BazaarProduct.model';
 
 // get all product slug
 const getSlugs = async (): Promise<{ params: { slug: string } }[]> => {

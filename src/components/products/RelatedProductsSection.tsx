@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 import ProductCard from 'components/product-item/ProductCard';
 import { H3 } from 'components/Typography';
-import Product from 'models/Product.model';
+import Product from 'models/BazaarProduct.model';
 
 // ===================================================
 type RelatedProductsProps = { productsData: Product[] };

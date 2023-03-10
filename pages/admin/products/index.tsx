@@ -12,7 +12,7 @@ import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
 import Scrollbar from 'components/Scrollbar';
 import { H3 } from 'components/Typography';
 import useMuiTable from 'hooks/useMuiTable';
-import Product from 'models/Product.model';
+import Product from 'models/BazaarProduct.model';
 import { ProductRow } from 'pages-sections/admin';
 import api from 'utils/__api__/dashboard';
 

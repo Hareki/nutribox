@@ -6,7 +6,7 @@ import BazaarCard from 'components/BazaarCard';
 import BazaarImage from 'components/BazaarImage';
 import { FlexBox } from 'components/flex-box';
 import { H2, Paragraph, Small } from 'components/Typography';
-import Product from 'models/Product.model';
+import Product from 'models/BazaarProduct.model';
 
 // styled components
 const ContentWrapper = styled(BazaarCard)(({ theme }) => ({

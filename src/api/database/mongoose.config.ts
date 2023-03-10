@@ -36,7 +36,6 @@ const globalSchemaOptions = {
 };
 
 function registerModels() {
-  //   console.log('run register models');
   for (const { name, schema } of schemasWithNames) {
     if (!mongoose.models[name]) {
       mongoose.model(name, schema);
@@ -44,8 +43,7 @@ function registerModels() {
   }
 }
 
-// console.log('run outsider');
 mongoose.set('toJSON', globalSchemaOptions.toJSON);
 mongoose.set('toObject', globalSchemaOptions.toObject);
-// mongoose.plugin(mongooseLeanVirtuals);
+mongoose.plugin(mongooseLeanVirtuals);
 registerModels();

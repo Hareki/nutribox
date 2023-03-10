@@ -1,9 +1,9 @@
 import axios from 'axios';
 
+import Product from 'models/BazaarProduct.model';
 import Brand from 'models/Brand.model';
 import Category from 'models/Category.model';
 import Order from 'models/Order.model';
-import Product from 'models/Product.model';
 import Review from 'models/Review.model';
 
 // dashboard
