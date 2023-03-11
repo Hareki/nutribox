@@ -15,7 +15,7 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
 import { H5, Paragraph, Tiny } from 'components/Typography';
-import { useAppContext } from 'contexts/AppContext';
+import { CartItem, useAppContext } from 'contexts/AppContext';
 import { currency } from 'lib';
 
 type CartDrawerProps = { toggleCartDrawer: () => void };
@@ -25,7 +25,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
   const { state, dispatch } = useAppContext();
   const cartList = state.cart;
 
-  const handleCartAmountChange = (amount: number, product:IProduct) => () => {
+  const handleCartAmountChange = (amount: number, product: IProduct) => () => {
     dispatch({
       type: 'CHANGE_CART_AMOUNT',
       payload: { ...product, quantity: amount },
@@ -86,7 +86,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
           </FlexBox>
         )}
 
-        {cartList.map((item) => (
+        {cartList.map((item: CartItem) => (
           <FlexBox
             py={2}
             px={2.5}
@@ -123,7 +123,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
               <Avatar
                 alt={item.name}
                 // FIXME
-                // src={item.imageUrl}
+                src={item.imageUrls[0]}
                 sx={{ mx: 2, width: 76, height: 76 }}
               />
             </Link>

@@ -1,7 +1,6 @@
-import { Add, Close, Remove } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import {
   Box,
-  Button,
   Dialog,
   DialogContent,
   Divider,
@@ -11,12 +10,10 @@ import {
 } from '@mui/material';
 import { FC, useState, useEffect } from 'react';
 
-import { IProduct } from 'api/models/Product.model';
+import { IProduct } from 'api/models/Product.model/types';
 import BazaarImage from 'components/BazaarImage';
-import BazaarRating from 'components/BazaarRating';
 import Carousel from 'components/carousel/Carousel';
-import { FlexBox } from 'components/flex-box';
-import { H1, H2, H3, H6, Paragraph } from 'components/Typography';
+import { H1, H2, Paragraph } from 'components/Typography';
 import { useAppContext } from 'contexts/AppContext';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
@@ -54,22 +51,16 @@ type ProductViewDialogProps = {
 // =====================================================
 
 const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
-  const { product, categoryName, openDialog, handleCloseDialog } = props;
-  const [finalCategoryName, setFinalCategoryName] = useState(
-    categoryName || 'loading',
-  );
+  const { product, openDialog, handleCloseDialog } = props;
+  const [categoryName, setCategoryName] = useState('đang tải...');
 
   useEffect(() => {
-    if (!categoryName) {
+    if (categoryName === 'đang tải...' && openDialog) {
       axiosInstance.get(`/category/${product.category}`).then((res) => {
-        setFinalCategoryName(res.data.data.name);
-        console.log(
-          'file: ProductViewDialog.tsx:66 - axiosInstance.get - res.data:',
-          res.data,
-        );
+        setCategoryName(res.data.data.name);
       });
     }
-  }, [categoryName, product.category]);
+  }, [openDialog, categoryName, product.category]);
 
   const { state, dispatch } = useAppContext();
   // const cartItem = state.cart.find((item) => item.id === product._id.toString());
@@ -120,7 +111,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
               <H2>{product.name}</H2>
 
               <Paragraph py={1} color='grey.500' fontWeight={600} fontSize={13}>
-                DANH MỤC: {finalCategoryName}
+                DANH MỤC: {categoryName}
               </Paragraph>
 
               <H1 color='primary.main'>{currency(product.retailPrice)}</H1>

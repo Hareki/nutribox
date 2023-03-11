@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import SEO from 'components/SEO';
-import { H1, H6, Small } from 'components/Typography';
+import { H1, H6 } from 'components/Typography';
 
 const ResetPassword: NextPage = () => {
   return (

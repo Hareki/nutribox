@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import * as yup from 'yup';
 
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';

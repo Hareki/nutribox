@@ -1,24 +1,41 @@
 import { Add, Remove } from '@mui/icons-material';
-import { Avatar, Box, Button, Chip, Grid } from '@mui/material';
-import Link from 'next/link';
-import { FC, useState } from 'react';
+import {
+  Box,
+  Button,
+  Grid,
+  SxProps,
+  Theme,
+  useTheme,
+} from '@mui/material';
+import { FC, useEffect, useState } from 'react';
 
 import { FlexBox, FlexRowCenter } from '../flex-box';
 
-import BazaarRating from 'components/BazaarRating';
+import { IProduct } from 'api/models/Product.model/types';
 import LazyImage from 'components/LazyImage';
 import { H1, H2, H3, H6 } from 'components/Typography';
 import { useAppContext } from 'contexts/AppContext';
-import productVariants from 'data/product-variants';
 import { currency } from 'lib';
-import Product from 'models/BazaarProduct.model';
+import axiosInstance from 'utils/axiosInstance';
 
 // ================================================================
-type ProductIntroProps = { product: Product };
+type ProductIntroProps = { product: IProduct; sx?: SxProps<Theme> };
 // ================================================================
 
-const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
-  const { id, price, title, images, slug, thumbnail } = product;
+const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
+  const { id, retailPrice, name, imageUrls, description, category, available } =
+    product;
+
+  const { palette } = useTheme();
+  const [categoryName, setCategoryName] = useState('đang tải...');
+
+  useEffect(() => {
+    if (categoryName === 'đang tải...') {
+      axiosInstance.get(`/category/${category}`).then((res) => {
+        setCategoryName(res.data.data.name);
+      });
+    }
+  }, [category, categoryName]);
 
   const { state, dispatch } = useAppContext();
   const [selectedImage, setSelectedImage] = useState(0);
@@ -46,33 +63,37 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
     dispatch({
       type: 'CHANGE_CART_AMOUNT',
       payload: {
-        retailPrice: price,
         quantity: amount,
-        name: title,
-        imageUrl: thumbnail,
-        id,
-        slug,
+        ...product,
       },
     });
   };
 
   return (
-    <Box width='100%'>
+    <Box sx={sx} width='100%'>
       <Grid container spacing={3} justifyContent='space-around'>
         <Grid item md={6} xs={12} alignItems='center'>
           <FlexBox justifyContent='center' mb={6}>
-            <LazyImage
-              alt={title}
-              width={300}
-              height={300}
-              loading='eager'
-              objectFit='contain'
-              src={product.images[selectedImage]}
-            />
+            <Box
+              border={`2px solid ${palette.primary[300]}`}
+              borderRadius='10px'
+              lineHeight={0}
+            >
+              <LazyImage
+                alt={name}
+                borderRadius='10px'
+                width={400}
+                height={300}
+                quality={100}
+                loading='eager'
+                objectFit='contain'
+                src={imageUrls[selectedImage]}
+              />
+            </Box>
           </FlexBox>
 
           <FlexBox overflow='auto'>
-            {images.map((url, index) => (
+            {imageUrls.map((url, index) => (
               <FlexRowCenter
                 key={index}
                 width={64}
@@ -84,63 +105,40 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
                 ml={index === 0 ? 'auto' : 0}
                 style={{ cursor: 'pointer' }}
                 onClick={handleImageClick(index)}
-                mr={index === images.length - 1 ? 'auto' : '10px'}
+                mr={index === imageUrls.length - 1 ? 'auto' : '10px'}
                 borderColor={
                   selectedImage === index ? 'primary.main' : 'grey.400'
                 }
               >
-                <Avatar src={url} variant='square' sx={{ height: 40 }} />
+                <LazyImage
+                  src={url}
+                  quality={100}
+                  objectFit='contain'
+                  width={100}
+                  height={100}
+                />
               </FlexRowCenter>
             ))}
           </FlexBox>
         </Grid>
 
         <Grid item md={6} xs={12} alignItems='center'>
-          <H1 mb={1}>{title}</H1>
+          <H1 mb={1}>{name}</H1>
 
           <FlexBox alignItems='center' mb={1}>
-            <Box>Brand:</Box>
-            <H6>Xiaomi</H6>
+            <Box>Danh mục: &nbsp;</Box>
+            <H6>{categoryName}</H6>
           </FlexBox>
 
-          <FlexBox alignItems='center' mb={2}>
-            <Box lineHeight='1'>Rated:</Box>
-            <Box mx={1} lineHeight='1'>
-              <BazaarRating
-                color='warn'
-                fontSize='1.25rem'
-                value={4}
-                readOnly
-              />
-            </Box>
-            <H6 lineHeight='1'>(50)</H6>
-          </FlexBox>
-
-          {productVariants.map((variant) => (
-            <Box key={variant.id} mb={2}>
-              <H6 mb={1}>{variant.title}</H6>
-
-              {variant.values.map(({ id, value }) => (
-                <Chip
-                  key={id}
-                  label={value}
-                  onClick={handleChangeVariant(variant.title, value)}
-                  sx={{ borderRadius: '4px', mr: 1, cursor: 'pointer' }}
-                  color={
-                    selectVariants[variant.title.toLowerCase()] === value
-                      ? 'primary'
-                      : 'default'
-                  }
-                />
-              ))}
-            </Box>
-          ))}
+          <Box pt={1} mb={3}>
+            {description}
+          </Box>
 
           <Box pt={1} mb={3}>
             <H2 color='primary.main' mb={0.5} lineHeight='1'>
-              {currency(price)}
+              {currency(retailPrice)}
             </H2>
-            <Box color='inherit'>Stock Available</Box>
+            <Box color='inherit'>{available ? 'Còn hàng' : 'Hết hàng'}</Box>
           </Box>
 
           {!cartItem?.quantity ? (
@@ -150,7 +148,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
               onClick={handleCartAmountChange(1)}
               sx={{ mb: 4.5, px: '1.75rem', height: 40 }}
             >
-              Add to Cart
+              Thêm vào giỏ hàng
             </Button>
           ) : (
             <FlexBox alignItems='center' mb={4.5}>
@@ -179,13 +177,6 @@ const ProductIntro: FC<ProductIntroProps> = ({ product }) => {
               </Button>
             </FlexBox>
           )}
-
-          <FlexBox alignItems='center' mb={2}>
-            <Box>Sold By:</Box>
-            <Link href='/shops/scarlett-beauty' passHref>
-              <H6 ml={1}>Mobile Store</H6>
-            </Link>
-          </FlexBox>
         </Grid>
       </Grid>
     </Box>

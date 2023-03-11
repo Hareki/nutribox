@@ -1,10 +1,8 @@
 import { Box, Button, Divider } from '@mui/material';
-import Link from 'next/link';
 import { FC, Fragment } from 'react';
 
 import Image from 'components/BazaarImage';
-import { FlexBox, FlexRowCenter } from 'components/flex-box';
-import { H6 } from 'components/Typography';
+import { FlexBox } from 'components/flex-box';
 
 // =======================================
 type SocialButtonsProps = {

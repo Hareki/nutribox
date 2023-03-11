@@ -1,6 +1,4 @@
-import { Types } from 'mongoose';
-
-import { IProduct } from 'api/models/Product.model';
+import { IProduct } from 'api/models/Product.model/types';
 
 export type ListItem = {
   name: string;

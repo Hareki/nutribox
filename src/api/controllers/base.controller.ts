@@ -2,13 +2,15 @@ import { Model } from 'mongoose';
 
 import {
   getAllDocs,
-  GetAllDocsOptions,
+  GetManyDocsOptions,
   getOneDoc,
   GetOneDocsOptions,
 } from 'api/base/mongoose/baseHandler';
 
-interface GetAllGeneratorOptions extends Omit<GetAllDocsOptions, 'model'> {}
-interface GetOneGeneratorOptions extends Omit<GetOneDocsOptions, 'model'> {}
+export interface GetAllGeneratorOptions
+  extends Omit<GetManyDocsOptions, 'model'> {}
+export interface GetOneGeneratorOptions
+  extends Omit<GetOneDocsOptions, 'model'> {}
 
 export function getAllGenerator(model: Model<any>) {
   const getAll = async ({

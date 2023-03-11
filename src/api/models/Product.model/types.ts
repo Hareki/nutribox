@@ -1,5 +1,7 @@
 import { Types } from 'mongoose';
 
+import { IProductCategory } from '../ProductCategory.model/types';
+
 export interface IProduct {
   _id: Types.ObjectId;
   id: string;
@@ -22,6 +24,10 @@ export interface IProduct {
   retailPrice: number;
   hot: boolean;
   name: string;
+}
+
+export interface IPopulatedProduct extends Omit<IProduct, 'category'> {
+  category: IProductCategory;
 }
 
 export interface IProductInput

@@ -6,7 +6,6 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 // Footer1
 
 import { IProduct } from 'api/models/Product.model/types';
-import { IPopulatedProductCategory } from 'api/models/ProductCategory.model/types';
 import { Footer } from 'components/footer';
 // ShopLayout2
 import ShopLayout1 from 'components/layouts/ShopLayout1';
@@ -25,6 +24,7 @@ import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
 import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
+import realApi from 'utils/__api__/real';
 
 function getElementHeightIncludingMargin(element: HTMLElement) {
   if (!element) return 0;
@@ -35,18 +35,9 @@ function getElementHeightIncludingMargin(element: HTMLElement) {
   return rect.height + marginTop + marginBottom;
 }
 
-function getAllProducts(categories: IPopulatedProductCategory[]): IProduct[] {
-  const allProducts: IProduct[] = [];
-
-  categories.forEach((category) => {
-    allProducts.push(...category.products);
-  });
-
-  return allProducts;
-}
-
 type HomePageProps = {
-  products: Product[];
+  allProducts: IProduct[];
+  hotProducts: IProduct[];
   serviceList: Service[];
   popularProducts: Product[];
   trendingProducts: Product[];
@@ -90,10 +81,6 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     }
   };
 
-  // console.log(getAllProducts(props.navList.listItems));
-  // props.navList.listItems.reduce;
-
-  const products = getAllProducts(props.navList.listItems);
   const SideNav = useCallback(
     () => (
       <SideNavbar navList={props.navList} handleSelect={handleSelectCategory} />
@@ -116,7 +103,10 @@ const HomePage: NextPage<HomePageProps> = (props) => {
           <div id='products-section'>
             {selectedCategory ? (
               // FILTERED PRODUCT LIST
-              <AllProducts products={products} title={selectedCategory} />
+              <AllProducts
+                products={props.allProducts}
+                title={selectedCategory}
+              />
             ) : (
               <Fragment>
                 {/* <ProductCarousel
@@ -127,10 +117,10 @@ const HomePage: NextPage<HomePageProps> = (props) => {
                 <ProductCarousel
                   title='Các món bán chạy'
                   subtitle='Trải nghiệm các sản phẩm được nhiều khách hàng săn đón! '
-                  products={[]}
+                  products={props.hotProducts}
                 />
 
-                <AllProducts products={products} />
+                <AllProducts products={props.allProducts} />
               </Fragment>
             )}
           </div>
@@ -148,16 +138,20 @@ const HomePage: NextPage<HomePageProps> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const products = await api.getProducts();
+  // const products = await api.getProducts();
   const serviceList = await api.getServices();
   const popularProducts = await api.getPopularProducts();
   const trendingProducts = await api.getTrendingProducts();
   const navList = await api.getNavList();
   const testimonials = await api.getTestimonials();
 
+  const allProducts = await realApi.getAllProducts();
+  const hotProducts = await realApi.getHotProducts();
+
   return {
     props: {
-      products,
+      allProducts,
+      hotProducts,
       serviceList,
       navList,
       popularProducts,

@@ -99,7 +99,7 @@ export const productSchema = new Schema<IProduct>(
 );
 
 productSchema.virtual('slug').get(function () {
-  return getSlug(this.name);
+  return getSlug(this.name, this._id.toString());
 });
 
 productSchema.pre('save', async function (next) {

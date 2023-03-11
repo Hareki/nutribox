@@ -6,12 +6,10 @@ import Service from 'models/Service.model';
 import axiosInstance from 'utils/axiosInstance';
 
 const getNavList = async (): Promise<CategoryNavList> => {
-  // const response = await axios.get('/api/grocery-1/navigation');
   const response = await axiosInstance.get('/category/all', {
     params: { populate: true },
   });
 
-  // console.log(response.data.data);
   return { listItems: response.data.data };
 };
 

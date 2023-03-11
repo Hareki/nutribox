@@ -29,5 +29,5 @@ export const productCategorySchema = new Schema<IProductCategory>(
 );
 
 productCategorySchema.virtual('slug').get(function () {
-  return getSlug(this.name);
+  return getSlug(this.name, this._id.toString());
 });

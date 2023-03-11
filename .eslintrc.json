@@ -28,12 +28,18 @@
         "alphabetize": { "order": "asc", "caseInsensitive": true },
         "newlines-between": "always"
       }
-    ]
-    // "unused-imports/no-unused-imports": "error",
-    // "unused-imports/no-unused-vars": "off"
+    ],
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": "off"
   },
-  // "plugins": ["@typescript-eslint", "unused-imports"],
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "prettier",
+    "react",
+    "unused-imports"
+  ],
+  // "plugins": ["@typescript-eslint", "import", "prettier", "react"],
   "parser": "@typescript-eslint/parser",
   "globals": {
     "Promise": true,

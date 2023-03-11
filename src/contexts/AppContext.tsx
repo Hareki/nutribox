@@ -21,18 +21,6 @@ type ActionType = CartActionType;
 
 // =================================================================================
 
-// const INITIAL_CART = [
-//   {
-//     qty: 1,
-//     price: 210,
-//     slug: 'silver-high-neck-sweater',
-//     name: 'Silver High Neck Sweater',
-//     id: '6e8f151b-277b-4465-97b6-547f6a72e5c9',
-//     imgUrl:
-//       '/assets/images/products/Fashion/Clothes/1.SilverHighNeckSweater.png',
-//   },
-// ];
-
 const initialState: GlobalStateType = { cart: [] };
 
 interface ContextProps {
@@ -48,6 +36,7 @@ const AppContext = createContext<ContextProps>({
 const reducer = (state: GlobalStateType, action: ActionType) => {
   switch (action.type) {
     case 'CHANGE_CART_AMOUNT': {
+      console.log('run here');
       const cartList = state.cart;
       const cartItem = action.payload;
       const exist = cartList.find((item) => item.id === cartItem.id);

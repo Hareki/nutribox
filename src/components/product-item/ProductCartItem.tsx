@@ -7,10 +7,9 @@ import { FC } from 'react';
 import Image from 'components/BazaarImage';
 import { FlexBox } from 'components/flex-box';
 import { Span } from 'components/Typography';
-import { useAppContext } from 'contexts/AppContext';
+import { CartItem, useAppContext } from 'contexts/AppContext';
 import { currency } from 'lib';
 
-// styled components
 const Wrapper = styled(Card)(({ theme }) => ({
   display: 'flex',
   overflow: 'hidden',
@@ -27,37 +26,21 @@ const Wrapper = styled(Card)(({ theme }) => ({
   },
 }));
 
-// =========================================================
-type ProductCartItemProps = {
-  qty: number;
-  name: string;
-  slug: string;
-  price: number;
-  imgUrl?: string;
-  id: string | number;
-};
-// =========================================================
+interface ProductCartItemProps extends CartItem {}
 
 const ProductCartItem: FC<ProductCartItemProps> = ({
-  id,
-  name,
-  qty,
-  price,
-  imgUrl,
-  slug,
+  quantity,
+  ...product
 }) => {
+  const { slug, imageUrls, name, retailPrice } = product;
   const { dispatch } = useAppContext();
   // handle change cart
   const handleCartAmountChange = (amount: number) => () => {
     dispatch({
       type: 'CHANGE_CART_AMOUNT',
       payload: {
-        id,
-        name,
-        retailPrice: price,
-        imageUrl: imgUrl,
         quantity: amount,
-        slug,
+        ...product,
       },
     });
   };
@@ -69,7 +52,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
         width={140}
         height={140}
         display='block'
-        src={imgUrl || '/assets/images/products/iphone-xi.png'}
+        src={imageUrls[0]}
       />
 
       <IconButton
@@ -89,11 +72,11 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
 
         <FlexBox gap={1} flexWrap='wrap' alignItems='center'>
           <Span color='grey.600'>
-            {currency(price)} x {qty}
+            {currency(retailPrice)} x {quantity}
           </Span>
 
           <Span fontWeight={600} color='primary.main'>
-            {currency(price * qty)}
+            {currency(retailPrice * quantity)}
           </Span>
         </FlexBox>
 
@@ -102,20 +85,20 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
             color='primary'
             sx={{ p: '5px' }}
             variant='outlined'
-            disabled={qty === 1}
-            onClick={handleCartAmountChange(qty - 1)}
+            disabled={quantity === 1}
+            onClick={handleCartAmountChange(quantity - 1)}
           >
             <Remove fontSize='small' />
           </Button>
 
           <Span mx={1} fontWeight={600} fontSize={15}>
-            {qty}
+            {quantity}
           </Span>
           <Button
             color='primary'
             sx={{ p: '5px' }}
             variant='outlined'
-            onClick={handleCartAmountChange(qty + 1)}
+            onClick={handleCartAmountChange(quantity + 1)}
           >
             <Add fontSize='small' />
           </Button>

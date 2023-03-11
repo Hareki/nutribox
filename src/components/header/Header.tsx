@@ -1,5 +1,5 @@
-import { Clear, KeyboardArrowDown, PersonOutline } from '@mui/icons-material';
-import { Badge, Box, Button, Dialog, Drawer, styled } from '@mui/material';
+import { Clear, PersonOutline } from '@mui/icons-material';
+import { Badge, Box, Dialog, Drawer, styled } from '@mui/material';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
@@ -9,10 +9,8 @@ import Link from 'next/link';
 import { FC, Fragment, ReactElement, useState } from 'react';
 
 import Image from 'components/BazaarImage';
-import CategoryMenu from 'components/categories/CategoryMenu';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Icon from 'components/icons';
-import Category from 'components/icons/Category';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import CartDrawer from 'components/MiniCart';
 import MobileMenu from 'components/navbar/MobileMenu';
