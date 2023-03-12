@@ -9,6 +9,7 @@ module.exports = {
     theme: 'DEFAULT',
     currency: 'VND',
   },
+  distDir: 'build',
   images: {
     remotePatterns: [
       {

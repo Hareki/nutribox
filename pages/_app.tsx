@@ -42,12 +42,12 @@ const App = ({ Component, pageProps }: MyAppProps) => {
         <meta charSet='utf-8' />
         <meta
           name='description'
-          content='React Next.js ecommerce template. Build SEO friendly Online store, delivery app and Multivendor store'
+          content='Đồ án TTTN - Học viện Công nghệ Bưu chính Viễn thông'
         />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta httpEquiv='Content-Type' content='text/html; charset=utf-8' />
         <OpenGraphTags />
-        <title>Bazaar - Next.js Ecommerce Template</title>
+        <title>Nutribox - Bữa ăn dinh dưỡng tốt cho sức khoẻ</title>
       </Head>
 
       <SettingsProvider>

@@ -13,7 +13,7 @@ const ResetPassword: NextPage = () => {
 
       <Card sx={{ padding: 4, maxWidth: 600, marginTop: 4, boxShadow: 1 }}>
         <H1 fontSize={20} fontWeight={700} mb={4} textAlign='center'>
-          Reset your password
+          Khôi phục mật khẩu
         </H1>
 
         <FlexBox justifyContent='space-between' flexWrap='wrap' my={2}>
@@ -43,11 +43,11 @@ const ResetPassword: NextPage = () => {
           </form>
 
           <FlexRowCenter mt='1.25rem' justifyContent='center' width='100%'>
-            <Box>Don&apos;t have account?</Box>
+            <Box>Chưa có tài khoản?</Box>
             <Link href='/signup' passHref legacyBehavior>
               <a>
                 <H6 ml={1} borderBottom='1px solid' borderColor='grey.900'>
-                  Sign Up
+                  Đăng ký
                 </H6>
               </a>
             </Link>

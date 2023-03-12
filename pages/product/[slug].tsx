@@ -9,10 +9,9 @@ import { Footer } from 'components/footer';
 import ShopLayout1 from 'components/layouts/ShopLayout1';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
+import SEO from 'components/SEO';
 import { H2 } from 'components/Typography';
 import realApi from 'utils/__api__/real/product/[slug]';
-
-
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -46,6 +45,7 @@ const ProductDetails: FC<ProductDetailsProps> = (props) => {
 
   return (
     <ShopLayout1 showTopbar={false} showNavbar={false}>
+      <SEO title={product.name} />
       <Container sx={{ my: 5 }}>
         {product ? (
           <ProductIntro product={product} sx={{ mb: 10 }} />

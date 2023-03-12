@@ -1,4 +1,4 @@
-import { Button, Checkbox, Box, FormControlLabel } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { FC, useCallback, useState } from 'react';
@@ -36,26 +36,58 @@ const Signup: FC = () => {
       <form onSubmit={handleSubmit}>
         <BazaarImage
           src='/assets/images/bazaar-black-sm.svg'
-          sx={{ m: 'auto' }}
+          sx={{ m: 'auto', height: 50 }}
         />
 
         <H1 textAlign='center' mt={1} mb={4} fontSize={16}>
           Create Your Account
         </H1>
 
+        <FlexBox gap='30px'>
+          <BazaarTextField
+            mb={1.5}
+            fullWidth
+            name='name'
+            size='small'
+            label='Họ và tên lót'
+            variant='outlined'
+            onBlur={handleBlur}
+            value={values.name}
+            onChange={handleChange}
+            placeholder='Ralph Adwards'
+            error={!!touched.name && !!errors.name}
+            helperText={(touched.name && errors.name) as string}
+          />
+          <BazaarTextField
+            mb={1.5}
+            fullWidth
+            name='name'
+            size='small'
+            label='Tên'
+            variant='outlined'
+            onBlur={handleBlur}
+            value={values.name}
+            onChange={handleChange}
+            placeholder='Ralph Adwards'
+            error={!!touched.name && !!errors.name}
+            helperText={(touched.name && errors.name) as string}
+          />
+        </FlexBox>
+
         <BazaarTextField
           mb={1.5}
           fullWidth
-          name='name'
+          name='email'
           size='small'
-          label='Full Name'
+          type='email'
           variant='outlined'
           onBlur={handleBlur}
-          value={values.name}
+          value={values.email}
           onChange={handleChange}
-          placeholder='Ralph Adwards'
-          error={!!touched.name && !!errors.name}
-          helperText={(touched.name && errors.name) as string}
+          label='Email'
+          placeholder='exmple@mail.com'
+          error={!!touched.email && !!errors.email}
+          helperText={(touched.email && errors.email) as string}
         />
 
         <BazaarTextField
@@ -68,8 +100,8 @@ const Signup: FC = () => {
           onBlur={handleBlur}
           value={values.email}
           onChange={handleChange}
-          label='Email or Phone Number'
-          placeholder='exmple@mail.com'
+          label='Số điện thoại'
+          placeholder='0338758008'
           error={!!touched.email && !!errors.email}
           helperText={(touched.email && errors.email) as string}
         />
@@ -79,7 +111,7 @@ const Signup: FC = () => {
           fullWidth
           size='small'
           name='password'
-          label='Password'
+          label='Mật khẩu'
           variant='outlined'
           autoComplete='on'
           placeholder='*********'
@@ -100,12 +132,13 @@ const Signup: FC = () => {
         />
 
         <BazaarTextField
+          mb={3}
           fullWidth
           size='small'
           autoComplete='on'
           name='re_password'
           variant='outlined'
-          label='Retype Password'
+          label='Xác nhận mật khẩu'
           placeholder='*********'
           onBlur={handleBlur}
           onChange={handleChange}
@@ -123,33 +156,6 @@ const Signup: FC = () => {
           }}
         />
 
-        <FormControlLabel
-          name='agreement'
-          className='agreement'
-          onChange={handleChange}
-          control={
-            <Checkbox
-              size='small'
-              color='secondary'
-              checked={values.agreement || false}
-            />
-          }
-          label={
-            <FlexBox
-              flexWrap='wrap'
-              alignItems='center'
-              justifyContent='flex-start'
-            >
-              By signing up, you agree to
-              <a href='/' target='_blank' rel='noreferrer noopener'>
-                <H6 ml={1} borderBottom='1px solid' borderColor='grey.900'>
-                  Terms & Condtion
-                </H6>
-              </a>
-            </FlexBox>
-          }
-        />
-
         <Button
           fullWidth
           type='submit'
@@ -157,17 +163,17 @@ const Signup: FC = () => {
           variant='contained'
           sx={{ height: 44 }}
         >
-          Create Account
+          Tạo tài khoản
         </Button>
       </form>
 
       <SocialButtons />
       <FlexRowCenter mt='1.25rem'>
-        <Box>Already have an account?</Box>
+        <Box>Đã có tài khoản?</Box>
         <Link href='/login' passHref legacyBehavior>
           <a>
             <H6 ml={1} borderBottom='1px solid' borderColor='grey.900'>
-              Login
+              Đăng nhập
             </H6>
           </a>
         </Link>

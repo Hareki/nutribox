@@ -81,3 +81,7 @@ export const accountSchema = new Schema(
     timestamps: true,
   },
 );
+
+accountSchema.virtual('fullName').get(function () {
+  return `${this.firstName} ${this.lastName}`;
+});

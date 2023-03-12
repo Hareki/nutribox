@@ -21,7 +21,7 @@ const SocialButtons: FC<SocialButtonsProps> = (props) => {
 
         <FlexBox justifyContent='center' mt={-1.625}>
           <Box color='grey.600' bgcolor='background.paper' px={2}>
-            or
+            hoặc
           </Box>
         </FlexBox>
       </Box>
@@ -37,7 +37,7 @@ const SocialButtons: FC<SocialButtonsProps> = (props) => {
           alt='facebook'
         />
         <Box fontSize='12px' ml={1}>
-          Continue with Facebook
+          Tiếp tục với Facebook
         </Box>
       </Button>
 
@@ -49,7 +49,7 @@ const SocialButtons: FC<SocialButtonsProps> = (props) => {
       >
         <Image src='/assets/images/icons/google-1.svg' alt='facebook' />
         <Box fontSize='12px' ml={1}>
-          Continue with Google
+          Tiếp tục với Google
         </Box>
       </Button>
     </Fragment>
