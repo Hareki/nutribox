@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { Schema } from 'mongoose';
 
 import { accountAddressSchema } from './AccountAddress.schema';
@@ -59,7 +60,6 @@ export const accountSchema = new Schema(
 
     avatarUrl: {
       type: String,
-      required: [true, 'Account/AvatarUrl is required'],
     },
 
     ...getEmailSchema('Account'),
@@ -82,6 +82,21 @@ export const accountSchema = new Schema(
   },
 );
 
+accountSchema.pre('save', function (next) {
+  if (!this.avatarUrl) {
+    this.avatarUrl = `https://ui-avatars.com/api/?name=${this.lastName}+${this.firstName}&background=3bb77e`;
+  }
+  next();
+});
+
+accountSchema.methods.isPasswordMatch = async function (
+  candidatePassword: string,
+  userPassword: string,
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+// Eastern name order, so the fullName will be reversed (lastName + firstName)
 accountSchema.virtual('fullName').get(function () {
-  return `${this.firstName} ${this.lastName}`;
+  return `${this.lastName} ${this.firstName}`;
 });

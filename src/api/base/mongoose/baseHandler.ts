@@ -1,7 +1,5 @@
 import { Model, Types } from 'mongoose';
 
-
-
 export interface BaseGetOptions {
   model: Model<any>;
   populate?: string[];

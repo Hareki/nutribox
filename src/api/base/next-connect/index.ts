@@ -8,7 +8,7 @@ import { JSendErrorResponse } from 'api/types/response.type';
 export const defaultOnError: ErrorHandler<
   NextApiRequest,
   NextApiResponse<JSendErrorResponse>
-> = (err: Error, _, res) => {
+> = (err: Error, req, res) => {
   const responseCode = StatusCodes.INTERNAL_SERVER_ERROR;
   console.log('=====================');
   console.log(err.message);
@@ -16,7 +16,9 @@ export const defaultOnError: ErrorHandler<
   console.log('=====================');
   res.status(responseCode).json({
     status: 'error',
-    message: getReasonPhrase(responseCode),
+    message: `${getReasonPhrase(responseCode)} on ${req.method} ${
+      req.url
+    } at Default Error Handler`,
     code: responseCode,
   });
 };
@@ -26,5 +28,11 @@ export const defaultOnNoMatch: NoMatchHandler<
   NextApiRequest,
   NextApiResponse
 > = (req, res) => {
-  res.status(StatusCodes.BAD_REQUEST).end(`${req.method} ${req.url} not found`);
+  console.log('=====================');
+  console.log('NO MATCH HANDLERS, PLEASE CHECK THE METHOD USED TO CALL AGAIN');
+  console.log('=====================');
+
+  res
+    .status(StatusCodes.METHOD_NOT_ALLOWED)
+    .end(`${req.method} ${req.url} not found at Default No Match Handler`);
 };

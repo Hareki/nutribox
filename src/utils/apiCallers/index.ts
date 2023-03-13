@@ -15,9 +15,9 @@ const getHotProducts = async (): Promise<IProduct[]> => {
   return response.data.data;
 };
 
-const realApi = {
+const apiCaller = {
   getAllProducts,
   getHotProducts,
 };
 
-export default realApi;
+export default apiCaller;

@@ -1,4 +1,5 @@
-import { Button, Box } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Box } from '@mui/material';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { FC, useCallback, useState } from 'react';
@@ -6,23 +7,25 @@ import * as yup from 'yup';
 
 import EyeToggleButton from './EyeToggleButton';
 import { Wrapper } from './Login';
-import SocialButtons from './SocialButtons';
 
 import BazaarImage from 'components/BazaarImage';
 import BazaarTextField from 'components/BazaarTextField';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
+import PhoneInput from 'components/PhoneInput';
 import { H1, H6 } from 'components/Typography';
+import { phoneRegex } from 'helpers/regex.helper';
 
-const Signup: FC = () => {
+interface SignupProps {
+  handleFormSubmit: (values: any) => void;
+  loading: boolean;
+}
+
+const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible);
   }, []);
-
-  const handleFormSubmit = async (values: any) => {
-    console.log(values);
-  };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -40,37 +43,37 @@ const Signup: FC = () => {
         />
 
         <H1 textAlign='center' mt={1} mb={4} fontSize={16}>
-          Create Your Account
+          Tạo tài khoản
         </H1>
 
         <FlexBox gap='30px'>
           <BazaarTextField
             mb={1.5}
             fullWidth
-            name='name'
+            name='lastName'
             size='small'
             label='Họ và tên lót'
             variant='outlined'
             onBlur={handleBlur}
             value={values.name}
             onChange={handleChange}
-            placeholder='Ralph Adwards'
-            error={!!touched.name && !!errors.name}
-            helperText={(touched.name && errors.name) as string}
+            placeholder='Nguyễn Văn'
+            error={!!touched.lastName && !!errors.lastName}
+            helperText={(touched.lastName && errors.lastName) as string}
           />
           <BazaarTextField
             mb={1.5}
             fullWidth
-            name='name'
+            name='firstName'
             size='small'
             label='Tên'
             variant='outlined'
             onBlur={handleBlur}
             value={values.name}
             onChange={handleChange}
-            placeholder='Ralph Adwards'
-            error={!!touched.name && !!errors.name}
-            helperText={(touched.name && errors.name) as string}
+            placeholder='A'
+            error={!!touched.firstName && !!errors.firstName}
+            helperText={(touched.firstName && errors.firstName) as string}
           />
         </FlexBox>
 
@@ -93,17 +96,19 @@ const Signup: FC = () => {
         <BazaarTextField
           mb={1.5}
           fullWidth
-          name='email'
+          name='phone'
           size='small'
-          type='email'
           variant='outlined'
           onBlur={handleBlur}
-          value={values.email}
+          value={values.phone}
           onChange={handleChange}
           label='Số điện thoại'
-          placeholder='0338758008'
-          error={!!touched.email && !!errors.email}
-          helperText={(touched.email && errors.email) as string}
+          placeholder='000-000-0000'
+          error={!!touched.phone && !!errors.phone}
+          helperText={(touched.phone && errors.phone) as string}
+          InputProps={{
+            inputComponent: PhoneInput as any,
+          }}
         />
 
         <BazaarTextField
@@ -156,18 +161,21 @@ const Signup: FC = () => {
           }}
         />
 
-        <Button
+        <LoadingButton
+          loading={loading}
+          loadingPosition='center'
           fullWidth
+          name='submit'
           type='submit'
           color='primary'
           variant='contained'
           sx={{ height: 44 }}
         >
           Tạo tài khoản
-        </Button>
+        </LoadingButton>
       </form>
 
-      <SocialButtons />
+      {/* <SocialButtons /> */}
       <FlexRowCenter mt='1.25rem'>
         <Box>Đã có tài khoản?</Box>
         <Link href='/login' passHref legacyBehavior>
@@ -183,29 +191,32 @@ const Signup: FC = () => {
 };
 
 const initialValues = {
-  name: '',
+  firstName: 'asd',
+  lastName: '',
   email: '',
+  phone: '',
   password: '',
   re_password: '',
-  agreement: false,
 };
 
 const formSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
+  firstName: yup.string().required('First name is required'),
+  lastName: yup.string().required('Last name is required'),
   email: yup.string().email('invalid email').required('Email is required'),
+  phone: yup
+    .string()
+    .transform((value, originalValue) => {
+      if (originalValue && typeof originalValue === 'string') {
+        return originalValue.replace(/-/g, '');
+      }
+      return value;
+    })
+    .matches(phoneRegex, 'Phone number is not valid'),
   password: yup.string().required('Password is required'),
   re_password: yup
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match')
     .required('Please re-type password'),
-  agreement: yup
-    .bool()
-    .test(
-      'agreement',
-      'You have to agree with our Terms and Conditions!',
-      (value) => value === true,
-    )
-    .required('You have to agree with our Terms and Conditions!'),
 });
 
 export default Signup;

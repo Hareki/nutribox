@@ -3,7 +3,6 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 
-
 import { IProduct } from 'api/models/Product.model/types';
 import { Footer } from 'components/footer';
 import ShopLayout1 from 'components/layouts/ShopLayout1';
@@ -11,7 +10,7 @@ import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
 import SEO from 'components/SEO';
 import { H2 } from 'components/Typography';
-import realApi from 'utils/__api__/real/product/[slug]';
+import apiCaller from 'utils/apiCallers/product/[slug]';
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -61,7 +60,7 @@ const ProductDetails: FC<ProductDetailsProps> = (props) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const productSlugs = await realApi.getSlugs();
+  const productSlugs = await apiCaller.getSlugs();
 
   const paths = productSlugs.map((slug) => ({
     params: { slug },
@@ -74,11 +73,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const product = await realApi.getProduct(params.slug as string);
+  const product = await apiCaller.getProduct(params.slug as string);
   const productId = product.id;
   const categoryId = product.category.toString();
 
-  const relatedProducts = await realApi.getRelatedProducts(
+  const relatedProducts = await apiCaller.getRelatedProducts(
     productId,
     categoryId,
   );

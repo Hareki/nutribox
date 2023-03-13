@@ -24,7 +24,7 @@ import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
 import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
-import realApi from 'utils/__api__/real';
+import apiCaller from 'utils/apiCallers';
 
 function getElementHeightIncludingMargin(element: HTMLElement) {
   if (!element) return 0;
@@ -145,8 +145,8 @@ export const getStaticProps: GetStaticProps = async () => {
   const navList = await api.getNavList();
   const testimonials = await api.getTestimonials();
 
-  const allProducts = await realApi.getAllProducts();
-  const hotProducts = await realApi.getHotProducts();
+  const allProducts = await apiCaller.getAllProducts();
+  const hotProducts = await apiCaller.getHotProducts();
 
   return {
     props: {

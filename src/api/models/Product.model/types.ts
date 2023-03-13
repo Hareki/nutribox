@@ -31,7 +31,10 @@ export interface IPopulatedProduct extends Omit<IProduct, 'category'> {
 }
 
 export interface IProductInput
-  extends Omit<IProduct, '_id' | 'slug' | 'expirations' | 'available' | 'hot'> {
+  extends Omit<
+    IProduct,
+    '_id' | 'slug' | 'expirations' | 'available' | 'hot' | 'id'
+  > {
   expirations?: Types.ObjectId[]; // IExpiration
   available?: boolean;
   hot?: boolean;

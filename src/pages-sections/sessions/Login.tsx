@@ -5,13 +5,11 @@ import { useCallback, useState, FC } from 'react';
 import * as yup from 'yup';
 
 import EyeToggleButton from './EyeToggleButton';
-import SocialButtons from './SocialButtons';
 
 import BazaarImage from 'components/BazaarImage';
 import BazaarTextField from 'components/BazaarTextField';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import { H1, H6 } from 'components/Typography';
-import { phoneRegex } from 'helpers/regex.helper';
 
 const fbStyle = { background: '#3B5998', color: 'white' };
 const googleStyle = { background: '#4285F4', color: 'white' };
@@ -69,17 +67,17 @@ const Login = () => {
         <BazaarTextField
           mb={1.5}
           fullWidth
-          name='emailOrPhone'
+          name='email'
           size='small'
           type='email'
           variant='outlined'
           onBlur={handleBlur}
-          value={values.emailOrPhone}
+          value={values.email}
           onChange={handleChange}
-          label='Email hoặc số điện thoại'
-          // placeholder='Email/Số điện thoại'
-          error={!!touched.emailOrPhone && !!errors.emailOrPhone}
-          helperText={(touched.emailOrPhone && errors.emailOrPhone) as string}
+          label='Email'
+          placeholder='example@gmail.com'
+          error={!!touched.email && !!errors.email}
+          helperText={(touched.email && errors.email) as string}
         />
 
         <BazaarTextField
@@ -93,7 +91,7 @@ const Login = () => {
           onBlur={handleBlur}
           onChange={handleChange}
           value={values.password}
-          // placeholder='*********'
+          placeholder='*********'
           type={passwordVisibility ? 'text' : 'password'}
           error={!!touched.password && !!errors.password}
           helperText={(touched.password && errors.password) as string}
@@ -118,7 +116,7 @@ const Login = () => {
         </Button>
       </form>
 
-      <SocialButtons />
+      {/* <SocialButtons /> */}
 
       <FlexRowCenter mt='1.25rem'>
         <Box>Chưa có tài khoản?</Box>
@@ -158,36 +156,44 @@ const initialValues = {
 
 const formSchema = yup.object().shape({
   password: yup.string().required('Vui lòng nhập mật khẩu'),
-  emailOrPhone: yup
-    .mixed()
-    .test(
-      'emailOrPhone',
-      'Vui lòng nhập email hoặc số điện thoại',
-      function (value) {
-        const { path, createError } = this;
-
-        if (!value) {
-          return createError({
-            path,
-            message: 'Vui lòng nhập email hoặc số điện thoại',
-          });
-        }
-
-        if (yup.string().email().isValidSync(value)) {
-          return true;
-        }
-
-        if (phoneRegex.test(value)) {
-          return true;
-        }
-
-        return createError({
-          path,
-          message: 'Vui lòng nhập email hoặc số điện thoại hợp lệ',
-        });
-      },
-    )
+  email: yup
+    .string()
+    .email('Vui lòng nhập email hợp lệ')
     .required('Vui lòng nhập email hoặc số điện thoại'),
 });
+
+// const formSchema = yup.object().shape({
+//   password: yup.string().required('Vui lòng nhập mật khẩu'),
+//   emailOrPhone: yup
+//     .mixed()
+//     .test(
+//       'emailOrPhone',
+//       'Vui lòng nhập email hoặc số điện thoại',
+//       function (value) {
+//         const { path, createError } = this;
+
+//         if (!value) {
+//           return createError({
+//             path,
+//             message: 'Vui lòng nhập email hoặc số điện thoại',
+//           });
+//         }
+
+//         if (yup.string().email().isValidSync(value)) {
+//           return true;
+//         }
+
+//         if (phoneRegex.test(value)) {
+//           return true;
+//         }
+
+//         return createError({
+//           path,
+//           message: 'Vui lòng nhập email hoặc số điện thoại hợp lệ',
+//         });
+//       },
+//     )
+//     .required('Vui lòng nhập email hoặc số điện thoại'),
+// });
 
 export default Login;

@@ -6,6 +6,7 @@ import {
   GetManyDocsOptions,
 } from 'api/base/mongoose/baseHandler';
 import Product from 'api/models/Product.model';
+import { IProduct } from 'api/models/Product.model/types';
 interface GetHotProductsOptions extends Omit<BaseGetOptions, 'model'> {}
 
 interface GetRelatedProductsParams {
@@ -14,8 +15,8 @@ interface GetRelatedProductsParams {
 }
 interface GetRelatedProductOptions extends Omit<GetManyDocsOptions, 'model'> {}
 
-export const getAll = getAllGenerator(Product);
-export const getOne = getOneGenerator(Product);
+export const getAll = getAllGenerator<IProduct>(Product);
+export const getOne = getOneGenerator<IProduct>(Product);
 
 export const getHotProducts = async ({
   populate,

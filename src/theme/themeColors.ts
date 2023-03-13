@@ -58,11 +58,12 @@ export const primary = {
   200: '#9ddbbf',
   300: '#89d4b2',
   400: '#62c598',
-  500: '#3bb77e', // Main
+  500: '#3bb77e',
   600: '#35a571',
   700: '#2f9265',
   800: '#298058',
   900: '#1e5c3f',
+  main: '#3bb77e',
 };
 
 export const secondary = {

@@ -6,7 +6,8 @@ import nc from 'next-connect';
 import { revertUpdateDependentDoc } from 'api/base/mongoose/dependentHandler';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/databaseConnection';
-import Product, { IProductInput } from 'api/models/Product.model';
+import Product from 'api/models/Product.model';
+import { IProductInput } from 'api/models/Product.model/types';
 import ProductCategory from 'api/models/ProductCategory.model';
 
 const handler = nc<NextApiRequest, NextApiResponse>({

@@ -1,6 +1,7 @@
 import { Model } from 'mongoose';
 
 import {
+  createOneDoc,
   getAllDocs,
   GetManyDocsOptions,
   getOneDoc,
@@ -12,11 +13,11 @@ export interface GetAllGeneratorOptions
 export interface GetOneGeneratorOptions
   extends Omit<GetOneDocsOptions, 'model'> {}
 
-export function getAllGenerator(model: Model<any>) {
+export function getAllGenerator<T>(model: Model<any>) {
   const getAll = async ({
     ...options
-  }: GetAllGeneratorOptions): Promise<any[]> => {
-    const allDocs = await getAllDocs({
+  }: GetAllGeneratorOptions): Promise<T[]> => {
+    const allDocs: T[] = await getAllDocs({
       model,
       ...options,
     });
@@ -26,9 +27,9 @@ export function getAllGenerator(model: Model<any>) {
   return getAll;
 }
 
-export function getOneGenerator(model: Model<any>) {
+export function getOneGenerator<T>(model: Model<any>) {
   const getOne = async ({ ...options }: GetOneGeneratorOptions) => {
-    const oneDoc = await getOneDoc({
+    const oneDoc: T = await getOneDoc({
       model,
       ...options,
     });
@@ -36,4 +37,13 @@ export function getOneGenerator(model: Model<any>) {
   };
 
   return getOne;
+}
+
+export function createOneGenerator<T>(model: Model<any>) {
+  const createOne = async (data: any) => {
+    const newDoc: T = await createOneDoc(model, data);
+    return newDoc;
+  };
+
+  return createOne;
 }

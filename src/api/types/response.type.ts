@@ -1,9 +1,9 @@
-interface JSendSuccessResponse<T> {
+export interface JSendSuccessResponse<T> {
   status: 'success';
   data: T;
 }
 
-interface JSendFailResponse<T> {
+export interface JSendFailResponse<T> {
   status: 'fail';
   data: T;
 }

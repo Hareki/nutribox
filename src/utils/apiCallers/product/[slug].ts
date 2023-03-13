@@ -35,10 +35,10 @@ const getRelatedProducts = async (
   return response.data.data;
 };
 
-const realApi = {
+const apiCaller = {
   getProduct,
   getSlugs,
   getRelatedProducts,
 };
 
-export default realApi;
+export default apiCaller;

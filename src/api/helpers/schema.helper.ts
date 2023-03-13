@@ -1,7 +1,11 @@
 import { SchemaDefinitionProperty } from 'mongoose';
 import validator from 'validator';
 
-import { phoneRegex } from 'helpers/regex.helper';
+import {
+  DuplicateKeyError,
+  ValidationError,
+} from 'api/types/mongooseError.type';
+import { maskPhoneRegex, phoneRegex } from 'helpers/regex.helper';
 
 export const getAddressSchema = (
   prefix: string,
@@ -60,11 +64,47 @@ export const getPhoneSchema = (
       type: String,
       required: [true, `${prefix}/Phone is required`],
       validate: {
-        validator: (phone: string) => phoneRegex.test(phone),
+        validator: (phone: string) => {
+          const isValidPhoneFormat = phoneRegex.test(phone.replace(/-/g, ''));
+          const isValidMaskPhoneFormat = maskPhoneRegex.test(phone);
+          return isValidPhoneFormat && isValidMaskPhoneFormat;
+        },
         message: `Invalid ${prefix}/Phone format`,
       },
       unique: true,
       trim: true,
     },
   };
+};
+
+export const getDuplicateKeyErrorMessage = (errorObj: DuplicateKeyError) => {
+  const errorMessage: Record<string, string> = {};
+  if (errorObj.code === 11000 && errorObj.keyValue) {
+    const fields = Object.keys(errorObj.keyValue);
+    const fieldName = fields[0];
+    const fieldValue = errorObj.keyValue[fieldName];
+    errorMessage[fieldName] = `${fieldName} ${fieldValue} đã tồn tại!`;
+  } else {
+    errorMessage['unknown'] =
+      'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
+  }
+
+  return errorMessage;
+};
+
+export const getValidationErrorMessages = (errorObj: ValidationError) => {
+  const errorMessages: Record<string, string> = {};
+
+  for (const fieldName in errorObj.errors) {
+    if (Object.hasOwnProperty.call(errorObj.errors, fieldName)) {
+      const error = errorObj.errors[fieldName];
+      errorMessages[fieldName] = error.message;
+    }
+  }
+  if (Object.keys(errorMessages).length === 0) {
+    errorMessages['unknown'] =
+      'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
+  }
+
+  return errorMessages;
 };
