@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
+import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import nProgress from 'nprogress';
 import { Fragment, ReactElement, ReactNode } from 'react';
@@ -32,7 +33,10 @@ Router.events.on('routeChangeError', () => nProgress.done());
 // small change
 nProgress.configure({ showSpinner: false });
 
-const App = ({ Component, pageProps }: MyAppProps) => {
+const App = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: MyAppProps) => {
   const AnyComponent = Component as any;
   const getLayout = AnyComponent.getLayout ?? ((page) => page);
 
@@ -50,15 +54,17 @@ const App = ({ Component, pageProps }: MyAppProps) => {
         <title>Nutribox - Bữa ăn dinh dưỡng tốt cho sức khoẻ</title>
       </Head>
 
-      <SettingsProvider>
-        <AppProvider>
-          <MuiTheme>
-            <SnackbarProvider>
-              <RTL>{getLayout(<AnyComponent {...pageProps} />)}</RTL>
-            </SnackbarProvider>
-          </MuiTheme>
-        </AppProvider>
-      </SettingsProvider>
+      <SessionProvider session={session}>
+        <SettingsProvider>
+          <AppProvider>
+            <MuiTheme>
+              <SnackbarProvider>
+                <RTL>{getLayout(<AnyComponent {...pageProps} />)}</RTL>
+              </SnackbarProvider>
+            </MuiTheme>
+          </AppProvider>
+        </SettingsProvider>
+      </SessionProvider>
     </Fragment>
   );
 };

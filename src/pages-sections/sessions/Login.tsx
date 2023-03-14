@@ -1,4 +1,5 @@
-import { Button, Card, CardProps, Box, styled } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Card, CardProps, Box, styled } from '@mui/material';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useCallback, useState, FC } from 'react';
@@ -9,7 +10,7 @@ import EyeToggleButton from './EyeToggleButton';
 import BazaarImage from 'components/BazaarImage';
 import BazaarTextField from 'components/BazaarTextField';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
-import { H1, H6 } from 'components/Typography';
+import { H1, H4, H6 } from 'components/Typography';
 
 const fbStyle = { background: '#3B5998', color: 'white' };
 const googleStyle = { background: '#4285F4', color: 'white' };
@@ -34,16 +35,22 @@ export const Wrapper = styled<FC<WrapperProps & CardProps>>(
   '.agreement': { marginTop: 12, marginBottom: 24 },
 }));
 
-const Login = () => {
+interface LoginProps {
+  handleFormSubmit: (values: any) => void;
+  loading: boolean;
+  incorrect: boolean;
+}
+
+const Login: FC<LoginProps> = ({
+  handleFormSubmit,
+  loading = false,
+  incorrect = false,
+}) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible);
   }, []);
-
-  const handleFormSubmit = async (values: any) => {
-    console.log(values);
-  };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -105,16 +112,25 @@ const Login = () => {
           }}
         />
 
-        <Button
+        <LoadingButton
+          loading={loading}
+          loadingPosition='center'
           fullWidth
+          name='submit'
           type='submit'
           color='primary'
           variant='contained'
           sx={{ height: 44 }}
         >
           Đăng nhập
-        </Button>
+        </LoadingButton>
       </form>
+
+      {incorrect && (
+        <H4 mt={2} mb={4} textAlign='center' color='error.500'>
+          Sai thông tin đăng nhập, vui lòng kiểm tra lại
+        </H4>
+      )}
 
       {/* <SocialButtons /> */}
 
@@ -155,11 +171,11 @@ const initialValues = {
 };
 
 const formSchema = yup.object().shape({
-  password: yup.string().required('Vui lòng nhập mật khẩu'),
   email: yup
     .string()
     .email('Vui lòng nhập email hợp lệ')
     .required('Vui lòng nhập email hoặc số điện thoại'),
+  password: yup.string().required('Vui lòng nhập mật khẩu'),
 });
 
 // const formSchema = yup.object().shape({

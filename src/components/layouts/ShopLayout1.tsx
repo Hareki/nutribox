@@ -36,7 +36,7 @@ const ShopLayout1: FC<ShopLayout1Props> = ({
 
       {/* HEADER */}
       <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={70}>
-        <Header isFixed={isFixed} searchInput={<SearchInput />} />
+        <Header searchInput={<SearchInput />} />
       </Sticky>
 
       <Box zIndex={4} position='relative' className='section-after-sticky'>

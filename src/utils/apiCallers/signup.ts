@@ -17,7 +17,7 @@ export const signUp = async (
       ...requestBody,
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     return response.data;
   } catch (err) {

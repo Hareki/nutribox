@@ -20,8 +20,13 @@ export interface IAccount {
   avatarUrl: string;
   email: string;
   password: string;
-  phone: string;
   verified: boolean;
+
+  fullName: string;
+  isPasswordMatch: (
+    candidatePassword: string,
+    userPassword: string,
+  ) => Promise<boolean>;
 }
 
 export interface IAccountInput

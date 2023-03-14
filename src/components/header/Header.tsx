@@ -1,12 +1,30 @@
-import { Clear, PersonOutline } from '@mui/icons-material';
-import { Badge, Box, Dialog, Drawer, styled } from '@mui/material';
+import {
+  Clear,
+  ContentCopy,
+  ContentCut,
+  ContentPaste,
+  PersonOutline,
+} from '@mui/icons-material';
+import {
+  Avatar,
+  Badge,
+  Box,
+  Dialog,
+  Drawer,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  styled,
+} from '@mui/material';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { FC, Fragment, ReactElement, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { FC, Fragment, ReactElement, useEffect, useState } from 'react';
 
 import Image from 'components/BazaarImage';
 import { FlexBetween, FlexBox } from 'components/flex-box';
@@ -16,6 +34,7 @@ import CartDrawer from 'components/MiniCart';
 import MobileMenu from 'components/navbar/MobileMenu';
 import { Paragraph } from 'components/Typography';
 import { useAppContext } from 'contexts/AppContext';
+import { useLoginForm } from 'hooks/useLoginForm';
 import Login from 'pages-sections/sessions/Login';
 import { layoutConstant } from 'utils/constants';
 
@@ -41,36 +60,95 @@ const StyledContainer = styled(Container)({
 
 // ==============================================================
 type HeaderProps = {
-  isFixed?: boolean;
   className?: string;
   searchInput: ReactElement;
 };
 // ==============================================================
 
-const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
+const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const theme = useTheme();
   const { state } = useAppContext();
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [sidenavOpen, setSidenavOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
+
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
   const downMd = useMediaQuery(theme.breakpoints.down(1150));
 
-  const toggleDialog = () => setDialogOpen(!dialogOpen);
   const toggleCartDrawer = () => setSidenavOpen(!sidenavOpen);
   const toggleSearchBar = () => setSearchBarOpen(!searchBarOpen);
+  const togglePopover = () => setUserMenuOpen(!userMenuOpen);
+
+  const { checkingCredentials, handleFormSubmit, signInResponse, incorrect } =
+    useLoginForm();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    console.log(signInResponse);
+    if (signInResponse && signInResponse.ok) {
+      setDialogOpen(false);
+    }
+  }, [signInResponse]);
+
+  const isAuthenticated = status === 'authenticated';
+  const user = session?.user;
+
+  const UserMenu = (
+    <Menu
+      open={isAuthenticated && userMenuOpen}
+      anchorEl={isAuthenticated && document.getElementById('user-button')}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      sx={{
+        zIndex: 9999,
+      }}
+    >
+      <MenuItem>
+        <ListItemIcon>
+          <ContentCut fontSize='small' />
+        </ListItemIcon>
+        <ListItemText>Cut</ListItemText>
+      </MenuItem>
+
+      <MenuItem>
+        <ListItemIcon>
+          <ContentCopy fontSize='small' />
+        </ListItemIcon>
+        <ListItemText>Copy</ListItemText>
+      </MenuItem>
+
+      <MenuItem>
+        <ListItemIcon>
+          <ContentPaste fontSize='small' />
+        </ListItemIcon>
+        <ListItemText>Paste</ListItemText>
+      </MenuItem>
+    </Menu>
+  );
 
   // Login Dialog and Cart Drawer
-  const DIALOG_DRAWER = (
+  const DialogAndDrawer = (
     <Fragment>
       <Dialog
         scroll='body'
         open={dialogOpen}
         fullWidth={isMobile}
-        onClose={toggleDialog}
+        onClose={() => setDialogOpen(false)}
         sx={{ zIndex: 9999 }}
       >
-        <Login />
+        <Login
+          loading={checkingCredentials}
+          handleFormSubmit={handleFormSubmit}
+          incorrect={incorrect}
+        />
       </Dialog>
 
       <Drawer
@@ -113,7 +191,7 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
                 <Icon.Search sx={ICON_STYLE} />
               </Box>
 
-              <Box component={IconButton} onClick={toggleDialog}>
+              <Box component={IconButton} onClick={() => setDialogOpen(true)}>
                 <Icon.User sx={ICON_STYLE} />
               </Box>
 
@@ -147,7 +225,7 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
           </Drawer>
 
           {/* LOGIN FORM DIALOG AND CART SIDE BAR  */}
-          {DIALOG_DRAWER}
+          {DialogAndDrawer}
         </StyledContainer>
       </HeaderWrapper>
     );
@@ -171,12 +249,26 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
         {/* LOGIN AND CART BUTTON */}
         <FlexBox gap={1.5} alignItems='center'>
           <Box
+            id='user-button'
             component={IconButton}
-            p={1.25}
+            p={isAuthenticated ? 0 : 1.25}
             bgcolor='grey.200'
-            onClick={toggleDialog}
+            onClick={() => {
+              if (isAuthenticated) {
+                togglePopover();
+              } else {
+                setDialogOpen(true);
+              }
+            }}
           >
-            <PersonOutline />
+            {isAuthenticated ? (
+              <>
+                <Avatar alt={user.fullName} src={user.avatarUrl} />
+                {UserMenu}
+              </>
+            ) : (
+              <PersonOutline />
+            )}
           </Box>
 
           <Badge badgeContent={state.cart.length} color='primary'>
@@ -192,7 +284,7 @@ const Header: FC<HeaderProps> = ({ isFixed, className, searchInput }) => {
         </FlexBox>
 
         {/* LOGIN FORM DIALOG AND CART SIDE BAR  */}
-        {DIALOG_DRAWER}
+        {DialogAndDrawer}
       </StyledContainer>
     </HeaderWrapper>
   );
