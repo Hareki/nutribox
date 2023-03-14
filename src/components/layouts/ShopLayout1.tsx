@@ -5,7 +5,7 @@ import { FC, Fragment, ReactNode, useCallback, useState } from 'react';
 import Header from 'components/header/Header';
 import Navbar from 'components/navbar/Navbar';
 import SearchInput from 'components/search-box/SearchInput';
-import Sticky from 'components/Sticky';
+import StickyScroll from 'components/StickyScroll';
 import Topbar from 'components/Topbar';
 
 /**
@@ -35,9 +35,9 @@ const ShopLayout1: FC<ShopLayout1Props> = ({
       {showTopbar && <Topbar />}
 
       {/* HEADER */}
-      <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={70}>
+      <StickyScroll>
         <Header searchInput={<SearchInput />} />
-      </Sticky>
+      </StickyScroll>
 
       <Box zIndex={4} position='relative' className='section-after-sticky'>
         {/* NAVIGATION BAR */}

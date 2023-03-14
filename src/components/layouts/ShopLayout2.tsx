@@ -1,12 +1,12 @@
 // Shop Layout 1 Previously
-import { FC, Fragment, ReactNode, useCallback, useState } from 'react';
+import { FC, Fragment, ReactNode } from 'react';
 
 import { Footer } from 'components/footer';
 import Header from 'components/header/Header';
 import { MobileNavigationBar } from 'components/mobile-navigation';
 import Navbar from 'components/navbar/Navbar';
 import SearchInputWithCategory from 'components/search-box/SearchInputWithCategory';
-import Sticky from 'components/Sticky';
+import StickyScroll from 'components/StickyScroll';
 import Topbar from 'components/Topbar';
 
 /**
@@ -32,18 +32,15 @@ const ShopLayout2: FC<ShopLayout2Props> = ({
   showTopbar = true,
   showNavbar = true,
 }) => {
-  const [isFixed, setIsFixed] = useState(false);
-  const toggleIsFixed = useCallback((fixed: boolean) => setIsFixed(fixed), []);
-
   return (
     <Fragment>
       {/* TOPBAR */}
       {showTopbar && <Topbar bgColor={topbarBgColor} />}
 
       {/* HEADER */}
-      <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={300}>
-        <Header isFixed={isFixed} searchInput={<SearchInputWithCategory />} />
-      </Sticky>
+      <StickyScroll>
+        <Header searchInput={<SearchInputWithCategory />} />
+      </StickyScroll>
 
       <div className='section-after-sticky'>
         {/* NAVIGATION BAR */}

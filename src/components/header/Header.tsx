@@ -41,7 +41,7 @@ import { layoutConstant } from 'utils/constants';
 // styled component
 export const HeaderWrapper = styled(Box)(({ theme }) => ({
   zIndex: 3,
-  position: 'relative',
+  position: 'sticky',
   height: layoutConstant.headerHeight,
   transition: 'height 250ms ease-in-out',
   background: theme.palette.background.paper,
