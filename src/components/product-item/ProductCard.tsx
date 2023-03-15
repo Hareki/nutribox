@@ -3,6 +3,7 @@ import { Add, Remove, RemoveRedEye } from '@mui/icons-material';
 import ShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Box, Button, styled } from '@mui/material';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
 import { FC, Fragment, useCallback, useState } from 'react';
 
@@ -100,6 +101,9 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   const { state, dispatch } = useAppContext();
   const [openModal, setOpenModal] = useState(false);
 
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === 'authenticated';
+
   const toggleDialog = useCallback(() => {
     onPreview?.();
     setOpenModal((open) => !open);
@@ -109,19 +113,29 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     (item) => item.id === id,
   );
 
-  const handleCartAmountChange =
-    (amount: number, type?: 'add' | 'remove') => () => {
-      dispatch({
-        type: 'CHANGE_CART_AMOUNT',
-        payload: { ...props.product, quantity: amount },
-      });
+  const handleCartAmountChange = (amount: number, type?: 'add' | 'remove') => {
+    dispatch({
+      type: 'CHANGE_CART_AMOUNT',
+      payload: { ...props.product, quantity: amount },
+    });
 
-      if (type === 'remove') {
-        enqueueSnackbar('Remove from Cart', { variant: 'error' });
-      } else {
-        enqueueSnackbar('Added to Cart', { variant: 'success' });
-      }
-    };
+    if (type === 'remove') {
+      enqueueSnackbar('Remove from Cart', { variant: 'error' });
+    } else {
+      enqueueSnackbar('Added to Cart', { variant: 'success' });
+    }
+  };
+
+  const handleCartAmountButtonClick = (type: 'add' | 'remove') => {
+    if (isAuthenticated) {
+      const quantity = type === 'add' ? 1 : -1;
+      handleCartAmountChange((cartItem?.quantity || 0) + quantity, type);
+    } else {
+      enqueueSnackbar('Please Login to add product to cart', {
+        variant: 'error',
+      });
+    }
+  };
 
   return (
     <StyledBazaarCard hoverEffect>
@@ -196,7 +210,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             color='primary'
             variant='outlined'
             sx={{ padding: '3px' }}
-            onClick={handleCartAmountChange((cartItem?.quantity || 0) + 1)}
+            onClick={() => handleCartAmountButtonClick('add')}
           >
             <Add fontSize='small' />
           </Button>
@@ -211,10 +225,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
                 color='primary'
                 variant='outlined'
                 sx={{ padding: '3px' }}
-                onClick={handleCartAmountChange(
-                  cartItem?.quantity - 1,
-                  'remove',
-                )}
+                onClick={() => handleCartAmountButtonClick('remove')}
               >
                 <Remove fontSize='small' />
               </Button>

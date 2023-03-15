@@ -1,5 +1,3 @@
-import { ArrowLeft, ArrowRight } from '@mui/icons-material';
-import Link from 'next/link';
 import { FC, ReactNode } from 'react';
 
 import { FlexBetween, FlexBox } from './flex-box';
@@ -29,7 +27,7 @@ const CategorySectionHeader: FC<CategorySectionHeaderProps> = (props) => {
         </H2>
       </FlexBox>
 
-      {seeMoreLink && (
+      {/* {seeMoreLink && (
         <Link href={seeMoreLink}>
           <FlexBox alignItems='center' color='grey.600'>
             Xem tất cả
@@ -40,7 +38,7 @@ const CategorySectionHeader: FC<CategorySectionHeaderProps> = (props) => {
             )}
           </FlexBox>
         </Link>
-      )}
+      )} */}
     </FlexBetween>
   );
 };

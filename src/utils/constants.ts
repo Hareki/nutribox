@@ -6,3 +6,8 @@ export const layoutConstant = {
   mobileHeaderHeight: 64,
   grocerySidenavWidth: 280,
 };
+
+export const paginationConstant = {
+  docsPerPage: 6,
+  infiniteDocsPerPage: 9999,
+};

@@ -1,8 +1,7 @@
 import { Box, styled, useTheme } from '@mui/material';
 import { FC, useState } from 'react';
 
-import { CategoryNavList } from './types';
-
+import { IProductCategory } from 'api/models/ProductCategory.model/types';
 import BazaarCard from 'components/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
@@ -62,17 +61,17 @@ const Circle = styled('span')({
 });
 
 // ==================================================================
-type SideNavbarProps = {
+type CategoryNavbarProps = {
   isFixed?: boolean;
-  navList: CategoryNavList;
+  navList: IProductCategory[];
   lineStyle?: 'dash' | 'solid';
   sidebarHeight?: string | number;
   sidebarStyle?: 'style1' | 'style2';
-  handleSelect?: (category: string) => void;
+  handleSelect?: (categoryId: string, categoryName: string) => void;
 };
 // ==================================================================
 
-const SideNavbar: FC<SideNavbarProps> = (props) => {
+const CategoryNavbar: FC<CategoryNavbarProps> = (props) => {
   const {
     isFixed,
     navList,
@@ -84,9 +83,9 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { palette } = useTheme();
 
-  const selectHandler = (index: number, title: string) => {
+  const selectHandler = (index: number, id: string, name: string) => {
     setSelectedIndex(index);
-    handleSelect(title);
+    handleSelect(id, name);
   };
 
   return (
@@ -101,12 +100,12 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
               <ColorBorder grey={1} />
             </BorderBox>
           </Box>
-          {navList.listItems?.map((item, index) => {
+          {navList.map((item, index) => {
             return (
               <Box mb='2px' color='grey.700' key={index}>
                 <Box
                   // key={item}
-                  onClick={() => selectHandler(index, item.name)}
+                  onClick={() => selectHandler(index, item.id, item.name)}
                   sx={{
                     color: selectedIndex === index ? 'primary.500' : 'grey.700',
                     cursor: 'pointer',
@@ -128,10 +127,10 @@ const SideNavbar: FC<SideNavbarProps> = (props) => {
   );
 };
 
-SideNavbar.defaultProps = {
+CategoryNavbar.defaultProps = {
   lineStyle: 'solid',
   sidebarHeight: 'auto',
   sidebarStyle: 'style1',
 };
 
-export default SideNavbar;
+export default CategoryNavbar;

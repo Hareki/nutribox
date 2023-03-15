@@ -54,9 +54,11 @@ const ProductCarousel: FC<ProductCarouselProps> = ({
           '& #backArrowButton, #backForwardButton': {
             width: 40,
             height: 40,
-            background: '#fff',
             boxShadow: shadows[2],
-            color: palette.primary.main,
+            // background: '#fff',
+            // color: palette.primary.main,
+            background: palette.primary.main,
+            color: '#fff',
           },
         }}
       >

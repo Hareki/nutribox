@@ -1,18 +1,24 @@
 import { Stack } from '@mui/material';
-import axios from 'axios';
+import {
+  dehydrate,
+  QueryClient,
+  useInfiniteQuery,
+  useQueries,
+  useQuery,
+} from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { GetStaticProps, NextPage } from 'next';
-import { Fragment, useCallback, useEffect, useState } from 'react';
-
+import { useCallback, useEffect, useState, useMemo } from 'react';
 // Footer1
 
 import { IProduct } from 'api/models/Product.model/types';
+import { GetPaginationResult } from 'api/types/pagination.type';
 import { Footer } from 'components/footer';
 // ShopLayout2
 import ShopLayout1 from 'components/layouts/ShopLayout1';
 // MobileNavigationBar2
 import { MobileNavigationBar } from 'components/mobile-navigation';
-import SideNavbar from 'components/page-sidenav/SideNavbar';
-import { CategoryNavList } from 'components/page-sidenav/types';
+import CategoryNavbar from 'components/page-sidenav/SideNavbar';
 import SEO from 'components/SEO';
 import SidenavContainer from 'components/SidenavContainer';
 import Product from 'models/BazaarProduct.model';
@@ -36,21 +42,21 @@ function getElementHeightIncludingMargin(element: HTMLElement) {
 }
 
 type HomePageProps = {
-  allProducts: IProduct[];
   hotProducts: IProduct[];
+  newProducts: IProduct[];
+
   serviceList: Service[];
   popularProducts: Product[];
-  trendingProducts: Product[];
-  navList: CategoryNavList;
   mainCarouselData: MainCarouselItem[];
   testimonials: any[];
 };
 
 const HomePage: NextPage<HomePageProps> = (props) => {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [filterProducts, setFilterProducts] = useState<Product[]>([]);
-
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [selectedCategoryName, setSelectedCategoryName] = useState('');
+  const [filterProducts, setFilterProducts] = useState<IProduct[]>([]);
   const [sideNavBottomOffset, setSideNavBottomOffset] = useState('0px');
+
   useEffect(() => {
     if (typeof document !== 'undefined') {
       const mainContent = document.getElementById('main-content');
@@ -65,98 +71,184 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     }
   }, []);
 
-  useEffect(() => {
-    axios
-      .get('/api/grocery-1/category-based-products', {
-        params: { category: selectedCategory },
-      })
-      .then(({ data }) => setFilterProducts(data));
-  }, [selectedCategory]);
+  const { data: categoryNavigation } = useQuery({
+    queryKey: ['products', 'category-navigation'],
+    queryFn: apiCaller.getAllCategories,
+  });
 
-  const handleSelectCategory = (category: string) => {
-    if (category === 'Tất cả') {
-      setSelectedCategory('');
-    } else {
-      setSelectedCategory(category);
-    }
+  const {
+    data: allProductsPagination,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<GetPaginationResult<IProduct>>({
+    queryKey: ['products', 'infinite', { categoryId: undefined }],
+    // CAN access the initial pageParam here, if initial pageParam is NOT specified, it will be NULL
+    // Can NOT set a default value for pageParam like this ({ pageParam = 1}). Because default value has no effect with NULL, only with UNDEFINED.
+    queryFn: ({ pageParam }) => {
+      if (!pageParam) pageParam = 1; // Even with this, it will still be NULL in pageParams, if initial pageParam is not specified.
+      return apiCaller.getAllProducts(pageParam);
+    },
+    getNextPageParam: (lastPage) =>
+      lastPage.nextPageNum < 0 ? undefined : lastPage.nextPageNum,
+  });
+
+  const allProducts = useMemo(() => {
+    return allProductsPagination?.pages?.reduce(
+      (acc, page) => [...acc, ...page.docs],
+      [],
+    );
+  }, [allProductsPagination?.pages]);
+
+  const { data: hotProducts } = useQuery({
+    queryKey: ['products', 'hot'],
+    queryFn: apiCaller.getHotProducts,
+  });
+
+  const { data: newProducts } = useQuery({
+    queryKey: ['products', 'new'],
+    queryFn: apiCaller.getNewProducts,
+  });
+
+  const categoryQueries = useMemo(() => {
+    return categoryNavigation?.filter((category) => {
+      return category.id !== '';
+    });
+  }, [categoryNavigation]);
+
+  const results = useQueries({
+    queries: categoryQueries.map((category) => {
+      return {
+        queryKey: ['products', 'category', category.id],
+        queryFn: () => apiCaller.getCategoryWithProducts(category.id),
+        enabled: selectedCategoryId === category.id,
+      };
+    }),
+  });
+
+  useEffect(() => {
+    if (!selectedCategoryId) return;
+    const category = results.find(
+      (result) => result.data?.id === selectedCategoryId,
+    );
+    setFilterProducts(category?.data?.products);
+  }, [selectedCategoryId, results]);
+
+  const handleSelectCategory = (categoryId: string, categoryName: string) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedCategoryName(categoryName);
   };
 
   const SideNav = useCallback(
     () => (
-      <SideNavbar navList={props.navList} handleSelect={handleSelectCategory} />
+      <CategoryNavbar
+        navList={categoryNavigation}
+        handleSelect={handleSelectCategory}
+      />
     ),
-    [props.navList],
+    [categoryNavigation],
   );
 
   return (
-    <ShopLayout1 showNavbar={false} showTopbar={false}>
-      <SEO title='Trang chủ' />
-      <HeroSection />
-      <ServicesSection services={props.serviceList} />
+    <>
+      <ShopLayout1 showNavbar={false} showTopbar={false}>
+        <SEO title='Trang chủ' />
+        <HeroSection />
+        <ServicesSection services={props.serviceList} />
 
-      {/* SIDEBAR WITH OTHER CONTENTS */}
-      <SidenavContainer
-        sideNavBottomOffset={sideNavBottomOffset}
-        SideNav={SideNav}
-      >
-        <Stack id='main-content' spacing={6} mt={2} mb={6}>
-          <div id='products-section'>
-            {selectedCategory ? (
-              // FILTERED PRODUCT LIST
-              <AllProducts
-                products={props.allProducts}
-                title={selectedCategory}
-              />
-            ) : (
-              <Fragment>
-                {/* <ProductCarousel
-                  title='Popular Products'
-                  products={props.popularProducts}
-                /> */}
-
-                <ProductCarousel
-                  title='Các món bán chạy'
-                  subtitle='Trải nghiệm các sản phẩm được nhiều khách hàng săn đón! '
-                  products={props.hotProducts}
+        {/* SIDEBAR WITH OTHER CONTENTS */}
+        <SidenavContainer
+          sideNavBottomOffset={sideNavBottomOffset}
+          SideNav={SideNav}
+        >
+          <Stack id='main-content' spacing={6} mt={2} mb={6}>
+            <div id='products-section'>
+              {selectedCategoryId ? (
+                <AllProducts
+                  products={filterProducts}
+                  title={selectedCategoryName}
                 />
+              ) : (
+                <>
+                  <ProductCarousel
+                    title='Các sản phẩm mới'
+                    subtitle='Trải nghiệm thử các sản phẩm mới đến từ Nutribox!'
+                    products={newProducts}
+                  />
 
-                <AllProducts products={props.allProducts} />
-              </Fragment>
-            )}
-          </div>
-          <TestimonialsSection testimonials={props.testimonials} />
-        </Stack>
-      </SidenavContainer>
-      <Footer />
+                  <ProductCarousel
+                    title='Các sản phẩm bán chạy'
+                    subtitle='Khám phá các sản phẩm được nhiều khách hàng săn đón!'
+                    products={hotProducts}
+                  />
 
-      {/* MOBILE NAVIGATION WITH SIDE NAVBAR */}
-      <MobileNavigationBar>
-        <SideNavbar navList={props.navList} />
-      </MobileNavigationBar>
-    </ShopLayout1>
+                  <AllProducts
+                    products={allProducts}
+                    pagination={{
+                      fetchNextPage,
+                      hasNextPage,
+                      isFetchingNextPage,
+                    }}
+                  />
+                </>
+              )}
+            </div>
+            <TestimonialsSection testimonials={props.testimonials} />
+          </Stack>
+        </SidenavContainer>
+        <Footer />
+
+        {/* MOBILE NAVIGATION WITH SIDE NAVBAR */}
+        <MobileNavigationBar>
+          <CategoryNavbar navList={categoryNavigation} />
+        </MobileNavigationBar>
+      </ShopLayout1>
+      <ReactQueryDevtools />
+    </>
   );
 };
+function serialize(data: any) {
+  return JSON.parse(JSON.stringify(data));
+}
 
 export const getStaticProps: GetStaticProps = async () => {
-  // const products = await api.getProducts();
   const serviceList = await api.getServices();
-  const popularProducts = await api.getPopularProducts();
-  const trendingProducts = await api.getTrendingProducts();
-  const navList = await api.getNavList();
   const testimonials = await api.getTestimonials();
 
-  const allProducts = await apiCaller.getAllProducts();
-  const hotProducts = await apiCaller.getHotProducts();
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['products', 'category-navigation'],
+    queryFn: apiCaller.getAllCategories,
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['products', 'hot'],
+    queryFn: apiCaller.getHotProducts,
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['products', 'new'],
+    queryFn: apiCaller.getNewProducts,
+  });
+
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ['products', 'infinite', { categoryId: undefined }],
+    initialData: {
+      // declare the initial pageParam, used to fetch the FIRST page in useInfiniteQuery
+      pageParams: [1],
+      pages: [],
+    },
+    // Can NOT access the initial pageParam here, it will be UNDEFINED. Specify the initial pageParam or not, it's always be UNDEFINED
+    queryFn: () => apiCaller.getAllProducts(1),
+  });
 
   return {
     props: {
-      allProducts,
-      hotProducts,
       serviceList,
-      navList,
-      popularProducts,
-      trendingProducts,
       testimonials,
+
+      dehydratedState: serialize(dehydrate(queryClient)),
     },
   };
 };

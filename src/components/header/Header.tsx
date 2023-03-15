@@ -84,6 +84,8 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const { checkingCredentials, handleFormSubmit, signInResponse, incorrect } =
     useLoginForm();
   const { data: session, status } = useSession();
+  console.log('file: Header.tsx:87 - session:', session);
+  const isAuthenticated = status === 'authenticated';
 
   useEffect(() => {
     console.log(signInResponse);
@@ -92,7 +94,6 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
     }
   }, [signInResponse]);
 
-  const isAuthenticated = status === 'authenticated';
   const user = session?.user;
 
   const UserMenu = (

@@ -1,4 +1,8 @@
-import { getAllGenerator, getOneGenerator } from './base.controller';
+import {
+  getAllGenerator,
+  getOneGenerator,
+  getTotalGenerator,
+} from './base.controller';
 
 import {
   BaseGetOptions,
@@ -7,7 +11,9 @@ import {
 } from 'api/base/mongoose/baseHandler';
 import Product from 'api/models/Product.model';
 import { IProduct } from 'api/models/Product.model/types';
+
 interface GetHotProductsOptions extends Omit<BaseGetOptions, 'model'> {}
+interface GetNewProductsOptions extends Omit<BaseGetOptions, 'model'> {}
 
 interface GetRelatedProductsParams {
   productId: string;
@@ -17,6 +23,7 @@ interface GetRelatedProductOptions extends Omit<GetManyDocsOptions, 'model'> {}
 
 export const getAll = getAllGenerator<IProduct>(Product);
 export const getOne = getOneGenerator<IProduct>(Product);
+export const getTotal = getTotalGenerator(Product);
 
 export const getHotProducts = async ({
   populate,
@@ -48,10 +55,25 @@ export const getRelatedProducts = async (
   return hotProducts;
 };
 
+export const getNewProducts = async ({
+  populate,
+  lean = true,
+  ignoreFields,
+}: GetNewProductsOptions) => {
+  const query = Product.find().sort({ createdAt: -1 });
+
+  buildBaseQuery(query, { populate, lean, ignoreFields });
+
+  const relatedProducts = await query.exec();
+  return relatedProducts;
+};
+
 const ProductController = {
   getAll,
   getOne,
+  getTotal,
   getHotProducts,
   getRelatedProducts,
+  getNewProducts,
 };
 export default ProductController;

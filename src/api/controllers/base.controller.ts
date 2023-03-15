@@ -39,6 +39,15 @@ export function getOneGenerator<T>(model: Model<any>) {
   return getOne;
 }
 
+export function getTotalGenerator(model: Model<any>) {
+  const getTotal = async () => {
+    const total = await model.countDocuments().exec();
+    return total;
+  };
+
+  return getTotal;
+}
+
 export function createOneGenerator<T>(model: Model<any>) {
   const createOne = async (data: any) => {
     const newDoc: T = await createOneDoc(model, data);

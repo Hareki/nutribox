@@ -1,3 +1,4 @@
+import { QueryClient } from '@tanstack/react-query';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -5,17 +6,18 @@ import Router from 'next/router';
 import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import nProgress from 'nprogress';
-import { Fragment, ReactElement, ReactNode } from 'react';
+import { Fragment, ReactElement, ReactNode, useState } from 'react';
 
 import '../src/fonts/SVN-Rubik/index.css';
 import nextI18NextConfig from '../next-i18next.config';
 
-import RTL from 'components/RTL';
 import SnackbarProvider from 'components/SnackbarProvider';
 import { AppProvider } from 'contexts/AppContext';
 import SettingsProvider from 'contexts/SettingContext';
+import QueryClientSsrProvider from 'queryClientSsrProvider';
 import MuiTheme from 'theme/MuiTheme';
 import OpenGraphTags from 'utils/OpenGraphTags';
+
 import 'nprogress/nprogress.css';
 import 'simplebar/dist/simplebar.min.css';
 import '../src/__server__';
@@ -35,8 +37,9 @@ nProgress.configure({ showSpinner: false });
 
 const App = ({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, dehydratedState, ...pageProps },
 }: MyAppProps) => {
+  const [queryClient] = useState(() => new QueryClient());
   const AnyComponent = Component as any;
   const getLayout = AnyComponent.getLayout ?? ((page) => page);
 
@@ -59,7 +62,12 @@ const App = ({
           <AppProvider>
             <MuiTheme>
               <SnackbarProvider>
-                <RTL>{getLayout(<AnyComponent {...pageProps} />)}</RTL>
+                <QueryClientSsrProvider
+                  queryClient={queryClient}
+                  dehydratedState={dehydratedState}
+                >
+                  {getLayout(<AnyComponent {...pageProps} />)}
+                </QueryClientSsrProvider>
               </SnackbarProvider>
             </MuiTheme>
           </AppProvider>
