@@ -9,13 +9,13 @@ import CheckoutNavLayout from 'components/layouts/CheckoutNavLayout';
 import ProductCartItem from 'components/product-item/ProductCartItem';
 import SEO from 'components/SEO';
 import { Span } from 'components/Typography';
-import { CartItem, useAppContext } from 'contexts/AppContext';
 import countryList from 'data/countryList';
+import useCart from 'hooks/useCart';
 import { currency } from 'lib';
 
 const Cart: NextPage = () => {
-  const { state } = useAppContext();
-  const cartList: CartItem[] = state.cart;
+  const { cartState } = useCart();
+  const cartList = cartState.cart;
 
   const getTotalPrice = () =>
     cartList.reduce(

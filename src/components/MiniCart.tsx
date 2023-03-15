@@ -15,21 +15,20 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
 import { H5, Paragraph, Tiny } from 'components/Typography';
-import { CartItem, useAppContext } from 'contexts/AppContext';
+import useCart from 'hooks/useCart';
 import { currency } from 'lib';
+import { CartItem } from 'store/slices/cartSlice';
 
 type CartDrawerProps = { toggleCartDrawer: () => void };
 
 const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
   const { palette } = useTheme();
-  const { state, dispatch } = useAppContext();
-  const cartList = state.cart;
+
+  const { cartState, updateCartAmount } = useCart();
+  const cartList = cartState.cart;
 
   const handleCartAmountChange = (amount: number, product: IProduct) => () => {
-    dispatch({
-      type: 'CHANGE_CART_AMOUNT',
-      payload: { ...product, quantity: amount },
-    });
+    updateCartAmount({ ...product, quantity: amount });
   };
 
   const getTotalPrice = () => {

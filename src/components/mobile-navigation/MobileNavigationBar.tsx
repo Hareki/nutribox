@@ -13,7 +13,7 @@ import CategoryOutlined from 'components/icons/CategoryOutline';
 import Home from 'components/icons/Home';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import User2 from 'components/icons/User2';
-import { useAppContext } from 'contexts/AppContext';
+import useCart from 'hooks/useCart';
 import useWindowSize from 'hooks/useWindowSize';
 import { layoutConstant } from 'utils/constants';
 
@@ -29,7 +29,7 @@ type Props = { children?: ReactNode };
 
 const MobileNavigationBar: FC<Props> = ({ children }) => {
   const width = useWindowSize();
-  const { state } = useAppContext();
+  const { cartState } = useCart();
   const [open, setOpen] = useState(false);
 
   const { mobileNavHeight, topbarHeight } = layoutConstant;
@@ -66,7 +66,7 @@ const MobileNavigationBar: FC<Props> = ({ children }) => {
             return (
               <StyledNavLink href={item.href} key={item.title}>
                 {item.title === 'Cart' && (
-                  <Badge badgeContent={state.cart.length} color='primary'>
+                  <Badge badgeContent={cartState.cart.length} color='primary'>
                     <item.icon fontSize='small' sx={iconStyle} />
                   </Badge>
                 )}
@@ -84,7 +84,7 @@ const MobileNavigationBar: FC<Props> = ({ children }) => {
                 key={item.title}
               >
                 {item.title === 'Cart' && (
-                  <Badge badgeContent={state.cart.length} color='primary'>
+                  <Badge badgeContent={cartState.cart.length} color='primary'>
                     <item.icon fontSize='small' sx={iconStyle} />
                   </Badge>
                 )}

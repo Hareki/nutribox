@@ -13,8 +13,9 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import ProductViewDialog from 'components/products/ProductViewDialog';
 import { H3, Span } from 'components/Typography';
-import { CartItem, useAppContext } from 'contexts/AppContext';
+import useCart from 'hooks/useCart';
 import { currency } from 'lib';
+import { CartItem } from 'store/slices/cartSlice';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   height: '100%',
@@ -98,7 +99,8 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-  const { state, dispatch } = useAppContext();
+  const { cartState, updateCartAmount } = useCart();
+
   const [openModal, setOpenModal] = useState(false);
 
   const { data: session, status } = useSession();
@@ -109,15 +111,12 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     setOpenModal((open) => !open);
   }, [onPreview]);
 
-  const cartItem: CartItem | undefined = state.cart.find(
+  const cartItem: CartItem | undefined = cartState.cart.find(
     (item) => item.id === id,
   );
 
   const handleCartAmountChange = (amount: number, type?: 'add' | 'remove') => {
-    dispatch({
-      type: 'CHANGE_CART_AMOUNT',
-      payload: { ...props.product, quantity: amount },
-    });
+    updateCartAmount({ ...props.product, quantity: amount });
 
     if (type === 'remove') {
       enqueueSnackbar('Remove from Cart', { variant: 'error' });

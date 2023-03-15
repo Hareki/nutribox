@@ -1,12 +1,5 @@
 import { Add, Remove } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Grid,
-  SxProps,
-  Theme,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Grid, SxProps, Theme, useTheme } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 
 import { FlexBox, FlexRowCenter } from '../flex-box';
@@ -14,7 +7,7 @@ import { FlexBox, FlexRowCenter } from '../flex-box';
 import { IProduct } from 'api/models/Product.model/types';
 import LazyImage from 'components/LazyImage';
 import { H1, H2, H3, H6 } from 'components/Typography';
-import { useAppContext } from 'contexts/AppContext';
+import useCart from 'hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
@@ -37,7 +30,8 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
     }
   }, [category, categoryName]);
 
-  const { state, dispatch } = useAppContext();
+  const { cartState, updateCartAmount } = useCart();
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectVariants, setSelectVariants] = useState({
     option: 'option 1',
@@ -53,19 +47,16 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
   };
 
   // CHECK PRODUCT EXIST OR NOT IN THE CART
-  const cartItem = state.cart.find((item) => item.id === id);
+  const cartItem = cartState.cart.find((item) => item.id === id);
 
   // HANDLE SELECT IMAGE
   const handleImageClick = (index: number) => () => setSelectedImage(index);
 
   // HANDLE CHANGE CART
   const handleCartAmountChange = (amount: number) => () => {
-    dispatch({
-      type: 'CHANGE_CART_AMOUNT',
-      payload: {
-        quantity: amount,
-        ...product,
-      },
+    updateCartAmount({
+      quantity: amount,
+      ...product,
     });
   };
 

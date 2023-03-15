@@ -33,7 +33,7 @@ import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import CartDrawer from 'components/MiniCart';
 import MobileMenu from 'components/navbar/MobileMenu';
 import { Paragraph } from 'components/Typography';
-import { useAppContext } from 'contexts/AppContext';
+import useCart from 'hooks/useCart';
 import { useLoginForm } from 'hooks/useLoginForm';
 import Login from 'pages-sections/sessions/Login';
 import { layoutConstant } from 'utils/constants';
@@ -67,7 +67,8 @@ type HeaderProps = {
 
 const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const theme = useTheme();
-  const { state } = useAppContext();
+
+  const { cartState } = useCart();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [sidenavOpen, setSidenavOpen] = useState(false);
@@ -197,7 +198,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
               </Box>
 
               <Box component={IconButton} onClick={toggleCartDrawer}>
-                <Badge badgeContent={state.cart.length} color='primary'>
+                <Badge badgeContent={cartState.cart.length} color='primary'>
                   <Icon.CartBag sx={ICON_STYLE} />
                 </Badge>
               </Box>
@@ -272,7 +273,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
             )}
           </Box>
 
-          <Badge badgeContent={state.cart.length} color='primary'>
+          <Badge badgeContent={cartState.cart.length} color='primary'>
             <Box
               p={1.25}
               bgcolor='grey.200'

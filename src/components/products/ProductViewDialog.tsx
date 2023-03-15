@@ -14,7 +14,7 @@ import { IProduct } from 'api/models/Product.model/types';
 import BazaarImage from 'components/BazaarImage';
 import Carousel from 'components/carousel/Carousel';
 import { H1, H2, Paragraph } from 'components/Typography';
-import { useAppContext } from 'contexts/AppContext';
+import useCart from 'hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
@@ -62,7 +62,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
     }
   }, [openDialog, categoryName, product.category]);
 
-  const { state, dispatch } = useAppContext();
+  const { cartState, updateCartAmount } = useCart();
   // const cartItem = state.cart.find((item) => item.id === product._id.toString());
 
   // const handleCartAmountChange = (amount: number) => () => {

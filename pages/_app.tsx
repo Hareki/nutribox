@@ -7,17 +7,18 @@ import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import nProgress from 'nprogress';
 import { Fragment, ReactElement, ReactNode, useState } from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
 
-import '../src/fonts/SVN-Rubik/index.css';
 import nextI18NextConfig from '../next-i18next.config';
 
 import SnackbarProvider from 'components/SnackbarProvider';
-import { AppProvider } from 'contexts/AppContext';
 import SettingsProvider from 'contexts/SettingContext';
 import QueryClientSsrProvider from 'queryClientSsrProvider';
+import { store as reduxStore } from 'store';
 import MuiTheme from 'theme/MuiTheme';
 import OpenGraphTags from 'utils/OpenGraphTags';
 
+import '../src/fonts/SVN-Rubik/index.css';
 import 'nprogress/nprogress.css';
 import 'simplebar/dist/simplebar.min.css';
 import '../src/__server__';
@@ -59,7 +60,8 @@ const App = ({
 
       <SessionProvider session={session}>
         <SettingsProvider>
-          <AppProvider>
+          {/* <AppProvider> */}
+          <ReduxProvider store={reduxStore}>
             <MuiTheme>
               <SnackbarProvider>
                 <QueryClientSsrProvider
@@ -70,7 +72,8 @@ const App = ({
                 </QueryClientSsrProvider>
               </SnackbarProvider>
             </MuiTheme>
-          </AppProvider>
+          </ReduxProvider>
+          {/* </AppProvider> */}
         </SettingsProvider>
       </SessionProvider>
     </Fragment>

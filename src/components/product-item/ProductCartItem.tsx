@@ -7,8 +7,9 @@ import { FC } from 'react';
 import Image from 'components/BazaarImage';
 import { FlexBox } from 'components/flex-box';
 import { Span } from 'components/Typography';
-import { CartItem, useAppContext } from 'contexts/AppContext';
+import useCart from 'hooks/useCart';
 import { currency } from 'lib';
+import { CartItem } from 'store/slices/cartSlice';
 
 const Wrapper = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -33,15 +34,12 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
   ...product
 }) => {
   const { slug, imageUrls, name, retailPrice } = product;
-  const { dispatch } = useAppContext();
+  const { updateCartAmount } = useCart();
   // handle change cart
   const handleCartAmountChange = (amount: number) => () => {
-    dispatch({
-      type: 'CHANGE_CART_AMOUNT',
-      payload: {
-        quantity: amount,
-        ...product,
-      },
+    updateCartAmount({
+      quantity: amount,
+      ...product,
     });
   };
 
