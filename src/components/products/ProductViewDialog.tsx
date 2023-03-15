@@ -1,6 +1,7 @@
-import { Close } from '@mui/icons-material';
+import { Add, Close, Remove } from '@mui/icons-material';
 import {
   Box,
+  Button,
   Dialog,
   DialogContent,
   Divider,
@@ -13,8 +14,9 @@ import { FC, useState, useEffect } from 'react';
 import { IProduct } from 'api/models/Product.model/types';
 import BazaarImage from 'components/BazaarImage';
 import Carousel from 'components/carousel/Carousel';
-import { H1, H2, Paragraph } from 'components/Typography';
-import useCart from 'hooks/useCart';
+import { FlexBox } from 'components/flex-box';
+import { H1, H2, H3, Paragraph } from 'components/Typography';
+import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
@@ -63,19 +65,14 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
   }, [openDialog, categoryName, product.category]);
 
   const { cartState, updateCartAmount } = useCart();
-  // const cartItem = state.cart.find((item) => item.id === product._id.toString());
+  const cartItem = cartState.cart.find((item) => item.id === product.id);
 
-  // const handleCartAmountChange = (amount: number) => () => {
-  //   dispatch({
-  //     type: 'CHANGE_CART_AMOUNT',
-  //     payload: {
-  //       ...product,
-  //       qty: amount,
-  //       name: product.title,
-  //       imgUrl: product.imgGroup[0],
-  //     },
-  //   });
-  // };
+  const handleCartAmountChange = (amount: number) => () => {
+    updateCartAmount({
+      quantity: amount,
+      ...product,
+    });
+  };
 
   return (
     <Dialog
@@ -120,7 +117,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
 
               <Divider sx={{ mb: 2 }} />
 
-              {/* {!cartItem?.qty ? (
+              {!cartItem?.quantity ? (
                 <Button
                   size='large'
                   color='primary'
@@ -137,13 +134,13 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                     color='primary'
                     variant='outlined'
                     sx={{ p: '.6rem', height: 45 }}
-                    onClick={handleCartAmountChange(cartItem?.qty - 1)}
+                    onClick={handleCartAmountChange(cartItem?.quantity - 1)}
                   >
                     <Remove fontSize='small' />
                   </Button>
 
                   <H3 fontWeight='600' mx={2.5}>
-                    {cartItem?.qty.toString().padStart(2, '0')}
+                    {cartItem?.quantity.toString().padStart(2, '0')}
                   </H3>
 
                   <Button
@@ -151,12 +148,12 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                     color='primary'
                     variant='outlined'
                     sx={{ p: '.6rem', height: 45 }}
-                    onClick={handleCartAmountChange(cartItem?.qty + 1)}
+                    onClick={handleCartAmountChange(cartItem?.quantity + 1)}
                   >
                     <Add fontSize='small' />
                   </Button>
                 </FlexBox>
-              )} */}
+              )}
             </Grid>
           </Grid>
         </ContentWrapper>

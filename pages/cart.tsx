@@ -10,7 +10,7 @@ import ProductCartItem from 'components/product-item/ProductCartItem';
 import SEO from 'components/SEO';
 import { Span } from 'components/Typography';
 import countryList from 'data/countryList';
-import useCart from 'hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 
 const Cart: NextPage = () => {

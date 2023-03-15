@@ -13,7 +13,8 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import ProductViewDialog from 'components/products/ProductViewDialog';
 import { H3, Span } from 'components/Typography';
-import useCart from 'hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
+import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { currency } from 'lib';
 import { CartItem } from 'store/slices/cartSlice';
 
@@ -100,11 +101,9 @@ const ProductCard: FC<ProductCardProps> = (props) => {
 
   const { enqueueSnackbar } = useSnackbar();
   const { cartState, updateCartAmount } = useCart();
-
+  const { status } = useSession();
+  const { setLoginDialogOpen } = useLoginDialog();
   const [openModal, setOpenModal] = useState(false);
-
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === 'authenticated';
 
   const toggleDialog = useCallback(() => {
     onPreview?.();
@@ -115,24 +114,21 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     (item) => item.id === id,
   );
 
-  const handleCartAmountChange = (amount: number, type?: 'add' | 'remove') => {
+  const handleCartAmountChange = (amount: number) => {
     updateCartAmount({ ...props.product, quantity: amount });
-
-    if (type === 'remove') {
-      enqueueSnackbar('Remove from Cart', { variant: 'error' });
-    } else {
-      enqueueSnackbar('Added to Cart', { variant: 'success' });
-    }
   };
 
   const handleCartAmountButtonClick = (type: 'add' | 'remove') => {
-    if (isAuthenticated) {
+    if (status === 'authenticated') {
       const quantity = type === 'add' ? 1 : -1;
-      handleCartAmountChange((cartItem?.quantity || 0) + quantity, type);
+      handleCartAmountChange((cartItem?.quantity || 0) + quantity);
+      if (type === 'remove') {
+        enqueueSnackbar('Removed from Cart', { variant: 'error' });
+      } else {
+        enqueueSnackbar('Added to Cart', { variant: 'success' });
+      }
     } else {
-      enqueueSnackbar('Please Login to add product to cart', {
-        variant: 'error',
-      });
+      setLoginDialogOpen(true);
     }
   };
 
@@ -161,9 +157,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             <RemoveRedEye />
           </Span>
 
-          <Span
-          // onClick={handleCartAmountChange((cartItem?.qty || 0) + 1)}
-          >
+          <Span onClick={() => handleCartAmountButtonClick('add')}>
             <ShoppingCartIcon />
           </Span>
         </HoverWrapper>

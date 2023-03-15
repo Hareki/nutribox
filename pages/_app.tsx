@@ -13,6 +13,7 @@ import nextI18NextConfig from '../next-i18next.config';
 
 import SnackbarProvider from 'components/SnackbarProvider';
 import SettingsProvider from 'contexts/SettingContext';
+import LoginDialog from 'pages-sections/sessions/LoginDialog';
 import QueryClientSsrProvider from 'queryClientSsrProvider';
 import { store as reduxStore } from 'store';
 import MuiTheme from 'theme/MuiTheme';
@@ -60,7 +61,6 @@ const App = ({
 
       <SessionProvider session={session}>
         <SettingsProvider>
-          {/* <AppProvider> */}
           <ReduxProvider store={reduxStore}>
             <MuiTheme>
               <SnackbarProvider>
@@ -69,11 +69,11 @@ const App = ({
                   dehydratedState={dehydratedState}
                 >
                   {getLayout(<AnyComponent {...pageProps} />)}
+                  <LoginDialog />
                 </QueryClientSsrProvider>
               </SnackbarProvider>
             </MuiTheme>
           </ReduxProvider>
-          {/* </AppProvider> */}
         </SettingsProvider>
       </SessionProvider>
     </Fragment>

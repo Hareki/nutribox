@@ -15,7 +15,7 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
 import { H5, Paragraph, Tiny } from 'components/Typography';
-import useCart from 'hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import { CartItem } from 'store/slices/cartSlice';
 
@@ -23,7 +23,6 @@ type CartDrawerProps = { toggleCartDrawer: () => void };
 
 const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
   const { palette } = useTheme();
-
   const { cartState, updateCartAmount } = useCart();
   const cartList = cartState.cart;
 

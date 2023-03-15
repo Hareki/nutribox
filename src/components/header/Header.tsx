@@ -1,15 +1,11 @@
-import {
-  Clear,
-  ContentCopy,
-  ContentCut,
-  ContentPaste,
-  PersonOutline,
-} from '@mui/icons-material';
+import { Clear, Logout, PersonOutline } from '@mui/icons-material';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import {
   Avatar,
   Badge,
   Box,
-  Dialog,
+  Divider,
   Drawer,
   ListItemIcon,
   ListItemText,
@@ -23,8 +19,8 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import { FC, Fragment, ReactElement, useEffect, useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import { FC, Fragment, ReactElement, useState } from 'react';
 
 import Image from 'components/BazaarImage';
 import { FlexBetween, FlexBox } from 'components/flex-box';
@@ -33,9 +29,8 @@ import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import CartDrawer from 'components/MiniCart';
 import MobileMenu from 'components/navbar/MobileMenu';
 import { Paragraph } from 'components/Typography';
-import useCart from 'hooks/useCart';
-import { useLoginForm } from 'hooks/useLoginForm';
-import Login from 'pages-sections/sessions/Login';
+import useCart from 'hooks/redux-hooks/useCart';
+import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { layoutConstant } from 'utils/constants';
 
 // styled component
@@ -70,7 +65,8 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
 
   const { cartState } = useCart();
 
-  const [dialogOpen, setDialogOpen] = useState(false);
+  // const [dialogOpen, setDialogOpen] = useState(false);
+  const { setLoginDialogOpen } = useLoginDialog();
   const [sidenavOpen, setSidenavOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
@@ -82,18 +78,18 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const toggleSearchBar = () => setSearchBarOpen(!searchBarOpen);
   const togglePopover = () => setUserMenuOpen(!userMenuOpen);
 
-  const { checkingCredentials, handleFormSubmit, signInResponse, incorrect } =
-    useLoginForm();
+  // const { checkingCredentials, handleFormSubmit, signInResponse, incorrect } =
+  //   useLoginForm();
   const { data: session, status } = useSession();
   console.log('file: Header.tsx:87 - session:', session);
   const isAuthenticated = status === 'authenticated';
 
-  useEffect(() => {
-    console.log(signInResponse);
-    if (signInResponse && signInResponse.ok) {
-      setDialogOpen(false);
-    }
-  }, [signInResponse]);
+  // useEffect(() => {
+  //   console.log(signInResponse);
+  //   if (signInResponse && signInResponse.ok) {
+  //     setDialogOpen(false);
+  //   }
+  // }, [signInResponse]);
 
   const user = session?.user;
 
@@ -115,23 +111,25 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
     >
       <MenuItem>
         <ListItemIcon>
-          <ContentCut fontSize='small' />
+          <PermIdentityIcon />
         </ListItemIcon>
-        <ListItemText>Cut</ListItemText>
+        Tài khoản của tôi
       </MenuItem>
 
       <MenuItem>
         <ListItemIcon>
-          <ContentCopy fontSize='small' />
+          <ReceiptLongIcon fontSize='small' />
         </ListItemIcon>
-        <ListItemText>Copy</ListItemText>
+        <ListItemText>Đơn mua</ListItemText>
       </MenuItem>
 
-      <MenuItem>
+      <Divider />
+
+      <MenuItem onClick={() => signOut()}>
         <ListItemIcon>
-          <ContentPaste fontSize='small' />
+          <Logout fontSize='small' />
         </ListItemIcon>
-        <ListItemText>Paste</ListItemText>
+        Đăng xuất
       </MenuItem>
     </Menu>
   );
@@ -139,7 +137,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   // Login Dialog and Cart Drawer
   const DialogAndDrawer = (
     <Fragment>
-      <Dialog
+      {/* <Dialog
         scroll='body'
         open={dialogOpen}
         fullWidth={isMobile}
@@ -151,7 +149,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
           handleFormSubmit={handleFormSubmit}
           incorrect={incorrect}
         />
-      </Dialog>
+      </Dialog> */}
 
       <Drawer
         open={sidenavOpen}
@@ -193,7 +191,16 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
                 <Icon.Search sx={ICON_STYLE} />
               </Box>
 
-              <Box component={IconButton} onClick={() => setDialogOpen(true)}>
+              <Box
+                component={IconButton}
+                onClick={() => {
+                  if (isAuthenticated) {
+                    togglePopover();
+                  } else {
+                    setLoginDialogOpen(true);
+                  }
+                }}
+              >
                 <Icon.User sx={ICON_STYLE} />
               </Box>
 
@@ -259,7 +266,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
               if (isAuthenticated) {
                 togglePopover();
               } else {
-                setDialogOpen(true);
+                setLoginDialogOpen(true);
               }
             }}
           >

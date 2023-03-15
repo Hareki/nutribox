@@ -2,12 +2,14 @@
 import { Add, Close, Remove } from '@mui/icons-material';
 import { Button, Card, IconButton, styled } from '@mui/material';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { FC } from 'react';
 
 import Image from 'components/BazaarImage';
 import { FlexBox } from 'components/flex-box';
 import { Span } from 'components/Typography';
-import useCart from 'hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
+import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { currency } from 'lib';
 import { CartItem } from 'store/slices/cartSlice';
 
@@ -35,12 +37,18 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
 }) => {
   const { slug, imageUrls, name, retailPrice } = product;
   const { updateCartAmount } = useCart();
+  const { setLoginDialogOpen } = useLoginDialog();
+  const { status } = useSession();
   // handle change cart
   const handleCartAmountChange = (amount: number) => () => {
-    updateCartAmount({
-      quantity: amount,
-      ...product,
-    });
+    if (status === 'authenticated') {
+      updateCartAmount({
+        quantity: amount,
+        ...product,
+      });
+    } else {
+      setLoginDialogOpen(true);
+    }
   };
 
   return (

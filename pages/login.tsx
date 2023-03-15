@@ -1,5 +1,6 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 import { FlexRowCenter } from 'components/flex-box';
@@ -31,6 +32,23 @@ const LoginPage: NextPage = () => {
       />
     </FlexRowCenter>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({ req: context.req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 };
 
 export default LoginPage;

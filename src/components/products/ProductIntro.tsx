@@ -7,7 +7,7 @@ import { FlexBox, FlexRowCenter } from '../flex-box';
 import { IProduct } from 'api/models/Product.model/types';
 import LazyImage from 'components/LazyImage';
 import { H1, H2, H3, H6 } from 'components/Typography';
-import useCart from 'hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
@@ -31,7 +31,6 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
   }, [category, categoryName]);
 
   const { cartState, updateCartAmount } = useCart();
-
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectVariants, setSelectVariants] = useState({
     option: 'option 1',
