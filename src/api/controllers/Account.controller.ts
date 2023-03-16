@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 import {
   getAllGenerator,
   getOneGenerator,
@@ -6,13 +8,15 @@ import {
 
 import Account from 'api/models/Account.model';
 import { IAccount } from 'api/models/Account.model/types';
+import Product from 'api/models/Product.model';
+import { CartItemRequestBody } from 'utils/apiCallers/global/cart';
 
-export const getAll = getAllGenerator<IAccount>(Account);
-export const getOne = getOneGenerator<IAccount>(Account);
+const getAll = getAllGenerator<IAccount>(Account);
+const getOne = getOneGenerator<IAccount>(Account);
 
-export const createOne = createOneGenerator<IAccount>(Account);
+const createOne = createOneGenerator<IAccount>(Account);
 
-export const checkCredentials = async (
+const checkCredentials = async (
   email: string,
   password: string,
 ): Promise<IAccount | null> => {
@@ -28,10 +32,35 @@ export const checkCredentials = async (
   return account.toObject();
 };
 
+const updateCart = async ({
+  accountId,
+  productId,
+  quantity,
+}: CartItemRequestBody): Promise<IAccount> => {
+  const account = await Account.findById(accountId).exec();
+  if (!account) {
+    throw new Error(
+      `Document ${Account.baseModelName} with id ${accountId} not found`,
+    );
+  }
+
+  const product = await Product.findById(productId).exec();
+  if (!product) {
+    throw new Error(
+      `Document ${Product.baseModelName} with id ${productId} not found`,
+    );
+  }
+
+  account.cartItems.push({ product: new Types.ObjectId(productId), quantity });
+  account.save();
+  return account.toObject();
+};
+
 const AccountController = {
   getAll,
   getOne,
   createOne,
   checkCredentials,
+  updateCart,
 };
 export default AccountController;

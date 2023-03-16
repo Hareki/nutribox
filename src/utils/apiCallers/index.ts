@@ -31,7 +31,6 @@ const getAllCategories = async (): Promise<IProductCategory[]> => {
 const getAllProducts = async (
   pageNumInput: number,
 ): Promise<GetPaginationResult<IProduct>> => {
-  if (pageNumInput === 0) console.log('WARNING: pageNumInput is 0');
   let pageNum: number, docsPerPage: number;
   if (!pageNumInput) {
     pageNum = 1;
@@ -48,19 +47,6 @@ const getAllProducts = async (
     params: {
       page: pageNum,
       docsPerPage: docsPerPage,
-    },
-  });
-  return response.data.data;
-};
-
-const getAllProductsPrerender = async (): Promise<
-  GetPaginationPrerenderResult<IProduct>
-> => {
-  const response = await axiosInstance.get('/product/all', {
-    params: {
-      page: 1,
-      docsPerPage: paginationConstant.docsPerPage,
-      prerender: true,
     },
   });
   return response.data.data;
@@ -91,7 +77,6 @@ const getNewProducts = async (): Promise<IProduct[]> => {
 
 const apiCaller = {
   getAllProducts,
-  getAllProductsPrerender,
   getHotProducts,
   getAllCategories,
   getCategoryWithProducts,

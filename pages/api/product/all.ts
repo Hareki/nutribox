@@ -25,7 +25,6 @@ const handler = nc<
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
   await connectToDB();
-  // console.log('req.url:', req.url);
 
   const { populate, docsPerPage, page, prerender } = req.query;
   const totalDocs = await ProductController.getTotal();
@@ -47,20 +46,6 @@ const handler = nc<
     totalDocs,
     docs: products,
   };
-
-  // if (prerender) {
-  //   const prerenderResult = {
-  //     pages: [result],
-  //     pageParams: [1],
-  //   };
-
-  //   res.status(StatusCodes.OK).json({
-  //     status: 'success',
-  //     data: prerenderResult,
-  //   });
-
-  //   return;
-  // }
 
   res.status(StatusCodes.OK).json({
     status: 'success',
