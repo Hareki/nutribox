@@ -5,10 +5,7 @@ import {
   IProductCategory,
   IPopulatedProductCategory,
 } from 'api/models/ProductCategory.model/types';
-import {
-  GetPaginationPrerenderResult,
-  GetPaginationResult,
-} from 'api/types/pagination.type';
+import { GetPaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
 
 const getAllCategories = async (): Promise<IProductCategory[]> => {

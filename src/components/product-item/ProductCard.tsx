@@ -86,11 +86,11 @@ const ContentWrapper = styled(FlexBox)({
   },
 });
 
-// ===============================================================
 type ProductCardProps = {
   product: IProduct;
   onPreview?: () => void;
 };
+
 // ===============================================================
 
 const ProductCard: FC<ProductCardProps> = (props) => {

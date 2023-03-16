@@ -18,16 +18,18 @@ import {
   instanceOfValidationError,
 } from 'api/types/mongooseError.type';
 import {
+  JSendErrorResponse,
   JSendFailResponse,
   JSendSuccessResponse,
 } from 'api/types/response.type';
 
 export const onSignUpError: ErrorHandler<
   NextApiRequest,
-  NextApiResponse<JSendFailResponse<Record<string, string>>>
+  NextApiResponse<
+    JSendFailResponse<Record<string, string>> | JSendErrorResponse
+  >
 > = (err: any, _req, res) => {
   let response: Record<string, string>;
-
   console.log(JSON.stringify(err));
 
   if (instanceOfDuplicateKeyError(err)) {
@@ -36,17 +38,26 @@ export const onSignUpError: ErrorHandler<
     response = getValidationErrorMessages(err);
   }
 
-  const responseCode = StatusCodes.UNPROCESSABLE_ENTITY;
-  res.status(responseCode).json({
-    status: 'fail',
-    data: response,
+  if (response) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
+      status: 'fail',
+      data: response,
+    });
+    return;
+  }
+
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    status: 'error',
+    message: err.message,
   });
 };
 
 const handler = nc<
   NextApiRequest,
   NextApiResponse<
-    JSendSuccessResponse<IAccount> | JSendFailResponse<Record<string, string>>
+    | JSendSuccessResponse<IAccount>
+    | JSendFailResponse<Record<string, string>>
+    | JSendErrorResponse
   >
 >({
   attachParams: true,

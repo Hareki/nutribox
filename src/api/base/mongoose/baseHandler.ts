@@ -3,7 +3,6 @@ import { Model, Types } from 'mongoose';
 export interface BaseGetOptions {
   model: Model<any>;
   populate?: string[];
-  lean?: boolean;
   ignoreFields?: string[];
   includeFields?: string[];
 }
@@ -23,12 +22,10 @@ export const buildBaseQuery = (
   query: any,
   options: BaseQueryBuilderOptions,
 ) => {
-  const { populate, lean, ignoreFields, includeFields = [] } = options;
+  const { populate, ignoreFields, includeFields = [] } = options;
+  query.lean({ virtuals: true });
   if (populate) {
     query.populate(populate);
-  }
-  if (lean) {
-    query.lean({ virtuals: true });
   }
   let ignoreFieldsArr = ['__v'];
   if (ignoreFields) {
@@ -43,10 +40,10 @@ export const buildBaseQuery = (
   query.select(querySelector);
 };
 
+// With lean, processed data
 export const getAllDocs = async ({
   model,
   populate,
-  lean = true,
   ignoreFields,
   includeFields,
   skip,
@@ -54,7 +51,7 @@ export const getAllDocs = async ({
 }: GetManyDocsOptions): Promise<any[]> => {
   const query = model.find();
 
-  buildBaseQuery(query, { populate, lean, ignoreFields, includeFields });
+  buildBaseQuery(query, { populate, ignoreFields, includeFields });
 
   if (skip) {
     query.skip(skip);
@@ -68,17 +65,17 @@ export const getAllDocs = async ({
   return docs;
 };
 
+// With lean, processed data
 export const getOneDoc = async ({
   model,
   populate,
-  lean = true,
   ignoreFields,
   includeFields,
   id,
 }: GetOneDocsOptions): Promise<any> => {
   const query = model.findById(id);
 
-  buildBaseQuery(query, { populate, lean, ignoreFields, includeFields });
+  buildBaseQuery(query, { populate, ignoreFields, includeFields });
 
   const doc = await query.exec();
   if (!doc) {

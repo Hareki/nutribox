@@ -4,8 +4,9 @@ import {
   getAllGenerator,
   getOneGenerator,
   createOneGenerator,
-} from './base.controller';
+} from './generator.controller';
 
+import { validateDocExistence } from 'api/helpers/model.helper';
 import Account from 'api/models/Account.model';
 import { IAccount } from 'api/models/Account.model/types';
 import Product from 'api/models/Product.model';
@@ -32,26 +33,33 @@ const checkCredentials = async (
   return account.toObject();
 };
 
-const updateCart = async ({
-  accountId,
-  productId,
-  quantity,
-}: CartItemRequestBody): Promise<IAccount> => {
+const updateCartItem = async (
+  accountId: string,
+  { productId, quantity }: CartItemRequestBody,
+): Promise<IAccount> => {
   const account = await Account.findById(accountId).exec();
-  if (!account) {
-    throw new Error(
-      `Document ${Account.baseModelName} with id ${accountId} not found`,
-    );
-  }
+  validateDocExistence(account, Account, accountId);
 
   const product = await Product.findById(productId).exec();
-  if (!product) {
-    throw new Error(
-      `Document ${Product.baseModelName} with id ${productId} not found`,
-    );
+  validateDocExistence(product, Product, productId);
+
+  const existingCartItemIndex = account.cartItems.findIndex(
+    (item) => item.product.toString() === productId,
+  );
+
+  if (existingCartItemIndex > -1) {
+    if (quantity <= 0) {
+      account.cartItems.splice(existingCartItemIndex, 1);
+    } else {
+      account.cartItems[existingCartItemIndex].quantity = quantity;
+    }
+  } else if (quantity > 0) {
+    account.cartItems.push({
+      product: new Types.ObjectId(productId),
+      quantity,
+    });
   }
 
-  account.cartItems.push({ product: new Types.ObjectId(productId), quantity });
   account.save();
   return account.toObject();
 };
@@ -61,6 +69,6 @@ const AccountController = {
   getOne,
   createOne,
   checkCredentials,
-  updateCart,
+  updateCart: updateCartItem,
 };
 export default AccountController;
