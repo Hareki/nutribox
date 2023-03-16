@@ -3,6 +3,8 @@ import { Types } from 'mongoose';
 import { IAccountAddress } from './AccountAddress.schema/types';
 import { ICartItem } from './CartItem.schema/types';
 
+import { CartItem } from 'hooks/redux-hooks/useCart';
+
 export interface IAccount {
   _id: Types.ObjectId;
   id: string;
@@ -27,6 +29,11 @@ export interface IAccount {
     candidatePassword: string,
     userPassword: string,
   ) => Promise<boolean>;
+}
+
+export interface IPopulatedCartItemsAccount
+  extends Omit<IAccount, 'cartItems'> {
+  cartItems: CartItem[];
 }
 
 export interface IAccountInput

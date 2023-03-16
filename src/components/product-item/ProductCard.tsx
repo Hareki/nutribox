@@ -4,7 +4,6 @@ import ShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Box, Button, styled } from '@mui/material';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { useSnackbar } from 'notistack';
 import { FC, Fragment, useCallback, useState } from 'react';
 
 import { IProduct } from 'api/models/Product.model/types';
@@ -13,7 +12,7 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import ProductViewDialog from 'components/products/ProductViewDialog';
 import { H3, Span } from 'components/Typography';
-import useCart from 'hooks/redux-hooks/useCart';
+import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { currency } from 'lib';
 import { CartItem } from 'store/slices/cartSlice';
@@ -99,7 +98,6 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     onPreview,
   } = props;
 
-  const { enqueueSnackbar } = useSnackbar();
   const { cartState, updateCartAmount } = useCart();
   const { status } = useSession();
   const { setLoginDialogOpen } = useLoginDialog();
@@ -114,19 +112,14 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     (item) => item.id === id,
   );
 
-  const handleCartAmountChange = (amount: number) => {
-    updateCartAmount({ ...props.product, quantity: amount });
+  const handleCartAmountChange = (amount: number, type: CartItemActionType) => {
+    updateCartAmount({ ...props.product, quantity: amount }, type);
   };
 
-  const handleCartAmountButtonClick = (type: 'add' | 'remove') => {
+  const handleCartAmountButtonClick = (type: CartItemActionType) => {
     if (status === 'authenticated') {
       const quantity = type === 'add' ? 1 : -1;
-      handleCartAmountChange((cartItem?.quantity || 0) + quantity);
-      if (type === 'remove') {
-        enqueueSnackbar('Removed from Cart', { variant: 'error' });
-      } else {
-        enqueueSnackbar('Added to Cart', { variant: 'success' });
-      }
+      handleCartAmountChange((cartItem?.quantity || 0) + quantity, type);
     } else {
       setLoginDialogOpen(true);
     }

@@ -16,7 +16,7 @@ import BazaarImage from 'components/BazaarImage';
 import Carousel from 'components/carousel/Carousel';
 import { FlexBox } from 'components/flex-box';
 import { H1, H2, H3, Paragraph } from 'components/Typography';
-import useCart from 'hooks/redux-hooks/useCart';
+import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
@@ -67,12 +67,16 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
   const { cartState, updateCartAmount } = useCart();
   const cartItem = cartState.cart.find((item) => item.id === product.id);
 
-  const handleCartAmountChange = (amount: number) => () => {
-    updateCartAmount({
-      quantity: amount,
-      ...product,
-    });
-  };
+  const handleCartAmountChange =
+    (amount: number, type: CartItemActionType) => () => {
+      updateCartAmount(
+        {
+          quantity: amount,
+          ...product,
+        },
+        type,
+      );
+    };
 
   return (
     <Dialog
@@ -122,10 +126,10 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                   size='large'
                   color='primary'
                   variant='contained'
-                  onClick={handleCartAmountChange(1)}
+                  onClick={handleCartAmountChange(1, 'add')}
                   sx={{ height: 45 }}
                 >
-                  Add to Cart
+                  Thêm vào giỏ hàng
                 </Button>
               ) : (
                 <FlexBox alignItems='center'>
@@ -134,7 +138,10 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                     color='primary'
                     variant='outlined'
                     sx={{ p: '.6rem', height: 45 }}
-                    onClick={handleCartAmountChange(cartItem?.quantity - 1)}
+                    onClick={handleCartAmountChange(
+                      cartItem?.quantity - 1,
+                      'remove',
+                    )}
                   >
                     <Remove fontSize='small' />
                   </Button>
@@ -148,7 +155,10 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                     color='primary'
                     variant='outlined'
                     sx={{ p: '.6rem', height: 45 }}
-                    onClick={handleCartAmountChange(cartItem?.quantity + 1)}
+                    onClick={handleCartAmountChange(
+                      cartItem?.quantity + 1,
+                      'add',
+                    )}
                   >
                     <Add fontSize='small' />
                   </Button>

@@ -7,7 +7,7 @@ import { FlexBox, FlexRowCenter } from '../flex-box';
 import { IProduct } from 'api/models/Product.model/types';
 import LazyImage from 'components/LazyImage';
 import { H1, H2, H3, H6 } from 'components/Typography';
-import useCart from 'hooks/redux-hooks/useCart';
+import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
@@ -52,12 +52,16 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
   const handleImageClick = (index: number) => () => setSelectedImage(index);
 
   // HANDLE CHANGE CART
-  const handleCartAmountChange = (amount: number) => () => {
-    updateCartAmount({
-      quantity: amount,
-      ...product,
-    });
-  };
+  const handleCartAmountChange =
+    (amount: number, type: CartItemActionType) => () => {
+      updateCartAmount(
+        {
+          quantity: amount,
+          ...product,
+        },
+        type,
+      );
+    };
 
   return (
     <Box sx={sx} width='100%'>
@@ -135,7 +139,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
             <Button
               color='primary'
               variant='contained'
-              onClick={handleCartAmountChange(1)}
+              onClick={handleCartAmountChange(1, 'add')}
               sx={{ mb: 4.5, px: '1.75rem', height: 40 }}
             >
               Thêm vào giỏ hàng
@@ -147,7 +151,10 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
                 sx={{ p: 1 }}
                 color='primary'
                 variant='outlined'
-                onClick={handleCartAmountChange(cartItem?.quantity - 1)}
+                onClick={handleCartAmountChange(
+                  cartItem?.quantity - 1,
+                  'remove',
+                )}
               >
                 <Remove fontSize='small' />
               </Button>
@@ -161,7 +168,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
                 sx={{ p: 1 }}
                 color='primary'
                 variant='outlined'
-                onClick={handleCartAmountChange(cartItem?.quantity + 1)}
+                onClick={handleCartAmountChange(cartItem?.quantity + 1, 'add')}
               >
                 <Add fontSize='small' />
               </Button>

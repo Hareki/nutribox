@@ -23,10 +23,10 @@ import { useSession, signOut } from 'next-auth/react';
 import { FC, Fragment, ReactElement, useState } from 'react';
 
 import Image from 'components/BazaarImage';
+import CartDrawer from 'components/CartDrawer';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Icon from 'components/icons';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
-import CartDrawer from 'components/MiniCart';
 import MobileMenu from 'components/navbar/MobileMenu';
 import { Paragraph } from 'components/Typography';
 import useCart from 'hooks/redux-hooks/useCart';

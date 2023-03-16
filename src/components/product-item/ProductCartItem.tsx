@@ -8,7 +8,7 @@ import { FC } from 'react';
 import Image from 'components/BazaarImage';
 import { FlexBox } from 'components/flex-box';
 import { Span } from 'components/Typography';
-import useCart from 'hooks/redux-hooks/useCart';
+import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { currency } from 'lib';
 import { CartItem } from 'store/slices/cartSlice';
@@ -40,16 +40,20 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
   const { setLoginDialogOpen } = useLoginDialog();
   const { status } = useSession();
   // handle change cart
-  const handleCartAmountChange = (amount: number) => () => {
-    if (status === 'authenticated') {
-      updateCartAmount({
-        quantity: amount,
-        ...product,
-      });
-    } else {
-      setLoginDialogOpen(true);
-    }
-  };
+  const handleCartAmountChange =
+    (amount: number, type: CartItemActionType) => () => {
+      if (status === 'authenticated') {
+        updateCartAmount(
+          {
+            quantity: amount,
+            ...product,
+          },
+          type,
+        );
+      } else {
+        setLoginDialogOpen(true);
+      }
+    };
 
   return (
     <Wrapper>
@@ -63,7 +67,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
 
       <IconButton
         size='small'
-        onClick={handleCartAmountChange(0)}
+        onClick={handleCartAmountChange(0, 'remove')}
         sx={{ position: 'absolute', right: 15, top: 15 }}
       >
         <Close fontSize='small' />
@@ -92,7 +96,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
             sx={{ p: '5px' }}
             variant='outlined'
             disabled={quantity === 1}
-            onClick={handleCartAmountChange(quantity - 1)}
+            onClick={handleCartAmountChange(quantity - 1, 'remove')}
           >
             <Remove fontSize='small' />
           </Button>
@@ -104,7 +108,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
             color='primary'
             sx={{ p: '5px' }}
             variant='outlined'
-            onClick={handleCartAmountChange(quantity + 1)}
+            onClick={handleCartAmountChange(quantity + 1, 'add')}
           >
             <Add fontSize='small' />
           </Button>

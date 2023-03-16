@@ -9,4 +9,5 @@ export class CustomError extends Error {
 
 export enum CustomErrorCodes {
   DOCUMENT_NOT_FOUND,
+  PRODUCT_NOT_BELONG_TO_CART_ITEM,
 }

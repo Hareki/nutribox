@@ -1,34 +1,29 @@
-import { Add, Clear, Close, Remove } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  useTheme,
-} from '@mui/material';
+import { Clear } from '@mui/icons-material';
+import { Box, Button, Divider, IconButton } from '@mui/material';
 import Link from 'next/link';
 import { FC } from 'react';
+
+import CartDrawerItem from './CartDrawerItem';
 
 import { IProduct } from 'api/models/Product.model/types';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
-import { H5, Paragraph, Tiny } from 'components/Typography';
-import useCart from 'hooks/redux-hooks/useCart';
+import { Paragraph } from 'components/Typography';
+import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import { CartItem } from 'store/slices/cartSlice';
 
 type CartDrawerProps = { toggleCartDrawer: () => void };
 
 const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
-  const { palette } = useTheme();
   const { cartState, updateCartAmount } = useCart();
   const cartList = cartState.cart;
 
-  const handleCartAmountChange = (amount: number, product: IProduct) => () => {
-    updateCartAmount({ ...product, quantity: amount });
-  };
+  const handleCartAmountChange =
+    (amount: number, product: IProduct, type: CartItemActionType) => () => {
+      updateCartAmount({ ...product, quantity: amount }, type);
+    };
 
   const getTotalPrice = () => {
     return cartList.reduce(
@@ -36,6 +31,8 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
       0,
     );
   };
+
+  console.log('cartList', cartList);
 
   return (
     <Box width={380}>
@@ -85,83 +82,11 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
         )}
 
         {cartList.map((item: CartItem) => (
-          <FlexBox
-            py={2}
-            px={2.5}
+          <CartDrawerItem
             key={item.id}
-            alignItems='center'
-            borderBottom={`1px solid ${palette.divider}`}
-          >
-            <FlexBox alignItems='center' flexDirection='column'>
-              <Button
-                color='primary'
-                variant='outlined'
-                onClick={handleCartAmountChange(item.quantity + 1, item)}
-                sx={{ height: '32px', width: '32px', borderRadius: '300px' }}
-              >
-                <Add fontSize='small' />
-              </Button>
-
-              <Box fontWeight={600} fontSize='15px' my='3px'>
-                {item.quantity}
-              </Box>
-
-              <Button
-                color='primary'
-                variant='outlined'
-                disabled={item.quantity === 1}
-                onClick={handleCartAmountChange(item.quantity - 1, item)}
-                sx={{ height: '32px', width: '32px', borderRadius: '300px' }}
-              >
-                <Remove fontSize='small' />
-              </Button>
-            </FlexBox>
-
-            <Link href={`/product/${item.id}`}>
-              <Avatar
-                alt={item.name}
-                // FIXME
-                src={item.imageUrls[0]}
-                sx={{ mx: 2, width: 76, height: 76 }}
-              />
-            </Link>
-
-            <Box
-              flex='1'
-              sx={{
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              <Link href={`/product/${item.slug}`}>
-                <H5 ellipsis fontSize='14px' className='title'>
-                  {item.name}
-                </H5>
-              </Link>
-
-              <Tiny color='grey.600'>
-                {currency(item.retailPrice)} x {item.quantity}
-              </Tiny>
-
-              <Box
-                fontWeight={600}
-                fontSize='14px'
-                color='primary.main'
-                mt={0.5}
-              >
-                {currency(item.quantity * item.retailPrice)}
-              </Box>
-            </Box>
-
-            <IconButton
-              size='small'
-              onClick={handleCartAmountChange(0, item)}
-              sx={{ marginLeft: 2.5 }}
-            >
-              <Close fontSize='small' />
-            </IconButton>
-          </FlexBox>
+            cartItem={item}
+            handleCartAmountChange={handleCartAmountChange}
+          />
         ))}
       </Box>
 

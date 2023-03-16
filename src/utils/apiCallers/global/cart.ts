@@ -1,4 +1,5 @@
-import { ICartItem } from 'api/models/Account.model/CartItem.schema/types';
+import { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
+import { CartState } from 'hooks/redux-hooks/useCart';
 import axiosInstance from 'utils/axiosInstance';
 
 export interface CartItemRequestBody {
@@ -6,17 +7,25 @@ export interface CartItemRequestBody {
   quantity: number;
 }
 
-export interface CartItemResponseBody {
-  cart: ICartItem;
-}
-
 export const updateCartItem = async (
   accountId: string,
   { productId, quantity }: CartItemRequestBody,
-): Promise<CartItemResponseBody> => {
+): Promise<IPopulatedCartItemsAccount> => {
   const response = await axiosInstance.put(`/cart/${accountId}`, {
     productId,
     quantity,
   });
   return response.data.data;
 };
+
+export const getCartItems = async (accountId: string): Promise<CartState> => {
+  const response = await axiosInstance.get(`/cart/${accountId}`);
+  return response.data.data;
+};
+
+const apiCaller = {
+  getCartItems,
+  updateCartItem,
+};
+
+export default apiCaller;
