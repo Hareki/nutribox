@@ -14,15 +14,15 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 
+import { H5, H6, Paragraph } from 'components/abstract/Typography';
+import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
+import TableRow from 'components/data-table/TableRow';
 import { FlexBetween, FlexBox } from 'components/flex-box';
-import UserDashboardHeader from 'components/header/UserDashboardHeader';
 import Delivery from 'components/icons/Delivery';
 import PackageBox from 'components/icons/PackageBox';
 import TruckFilled from 'components/icons/TruckFilled';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import TableRow from 'components/TableRow';
-import { H5, H6, Paragraph } from 'components/Typography';
 import useWindowSize from 'hooks/useWindowSize';
 import { currency } from 'lib';
 import Order from 'models/Order.model';

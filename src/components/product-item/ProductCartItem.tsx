@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { FC } from 'react';
 
-import Image from 'components/BazaarImage';
+import { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
+import { Span } from 'components/abstract/Typography';
+import Image from 'components/common/input/CustomImage';
 import { FlexBox } from 'components/flex-box';
-import { Span } from 'components/Typography';
 import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { currency } from 'lib';
-import { CartItem } from 'store/slices/cartSlice';
 
 const Wrapper = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -29,12 +29,9 @@ const Wrapper = styled(Card)(({ theme }) => ({
   },
 }));
 
-interface ProductCartItemProps extends CartItem {}
+interface ProductCartItemProps extends IPopulatedCartItem {}
 
-const ProductCartItem: FC<ProductCartItemProps> = ({
-  quantity,
-  ...product
-}) => {
+const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
   const { slug, imageUrls, name, retailPrice } = product;
   const { updateCartAmount } = useCart();
   const { setLoginDialogOpen } = useLoginDialog();
@@ -45,8 +42,8 @@ const ProductCartItem: FC<ProductCartItemProps> = ({
       if (status === 'authenticated') {
         updateCartAmount(
           {
+            product,
             quantity: amount,
-            ...product,
           },
           type,
         );

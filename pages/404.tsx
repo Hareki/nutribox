@@ -3,9 +3,9 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import BazaarImage from 'components/BazaarImage';
+import SEO from 'components/abstract/SEO';
+import CustomImage from 'components/common/input/CustomImage';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
-import SEO from 'components/SEO';
 
 const Error404: NextPage = () => {
   const router = useRouter();
@@ -14,7 +14,7 @@ const Error404: NextPage = () => {
   return (
     <FlexRowCenter px={2} minHeight='100vh' flexDirection='column'>
       <SEO title='Nothing found' />
-      <BazaarImage
+      <CustomImage
         src='/assets/images/illustrations/404.svg'
         sx={{ display: 'block', maxWidth: 320, width: '100%', mb: 3 }}
       />

@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { alpha, Box, ButtonBase, styled } from '@mui/material';
 
-import { Paragraph, Span } from 'components/Typography';
+import { Paragraph, Span } from 'components/abstract/Typography';
 
 // ===============================================================
 type Active = { active: any };

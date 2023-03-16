@@ -3,9 +3,9 @@ import { Button, Divider, Grid, TextField } from '@mui/material';
 import { Formik } from 'formik';
 import { FC } from 'react';
 
+import { H4 } from 'components/abstract/Typography';
 import AppleStore from 'components/icons/AppleStore';
 import PlayStore from 'components/icons/PlayStore';
-import { H4 } from 'components/Typography';
 
 const SocialLinksForm: FC = () => {
   const initialValues = {

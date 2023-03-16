@@ -2,8 +2,8 @@ import { Favorite } from '@mui/icons-material';
 import { Box, Button, Grid, styled } from '@mui/material';
 import { FC } from 'react';
 
-import BazaarImage from 'components/BazaarImage';
-import { H2, H3, H4, Paragraph } from 'components/Typography';
+import { H2, H3, H4, Paragraph } from 'components/abstract/Typography';
+import CustomImage from 'components/common/input/CustomImage';
 
 // styled component
 const ContentWrapper = styled(Box)(({ theme }) => ({
@@ -31,7 +31,7 @@ const CarouselCard2: FC<CarouselCard2Props> = ({
   return (
     <Grid container alignItems='center'>
       <Grid item lg={6} md={5} sm={12} xs={12}>
-        <BazaarImage
+        <CustomImage
           src={imgUrl}
           alt='xiaomi-watch-1'
           sx={{ display: 'block', mx: 'auto', maxWidth: '100%', p: 5 }}

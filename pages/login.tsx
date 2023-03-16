@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
+import SEO from 'components/abstract/SEO';
 import { FlexRowCenter } from 'components/flex-box';
-import SEO from 'components/SEO';
 import { useLoginForm } from 'hooks/useLoginForm';
-import Login from 'pages-sections/sessions/Login';
+import Login from 'pages-sections/auth/Login';
 
 const LoginPage: NextPage = () => {
   const router = useRouter();

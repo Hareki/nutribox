@@ -1,9 +1,9 @@
 import { Button, Grid, styled } from '@mui/material';
 import { FC } from 'react';
 
-import BazaarImage from 'components/BazaarImage';
+import { Paragraph } from 'components/abstract/Typography';
+import CustomImage from 'components/common/input/CustomImage';
 import { FlexBetween } from 'components/flex-box';
-import { Paragraph } from 'components/Typography';
 
 // styled component
 const StyledBox = styled(FlexBetween)(({ theme }) => ({
@@ -77,7 +77,7 @@ const CarouselCard1: FC<CarouselCard1Props> = ({
         </Grid>
 
         <Grid item sm={5} xs={12}>
-          <BazaarImage
+          <CustomImage
             src={imgUrl}
             alt='apple-watch-1'
             sx={{

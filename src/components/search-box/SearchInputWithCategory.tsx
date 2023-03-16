@@ -13,7 +13,7 @@ import {
 
 import { SearchOutlinedIcon, SearchResultCard } from './styled';
 
-import BazaarMenu from 'components/BazaarMenu';
+import CustomMenu from 'components/common/input/CustomMenu';
 import { FlexBox } from 'components/flex-box';
 import api from 'utils/__api__/products';
 
@@ -65,7 +65,7 @@ const SearchInputWithCategory: FC = () => {
 
   // CATEGORY MENU DROPDOWN
   const categoryDropdown = (
-    <BazaarMenu
+    <CustomMenu
       direction='left'
       sx={{ zIndex: breakpoints.down('md') ? 99999 : 1502 }}
       handler={
@@ -88,7 +88,7 @@ const SearchInputWithCategory: FC = () => {
           {item.title}
         </MenuItem>
       ))}
-    </BazaarMenu>
+    </CustomMenu>
   );
 
   return (

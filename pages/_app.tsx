@@ -11,10 +11,10 @@ import { Provider as ReduxProvider } from 'react-redux';
 
 import nextI18NextConfig from '../next-i18next.config';
 
-import SnackbarProvider from 'components/SnackbarProvider';
+import QueryClientSsrProvider from 'contexts/QueryClientSsrProvider';
 import SettingsProvider from 'contexts/SettingContext';
-import LoginDialog from 'pages-sections/sessions/LoginDialog';
-import QueryClientSsrProvider from 'queryClientSsrProvider';
+import SnackbarProvider from 'contexts/SnackbarProvider';
+import LoginDialog from 'pages-sections/auth/LoginDialog';
 import { store as reduxStore } from 'store';
 import MuiTheme from 'theme/MuiTheme';
 import OpenGraphTags from 'utils/OpenGraphTags';

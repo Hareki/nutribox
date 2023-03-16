@@ -11,6 +11,7 @@
     "size": "node --max_old_space_size=4096",
     "fix:prettier": "prettier --write . '!.next' '!.node_modules'",
     "lint": "next lint",
+    "check-types": "tsc --noEmit",
     "pretty": "prettier --write . --ignore-path .gitignore",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx . --ignore-path .gitignore",
     "formatter": "npm-run-all pretty lint:fix"

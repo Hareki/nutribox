@@ -1,7 +1,7 @@
 import { Box, BoxProps, styled } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
-import BazaarImage from 'components/BazaarImage';
+import CustomImage from 'components/common/input/CustomImage';
 
 // custom styled components
 const CardWrapper = styled(Box)({
@@ -36,7 +36,7 @@ const BannerCard3: FC<BannerCard1Props & BoxProps> = ({
 }) => {
   return (
     <CardWrapper {...props}>
-      <BazaarImage alt='category' height='100%' width='100%' src={img} />
+      <CustomImage alt='category' height='100%' width='100%' src={img} />
 
       <CardContent>{children}</CardContent>
     </CardWrapper>

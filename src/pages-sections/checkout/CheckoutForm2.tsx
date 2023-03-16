@@ -22,10 +22,10 @@ import * as yup from 'yup';
 import EditAddressForm from './EditAddressForm';
 import NewAddressForm from './NewAddressForm';
 
-import Card1 from 'components/Card1';
+import { H6, Paragraph } from 'components/abstract/Typography';
+import Card1 from 'components/common/Card1';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
-import { H6, Paragraph } from 'components/Typography';
 import { months, years } from 'data/months-years';
 
 // ====================================================================

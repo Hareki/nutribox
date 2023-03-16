@@ -1,12 +1,12 @@
 import { Avatar, Grid, styled, Theme } from '@mui/material';
 import { FC } from 'react';
 
-import BazaarCard from 'components/BazaarCard';
-import BazaarRating from 'components/BazaarRating';
+import { H5, Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
+import BazaarCard from 'components/common/BazaarCard';
+import CustomRating from 'components/common/input/CustomRating';
 import { FlexBox } from 'components/flex-box';
 import Quote from 'components/icons/Quote';
-import { H5, Paragraph } from 'components/Typography';
 
 const cardBorderRadius = '12px';
 // styled components
@@ -86,7 +86,7 @@ const TestimonialsSection: FC<Props> = ({ testimonials = [] }) => {
                 <H5 mt={1} fontWeight='700'>
                   {data.user.name}
                 </H5>
-                <BazaarRating
+                <CustomRating
                   value={data.rating || 0}
                   color='warn'
                   readOnly

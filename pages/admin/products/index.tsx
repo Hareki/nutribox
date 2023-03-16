@@ -5,12 +5,12 @@ import { GetStaticProps } from 'next';
 import Router from 'next/router';
 import { ReactElement } from 'react';
 
+import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import TablePagination from 'components/data-table/TablePagination';
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
 import Scrollbar from 'components/Scrollbar';
-import { H3 } from 'components/Typography';
 import useMuiTable from 'hooks/useMuiTable';
 import Product from 'models/BazaarProduct.model';
 import { ProductRow } from 'pages-sections/admin';

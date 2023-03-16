@@ -4,14 +4,11 @@ import { useSnackbar } from 'notistack';
 
 import useLoginDialog from './useLoginDialog';
 
+import { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
-import { IProduct } from 'api/models/Product.model/types';
 import apiCaller, { CartItemRequestBody } from 'utils/apiCallers/global/cart';
 
-export interface CartItem extends IProduct {
-  quantity: number;
-}
-export type CartState = { cart: CartItem[] };
+export type CartState = { cart: IPopulatedCartItem[] };
 
 type MutateCartItemType = {
   cart: CartItemRequestBody;
@@ -57,11 +54,14 @@ const useCart = (accountId = '640eda951bfd6bd755f28211') => {
   const { setLoginDialogOpen } = useLoginDialog();
   const { status } = useSession();
 
-  const updateCartAmount = (item: CartItem, type: CartItemActionType) => {
+  const updateCartAmount = (
+    item: IPopulatedCartItem,
+    type: CartItemActionType,
+  ) => {
     if (status === 'authenticated') {
       mutateCartItem({
         cart: {
-          productId: item.id,
+          productId: item.product.id,
           quantity: item.quantity,
         },
         type,

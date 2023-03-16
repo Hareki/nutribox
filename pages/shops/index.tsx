@@ -2,10 +2,10 @@
 import { Container, Grid, Pagination } from '@mui/material';
 import { GetStaticProps, NextPage } from 'next';
 
+import { H2, Span } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
 import ShopLayout2 from 'components/layouts/ShopLayout2';
-import ShopCard1 from 'components/shop/ShopCard1';
-import { H2, Span } from 'components/Typography';
+import ShopCard from 'components/shop/ShopCard';
 import Shop from 'models/Shop.model';
 import api from 'utils/__api__/shop';
 
@@ -23,7 +23,7 @@ const ShopList: NextPage<ShopListProps> = ({ shopList }) => {
         <Grid container spacing={3}>
           {shopList.map((item) => (
             <Grid item lg={4} sm={6} xs={12} key={item.id}>
-              <ShopCard1
+              <ShopCard
                 name={item.name}
                 slug={item.slug}
                 phone={item.phone}

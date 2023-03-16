@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
-import { Small } from 'components/Typography';
+import { Small } from 'components/abstract/Typography';
 
 // ==============================================================
 type NavLinkProps = {

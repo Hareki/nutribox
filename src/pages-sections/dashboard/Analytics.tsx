@@ -12,8 +12,8 @@ import { FC, useState } from 'react';
 
 import { analyticsChartOptions } from './chartsOptions';
 
+import { H5 } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
-import { H5 } from 'components/Typography';
 
 // apext chart instance
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {

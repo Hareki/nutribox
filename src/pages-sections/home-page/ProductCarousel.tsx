@@ -2,11 +2,11 @@ import { Box, styled, useTheme } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 
 import { IProduct } from 'api/models/Product.model/types';
+import { Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
 import CategorySectionCreator from 'components/CategorySectionCreator';
 // ProductCard13
 import ProductCard from 'components/product-item/ProductCard';
-import { Paragraph } from 'components/Typography';
 import useWindowSize from 'hooks/useWindowSize';
 
 const SubTitle = styled(Paragraph)(({ theme }) => ({

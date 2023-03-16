@@ -2,7 +2,7 @@ import { Box, styled, Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 
-import { H1, H4, Paragraph, Span } from 'components/Typography';
+import { H1, H4, Paragraph, Span } from 'components/abstract/Typography';
 
 // custom styled components
 const CardWrapper = styled(Box)<{ img: string; mode: string }>(

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 
-import Image from 'components/BazaarImage';
-import { H1, Paragraph } from 'components/Typography';
+import { H1, Paragraph } from 'components/abstract/Typography';
+import CustomImage from 'components/common/input/CustomImage';
 
 const Container = styled(Card)(({ theme }) => ({
   padding: '50px',
@@ -43,7 +43,7 @@ const DiscountSection: FC = () => {
           </Grid>
 
           <Grid item sm={5}>
-            <Image
+            <CustomImage
               width='100%'
               alt='discount'
               src='/assets/images/Groceries Shop/vegetable.png'

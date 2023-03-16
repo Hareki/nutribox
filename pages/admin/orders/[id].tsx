@@ -2,8 +2,8 @@ import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useState } from 'react';
 
+import { H3 } from 'components/abstract/Typography';
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
-import { H3 } from 'components/Typography';
 import Order from 'models/Order.model';
 import { OrderDetails } from 'pages-sections/admin';
 import api from 'utils/__api__/dashboard';

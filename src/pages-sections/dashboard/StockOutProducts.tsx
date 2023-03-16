@@ -3,8 +3,8 @@ import React, { FC } from 'react';
 
 import DataListTable from './table';
 
+import { H5 } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
-import { H5 } from 'components/Typography';
 
 // table column list
 const tableHeading = [

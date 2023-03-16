@@ -6,16 +6,16 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { FC, Fragment, useCallback, useState } from 'react';
 
+import { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import { IProduct } from 'api/models/Product.model/types';
-import BazaarCard from 'components/BazaarCard';
+import { H3, Span } from 'components/abstract/Typography';
+import BazaarCard from 'components/common/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import ProductViewDialog from 'components/products/ProductViewDialog';
-import { H3, Span } from 'components/Typography';
 import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { currency } from 'lib';
-import { CartItem } from 'store/slices/cartSlice';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   height: '100%',
@@ -108,12 +108,12 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     setOpenModal((open) => !open);
   }, [onPreview]);
 
-  const cartItem: CartItem | undefined = cartState.cart.find(
+  const cartItem: IPopulatedCartItem | undefined = cartState.cart.find(
     (item) => item.id === id,
   );
 
   const handleCartAmountChange = (amount: number, type: CartItemActionType) => {
-    updateCartAmount({ ...props.product, quantity: amount }, type);
+    updateCartAmount({ product: props.product, quantity: amount }, type);
   };
 
   const handleCartAmountButtonClick = (type: CartItemActionType) => {

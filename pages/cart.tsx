@@ -4,11 +4,11 @@ import MenuItem from '@mui/material/MenuItem';
 import { NextPage } from 'next';
 import Link from 'next/link';
 
+import SEO from 'components/abstract/SEO';
+import { Span } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CheckoutNavLayout from 'components/layouts/CheckoutNavLayout';
 import ProductCartItem from 'components/product-item/ProductCartItem';
-import SEO from 'components/SEO';
-import { Span } from 'components/Typography';
 import countryList from 'data/countryList';
 import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
@@ -19,7 +19,8 @@ const Cart: NextPage = () => {
 
   const getTotalPrice = () =>
     cartList.reduce(
-      (accumulate, item) => accumulate + item.retailPrice * item.quantity,
+      (accumulate, item) =>
+        accumulate + item.product.retailPrice * item.quantity,
       0,
     );
 

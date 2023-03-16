@@ -13,14 +13,14 @@ import { useCallback, useEffect, useState, useMemo } from 'react';
 
 import { IProduct } from 'api/models/Product.model/types';
 import { GetPaginationResult } from 'api/types/pagination.type';
-import { Footer } from 'components/footer';
 // ShopLayout2
+import SEO from 'components/abstract/SEO';
+import { Footer } from 'components/common/layout/footer';
 import ShopLayout1 from 'components/layouts/ShopLayout1';
 // MobileNavigationBar2
 import { MobileNavigationBar } from 'components/mobile-navigation';
-import CategoryNavbar from 'components/page-sidenav/SideNavbar';
-import SEO from 'components/SEO';
-import SidenavContainer from 'components/SidenavContainer';
+import CategoryNavbar from 'components/page-sidenav/CategoryNavbar';
+import SideNavContainer from 'components/side-nav/SidenavContainer';
 import Product from 'models/BazaarProduct.model';
 import { MainCarouselItem } from 'models/Grocery-3.model';
 import Service from 'models/Service.model';
@@ -157,7 +157,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
         <ServicesSection services={props.serviceList} />
 
         {/* SIDEBAR WITH OTHER CONTENTS */}
-        <SidenavContainer
+        <SideNavContainer
           sideNavBottomOffset={sideNavBottomOffset}
           SideNav={SideNav}
         >
@@ -195,7 +195,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
             </div>
             <TestimonialsSection testimonials={props.testimonials} />
           </Stack>
-        </SidenavContainer>
+        </SideNavContainer>
         <Footer />
 
         {/* MOBILE NAVIGATION WITH SIDE NAVBAR */}

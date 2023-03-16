@@ -13,7 +13,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useState } from 'react';
 
-import { H2, Paragraph } from 'components/Typography';
+import { H2, Paragraph } from 'components/abstract/Typography';
 
 const languageList = [
   { title: 'EN', value: 'en' },

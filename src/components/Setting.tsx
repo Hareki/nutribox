@@ -12,8 +12,8 @@ import {
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { H6 } from './abstract/Typography';
 import { FlexBox } from './flex-box';
-import { H6 } from './Typography';
 
 import useSettings from 'hooks/useSettings';
 

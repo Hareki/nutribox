@@ -1,8 +1,8 @@
 import { Box, Divider } from '@mui/material';
 import { FC } from 'react';
 
+import { Paragraph, Span } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
-import { Paragraph, Span } from 'components/Typography';
 import { currency } from 'lib';
 
 const CheckoutSummary2: FC = () => {

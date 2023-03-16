@@ -2,11 +2,11 @@
 import { Box } from '@mui/material';
 import { FC, Fragment, ReactNode, useCallback, useState } from 'react';
 
-import Header from 'components/header/Header';
-import Navbar from 'components/navbar/Navbar';
+import StickyScroll from 'components/abstract/StickyScroll';
+import Header from 'components/common/layout/header/Header';
+import Navbar from 'components/common/layout/navbar/Navbar';
+import Topbar from 'components/common/layout/Topbar';
 import SearchInput from 'components/search-box/SearchInput';
-import StickyScroll from 'components/StickyScroll';
-import Topbar from 'components/Topbar';
 
 /**
  *  Used in:

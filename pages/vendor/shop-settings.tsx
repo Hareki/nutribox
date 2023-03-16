@@ -15,10 +15,10 @@ import { Formik } from 'formik';
 import { ReactElement, useState } from 'react';
 import * as Yup from 'yup';
 
+import { H3, Paragraph } from 'components/abstract/Typography';
 import DropZone from 'components/DropZone';
 import { FlexBox } from 'components/flex-box';
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
-import { H3, Paragraph } from 'components/Typography';
 
 const INITIAL_VALUES = {
   order: 10,

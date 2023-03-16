@@ -14,7 +14,7 @@ import { Assign, ObjectShape } from 'yup/lib/object';
 
 import { UploadImageBox, StyledClear } from '../StyledComponents';
 
-import BazaarImage from 'components/BazaarImage';
+import CustomImage from 'components/common/input/CustomImage';
 import DropZone from 'components/DropZone';
 import { FlexBox } from 'components/flex-box';
 
@@ -107,7 +107,7 @@ const CategoryForm: FC<CategoryFormProps> = (props) => {
                   {files.map((file, index) => {
                     return (
                       <UploadImageBox key={index}>
-                        <BazaarImage src={file.preview} width='100%' />
+                        <CustomImage src={file.preview} width='100%' />
                         <StyledClear onClick={handleFileDelete(file)} />
                       </UploadImageBox>
                     );

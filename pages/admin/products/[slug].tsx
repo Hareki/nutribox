@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { ReactElement, useState } from 'react';
 import * as yup from 'yup';
 
+import { H3 } from 'components/abstract/Typography';
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
-import { H3 } from 'components/Typography';
 import { ProductForm } from 'pages-sections/admin';
 // import api from "utils/__api__/products";
 

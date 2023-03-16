@@ -25,13 +25,13 @@ const Container = styled(Box)<{ box_height?: number }>(
 );
 
 // ===================================================
-type CustomReactQuilProps = {
+type CustomReactQuillProps = {
   error?: string;
   box_height?: number;
 };
 // ===================================================
 
-const ReactQuill: FC<any & CustomReactQuilProps> = ({
+const ReactQuill: FC<any & CustomReactQuillProps> = ({
   error,
   box_height,
   ...props

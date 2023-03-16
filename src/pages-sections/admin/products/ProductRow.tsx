@@ -10,9 +10,9 @@ import {
   StyledIconButton,
 } from '../StyledComponents';
 
-import BazaarSwitch from 'components/BazaarSwitch';
+import { Paragraph, Small } from 'components/abstract/Typography';
+import CustomSwitch from 'components/common/input/CustomSwitch';
 import { FlexBox } from 'components/flex-box';
-import { Paragraph, Small } from 'components/Typography';
 import { currency } from 'lib';
 
 // ========================================================================
@@ -51,7 +51,7 @@ const ProductRow: FC<ProductRowProps> = ({ product }) => {
       <StyledTableCell align='left'>{currency(price)}</StyledTableCell>
 
       <StyledTableCell align='left'>
-        <BazaarSwitch
+        <CustomSwitch
           color='info'
           checked={productPulish}
           onChange={() => setProductPublish((state) => !state)}

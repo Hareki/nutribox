@@ -1,9 +1,9 @@
 import { Box, Button, Card, styled } from '@mui/material';
 import { FC } from 'react';
 
+import { H1, H3, H5 } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import Verify from 'components/icons/Verify';
-import { H1, H3, H5 } from 'components/Typography';
 import { currency } from 'lib';
 
 // styled components

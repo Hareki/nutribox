@@ -4,11 +4,11 @@ import { FC } from 'react';
 
 import StyledMegaMenu from './StyledMegaMenu';
 
-import BazaarCard from 'components/BazaarCard';
+import { H3, Small } from 'components/abstract/Typography';
+import BazaarCard from 'components/common/BazaarCard';
 import { FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import { NavLink } from 'components/nav-link';
-import { H3, Small } from 'components/Typography';
 
 // ====================================================================================
 type Image = { imgUrl: string; href: string };

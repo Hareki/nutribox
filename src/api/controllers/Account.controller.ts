@@ -6,8 +6,10 @@ import {
   createOneGenerator,
 } from './generator.controller';
 
-import { CustomError, CustomErrorCodes } from 'api/helpers/error.helper';
-import { validateDocExistence } from 'api/helpers/model.helper';
+import {
+  populateCartItems,
+  validateDocExistence,
+} from 'api/helpers/model.helper';
 import Account from 'api/models/Account.model';
 import { ICartItem } from 'api/models/Account.model/CartItem.schema/types';
 import {
@@ -15,8 +17,7 @@ import {
   IPopulatedCartItemsAccount,
 } from 'api/models/Account.model/types';
 import Product from 'api/models/Product.model';
-import { IProduct } from 'api/models/Product.model/types';
-import { CartItem, CartState } from 'hooks/redux-hooks/useCart';
+import { CartState } from 'hooks/redux-hooks/useCart';
 import { CartItemRequestBody } from 'utils/apiCallers/global/cart';
 
 const getAll = getAllGenerator<IAccount>(Account);
@@ -45,33 +46,10 @@ const getCartItems = async (accountId: string): Promise<CartState> => {
   validateDocExistence(account, Account, accountId);
 
   const cartItemsDoc: ICartItem[] = account.cartItems.toObject();
-
-  const productIds: Types.ObjectId[] = cartItemsDoc.map(
-    (cartItem) => cartItem.product,
-  );
-  const products: IProduct[] = await Product.find({
-    _id: { $in: productIds },
-  })
-    .lean({ virtuals: true })
-    .exec();
-
-  const cartItems: CartItem[] = cartItemsDoc.map((cartItem) => {
-    const product = products.find((p) => p._id.equals(cartItem.product));
-    if (!product) {
-      throw new CustomError(
-        `Product not found for cart item: ${cartItem.id}`,
-        CustomErrorCodes.PRODUCT_NOT_BELONG_TO_CART_ITEM,
-      );
-    }
-
-    return {
-      ...product,
-      quantity: cartItem.quantity,
-    } as CartItem;
-  });
+  const populatedCartItems = await populateCartItems(cartItemsDoc);
 
   const cartState: CartState = {
-    cart: cartItems,
+    cart: populatedCartItems,
   };
   return cartState;
 };
@@ -105,37 +83,12 @@ const updateCartItem = async (
 
   account.save();
 
-  // ====
   const cartItemsDoc = account.cartItems;
-  const productIds: Types.ObjectId[] = cartItemsDoc.map(
-    (cartItem) => cartItem.product,
-  );
-  const products: IProduct[] = await Product.find({
-    _id: { $in: productIds },
-  })
-    .lean({ virtuals: true })
-    .exec();
-
-  const cartItems: CartItem[] = cartItemsDoc.map((cartItem) => {
-    const product = products.find((p) => p._id.equals(cartItem.product));
-    if (!product) {
-      throw new CustomError(
-        `Product not found for cart item: ${cartItem.id}`,
-        CustomErrorCodes.PRODUCT_NOT_BELONG_TO_CART_ITEM,
-      );
-    }
-
-    return {
-      ...product,
-      quantity: cartItem.quantity,
-    } as CartItem;
-  });
-
-  const test: IAccount = account.toObject();
+  const populatedCartItems = await populateCartItems(cartItemsDoc);
 
   const populatedCartItemsAccount = {
-    ...test,
-    cartItems,
+    ...(account.toObject() as IAccount),
+    cartItems: populatedCartItems,
   };
 
   return populatedCartItemsAccount;

@@ -2,7 +2,7 @@ import { ArrowForward } from '@mui/icons-material';
 import Link from 'next/link';
 import { FC } from 'react';
 
-import { Span } from 'components/Typography';
+import { Span } from 'components/abstract/Typography';
 
 //   ==========================================
 type NavLink3Props = {

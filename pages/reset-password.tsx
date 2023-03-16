@@ -2,9 +2,9 @@ import { Box, Button, Card, TextField } from '@mui/material';
 import { NextPage } from 'next';
 import Link from 'next/link';
 
+import SEO from 'components/abstract/SEO';
+import { H1, H6 } from 'components/abstract/Typography';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
-import SEO from 'components/SEO';
-import { H1, H6 } from 'components/Typography';
 
 const ResetPassword: NextPage = () => {
   return (

@@ -8,9 +8,9 @@ import {
   StyledTableRow,
 } from '../StyledComponents';
 
-import BazaarSwitch from 'components/BazaarSwitch';
+import { Paragraph, Small } from 'components/abstract/Typography';
+import CustomSwitch from 'components/common/input/CustomSwitch';
 import { FlexBox } from 'components/flex-box';
-import { Paragraph, Small } from 'components/Typography';
 import { currency } from 'lib';
 
 // ========================================================================
@@ -53,7 +53,7 @@ const SellerRow: FC<SellerRowProps> = ({ seller }) => {
       </StyledTableCell>
 
       <StyledTableCell align='left'>
-        <BazaarSwitch
+        <CustomSwitch
           color='info'
           checked={shopPublish}
           onChange={() => setShopPublish((state) => !state)}

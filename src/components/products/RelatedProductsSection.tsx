@@ -2,8 +2,8 @@ import { Box, Grid } from '@mui/material';
 import { FC } from 'react';
 
 import { IProduct } from 'api/models/Product.model/types';
+import { H3 } from 'components/abstract/Typography';
 import ProductCard from 'components/product-item/ProductCard';
-import { H3 } from 'components/Typography';
 
 // ===================================================
 type RelatedProductsProps = { products: IProduct[] };

@@ -3,9 +3,9 @@ import { Button, Divider, Grid, IconButton, TextField } from '@mui/material';
 import { FieldArray, Formik } from 'formik';
 import { FC, Fragment } from 'react';
 
+import { H4 } from 'components/abstract/Typography';
 import DropZone from 'components/DropZone';
 import { FlexBetween } from 'components/flex-box';
-import { H4 } from 'components/Typography';
 
 const FooterForm: FC = () => {
   const initialValues = {

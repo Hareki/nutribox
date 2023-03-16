@@ -13,12 +13,12 @@ import { format } from 'date-fns';
 import { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 
+import { H3, H5, Small } from 'components/abstract/Typography';
+import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
+import TableRow from 'components/data-table/TableRow';
 import { FlexBetween, FlexBox } from 'components/flex-box';
-import UserDashboardHeader from 'components/header/UserDashboardHeader';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import TableRow from 'components/TableRow';
-import { H3, H5, Small } from 'components/Typography';
 import { currency } from 'lib';
 import User from 'models/User.model';
 import api from 'utils/__api__/users';

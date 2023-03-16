@@ -10,7 +10,7 @@ import {
   StyledTableCell,
 } from '../StyledComponents';
 
-import BazaarSwitch from 'components/BazaarSwitch';
+import CustomSwitch from 'components/common/input/CustomSwitch';
 
 // ========================================================================
 type CategoryRowProps = {
@@ -43,7 +43,7 @@ const CategoryRow: FC<CategoryRowProps> = ({ item, selected }) => {
       <StyledTableCell align='left'>{level}</StyledTableCell>
 
       <StyledTableCell align='left'>
-        <BazaarSwitch
+        <CustomSwitch
           color='info'
           checked={featuredCategory}
           onChange={() => setFeaturedCategory((state: boolean) => !state)}

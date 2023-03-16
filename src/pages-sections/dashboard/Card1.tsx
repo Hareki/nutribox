@@ -2,8 +2,8 @@ import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import { Card } from '@mui/material';
 import React, { FC } from 'react';
 
+import { H3, H6, Paragraph } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
-import { H3, H6, Paragraph } from 'components/Typography';
 
 // ========================================================
 type Card1Props = {

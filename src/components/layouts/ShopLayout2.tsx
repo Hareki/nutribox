@@ -1,13 +1,13 @@
 // Shop Layout 1 Previously
 import { FC, Fragment, ReactNode } from 'react';
 
-import { Footer } from 'components/footer';
-import Header from 'components/header/Header';
+import StickyScroll from 'components/abstract/StickyScroll';
+import { Footer } from 'components/common/layout/footer';
+import Header from 'components/common/layout/header/Header';
+import Navbar from 'components/common/layout/navbar/Navbar';
+import Topbar from 'components/common/layout/Topbar';
 import { MobileNavigationBar } from 'components/mobile-navigation';
-import Navbar from 'components/navbar/Navbar';
 import SearchInputWithCategory from 'components/search-box/SearchInputWithCategory';
-import StickyScroll from 'components/StickyScroll';
-import Topbar from 'components/Topbar';
 
 /**
  *  Used in:

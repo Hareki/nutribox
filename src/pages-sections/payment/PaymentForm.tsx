@@ -6,9 +6,9 @@ import { useRouter } from 'next/router';
 import { FC, Fragment, useState } from 'react';
 import * as yup from 'yup';
 
-import Card1 from 'components/Card1';
+import { Paragraph } from 'components/abstract/Typography';
+import Card1 from 'components/common/Card1';
 import { FlexBox } from 'components/flex-box';
-import { Paragraph } from 'components/Typography';
 import useWindowSize from 'hooks/useWindowSize';
 
 const PaymentForm: FC = () => {

@@ -15,11 +15,11 @@ import IconButton from '@mui/material/IconButton';
 import { formatDistance } from 'date-fns';
 import { FC, SyntheticEvent, useState } from 'react';
 
+import { H6, Paragraph } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import CartCheck from 'components/icons/CartCheck';
 import CartX from 'components/icons/CartX';
 import TruckFast from 'components/icons/TruckFast';
-import { H6, Paragraph } from 'components/Typography';
 
 // dummy  data
 const orders = [

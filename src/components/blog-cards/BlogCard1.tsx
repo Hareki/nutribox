@@ -3,10 +3,10 @@ import { Box } from '@mui/material';
 import format from 'date-fns/format';
 import { FC } from 'react';
 
+import { H3, Paragraph } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import { NavLink2 } from 'components/nav-link';
-import { H3, Paragraph } from 'components/Typography';
 import Blog from 'models/Blog.model';
 
 // ===========================================================

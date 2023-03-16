@@ -1,7 +1,7 @@
 import { Avatar, Box, IconButton, Menu, MenuItem, styled } from '@mui/material';
 import React, { useState } from 'react';
 
-import { H6, Small } from 'components/Typography';
+import { H6, Small } from 'components/abstract/Typography';
 
 // styled components
 const Divider = styled(Box)(({ theme }) => ({

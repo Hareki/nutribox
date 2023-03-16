@@ -13,8 +13,8 @@ import {
 import { format } from 'date-fns';
 import { FC } from 'react';
 
+import { H5, H6, Paragraph, Span } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
-import { H5, H6, Paragraph, Span } from 'components/Typography';
 import { currency } from 'lib';
 import Order from 'models/Order.model';
 

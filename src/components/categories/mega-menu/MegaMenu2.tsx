@@ -5,7 +5,7 @@ import CategoryMenuItem from '../CategoryMenuItem';
 import MegaMenu3 from './MegaMenu3';
 import StyledMegaMenu from './StyledMegaMenu';
 
-import BazaarCard from 'components/BazaarCard';
+import BazaarCard from 'components/common/BazaarCard';
 
 // =======================================================================
 type Data = { icon: string; href: string; title: string; menuData?: any };

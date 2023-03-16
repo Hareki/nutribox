@@ -10,9 +10,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 
-import Card1 from 'components/Card1';
+import Card1 from 'components/common/Card1';
+import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import { FlexBox } from 'components/flex-box';
-import UserDashboardHeader from 'components/header/UserDashboardHeader';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import User from 'models/User.model';

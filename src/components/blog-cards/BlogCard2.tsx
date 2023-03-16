@@ -3,9 +3,9 @@ import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { FC } from 'react';
 
+import { H4, Paragraph } from 'components/abstract/Typography';
 import { FlexRowCenter } from 'components/flex-box';
 import { NavLink3 } from 'components/nav-link';
-import { H4, Paragraph } from 'components/Typography';
 
 // custom styled components
 const ImageBox = styled(Box)({

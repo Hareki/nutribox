@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 
+import { H2 } from './abstract/Typography';
 import { FlexBetween, FlexBox } from './flex-box';
-import { H2 } from './Typography';
 
 import useSettings from 'hooks/useSettings';
 

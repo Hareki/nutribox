@@ -1,9 +1,9 @@
 import { Divider } from '@mui/material';
 import { FC } from 'react';
 
-import Card1 from 'components/Card1';
+import { Paragraph } from 'components/abstract/Typography';
+import Card1 from 'components/common/Card1';
 import { FlexBetween } from 'components/flex-box';
-import { Paragraph } from 'components/Typography';
 import { currency } from 'lib';
 
 const PaymentSummary: FC = () => {

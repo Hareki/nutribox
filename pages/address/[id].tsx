@@ -5,8 +5,8 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import * as yup from 'yup';
 
-import Card1 from 'components/Card1';
-import UserDashboardHeader from 'components/header/UserDashboardHeader';
+import Card1 from 'components/common/Card1';
+import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import Address from 'models/Address.model';

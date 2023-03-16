@@ -2,10 +2,10 @@ import { styled } from '@mui/material';
 import Link from 'next/link';
 import { FC } from 'react';
 
-import BazaarCard from 'components/BazaarCard';
-import BazaarImage from 'components/BazaarImage';
+import { H2, Paragraph, Small } from 'components/abstract/Typography';
+import BazaarCard from 'components/common/BazaarCard';
+import CustomImage from 'components/common/input/CustomImage';
 import { FlexBox } from 'components/flex-box';
-import { H2, Paragraph, Small } from 'components/Typography';
 import Product from 'models/BazaarProduct.model';
 
 // styled components
@@ -49,7 +49,7 @@ const CarouselCard3: FC<Props> = ({ product }) => {
         </Link>
       </StyledFlexBox>
 
-      <BazaarImage width='100%' src={product.thumbnail} alt='shoes' />
+      <CustomImage width='100%' src={product.thumbnail} alt='shoes' />
     </ContentWrapper>
   );
 };

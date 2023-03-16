@@ -2,11 +2,11 @@ import { Button, Container, styled } from '@mui/material';
 import { NextPage } from 'next';
 import Link from 'next/link';
 
-import BazaarCard from 'components/BazaarCard';
+import SEO from 'components/abstract/SEO';
+import { H1, Paragraph } from 'components/abstract/Typography';
+import BazaarCard from 'components/common/BazaarCard';
 import ShopLayout2 from 'components/layouts/ShopLayout2';
 import LazyImage from 'components/LazyImage';
-import SEO from 'components/SEO';
-import { H1, Paragraph } from 'components/Typography';
 
 // custom styled components
 const Wrapper = styled(BazaarCard)({

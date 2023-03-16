@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import * as yup from 'yup';
 
-import Card1 from 'components/Card1';
+import Card1 from 'components/common/Card1';
 import countryList from 'data/countryList';
 
 const CheckoutForm: FC = () => {

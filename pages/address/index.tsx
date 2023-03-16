@@ -4,11 +4,11 @@ import { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
+import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
-import UserDashboardHeader from 'components/header/UserDashboardHeader';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import TableRow from 'components/TableRow';
 import Address from 'models/Address.model';
 import api from 'utils/__api__/address';
 

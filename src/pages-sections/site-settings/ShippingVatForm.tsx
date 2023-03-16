@@ -2,7 +2,7 @@ import { Button, Grid, TextField } from '@mui/material';
 import { Formik } from 'formik';
 import { FC } from 'react';
 
-import { H4 } from 'components/Typography';
+import { H4 } from 'components/abstract/Typography';
 
 const ShippingVatForm: FC = () => {
   const initialValues = { vat: 2, shipping: 10 };

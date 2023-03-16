@@ -5,8 +5,8 @@ import { FC, useEffect, useState } from 'react';
 import { FlexBox, FlexRowCenter } from '../flex-box';
 
 import { IProduct } from 'api/models/Product.model/types';
+import { H1, H2, H3, H6 } from 'components/abstract/Typography';
 import LazyImage from 'components/LazyImage';
-import { H1, H2, H3, H6 } from 'components/Typography';
 import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
@@ -57,7 +57,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
       updateCartAmount(
         {
           quantity: amount,
-          ...product,
+          product,
         },
         type,
       );

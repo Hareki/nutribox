@@ -2,8 +2,8 @@ import { Box } from '@mui/material';
 import { ReactElement } from 'react';
 import * as yup from 'yup';
 
+import { H3 } from 'components/abstract/Typography';
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
-import { H3 } from 'components/Typography';
 import { ProductForm } from 'pages-sections/admin';
 
 // =============================================================================

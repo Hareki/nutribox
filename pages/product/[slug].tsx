@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 
 import { IProduct } from 'api/models/Product.model/types';
-import { Footer } from 'components/footer';
+import SEO from 'components/abstract/SEO';
+import { H2 } from 'components/abstract/Typography';
+import { Footer } from 'components/common/layout/footer';
 import ShopLayout1 from 'components/layouts/ShopLayout1';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
-import SEO from 'components/SEO';
-import { H2 } from 'components/Typography';
 import apiCaller from 'utils/apiCallers/product/[slug]';
 
 // styled component

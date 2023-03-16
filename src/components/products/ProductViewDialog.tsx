@@ -12,10 +12,10 @@ import {
 import { FC, useState, useEffect } from 'react';
 
 import { IProduct } from 'api/models/Product.model/types';
-import BazaarImage from 'components/BazaarImage';
+import { H1, H2, H3, Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
+import CustomImage from 'components/common/input/CustomImage';
 import { FlexBox } from 'components/flex-box';
-import { H1, H2, H3, Paragraph } from 'components/Typography';
 import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
@@ -72,7 +72,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
       updateCartAmount(
         {
           quantity: amount,
-          ...product,
+          product,
         },
         type,
       );
@@ -94,7 +94,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                 visibleSlides={1}
               >
                 {product.imageUrls.map((item: string, index: number) => (
-                  <BazaarImage
+                  <CustomImage
                     key={index}
                     src={item}
                     sx={{

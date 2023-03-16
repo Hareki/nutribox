@@ -2,12 +2,12 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useReducer, useState } from 'react';
 
+import SEO from 'components/abstract/SEO';
+import InfoDialog from 'components/dialog/info-dialog';
+import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
-import InfoDialog from 'components/InfoDialog';
-import { infoDialogReducer } from 'components/InfoDialog/reducer';
-import SEO from 'components/SEO';
 import { getMessageList } from 'helpers/feedback.helper';
-import Signup from 'pages-sections/sessions/Signup';
+import Signup from 'pages-sections/auth/Signup';
 import apiCaller from 'utils/apiCallers/signup';
 
 export interface SignUpRequestBody {

@@ -1,7 +1,7 @@
 import { Box, Button, styled } from '@mui/material';
 import { FC } from 'react';
 
-import { H1 } from 'components/Typography';
+import { H1 } from 'components/abstract/Typography';
 
 const leftImg = '/assets/images/headers/Header BG1.png';
 const rightImg = '/assets/images/headers/Header BG2.png';

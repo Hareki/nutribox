@@ -2,7 +2,7 @@ import { Box, Button, Divider } from '@mui/material';
 import { FC, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import { H5, Small } from './Typography';
+import { H5, Small } from './abstract/Typography';
 
 // ========================================================
 type DropZoneProps = {

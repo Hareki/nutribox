@@ -1,8 +1,8 @@
 import { Grid } from '@mui/material';
 import { NextPage } from 'next';
 
+import SEO from 'components/abstract/SEO';
 import CheckoutNavLayout from 'components/layouts/CheckoutNavLayout';
-import SEO from 'components/SEO';
 import CheckoutForm from 'pages-sections/checkout/CheckoutForm';
 import CheckoutSummary from 'pages-sections/checkout/CheckoutSummary';
 

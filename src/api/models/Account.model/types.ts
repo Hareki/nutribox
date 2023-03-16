@@ -1,9 +1,7 @@
 import { Types } from 'mongoose';
 
 import { IAccountAddress } from './AccountAddress.schema/types';
-import { ICartItem } from './CartItem.schema/types';
-
-import { CartItem } from 'hooks/redux-hooks/useCart';
+import { ICartItem, IPopulatedCartItem } from './CartItem.schema/types';
 
 export interface IAccount {
   _id: Types.ObjectId;
@@ -33,7 +31,7 @@ export interface IAccount {
 
 export interface IPopulatedCartItemsAccount
   extends Omit<IAccount, 'cartItems'> {
-  cartItems: CartItem[];
+  cartItems: IPopulatedCartItem[];
 }
 
 export interface IAccountInput

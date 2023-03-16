@@ -2,8 +2,8 @@ import { Box, BoxProps, Divider, styled } from '@mui/material';
 import Link from 'next/link';
 import { FC } from 'react';
 
-import BazaarImage from 'components/BazaarImage';
-import { H2, Paragraph, Span } from 'components/Typography';
+import { H2, Paragraph, Span } from 'components/abstract/Typography';
+import CustomImage from 'components/common/input/CustomImage';
 
 // custom styled components
 const CardWrapper = styled(Box)({
@@ -68,7 +68,7 @@ const BannerCard1: FC<BannerCard1Props & BoxProps> = ({
 }) => {
   return (
     <CardWrapper {...props}>
-      <BazaarImage alt='category' height='100%' width='100%' src={img} />
+      <CustomImage alt='category' height='100%' width='100%' src={img} />
 
       <CardContent contentAlign={contentPosition} className='content'>
         <H2>{title}</H2>

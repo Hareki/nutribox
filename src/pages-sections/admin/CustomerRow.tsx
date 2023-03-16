@@ -8,8 +8,8 @@ import {
   StyledTableRow,
 } from './StyledComponents';
 
+import { Paragraph } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
-import { Paragraph } from 'components/Typography';
 import { currency } from 'lib';
 
 // ========================================================================

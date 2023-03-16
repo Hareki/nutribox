@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { FC } from 'react';
 
-import { H3 } from 'components/Typography';
+import { H3 } from 'components/abstract/Typography';
 
 // ======================================================
 type ProductDescriptionProps = {};

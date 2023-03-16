@@ -1,9 +1,9 @@
 import { Box, Container, Grid, styled } from '@mui/material';
 import { FC } from 'react';
 
+import { H4, Span } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import appIcons from 'components/icons';
-import { H4, Span } from 'components/Typography';
 import Service from 'models/Service.model';
 
 // styled components

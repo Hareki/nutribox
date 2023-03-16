@@ -3,11 +3,11 @@ import { Box, Grid, styled } from '@mui/material';
 import { FC } from 'react';
 
 import { IProduct } from 'api/models/Product.model/types';
+import { Paragraph } from 'components/abstract/Typography';
 import CategorySectionCreator from 'components/CategorySectionCreator';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import ProductCard from 'components/product-item/ProductCard';
-import { Paragraph } from 'components/Typography';
 
 const SubTitle = styled(Paragraph)(({ theme }) => ({
   fontSize: 12,
