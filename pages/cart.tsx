@@ -14,7 +14,7 @@ import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 
 const Cart: NextPage = () => {
-  const { cartState, isLoading } = useCart();
+  const { cartState } = useCart();
   const cartList = cartState.cart;
 
   const getTotalPrice = () =>

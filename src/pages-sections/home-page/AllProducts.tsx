@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab';
-import { Box, Grid, styled } from '@mui/material';
+import { Box, CircularProgress, Grid, styled } from '@mui/material';
 import { FC } from 'react';
 
 import { IProduct } from 'api/models/Product.model/types';
@@ -27,6 +27,7 @@ type AllProductsProps = {
   products: IProduct[];
   title?: string;
   subtitle?: string;
+  isLoading?: boolean;
   pagination?: PaginationType;
 };
 // ========================================================
@@ -35,21 +36,29 @@ const AllProducts: FC<AllProductsProps> = ({
   products,
   title = 'Tất cả sản phẩm',
   subtitle,
+  isLoading,
   pagination,
 }) => {
-  if (!products || products.length === 0)
+  const noProducts = !products || products.length === 0;
+  console.log('products', products);
+  console.log('isLoading', isLoading);
+  console.log('noProducts: ', noProducts);
+
+  if (noProducts)
     return (
       <FlexBox
         alignItems='center'
         flexDirection='column'
         justifyContent='center'
       >
-        <LazyImage
-          width={90}
-          height={100}
-          alt='banner'
-          src='/assets/images/logos/shopping-bag.svg'
-        />
+        {!isLoading && (
+          <LazyImage
+            width={90}
+            height={100}
+            alt='banner'
+            src='/assets/images/logos/shopping-bag.svg'
+          />
+        )}
         <Box
           component='p'
           mt={2}
@@ -57,8 +66,11 @@ const AllProducts: FC<AllProductsProps> = ({
           textAlign='center'
           maxWidth='400px'
         >
-          Hiện chưa có sản phẩm nào thuộc danh mục này, hãy quay lại sau bạn
-          nhé!
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            'Hiện chưa có sản phẩm nào thuộc danh mục này, hãy quay lại sau bạn nhé!'
+          )}
         </Box>
       </FlexBox>
     );

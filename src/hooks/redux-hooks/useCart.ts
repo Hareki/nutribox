@@ -17,13 +17,18 @@ type MutateCartItemType = {
 
 export type CartItemActionType = 'add' | 'remove';
 
-const useCart = (accountId = '640eda951bfd6bd755f28211') => {
+const useCart = () => {
   const queryClient = useQueryClient();
+  const { setLoginDialogOpen } = useLoginDialog();
+  const { data: session, status } = useSession();
   const { enqueueSnackbar } = useSnackbar();
+
+  const accountId = session ? session.user.id : null;
 
   const { data: cartState, isLoading } = useQuery({
     queryKey: ['cart', accountId],
     queryFn: () => apiCaller.getCartItems(accountId),
+    enabled: !!accountId,
     initialData: { cart: [] },
   });
 
@@ -50,9 +55,6 @@ const useCart = (accountId = '640eda951bfd6bd755f28211') => {
       }
     },
   });
-
-  const { setLoginDialogOpen } = useLoginDialog();
-  const { status } = useSession();
 
   const updateCartAmount = (
     item: IPopulatedCartItem,

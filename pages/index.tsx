@@ -55,6 +55,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
   const [selectedCategoryName, setSelectedCategoryName] = useState('');
   const [filterProducts, setFilterProducts] = useState<IProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [sideNavBottomOffset, setSideNavBottomOffset] = useState('0px');
 
   useEffect(() => {
@@ -120,8 +121,16 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     queries: categoryQueries.map((category) => {
       return {
         queryKey: ['products', 'category', category.id],
-        queryFn: () => apiCaller.getCategoryWithProducts(category.id),
+        queryFn: () => {
+          setIsLoading(true);
+          console.log('setIsLoading(true)');
+          return apiCaller.getCategoryWithProducts(category.id);
+        },
         enabled: selectedCategoryId === category.id,
+        onSettled: () => {
+          console.log('setIsLoading(false)');
+          setIsLoading(false);
+        },
       };
     }),
   });
@@ -165,6 +174,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
             <div id='products-section'>
               {selectedCategoryId ? (
                 <AllProducts
+                  isLoading={isLoading}
                   products={filterProducts}
                   title={selectedCategoryName}
                 />
