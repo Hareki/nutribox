@@ -2,11 +2,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
 
+import type { CartItemRequestBody } from '../../../pages/api/cart/[accountId]';
+
 import useLoginDialog from './useLoginDialog';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
-import type { CartItemRequestBody } from 'utils/apiCallers/global/cart';
 import apiCaller from 'utils/apiCallers/global/cart';
 
 export type CartState = { cart: IPopulatedCartItem[] };
@@ -34,9 +35,9 @@ const useCart = () => {
   });
 
   const { mutate: mutateCartItem } = useMutation<
-  IPopulatedCartItemsAccount,
-  unknown,
-  MutateCartItemType
+    IPopulatedCartItemsAccount,
+    unknown,
+    MutateCartItemType
   >({
     mutationFn: ({ cart }) =>
       apiCaller.updateCartItem(accountId, {
@@ -44,7 +45,7 @@ const useCart = () => {
         quantity: cart.quantity,
       }),
     onSuccess: (account, { type }) => {
-      queryClient.setQueriesData(['cart', accountId], {
+      queryClient.setQueryData(['cart', accountId], {
         cart: account.cartItems,
       });
       queryClient.invalidateQueries(['cart', accountId]);

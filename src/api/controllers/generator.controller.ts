@@ -57,3 +57,14 @@ export function createOneGenerator<T>(model: Model<any>) {
 
   return createOne;
 }
+
+export function updateOneGenerator<T>(model: Model<any>) {
+  const updateOne = async (id: string, data: any) => {
+    const updatedDoc: T = await model.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+    return updatedDoc;
+  };
+
+  return updateOne;
+}

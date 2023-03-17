@@ -2,6 +2,8 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useReducer, useState } from 'react';
 
+import type { SignUpRequestBody } from './api/signup';
+
 import SEO from 'components/abstract/SEO';
 import InfoDialog from 'components/dialog/info-dialog';
 import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
@@ -9,7 +11,6 @@ import { FlexRowCenter } from 'components/flex-box';
 import { getMessageList } from 'helpers/feedback.helper';
 import Signup from 'pages-sections/auth/Signup';
 import apiCaller from 'utils/apiCallers/signup';
-import { SignUpRequestBody } from './api/signup';
 
 
 

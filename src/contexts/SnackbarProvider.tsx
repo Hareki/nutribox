@@ -4,6 +4,10 @@ import type { FC } from 'react';
 
 // styled component
 const Provider = styled(NotistackProvider)(({ theme }) => ({
+  '.SnackbarItem-anchorOriginTopRight &': {
+    zIndex: theme.zIndex.snackbar,
+    translate: '0px 75px',
+  },
   '&.SnackbarContent-root.SnackbarItem-contentRoot': {
     boxShadow: theme.shadows[2],
     color: theme.palette.common.black,
@@ -19,16 +23,16 @@ const Provider = styled(NotistackProvider)(({ theme }) => ({
   },
 }));
 
-// ========================================
 type Props = { children: any };
-// ========================================
-
 const SnackbarProvider: FC<Props> = ({ children }) => {
   return (
     <Provider
       maxSnack={4}
-      autoHideDuration={2000}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      autoHideDuration={3000}
+      classes={{
+        anchorOriginTopRight: 'SnackbarItem-anchorOriginTopRight',
+      }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
       {children}
     </Provider>

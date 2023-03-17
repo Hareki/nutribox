@@ -24,14 +24,11 @@ import type {
 } from 'api/types/response.type';
 
 
-export interface SignUpRequestBody {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  password: string;
-  birthday: string;
-}
+export interface SignUpRequestBody
+  extends Pick<
+    IAccount,
+    'firstName' | 'lastName' | 'email' | 'phone' | 'password' | 'birthday'
+  > {}
 
 
 export const onSignUpError: ErrorHandler<

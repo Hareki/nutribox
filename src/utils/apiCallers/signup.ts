@@ -1,10 +1,11 @@
+import type { SignUpRequestBody } from './../../../pages/api/signup';
+
 import type { IAccount } from 'api/models/Account.model/types';
 import type {
   JSendFailResponse,
   JSendSuccessResponse,
 } from 'api/types/response.type';
 import axiosInstance from 'utils/axiosInstance';
-import { SignUpRequestBody } from '../../../pages/api/signup';
 
 export const signUp = async (
   requestBody: SignUpRequestBody,

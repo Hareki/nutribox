@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
 import { useState } from 'react';
@@ -7,10 +8,16 @@ import ProfileEditor from 'pages-sections/profile/ProfileEditor';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
 import apiCaller from 'utils/apiCallers/profile';
 
-type ProfileProps = { account: IAccount };
-const Profile: NextPage<ProfileProps> = ({ account }) => {
+type ProfileProps = { initialAccount: IAccount };
+const Profile: NextPage<ProfileProps> = ({ initialAccount }) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEditing = () => setIsEditing((prev) => !prev);
+
+  const { data: account } = useQuery({
+    queryKey: ['account'],
+    queryFn: () => apiCaller.getAccount(account.id),
+    initialData: initialAccount,
+  });
   return (
     <>
       {!isEditing ? (
@@ -32,8 +39,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const account = await apiCaller.getAccount(session.user.id);
-  return { props: { account: account } };
+
+  const initialAccount = await apiCaller.getAccount(session.user.id);
+  return { props: { initialAccount } };
 };
 
 export default Profile;

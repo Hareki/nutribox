@@ -1,9 +1,12 @@
 import { Types } from 'mongoose';
 
+import type { CartItemRequestBody } from '../../../pages/api/cart/[accountId]';
+
 import {
   getAllGenerator,
   getOneGenerator,
   createOneGenerator,
+  updateOneGenerator,
 } from './generator.controller';
 
 import {
@@ -18,12 +21,12 @@ import type {
 } from 'api/models/Account.model/types';
 import Product from 'api/models/Product.model';
 import type { CartState } from 'hooks/redux-hooks/useCart';
-import { CartItemRequestBody } from '../../../pages/api/cart/[accountId]';
 
 const getAll = getAllGenerator<IAccount>(Account);
 const getOne = getOneGenerator<IAccount>(Account);
 
 const createOne = createOneGenerator<IAccount>(Account);
+const updateOne = updateOneGenerator<IAccount>(Account);
 
 const checkCredentials = async (
   email: string,
@@ -98,6 +101,7 @@ const AccountController = {
   getAll,
   getOne,
   createOne,
+  updateOne,
   checkCredentials,
   getCartItems,
   updateCartItem,

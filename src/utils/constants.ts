@@ -11,3 +11,10 @@ export const paginationConstant = {
   docsPerPage: 6,
   infiniteDocsPerPage: 9999,
 };
+
+export const IKPublicContext = {
+  urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT_URL,
+  publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
+  authenticationEndpoint:
+    process.env.NEXT_PUBLIC_IMAGEKIT_AUTHENTICATION_ENDPOINT,
+};
