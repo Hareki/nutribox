@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import type mongoose from 'mongoose';
 
 // When there're more than one duplicate key error, the error object will be the first duplicate one
 export interface DuplicateKeyError {

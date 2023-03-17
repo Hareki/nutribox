@@ -1,5 +1,5 @@
 import { Button, Container, styled } from '@mui/material';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import Link from 'next/link';
 
 import SEO from 'components/abstract/SEO';

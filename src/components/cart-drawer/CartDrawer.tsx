@@ -1,17 +1,18 @@
 import { Clear } from '@mui/icons-material';
 import { Box, Button, Divider, IconButton } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import CartDrawerItem from './CartDrawerItem';
 
-import { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import { IProduct } from 'api/models/Product.model/types';
+import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
+import type { IProduct } from 'api/models/Product.model/types';
 import { Paragraph } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
-import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 
 type CartDrawerProps = { toggleCartDrawer: () => void };
@@ -33,7 +34,6 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
     );
   };
 
-  console.log('cartList', cartList);
 
   return (
     <Box width={380}>

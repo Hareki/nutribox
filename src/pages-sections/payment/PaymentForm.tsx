@@ -3,7 +3,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { Formik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC, Fragment, useState } from 'react';
+import type { FC } from 'react';
+import { Fragment, useState } from 'react';
 import * as yup from 'yup';
 
 import { Paragraph } from 'components/abstract/Typography';

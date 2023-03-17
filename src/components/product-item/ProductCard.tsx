@@ -4,16 +4,18 @@ import ShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Box, Button, styled } from '@mui/material';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { FC, Fragment, useCallback, useState } from 'react';
+import type { FC } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
-import { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import { IProduct } from 'api/models/Product.model/types';
+import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
+import type { IProduct } from 'api/models/Product.model/types';
 import { H3, Span } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import ProductViewDialog from 'components/products/ProductViewDialog';
-import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { currency } from 'lib';
 

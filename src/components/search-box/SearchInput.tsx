@@ -1,8 +1,9 @@
 import { Box, Button, MenuItem, TextField } from '@mui/material';
 import Link from 'next/link';
-import {
+import type {
   ChangeEvent,
-  FC,
+  FC } from 'react';
+import {
   useEffect,
   useRef,
   useState,

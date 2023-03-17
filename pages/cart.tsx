@@ -1,7 +1,7 @@
 import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import MenuItem from '@mui/material/MenuItem';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import Link from 'next/link';
 
 import SEO from 'components/abstract/SEO';

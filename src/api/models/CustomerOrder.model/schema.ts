@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
 
 import { customerOrderItemSchema } from './CustomerOrderItem.schema';
-import { ICustomerOrderItem } from './CustomerOrderItem.schema/types';
-import { ICustomerOrder } from './types';
+import type { ICustomerOrderItem } from './CustomerOrderItem.schema/types';
+import type { ICustomerOrder } from './types';
 
 import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 

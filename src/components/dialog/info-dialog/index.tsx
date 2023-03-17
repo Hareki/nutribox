@@ -4,7 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 export interface InfoDialogProps {
   open: boolean;

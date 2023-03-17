@@ -1,7 +1,7 @@
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
 
-import { IAccountAddress } from './AccountAddress.schema/types';
-import { ICartItem, IPopulatedCartItem } from './CartItem.schema/types';
+import type { IAccountAddress } from './AccountAddress.schema/types';
+import type { ICartItem, IPopulatedCartItem } from './CartItem.schema/types';
 
 export interface IAccount {
   _id: Types.ObjectId;
@@ -17,6 +17,7 @@ export interface IAccount {
 
   firstName: string;
   lastName: string;
+  birthday: string;
   avatarUrl: string;
   email: string;
   phone: string;
@@ -37,13 +38,13 @@ export interface IPopulatedCartItemsAccount
 
 export interface IAccountInput
   extends Omit<
-    IAccount,
-    | '_id'
-    | 'cartItems'
-    | 'addresses'
-    | 'customerOrders'
-    | 'passwordReset'
-    | 'verified'
+  IAccount,
+  | '_id'
+  | 'cartItems'
+  | 'addresses'
+  | 'customerOrders'
+  | 'passwordReset'
+  | 'verified'
   > {
   cartItems?: Types.DocumentArray<ICartItem>; // ICartItem
   addresses?: Types.DocumentArray<IAccountAddress>; // IAccountAddress

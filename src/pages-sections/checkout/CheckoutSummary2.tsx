@@ -1,5 +1,5 @@
 import { Box, Divider } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { Paragraph, Span } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';

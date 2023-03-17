@@ -1,13 +1,13 @@
 import { StatusCodes } from 'http-status-codes';
 import { Types } from 'mongoose';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { revertUpdateDependentDoc } from 'api/base/mongoose/dependentHandler';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/databaseConnection';
 import Product from 'api/models/Product.model';
-import { IProductInput } from 'api/models/Product.model/types';
+import type { IProductInput } from 'api/models/Product.model/types';
 import ProductCategory from 'api/models/ProductCategory.model';
 
 const handler = nc<NextApiRequest, NextApiResponse>({

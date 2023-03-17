@@ -1,6 +1,6 @@
 import { Delete, Edit } from '@mui/icons-material';
 import { Avatar } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import {
   StyledIconButton,

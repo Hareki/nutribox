@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useReducer, useState } from 'react';
 
@@ -9,14 +9,9 @@ import { FlexRowCenter } from 'components/flex-box';
 import { getMessageList } from 'helpers/feedback.helper';
 import Signup from 'pages-sections/auth/Signup';
 import apiCaller from 'utils/apiCallers/signup';
+import { SignUpRequestBody } from './api/signup';
 
-export interface SignUpRequestBody {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  password: string;
-}
+
 
 const SignUpPage: NextPage = () => {
   const [state, dispatch] = useReducer(infoDialogReducer, {
@@ -26,6 +21,7 @@ const SignUpPage: NextPage = () => {
   const router = useRouter();
 
   const handleFormSubmit = async (values: SignUpRequestBody) => {
+    console.log('file: signup.tsx:30 - handleFormSubmit - values:', values);
     setLoading(true);
     const result = await apiCaller.signUp(values);
     setLoading(false);

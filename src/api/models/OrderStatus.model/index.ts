@@ -1,7 +1,8 @@
 import '../../database/mongoose.config';
-import { Model, models } from 'mongoose';
+import type { Model } from 'mongoose';
+import { models } from 'mongoose';
 
-import { IOrderStatus } from './types';
+import type { IOrderStatus } from './types';
 
 const OrderStatus = models?.OrderStatus as Model<IOrderStatus>;
 export default OrderStatus;

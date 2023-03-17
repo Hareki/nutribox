@@ -1,23 +1,29 @@
 import { StatusCodes } from 'http-status-codes';
-import { NextApiRequest, NextApiResponse } from 'next';
-import nc, { ErrorHandler } from 'next-connect';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { ErrorHandler } from 'next-connect';
+import nc from 'next-connect';
 
 import { defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
-import { CustomError } from 'api/helpers/error.helper';
-import { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
-import {
+import type { CustomError } from 'api/helpers/error.helper';
+import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
+import type {
   JSendErrorResponse,
   JSendFailResponse,
   JSendResponse,
 } from 'api/types/response.type';
-import { CartState } from 'hooks/redux-hooks/useCart';
-import { CartItemRequestBody } from 'utils/apiCallers/global/cart';
+import type { CartState } from 'hooks/redux-hooks/useCart';
+
+
+export interface CartItemRequestBody {
+  productId: string;
+  quantity: number;
+}
 
 const onCartItemError: ErrorHandler<
-  NextApiRequest,
-  NextApiResponse<JSendFailResponse<string> | JSendErrorResponse>
+NextApiRequest,
+NextApiResponse<JSendFailResponse<string> | JSendErrorResponse>
 > = (err: CustomError, _req, res) => {
   console.log(JSON.stringify(err));
 
@@ -36,12 +42,12 @@ const onCartItemError: ErrorHandler<
 };
 
 const handler = nc<
-  NextApiRequest,
-  NextApiResponse<
-    | JSendResponse<CartState | IPopulatedCartItemsAccount>
-    | JSendFailResponse<string>
-    | JSendErrorResponse
-  >
+NextApiRequest,
+NextApiResponse<
+| JSendResponse<CartState | IPopulatedCartItemsAccount>
+| JSendFailResponse<string>
+| JSendErrorResponse
+>
 >({
   attachParams: true,
   onError: onCartItemError,

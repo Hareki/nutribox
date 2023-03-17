@@ -8,7 +8,8 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useFormik } from 'formik';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 import * as yup from 'yup';
 
 const checkoutSchema = yup.object({

@@ -1,6 +1,6 @@
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
 
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 
 export interface ICartItem {
   _id: Types.ObjectId;

@@ -3,9 +3,10 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Box, MenuItem, TextField, styled, useTheme } from '@mui/material';
 import TouchRipple from '@mui/material/ButtonBase';
 import Link from 'next/link';
-import {
+import type {
   ChangeEvent,
-  FC,
+  FC } from 'react';
+import {
   useEffect,
   useRef,
   useState,

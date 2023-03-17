@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 
-import { AppDispatch, RootState } from 'store';
+import type { AppDispatch, RootState } from 'store';
 import { setLoginDialogOpen as setLoginDialogVisible } from 'store/slices/loginDialogSlice';
 
 const useLoginDialog = () => {

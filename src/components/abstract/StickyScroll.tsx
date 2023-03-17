@@ -1,7 +1,7 @@
 import { useScrollTrigger, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import clsx from 'clsx';
-import { FC, ReactElement } from 'react';
+import type { FC, ReactElement } from 'react';
 
 import { slideDown } from 'animations/keyframes';
 

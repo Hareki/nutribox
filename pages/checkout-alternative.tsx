@@ -1,5 +1,5 @@
 import { Container, Grid } from '@mui/material';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 
 import SEO from 'components/abstract/SEO';
 import ShopLayout1 from 'components/layouts/ShopLayout1';

@@ -1,8 +1,8 @@
 import { LoadingButton } from '@mui/lab';
 import { Box, CircularProgress, Grid, styled } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 import { Paragraph } from 'components/abstract/Typography';
 import CategorySectionCreator from 'components/CategorySectionCreator';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
@@ -40,9 +40,6 @@ const AllProducts: FC<AllProductsProps> = ({
   pagination,
 }) => {
   const noProducts = !products || products.length === 0;
-  console.log('products', products);
-  console.log('isLoading', isLoading);
-  console.log('noProducts: ', noProducts);
 
   if (noProducts)
     return (

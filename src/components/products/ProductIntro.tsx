@@ -1,13 +1,16 @@
 import { Add, Remove } from '@mui/icons-material';
-import { Box, Button, Grid, SxProps, Theme, useTheme } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+import type { SxProps, Theme } from '@mui/material';
+import { Box, Button, Grid, useTheme } from '@mui/material';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 
 import { FlexBox, FlexRowCenter } from '../flex-box';
 
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 import { H1, H2, H3, H6 } from 'components/abstract/Typography';
 import LazyImage from 'components/LazyImage';
-import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 

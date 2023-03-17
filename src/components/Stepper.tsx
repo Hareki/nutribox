@@ -1,5 +1,6 @@
 import { Box, Chip } from '@mui/material';
-import { FC, Fragment, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 import { FlexRowCenter } from 'components/flex-box';
 

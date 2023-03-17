@@ -1,5 +1,6 @@
-import { Box, BoxProps, styled } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import type { BoxProps } from '@mui/material';
+import { Box, styled } from '@mui/material';
+import type { FC, ReactNode } from 'react';
 
 import CustomImage from 'components/common/input/CustomImage';
 

@@ -1,14 +1,16 @@
 import { KeyboardArrowDown } from '@mui/icons-material';
+import type {
+  SelectChangeEvent } from '@mui/material';
 import {
   Card,
   MenuItem,
   Select,
-  SelectChangeEvent,
   styled,
   useTheme,
 } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 import { analyticsChartOptions } from './chartsOptions';
 

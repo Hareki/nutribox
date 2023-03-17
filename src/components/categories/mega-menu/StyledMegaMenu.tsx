@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 // styled component
 const Wrapper = styled(Box)(({ theme }) => ({

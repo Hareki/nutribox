@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
 
 export interface IPasswordReset {
   _id: Types.ObjectId;
@@ -14,6 +14,6 @@ export interface IPasswordReset {
 
 export interface IPasswordResetInput
   extends Omit<
-    IPasswordReset,
-    '_id' | 'createdAt' | 'updatedAt' | 'expirationDate'
+  IPasswordReset,
+  '_id' | 'createdAt' | 'updatedAt' | 'expirationDate'
   > {}

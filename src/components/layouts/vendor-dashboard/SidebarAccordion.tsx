@@ -1,6 +1,7 @@
 import { Box, styled } from '@mui/material';
 import { useRouter } from 'next/router';
-import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   BadgeValue,

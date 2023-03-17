@@ -2,10 +2,12 @@ import { Person, Place } from '@mui/icons-material';
 import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import { Card, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { FC, Fragment } from 'react';
+import type { FC } from 'react';
+import { Fragment } from 'react';
 
 import { FlexBox } from 'components/flex-box';
-import NavLink, { NavLinkProps } from 'components/nav-link/NavLink';
+import type { NavLinkProps } from 'components/nav-link/NavLink';
+import NavLink from 'components/nav-link/NavLink';
 
 // custom styled components
 const MainContainer = styled(Card)(({ theme }) => ({

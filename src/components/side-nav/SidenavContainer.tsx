@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Container, styled } from '@mui/material';
 import clsx from 'clsx';
-import { FC, ReactNode, useState } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useState } from 'react';
 
 import { layoutConstant } from 'utils/constants';
 
@@ -17,7 +18,7 @@ const StyledContainer = styled(Container)<{ side_nav_bottom_offset: string }>(
       width: layoutConstant.grocerySidenavWidth,
       minWidth: layoutConstant.grocerySidenavWidth,
       // height: `calc(100vh - ${layoutConstant.headerHeight}px)`,
-      height: `fit-content`,
+      height: 'fit-content',
       '& .MuiPaper-root': { borderRadius: 5 },
     },
     '.sticky': {

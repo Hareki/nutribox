@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { IProductCategory } from './types';
+import type { IProductCategory } from './types';
 
 import { getSlug } from 'api/helpers/slug.helper';
 

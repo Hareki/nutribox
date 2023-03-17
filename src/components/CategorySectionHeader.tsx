@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import { H2 } from './abstract/Typography';
 import { FlexBetween, FlexBox } from './flex-box';

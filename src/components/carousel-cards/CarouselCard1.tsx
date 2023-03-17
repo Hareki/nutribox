@@ -1,5 +1,5 @@
 import { Button, Grid, styled } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { Paragraph } from 'components/abstract/Typography';
 import CustomImage from 'components/common/input/CustomImage';

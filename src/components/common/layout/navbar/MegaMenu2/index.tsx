@@ -1,7 +1,9 @@
 import { ChevronRight, KeyboardArrowDown } from '@mui/icons-material';
-import { Avatar, Box, SvgIconProps } from '@mui/material';
+import type { SvgIconProps } from '@mui/material';
+import { Avatar, Box } from '@mui/material';
 import Link from 'next/link';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 import {
   Wrapper,

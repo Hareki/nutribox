@@ -1,6 +1,7 @@
 import { Box, Container, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
-import { FC, ReactNode, useEffect, useState } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 
 import ShopLayout2 from './ShopLayout2';
 

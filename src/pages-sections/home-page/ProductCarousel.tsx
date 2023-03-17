@@ -1,7 +1,8 @@
 import { Box, styled, useTheme } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 import { Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
 import CategorySectionCreator from 'components/CategorySectionCreator';

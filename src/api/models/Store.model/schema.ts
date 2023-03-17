@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 import { storeHourSchema } from './StoreHour.schema';
-import { IStoreHour } from './StoreHour.schema/types';
+import type { IStoreHour } from './StoreHour.schema/types';
 
 import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 

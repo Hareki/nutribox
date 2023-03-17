@@ -1,12 +1,13 @@
 import { QueryClient } from '@tanstack/react-query';
-import { NextPage } from 'next';
-import { AppProps } from 'next/app';
+import type { NextPage } from 'next';
+import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import nProgress from 'nprogress';
-import { Fragment, ReactElement, ReactNode, useState } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import { Fragment, useState } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 
 import nextI18NextConfig from '../next-i18next.config';

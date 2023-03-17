@@ -1,8 +1,9 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { SxProps } from '@mui/material';
+import type { SxProps } from '@mui/material';
 import clsx from 'clsx';
 import { Slide } from 'pure-react-carousel';
-import { CSSProperties, FC, Fragment, ReactNode, Children } from 'react';
+import type { CSSProperties, FC, ReactNode } from 'react';
+import { Fragment, Children } from 'react';
 
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import {

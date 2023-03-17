@@ -4,7 +4,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { Formik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import * as yup from 'yup';
 
 import Card1 from 'components/common/Card1';
@@ -20,13 +21,13 @@ const CheckoutForm: FC = () => {
 
   const handleCheckboxChange =
     (values: typeof initialValues, setFieldValue: any) =>
-    (e: any, _: boolean) => {
-      const checked = e.currentTarget.checked;
+      (e: any, _: boolean) => {
+        const checked = e.currentTarget.checked;
 
-      setSameAsShipping(checked);
-      setFieldValue('same_as_shipping', checked);
-      setFieldValue('billing_name', checked ? values.shipping_name : '');
-    };
+        setSameAsShipping(checked);
+        setFieldValue('same_as_shipping', checked);
+        setFieldValue('billing_name', checked ? values.shipping_name : '');
+      };
 
   return (
     <Formik

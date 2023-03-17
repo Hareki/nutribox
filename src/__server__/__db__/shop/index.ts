@@ -7,7 +7,7 @@ import Mock from '../../mock';
 import shops from './data';
 
 import products from 'data/product-database';
-import Shop from 'models/Shop.model';
+import type Shop from 'models/Shop.model';
 
 const getProducts = (slug: string) =>
   products.filter((item) => item?.shop?.slug === slug);

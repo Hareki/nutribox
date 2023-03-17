@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { IPasswordReset } from './types';
+import type { IPasswordReset } from './types';
 
 export const passwordResetSchema = new Schema<IPasswordReset>(
   {

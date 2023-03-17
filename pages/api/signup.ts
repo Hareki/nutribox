@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
-import { NextApiRequest, NextApiResponse } from 'next';
-import nc, { ErrorHandler } from 'next-connect';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { ErrorHandler } from 'next-connect';
+import nc from 'next-connect';
 
-import { SignUpRequestBody } from '../signup';
 
 import { defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
@@ -12,22 +12,33 @@ import {
   getDuplicateKeyErrorMessage,
   getValidationErrorMessages,
 } from 'api/helpers/schema.helper';
-import { IAccount } from 'api/models/Account.model/types';
+import type { IAccount } from 'api/models/Account.model/types';
 import {
   instanceOfDuplicateKeyError,
   instanceOfValidationError,
 } from 'api/types/mongooseError.type';
-import {
+import type {
   JSendErrorResponse,
   JSendFailResponse,
   JSendSuccessResponse,
 } from 'api/types/response.type';
 
+
+export interface SignUpRequestBody {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+  birthday: string;
+}
+
+
 export const onSignUpError: ErrorHandler<
-  NextApiRequest,
-  NextApiResponse<
-    JSendFailResponse<Record<string, string>> | JSendErrorResponse
-  >
+NextApiRequest,
+NextApiResponse<
+JSendFailResponse<Record<string, string>> | JSendErrorResponse
+>
 > = (err: any, _req, res) => {
   let response: Record<string, string>;
   console.log(JSON.stringify(err));
@@ -53,12 +64,12 @@ export const onSignUpError: ErrorHandler<
 };
 
 const handler = nc<
-  NextApiRequest,
-  NextApiResponse<
-    | JSendSuccessResponse<IAccount>
-    | JSendFailResponse<Record<string, string>>
-    | JSendErrorResponse
-  >
+NextApiRequest,
+NextApiResponse<
+| JSendSuccessResponse<IAccount>
+| JSendFailResponse<Record<string, string>>
+| JSendErrorResponse
+>
 >({
   attachParams: true,
   onError: onSignUpError,

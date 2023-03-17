@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H3 } from 'components/abstract/Typography';
 import Image from 'components/common/input/CustomImage';

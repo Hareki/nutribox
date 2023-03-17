@@ -7,12 +7,12 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 // Footer1
 
-import { IProduct } from 'api/models/Product.model/types';
-import { GetPaginationResult } from 'api/types/pagination.type';
+import type { IProduct } from 'api/models/Product.model/types';
+import type { GetPaginationResult } from 'api/types/pagination.type';
 // ShopLayout2
 import SEO from 'components/abstract/SEO';
 import { Footer } from 'components/common/layout/footer';
@@ -21,9 +21,9 @@ import ShopLayout1 from 'components/layouts/ShopLayout1';
 import { MobileNavigationBar } from 'components/mobile-navigation';
 import CategoryNavbar from 'components/page-sidenav/CategoryNavbar';
 import SideNavContainer from 'components/side-nav/SidenavContainer';
-import Product from 'models/BazaarProduct.model';
-import { MainCarouselItem } from 'models/Grocery-3.model';
-import Service from 'models/Service.model';
+import type Product from 'models/BazaarProduct.model';
+import type { MainCarouselItem } from 'models/Grocery-3.model';
+import type Service from 'models/Service.model';
 import AllProducts from 'pages-sections/home-page/AllProducts';
 import HeroSection from 'pages-sections/home-page/HeroSection';
 import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
@@ -123,12 +123,10 @@ const HomePage: NextPage<HomePageProps> = (props) => {
         queryKey: ['products', 'category', category.id],
         queryFn: () => {
           setIsLoading(true);
-          console.log('setIsLoading(true)');
           return apiCaller.getCategoryWithProducts(category.id);
         },
         enabled: selectedCategoryId === category.id,
         onSettled: () => {
-          console.log('setIsLoading(false)');
           setIsLoading(false);
         },
       };

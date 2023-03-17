@@ -1,6 +1,6 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { Pagination } from '@mui/material';
-import { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 
 import { H5 } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
@@ -8,7 +8,7 @@ import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import Order from 'models/Order.model';
+import type Order from 'models/Order.model';
 import OrderRow from 'pages-sections/orders/OrderRow';
 import api from 'utils/__api__/orders';
 

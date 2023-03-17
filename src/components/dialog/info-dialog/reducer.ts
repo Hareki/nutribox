@@ -1,4 +1,4 @@
-import { InfoDialogProps } from '.';
+import type { InfoDialogProps } from '.';
 
 export interface InfoDialogState
   extends Partial<Omit<InfoDialogProps, 'handleClose'>> {}

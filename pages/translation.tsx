@@ -1,12 +1,13 @@
+import type {
+  SelectChangeEvent } from '@mui/material';
 import {
   Box,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
 } from '@mui/material';
-import { GetStaticProps } from 'next';
+import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 // import type { InferGetStaticPropsType } from "next";
 import { useTranslation } from 'next-i18next';

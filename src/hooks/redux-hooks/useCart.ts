@@ -4,9 +4,10 @@ import { useSnackbar } from 'notistack';
 
 import useLoginDialog from './useLoginDialog';
 
-import { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
-import apiCaller, { CartItemRequestBody } from 'utils/apiCallers/global/cart';
+import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
+import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
+import type { CartItemRequestBody } from 'utils/apiCallers/global/cart';
+import apiCaller from 'utils/apiCallers/global/cart';
 
 export type CartState = { cart: IPopulatedCartItem[] };
 
@@ -33,9 +34,9 @@ const useCart = () => {
   });
 
   const { mutate: mutateCartItem } = useMutation<
-    IPopulatedCartItemsAccount,
-    unknown,
-    MutateCartItemType
+  IPopulatedCartItemsAccount,
+  unknown,
+  MutateCartItemType
   >({
     mutationFn: ({ cart }) =>
       apiCaller.updateCartItem(accountId, {

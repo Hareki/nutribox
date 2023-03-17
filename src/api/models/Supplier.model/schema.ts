@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { ISupplier } from './types';
+import type { ISupplier } from './types';
 
 import {
   getAddressSchema,

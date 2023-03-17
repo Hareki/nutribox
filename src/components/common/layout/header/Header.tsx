@@ -20,7 +20,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { FC, Fragment, ReactElement, useState } from 'react';
+import type { FC, ReactElement } from 'react';
+import { Fragment, useState } from 'react';
 
 import MobileMenu from '../navbar/MobileMenu';
 

@@ -1,7 +1,7 @@
 import { Box, Card, styled } from '@mui/material';
 import Image from 'next/legacy/image';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H4, Paragraph } from 'components/abstract/Typography';
 import { FlexRowCenter } from 'components/flex-box';

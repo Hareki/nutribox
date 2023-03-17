@@ -1,6 +1,7 @@
 import { Box, Drawer, styled } from '@mui/material';
 import clsx from 'clsx';
-import { cloneElement, FC, useEffect, useState, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import { cloneElement, useEffect, useState } from 'react';
 
 import Scrollbar from 'components/Scrollbar';
 

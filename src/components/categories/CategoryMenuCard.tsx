@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import CategoryMenuItem from './CategoryMenuItem';
 import MegaMenu1 from './mega-menu/MegaMenu1';

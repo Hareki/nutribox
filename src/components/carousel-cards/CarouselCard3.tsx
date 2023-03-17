@@ -1,12 +1,12 @@
 import { styled } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H2, Paragraph, Small } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import CustomImage from 'components/common/input/CustomImage';
 import { FlexBox } from 'components/flex-box';
-import Product from 'models/BazaarProduct.model';
+import type Product from 'models/BazaarProduct.model';
 
 // styled components
 const ContentWrapper = styled(BazaarCard)(({ theme }) => ({

@@ -1,4 +1,4 @@
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 
 export type ListItem = {
   name: string;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Shop from 'models/Shop.model';
+import type Shop from 'models/Shop.model';
 
 export const getShopList = async (): Promise<Shop[]> => {
   const response = await axios.get('/api/shops');

@@ -3,7 +3,7 @@ import { Schema } from 'mongoose';
 
 import { accountAddressSchema } from './AccountAddress.schema';
 import { cartItemSchema } from './CartItem.schema';
-import { IAccount } from './types';
+import type { IAccount } from './types';
 
 import { getEmailSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 
@@ -59,6 +59,11 @@ export const accountSchema = new Schema<IAccount>(
       trim: true,
     },
 
+    birthday: {
+      type: String,
+      required: [true, 'Account/Birthday is required'],
+    },
+
     avatarUrl: {
       type: String,
     },
@@ -94,7 +99,7 @@ accountSchema.methods.isPasswordMatch = async function (
   candidatePassword: string,
   userPassword: string,
 ) {
-  return await bcrypt.compare(candidatePassword, userPassword);
+  return bcrypt.compare(candidatePassword, userPassword);
 };
 
 // Eastern name order, so the fullName will be reversed (lastName + firstName)

@@ -9,11 +9,11 @@ import {
   styled,
 } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H3, Span } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
-import Shop from 'models/Shop.model';
+import type Shop from 'models/Shop.model';
 
 // styled components
 const ContentWrapper = styled(Box)<{ img: string }>(({ theme, img }) => ({

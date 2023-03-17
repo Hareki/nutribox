@@ -11,12 +11,12 @@ import {
   IconButton,
 } from '@mui/material';
 import { format } from 'date-fns';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H5, H6, Paragraph, Span } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import { currency } from 'lib';
-import Order from 'models/Order.model';
+import type Order from 'models/Order.model';
 
 // ===================================================================
 type OrderDetailsProps = { order: Order };

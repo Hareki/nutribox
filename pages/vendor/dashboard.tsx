@@ -1,6 +1,6 @@
 import { Box, Grid } from '@mui/material';
-import { GetStaticProps } from 'next';
-import { ReactElement } from 'react';
+import type { GetStaticProps } from 'next';
+import type { ReactElement } from 'react';
 
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
 import Analytics from 'pages-sections/dashboard/Analytics';

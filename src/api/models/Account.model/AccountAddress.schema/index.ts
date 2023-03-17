@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { IAccountAddress } from './types';
+import type { IAccountAddress } from './types';
 
 import { getAddressSchema } from 'api/helpers/schema.helper';
 

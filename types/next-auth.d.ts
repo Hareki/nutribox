@@ -1,4 +1,4 @@
-import { IAccount } from 'api/models/Account.model/types';
+import type { IAccount } from 'api/models/Account.model/types';
 
 // OVERWRITE THE NEXT-AUTH TYPES (OFFICIAL DOCUMENTATION)
 declare module 'next-auth' {
@@ -17,7 +17,7 @@ declare module 'next-auth' {
 
   interface User
     extends Pick<
-      IAccount,
-      'id' | 'fullName' | 'email' | 'avatarUrl' | 'role'
+    IAccount,
+    'id' | 'fullName' | 'email' | 'avatarUrl' | 'role'
     > {}
 }

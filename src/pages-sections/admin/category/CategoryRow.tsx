@@ -1,7 +1,8 @@
 import { Delete, Edit, RemoveRedEye } from '@mui/icons-material';
 import { Avatar } from '@mui/material';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 import {
   StyledTableRow,

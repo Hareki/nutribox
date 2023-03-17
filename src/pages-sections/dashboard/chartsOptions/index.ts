@@ -1,5 +1,5 @@
-import { Theme } from '@mui/material';
-import { ApexOptions } from 'apexcharts';
+import type { Theme } from '@mui/material';
+import type { ApexOptions } from 'apexcharts';
 
 export const weeklyChartOptions = (theme: Theme): ApexOptions => ({
   grid: { show: false },

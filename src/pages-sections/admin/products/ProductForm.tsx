@@ -1,8 +1,9 @@
 import { Button, Card, Grid, MenuItem, TextField } from '@mui/material';
 import { Formik } from 'formik';
-import { FC, useState } from 'react';
-import * as yup from 'yup';
-import { Assign, ObjectShape } from 'yup/lib/object';
+import type { FC } from 'react';
+import { useState } from 'react';
+import type * as yup from 'yup';
+import type { Assign, ObjectShape } from 'yup/lib/object';
 
 import { UploadImageBox, StyledClear } from '../StyledComponents';
 

@@ -4,13 +4,14 @@ import {
   getTotalGenerator,
 } from './generator.controller';
 
-import {
+import type {
   BaseGetOptions,
+  GetManyDocsOptions } from 'api/base/mongoose/baseHandler';
+import {
   buildBaseQuery,
-  GetManyDocsOptions,
 } from 'api/base/mongoose/baseHandler';
 import Product from 'api/models/Product.model';
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 
 interface GetHotProductsOptions extends Omit<BaseGetOptions, 'model'> {}
 interface GetNewProductsOptions extends Omit<BaseGetOptions, 'model'> {}

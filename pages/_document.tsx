@@ -1,7 +1,8 @@
 import { CacheProvider } from '@emotion/react';
 import createEmotionServer from '@emotion/server/create-instance';
+import type {
+  DocumentProps } from 'next/document';
 import Document, {
-  DocumentProps,
   Head,
   Html,
   Main,

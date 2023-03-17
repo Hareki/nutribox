@@ -1,9 +1,10 @@
 import { styled } from '@mui/material';
+import type {
+  FC,
+  ReactElement } from 'react';
 import {
   Children,
   cloneElement,
-  FC,
-  ReactElement,
   useEffect,
   useRef,
   useState,

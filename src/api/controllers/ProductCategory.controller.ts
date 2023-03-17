@@ -1,7 +1,7 @@
 import { getAllGenerator, getOneGenerator } from './generator.controller';
 
 import ProductCategory from 'api/models/ProductCategory.model';
-import { IProductCategory } from 'api/models/ProductCategory.model/types';
+import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 
 export const getAll = getAllGenerator<IProductCategory>(ProductCategory);
 export const getOne = getOneGenerator<IProductCategory>(ProductCategory);

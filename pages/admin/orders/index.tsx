@@ -1,7 +1,7 @@
 import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
-import { GetStaticProps } from 'next';
-import { ReactElement } from 'react';
+import type { GetStaticProps } from 'next';
+import type { ReactElement } from 'react';
 
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
@@ -10,7 +10,7 @@ import TablePagination from 'components/data-table/TablePagination';
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
 import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
-import Order from 'models/Order.model';
+import type Order from 'models/Order.model';
 import { OrderRow } from 'pages-sections/admin';
 import api from 'utils/__api__/dashboard';
 

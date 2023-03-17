@@ -1,8 +1,8 @@
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
 
-import { IStoreHour } from './StoreHour.schema/types';
+import type { IStoreHour } from './StoreHour.schema/types';
 
-import { IAddress } from 'api/types/schema.type';
+import type { IAddress } from 'api/types/schema.type';
 
 export interface IStore extends IAddress {
   _id: Types.ObjectId;

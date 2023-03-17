@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { IExpiration } from './types';
+import type { IExpiration } from './types';
 
 export const expirationSchema = new Schema<IExpiration>(
   {

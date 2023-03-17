@@ -1,11 +1,9 @@
-import { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
-import { CartState } from 'hooks/redux-hooks/useCart';
+import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
+import type { CartState } from 'hooks/redux-hooks/useCart';
 import axiosInstance from 'utils/axiosInstance';
+import { CartItemRequestBody } from '../../../../pages/api/cart/[accountId]';
 
-export interface CartItemRequestBody {
-  productId: string;
-  quantity: number;
-}
+
 
 export const updateCartItem = async (
   accountId: string,

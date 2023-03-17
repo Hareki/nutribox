@@ -1,4 +1,5 @@
-import { signIn, SignInResponse } from 'next-auth/react';
+import type { SignInResponse } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 export interface LoginRequestBody {

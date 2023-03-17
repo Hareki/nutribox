@@ -1,5 +1,6 @@
-import { Avatar, Grid, styled, Theme } from '@mui/material';
-import { FC } from 'react';
+import type { Theme } from '@mui/material';
+import { Avatar, Grid, styled } from '@mui/material';
+import type { FC } from 'react';
 
 import { H5, Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';

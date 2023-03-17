@@ -1,12 +1,12 @@
 // TODO: Đây là page để hiển thị các chi nhánh của store
 import { Container, Grid, Pagination } from '@mui/material';
-import { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 
 import { H2, Span } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
 import ShopLayout2 from 'components/layouts/ShopLayout2';
 import ShopCard from 'components/shop/ShopCard';
-import Shop from 'models/Shop.model';
+import type Shop from 'models/Shop.model';
 import api from 'utils/__api__/shop';
 
 // =============================================

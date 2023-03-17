@@ -1,13 +1,13 @@
 import { AccessTime, CommentOutlined } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import format from 'date-fns/format';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H3, Paragraph } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import { NavLink2 } from 'components/nav-link';
-import Blog from 'models/Blog.model';
+import type Blog from 'models/Blog.model';
 
 // ===========================================================
 type BlogCard1Props = { blog: Blog };

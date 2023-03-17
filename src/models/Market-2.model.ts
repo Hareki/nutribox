@@ -1,4 +1,4 @@
-import Product from './BazaarProduct.model';
+import type Product from './BazaarProduct.model';
 
 export interface MainCarouselItem {
   title?: string;

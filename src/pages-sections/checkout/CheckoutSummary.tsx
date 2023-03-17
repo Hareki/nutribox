@@ -1,5 +1,5 @@
 import { Button, Divider, TextField, Typography } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import Card1 from 'components/common/Card1';
 import { FlexBetween } from 'components/flex-box';

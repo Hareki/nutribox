@@ -1,4 +1,5 @@
-import { SvgIcon, SvgIconProps } from '@mui/material';
+import type { SvgIconProps } from '@mui/material';
+import { SvgIcon } from '@mui/material';
 import React from 'react';
 
 const Eye = (props: SvgIconProps) => {
@@ -23,7 +24,7 @@ const Eye = (props: SvgIconProps) => {
         strokeLinecap='round'
         strokeLinejoin='round'
       />
-      <g clipPath='url(#clip0_8501_71183)'></g>
+      <g clipPath='url(#clip0_8501_71183)' />
       <defs>
         <clipPath id='clip0_8501_71183'>
           <rect

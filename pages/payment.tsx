@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 
 import CheckoutNavLayout from 'components/layouts/CheckoutNavLayout';
 import PaymentForm from 'pages-sections/payment/PaymentForm';

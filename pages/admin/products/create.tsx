@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import * as yup from 'yup';
 
 import { H3 } from 'components/abstract/Typography';

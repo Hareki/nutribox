@@ -1,6 +1,6 @@
 import { Box, Grid, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import Card2 from './Card2';
 import * as options from './chartsOptions';

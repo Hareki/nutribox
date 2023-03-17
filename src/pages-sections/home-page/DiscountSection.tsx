@@ -1,7 +1,7 @@
 import { Button, Card, Grid, styled } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H1, Paragraph } from 'components/abstract/Typography';
 import CustomImage from 'components/common/input/CustomImage';

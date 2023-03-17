@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Order from 'models/Order.model';
+import type Order from 'models/Order.model';
 
 const getOrders = async (): Promise<Order[]> => {
   const response = await axios.get('/api/users/orders');

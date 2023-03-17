@@ -1,11 +1,11 @@
 import { paginationConstant } from './../constants';
 
-import { IProduct } from 'api/models/Product.model/types';
-import {
+import type { IProduct } from 'api/models/Product.model/types';
+import type {
   IProductCategory,
   IPopulatedProductCategory,
 } from 'api/models/ProductCategory.model/types';
-import { GetPaginationResult } from 'api/types/pagination.type';
+import type { GetPaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
 
 const getAllCategories = async (): Promise<IProductCategory[]> => {
@@ -21,7 +21,6 @@ const getAllCategories = async (): Promise<IProductCategory[]> => {
   };
 
   response.data.data.unshift(allCategory);
-  // console.log('file: index.ts:21 - getAllCategories - categories:', categories);
   return response.data.data;
 };
 
@@ -38,7 +37,7 @@ const getAllProducts = async (
   }
 
   if (docsPerPage === paginationConstant.infiniteDocsPerPage)
-    console.log('WARNING: docsPerPage is infiniteDocsPerPage');
+    console.warn('WARNING: docsPerPage is infiniteDocsPerPage');
 
   const response = await axiosInstance.get('/product/all', {
     params: {

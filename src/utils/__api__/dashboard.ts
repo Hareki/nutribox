@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import Product from 'models/BazaarProduct.model';
-import Brand from 'models/Brand.model';
-import Category from 'models/Category.model';
-import Order from 'models/Order.model';
-import Review from 'models/Review.model';
+import type Product from 'models/BazaarProduct.model';
+import type Brand from 'models/Brand.model';
+import type Category from 'models/Category.model';
+import type Order from 'models/Order.model';
+import type Review from 'models/Review.model';
 
 // dashboard
 const getAllCard = async () => {

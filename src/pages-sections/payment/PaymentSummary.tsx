@@ -1,5 +1,5 @@
 import { Divider } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { Paragraph } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';

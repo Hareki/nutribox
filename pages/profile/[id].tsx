@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Formik } from 'formik';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
@@ -15,7 +15,7 @@ import UserDashboardHeader from 'components/common/layout/header/UserDashboardHe
 import { FlexBox } from 'components/flex-box';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import User from 'models/User.model';
+import type User from 'models/User.model';
 import api from 'utils/__api__/users';
 
 // ===========================================================

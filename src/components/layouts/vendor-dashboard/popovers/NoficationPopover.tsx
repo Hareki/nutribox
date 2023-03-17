@@ -1,5 +1,7 @@
 import { Notifications } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import type {
+  SvgIconProps } from '@mui/material';
 import {
   Tab,
   Box,
@@ -8,12 +10,12 @@ import {
   Paper,
   Popper,
   styled,
-  SvgIconProps,
 } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import IconButton from '@mui/material/IconButton';
 import { formatDistance } from 'date-fns';
-import { FC, SyntheticEvent, useState } from 'react';
+import type { FC, SyntheticEvent } from 'react';
+import { useState } from 'react';
 
 import { H6, Paragraph } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';

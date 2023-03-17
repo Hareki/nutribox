@@ -1,6 +1,6 @@
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
 
-import { IProduct } from '../Product.model/types';
+import type { IProduct } from '../Product.model/types';
 
 export interface IProductCategory {
   _id: Types.ObjectId;

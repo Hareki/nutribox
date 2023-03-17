@@ -1,7 +1,8 @@
 import '../../database/mongoose.config';
-import { Model, models } from 'mongoose';
+import type { Model } from 'mongoose';
+import { models } from 'mongoose';
 
-import { IStore } from './types';
+import type { IStore } from './types';
 
 const Store = models.Store as Model<IStore>;
 export default Store;

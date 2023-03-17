@@ -1,6 +1,7 @@
-import { Box, BoxProps, styled } from '@mui/material';
+import type { BoxProps } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import clsx from 'clsx';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 const StyledBox = styled(Box, {
   shouldForwardProp: (props) => props !== 'textTransformStyle',
@@ -18,12 +19,12 @@ const StyledBox = styled(Box, {
 type Props = {
   ellipsis?: any;
   textTransform?:
-    | 'none'
-    | 'capitalize'
-    | 'uppercase'
-    | 'lowercase'
-    | 'initial'
-    | 'inherit';
+  | 'none'
+  | 'capitalize'
+  | 'uppercase'
+  | 'lowercase'
+  | 'initial'
+  | 'inherit';
 };
 // ============================================
 

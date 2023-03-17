@@ -6,7 +6,7 @@ import {
   TableRow,
   TableSortLabel,
 } from '@mui/material';
-import { ChangeEvent, FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 
 import UpDown from 'components/icons/UpDown';
 

@@ -3,13 +3,14 @@ import { Add, Close, Remove } from '@mui/icons-material';
 import { Button, Card, IconButton, styled } from '@mui/material';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { FC } from 'react';
+import type { FC } from 'react';
 
-import { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
+import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import { Span } from 'components/abstract/Typography';
 import Image from 'components/common/input/CustomImage';
 import { FlexBox } from 'components/flex-box';
-import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { currency } from 'lib';
 

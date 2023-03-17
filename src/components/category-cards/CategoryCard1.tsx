@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material';
 import Image from 'next/legacy/image';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H4 } from 'components/abstract/Typography';
 

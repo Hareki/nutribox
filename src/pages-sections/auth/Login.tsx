@@ -1,8 +1,10 @@
 import { LoadingButton } from '@mui/lab';
-import { Card, CardProps, Box, styled } from '@mui/material';
+import type { CardProps } from '@mui/material';
+import { Card, Box, styled } from '@mui/material';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { useCallback, useState, FC } from 'react';
+import type { FC } from 'react';
+import { useCallback, useState } from 'react';
 import * as yup from 'yup';
 
 import EyeToggleButton from './EyeToggleButton';

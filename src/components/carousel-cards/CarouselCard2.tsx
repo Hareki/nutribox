@@ -1,6 +1,6 @@
 import { Favorite } from '@mui/icons-material';
 import { Box, Button, Grid, styled } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H2, H3, H4, Paragraph } from 'components/abstract/Typography';
 import CustomImage from 'components/common/input/CustomImage';

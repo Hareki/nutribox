@@ -1,6 +1,6 @@
 import { ArrowForward } from '@mui/icons-material';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { Span } from 'components/abstract/Typography';
 

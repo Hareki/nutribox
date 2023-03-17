@@ -1118,18 +1118,18 @@ export const testimonialList = [
     rating: 4.5,
     id: 'aa95e3fd-c170-431a-b9cd-abaac45a048f',
     user: { name: 'Jonathon Doe', avatar: '/assets/images/faces/7.png' },
-    comment: `Satisfied by their professionalism ! Got my tea bags in time. Didn't have to pay any delivery charge. I can't believe that. Keep it up !`,
+    comment: 'Satisfied by their professionalism ! Got my tea bags in time. Didn\'t have to pay any delivery charge. I can\'t believe that. Keep it up !',
   },
   {
     rating: 5,
     id: '72c79d90-abc7-467d-b7b2-e94905a9e18a',
     user: { name: 'Emily Johnson', avatar: '/assets/images/faces/4.jpg' },
-    comment: `Satisfied by their professionalism ! Got my tea bags in time. Didn't have to pay any delivery charge. I can't believe that. Keep it up !`,
+    comment: 'Satisfied by their professionalism ! Got my tea bags in time. Didn\'t have to pay any delivery charge. I can\'t believe that. Keep it up !',
   },
   {
     rating: 4,
     id: 'fc39e3b3-de7b-4ffa-aa64-63ca0c21c5c8',
     user: { name: 'James Smith', avatar: '/assets/images/faces/5.jpg' },
-    comment: `Satisfied by their professionalism ! Got my tea bags in time. Didn't have to pay any delivery charge. I can't believe that. Keep it up !`,
+    comment: 'Satisfied by their professionalism ! Got my tea bags in time. Didn\'t have to pay any delivery charge. I can\'t believe that. Keep it up !',
   },
 ];

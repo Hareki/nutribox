@@ -6,7 +6,8 @@ import {
   Drawer,
   IconButton,
 } from '@mui/material';
-import { FC, Fragment, useState } from 'react';
+import type { FC } from 'react';
+import { Fragment, useState } from 'react';
 
 import { H6 } from 'components/abstract/Typography';
 import { NavLink } from 'components/nav-link';

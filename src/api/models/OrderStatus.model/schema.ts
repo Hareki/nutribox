@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { IOrderStatus } from './types';
+import type { IOrderStatus } from './types';
 
 export const orderStatusSchema = new Schema<IOrderStatus>(
   {

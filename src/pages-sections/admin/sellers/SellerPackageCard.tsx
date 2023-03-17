@@ -1,5 +1,5 @@
 import { Box, Button, Card, styled } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H1, H3, H5 } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';

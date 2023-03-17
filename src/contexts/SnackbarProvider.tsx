@@ -1,6 +1,6 @@
 import { styled } from '@mui/material';
 import { SnackbarProvider as NotistackProvider } from 'notistack';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 // styled component
 const Provider = styled(NotistackProvider)(({ theme }) => ({

@@ -3,5 +3,5 @@ import { hash } from 'bcryptjs';
 const SALT_ROUNDS = 12;
 
 export const hashPassword = async (password: string) => {
-  return await hash(password, SALT_ROUNDS);
+  return hash(password, SALT_ROUNDS);
 };

@@ -2,7 +2,7 @@ import { styled } from '@mui/material';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { AnchorHTMLAttributes, CSSProperties, FC } from 'react';
+import type { AnchorHTMLAttributes, CSSProperties, FC } from 'react';
 
 // component props interface
 export interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {

@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
-import { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import { useState } from 'react';
 import * as yup from 'yup';
 
 import { H3 } from 'components/abstract/Typography';

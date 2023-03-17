@@ -1,9 +1,9 @@
 import { Container, styled, Tabs } from '@mui/material';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import type { FC } from 'react';
 
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 import SEO from 'components/abstract/SEO';
 import { H2 } from 'components/abstract/Typography';
 import { Footer } from 'components/common/layout/footer';

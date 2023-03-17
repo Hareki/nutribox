@@ -1,7 +1,8 @@
 import { Box, styled, useTheme } from '@mui/material';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
-import { IProductCategory } from 'api/models/ProductCategory.model/types';
+import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 import { H5, Span } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';

@@ -1,5 +1,6 @@
 import { Box, Button, Divider } from '@mui/material';
-import { FC, Fragment } from 'react';
+import type { FC } from 'react';
+import { Fragment } from 'react';
 
 import CustomImage from 'components/common/input/CustomImage';
 import { FlexBox } from 'components/flex-box';

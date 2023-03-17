@@ -1,5 +1,5 @@
 import { Box, Button, Card, TextField } from '@mui/material';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import Link from 'next/link';
 
 import SEO from 'components/abstract/SEO';

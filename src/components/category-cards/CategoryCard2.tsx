@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { FlexRowCenter } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';

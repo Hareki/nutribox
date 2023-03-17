@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import User from 'models/User.model';
+import type User from 'models/User.model';
 
 export const getUser = async (): Promise<User[]> => {
   const response = await axios.get('/api/user-list/1');

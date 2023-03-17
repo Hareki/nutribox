@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { ICartItem } from './types';
+import type { ICartItem } from './types';
 
 export const cartItemSchema = new Schema<ICartItem>(
   {

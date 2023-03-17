@@ -1,6 +1,6 @@
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { Box, Grid, List, ListItem, styled } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H6 } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
@@ -24,7 +24,7 @@ const MenusContainer = styled(ListItem)(({ theme }) => ({
   minWidth: 1000,
   display: 'none',
   position: 'absolute',
-  transform: `translate(-50%, 0%)`,
+  transform: 'translate(-50%, 0%)',
   [theme.breakpoints.down(1070)]: { minWidth: 800 },
 }));
 

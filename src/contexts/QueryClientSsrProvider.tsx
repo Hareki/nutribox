@@ -1,10 +1,11 @@
-import {
+import type {
   DehydratedState,
+  QueryClient } from '@tanstack/react-query';
+import {
   Hydrate,
-  QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 interface QueryClientSsrProviderProps {
   queryClient: QueryClient;

@@ -1,10 +1,10 @@
 import { Box, Container, Grid, styled } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H4, Span } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import appIcons from 'components/icons';
-import Service from 'models/Service.model';
+import type Service from 'models/Service.model';
 
 // styled components
 const StyledFlexBox = styled(FlexBox)(({ theme }) => ({

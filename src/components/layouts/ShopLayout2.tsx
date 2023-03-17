@@ -1,5 +1,6 @@
 // Shop Layout 1 Previously
-import { FC, Fragment, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import { Fragment } from 'react';
 
 import StickyScroll from 'components/abstract/StickyScroll';
 import { Footer } from 'components/common/layout/footer';

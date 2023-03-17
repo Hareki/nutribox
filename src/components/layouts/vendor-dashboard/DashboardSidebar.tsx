@@ -1,7 +1,9 @@
-import { Avatar, Box, Theme, useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { Avatar, Box, useMediaQuery } from '@mui/material';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 import LayoutDrawer from '../LayoutDrawer';
 

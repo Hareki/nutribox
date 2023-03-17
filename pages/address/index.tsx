@@ -1,6 +1,6 @@
 import { Delete, Edit, Place } from '@mui/icons-material';
 import { Button, IconButton, Pagination, Typography } from '@mui/material';
-import { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -9,7 +9,7 @@ import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import Address from 'models/Address.model';
+import type Address from 'models/Address.model';
 import api from 'utils/__api__/address';
 
 // =======================================================

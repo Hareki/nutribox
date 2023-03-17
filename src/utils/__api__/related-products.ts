@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Product from 'models/BazaarProduct.model';
+import type Product from 'models/BazaarProduct.model';
 
 export const getFrequentlyBought = async (): Promise<Product[]> => {
   const response = await axios.get('/api/frequently-bought-products');

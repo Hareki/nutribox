@@ -11,14 +11,14 @@ import {
   validateDocExistence,
 } from 'api/helpers/model.helper';
 import Account from 'api/models/Account.model';
-import { ICartItem } from 'api/models/Account.model/CartItem.schema/types';
-import {
+import type { ICartItem } from 'api/models/Account.model/CartItem.schema/types';
+import type {
   IAccount,
   IPopulatedCartItemsAccount,
 } from 'api/models/Account.model/types';
 import Product from 'api/models/Product.model';
-import { CartState } from 'hooks/redux-hooks/useCart';
-import { CartItemRequestBody } from 'utils/apiCallers/global/cart';
+import type { CartState } from 'hooks/redux-hooks/useCart';
+import { CartItemRequestBody } from '../../../pages/api/cart/[accountId]';
 
 const getAll = getAllGenerator<IAccount>(Account);
 const getOne = getOneGenerator<IAccount>(Account);

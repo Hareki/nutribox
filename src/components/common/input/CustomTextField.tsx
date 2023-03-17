@@ -1,5 +1,6 @@
-import { Box, BoxProps, TextField, TextFieldProps } from '@mui/material';
-import { FC } from 'react';
+import type { BoxProps, TextFieldProps } from '@mui/material';
+import { Box, TextField } from '@mui/material';
+import type { FC } from 'react';
 
 import { Small } from 'components/abstract/Typography';
 

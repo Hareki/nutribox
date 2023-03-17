@@ -1,8 +1,12 @@
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { FC, useCallback, useState } from 'react';
+import type { FC } from 'react';
+import { useCallback, useState } from 'react';
 import * as yup from 'yup';
 
 import EyeToggleButton from './EyeToggleButton';
@@ -12,6 +16,7 @@ import { H1, H6 } from 'components/abstract/Typography';
 import CustomImage from 'components/common/input/CustomImage';
 import CustomTextField from 'components/common/input/CustomTextField';
 import PhoneInput from 'components/common/input/PhoneInput';
+import CustomPickersDay from 'components/CustomPickersDay';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import { phoneRegex } from 'helpers/regex.helper';
 
@@ -27,12 +32,19 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
     setPasswordVisibility((visible) => !visible);
   }, []);
 
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues,
-      onSubmit: handleFormSubmit,
-      validationSchema: formSchema,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik({
+    initialValues,
+    onSubmit: handleFormSubmit,
+    validationSchema: formSchema,
+  });
 
   return (
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
@@ -110,6 +122,32 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
             inputComponent: PhoneInput as any,
           }}
         />
+
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label='Ngày sinh'
+            maxDate={new Date()}
+            value={values.birthday}
+            inputFormat='dd/MM/yyyy'
+            renderInput={(props) => (
+              <CustomTextField
+                mb={1.5}
+                fullWidth
+                name='birthday'
+                size='small'
+                helperText={(touched.birthday && errors.birthday) as string}
+                error={!!touched.birthday && !!errors.birthday}
+                {...(props as any)}
+              />
+            )}
+            onChange={(newValue) => {
+              setFieldValue('birthday', newValue);
+            }}
+            renderDay={(_, __, pickersDayProps) => (
+              <CustomPickersDay {...pickersDayProps} selectedColor='white' />
+            )}
+          />
+        </LocalizationProvider>
 
         <CustomTextField
           mb={1.5}
@@ -191,18 +229,22 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
 };
 
 const initialValues = {
-  firstName: 'asd',
+  firstName: '',
   lastName: '',
   email: '',
   phone: '',
+  birthday: new Date(),
   password: '',
   re_password: '',
 };
 
 const formSchema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
-  email: yup.string().email('invalid email').required('Email is required'),
+  firstName: yup.string().required('Vui lòng nhập tên'),
+  lastName: yup.string().required('Vui lòng nhập họ'),
+  email: yup
+    .string()
+    .email('Định dạng email không hợp lệ')
+    .required('Vui lòng nhập email'),
   phone: yup
     .string()
     .transform((value, originalValue) => {
@@ -211,12 +253,16 @@ const formSchema = yup.object().shape({
       }
       return value;
     })
-    .matches(phoneRegex, 'Phone number is not valid'),
-  password: yup.string().required('Password is required'),
+    .matches(phoneRegex, 'Định dạng số điện thoại không hợp lệ'),
+  birthday: yup
+    .date()
+    .typeError('Vui lòng nhập định dạng ngày sinh hợp lệ')
+    .required('Vui lòng nhập ngày sinh'),
+  password: yup.string().required('Vui lòng nhập mật khẩu'),
   re_password: yup
     .string()
-    .oneOf([yup.ref('password'), null], 'Passwords must match')
-    .required('Please re-type password'),
+    .oneOf([yup.ref('password'), null], 'Xác nhận mật khẩu không khớp')
+    .required('Vui lòng nhập xác nhận mật khẩu'),
 });
 
 export default Signup;

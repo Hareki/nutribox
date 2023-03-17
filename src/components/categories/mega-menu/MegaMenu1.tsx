@@ -1,6 +1,6 @@
 import { Box, Card, Grid } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import StyledMegaMenu from './StyledMegaMenu';
 

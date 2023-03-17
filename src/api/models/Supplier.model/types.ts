@@ -1,6 +1,6 @@
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
 
-import { IAddress } from 'api/types/schema.type';
+import type { IAddress } from 'api/types/schema.type';
 
 export interface ISupplier extends IAddress {
   _id: Types.ObjectId;

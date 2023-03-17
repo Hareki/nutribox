@@ -1,6 +1,6 @@
 import { Box, FormHelperText, styled } from '@mui/material';
 // import dynamic from "next/dynamic";
-import { FC } from 'react';
+import type { FC } from 'react';
 
 // react quill
 // const CustomQuill = dynamic(() => import("react-quill"), { ssr: false });

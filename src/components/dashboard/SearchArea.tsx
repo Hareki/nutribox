@@ -1,6 +1,7 @@
 import { Add } from '@mui/icons-material';
-import { Button, Theme, useMediaQuery } from '@mui/material';
-import { FC } from 'react';
+import type { Theme } from '@mui/material';
+import { Button, useMediaQuery } from '@mui/material';
+import type { FC } from 'react';
 
 import { FlexBox } from 'components/flex-box';
 import SearchInput from 'components/SearchInput';

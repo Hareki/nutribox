@@ -1,6 +1,6 @@
 import { Box, Card } from '@mui/material';
 import NextImage from 'next/legacy/image';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H3, H5, Paragraph } from 'components/abstract/Typography';
 import { currency } from 'lib';

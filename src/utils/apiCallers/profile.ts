@@ -1,5 +1,5 @@
-import { IAccount } from 'api/models/Account.model/types';
-import { JSendSuccessResponse } from 'api/types/response.type';
+import type { IAccount } from 'api/models/Account.model/types';
+import type { JSendSuccessResponse } from 'api/types/response.type';
 import axiosInstance from 'utils/axiosInstance';
 
 export const getAccount = async (
@@ -8,6 +8,9 @@ export const getAccount = async (
   const response = await axiosInstance.get(`/profile/${accountId}`);
   return response.data.data;
 };
+
+// export const updateAccount = async (
+
 const apiCaller = {
   getAccount,
 };

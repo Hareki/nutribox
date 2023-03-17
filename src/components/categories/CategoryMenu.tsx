@@ -1,5 +1,6 @@
 import { Box, styled } from '@mui/material';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import CategoryMenuCard from './CategoryMenuCard';
 

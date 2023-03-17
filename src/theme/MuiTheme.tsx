@@ -7,7 +7,7 @@ import {
 import { merge } from 'merge';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import customThemeOptions from './themeOptions';
 

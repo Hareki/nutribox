@@ -1,5 +1,6 @@
-import { Box, BoxProps, Container } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import type { BoxProps } from '@mui/material';
+import { Box, Container } from '@mui/material';
+import type { FC, ReactNode } from 'react';
 
 import CategorySectionHeader from './CategorySectionHeader';
 

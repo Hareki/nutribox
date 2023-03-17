@@ -1,8 +1,8 @@
 // TODO: Accounts
 import { Box, Card, Stack, Table, TableContainer } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
-import { GetStaticProps } from 'next';
-import { ReactElement } from 'react';
+import type { GetStaticProps } from 'next';
+import type { ReactElement } from 'react';
 
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';

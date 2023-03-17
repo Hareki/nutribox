@@ -1,11 +1,12 @@
 import { Search } from '@mui/icons-material';
-import { Box, Button, styled, Theme, useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { Box, Button, styled, useMediaQuery } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import InputBase from '@mui/material/InputBase';
 import Toolbar from '@mui/material/Toolbar';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import AccountPopover from './popovers/AccountPopover';
 import NotificationsPopover from './popovers/NoficationPopover';

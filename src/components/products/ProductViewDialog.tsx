@@ -9,14 +9,16 @@ import {
   IconButton,
   styled,
 } from '@mui/material';
-import { FC, useState, useEffect } from 'react';
+import type { FC } from 'react';
+import { useState, useEffect } from 'react';
 
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 import { H1, H2, H3, Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
 import CustomImage from 'components/common/input/CustomImage';
 import { FlexBox } from 'components/flex-box';
-import useCart, { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import useCart from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 

@@ -1,6 +1,7 @@
 // Shop Layout 2 Previously
 import { Box } from '@mui/material';
-import { FC, Fragment, ReactNode, useCallback, useState } from 'react';
+import type { FC, ReactNode } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
 import StickyScroll from 'components/abstract/StickyScroll';
 import Header from 'components/common/layout/header/Header';

@@ -1,7 +1,8 @@
 import '../../database/mongoose.config';
-import { Model, models } from 'mongoose';
+import type { Model } from 'mongoose';
+import { models } from 'mongoose';
 
-import { IExpiration } from './types';
+import type { IExpiration } from './types';
 
 const Expiration = models?.Expiration as Model<IExpiration>;
 export default Expiration;

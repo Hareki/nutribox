@@ -1,5 +1,6 @@
-import { styled, Switch, SwitchProps } from '@mui/material';
-import { FC } from 'react';
+import type { SwitchProps } from '@mui/material';
+import { styled, Switch } from '@mui/material';
+import type { FC } from 'react';
 
 // styled component
 const StyledSwitch = styled(Switch)(({ theme }) => ({

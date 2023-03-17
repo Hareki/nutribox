@@ -1,7 +1,7 @@
-import { SchemaDefinitionProperty } from 'mongoose';
+import type { SchemaDefinitionProperty } from 'mongoose';
 import validator from 'validator';
 
-import {
+import type {
   DuplicateKeyError,
   ValidationError,
 } from 'api/types/mongooseError.type';
@@ -85,7 +85,7 @@ export const getDuplicateKeyErrorMessage = (errorObj: DuplicateKeyError) => {
     const fieldValue = errorObj.keyValue[fieldName];
     errorMessage[fieldName] = `${fieldName} ${fieldValue} đã tồn tại!`;
   } else {
-    errorMessage['unknown'] =
+    errorMessage.unknown =
       'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
   }
 
@@ -102,7 +102,7 @@ export const getValidationErrorMessages = (errorObj: ValidationError) => {
     }
   }
   if (Object.keys(errorMessages).length === 0) {
-    errorMessages['unknown'] =
+    errorMessages.unknown =
       'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
   }
 

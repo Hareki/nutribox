@@ -2,12 +2,12 @@ import { East } from '@mui/icons-material';
 import { Box, Chip, IconButton, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H5 } from 'components/abstract/Typography';
 import TableRow from 'components/data-table/TableRow';
 import { currency } from 'lib';
-import Order from 'models/Order.model';
+import type Order from 'models/Order.model';
 
 // =================================================
 type OrderRowProps = { order: Order };

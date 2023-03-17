@@ -1,5 +1,6 @@
 import { Button, Card } from '@mui/material';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 import DataListTable from './table';
 

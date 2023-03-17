@@ -5,15 +5,16 @@ import {
   KeyboardArrowDown,
 } from '@mui/icons-material';
 import ArrowRight from '@mui/icons-material/ArrowRight';
+import type {
+  SvgIconProps } from '@mui/material';
 import {
   Box,
   Button,
   Container,
   MenuItem,
   styled,
-  SvgIconProps,
 } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import MegaMenu from './MegaMenu';
 import MegaMenu2 from './MegaMenu2';

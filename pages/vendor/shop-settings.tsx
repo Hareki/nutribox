@@ -12,7 +12,8 @@ import {
   TextField,
 } from '@mui/material';
 import { Formik } from 'formik';
-import { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import { useState } from 'react';
 import * as Yup from 'yup';
 
 import { H3, Paragraph } from 'components/abstract/Typography';
@@ -26,7 +27,7 @@ const INITIAL_VALUES = {
   shopName: 'The Icon Style',
   shopPhone: '+123 4567 8910',
   shopAddress: '4990 Hide A Way Road Santa Clara, CA 95050.',
-  description: `There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.`,
+  description: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
 };
 
 const validationSchema = Yup.object().shape({

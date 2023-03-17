@@ -1,11 +1,11 @@
 import { Box, Container, styled } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H5 } from 'components/abstract/Typography';
 import { FlexRowCenter } from 'components/flex-box';
 import appIcons from 'components/icons';
 import Scrollbar from 'components/Scrollbar';
-import Category from 'models/Category.model';
+import type Category from 'models/Category.model';
 
 // styled components
 const StyledScrollbar = styled(Scrollbar)({

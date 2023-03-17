@@ -1,11 +1,12 @@
-import { Model } from 'mongoose';
+import type { Model } from 'mongoose';
 
+import type {
+  GetManyDocsOptions,
+  GetOneDocsOptions } from 'api/base/mongoose/baseHandler';
 import {
   createOneDoc,
   getAllDocs,
-  GetManyDocsOptions,
   getOneDoc,
-  GetOneDocsOptions,
 } from 'api/base/mongoose/baseHandler';
 
 export interface GetAllGeneratorOptions

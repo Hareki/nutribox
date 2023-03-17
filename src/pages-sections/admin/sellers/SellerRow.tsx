@@ -1,6 +1,7 @@
 import { Delete, Edit, RemoveRedEye } from '@mui/icons-material';
 import { Avatar, Box } from '@mui/material';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 import {
   StyledIconButton,

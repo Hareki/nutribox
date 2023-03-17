@@ -1,5 +1,6 @@
-import { Card, CardProps, styled } from '@mui/material';
-import { FC } from 'react';
+import type { CardProps } from '@mui/material';
+import { Card, styled } from '@mui/material';
+import type { FC } from 'react';
 
 // ===============================================
 interface BazaarCardProps extends CardProps {

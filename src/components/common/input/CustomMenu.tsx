@@ -1,10 +1,12 @@
-import { SxProps, Menu } from '@mui/material';
+import type { SxProps } from '@mui/material';
+import { Menu } from '@mui/material';
+import type {
+  FC,
+  ReactElement } from 'react';
 import {
   Children,
   cloneElement,
-  FC,
   Fragment,
-  ReactElement,
   useState,
 } from 'react';
 

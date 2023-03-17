@@ -1,8 +1,9 @@
 import '../../database/mongoose.config';
 
-import { models, Model } from 'mongoose';
+import type { Model } from 'mongoose';
+import { models } from 'mongoose';
 
-import { IAccount } from './types';
+import type { IAccount } from './types';
 
 const Account = models.Account as Model<IAccount>;
 export default Account;

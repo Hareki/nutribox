@@ -7,7 +7,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useFormik } from 'formik';
-import React, { FC, Fragment, useState } from 'react';
+import type { FC } from 'react';
+import React, { Fragment, useState } from 'react';
 import * as yup from 'yup';
 
 const checkoutSchema = yup.object({

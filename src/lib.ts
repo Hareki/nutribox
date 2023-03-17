@@ -79,4 +79,21 @@ function currency(price: number, fraction = 0) {
   return formatCurrency.format(price);
 }
 
-export { renderProductCount, calculateDiscount, currency, getDateDifference };
+function date(date: string) {
+  const realDate = new Date(date);
+  const formatter = new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  const formattedDate = formatter.format(realDate);
+  return formattedDate;
+}
+
+export {
+  renderProductCount,
+  calculateDiscount,
+  currency,
+  getDateDifference,
+  date,
+};

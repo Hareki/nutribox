@@ -1,7 +1,8 @@
 import { Clear } from '@mui/icons-material';
 import { Box, Button, Grid, styled } from '@mui/material';
 import NextImage from 'next/legacy/image';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 import DropZone from 'components/DropZone';
 import { FlexBox } from 'components/flex-box';

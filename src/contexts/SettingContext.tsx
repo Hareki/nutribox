@@ -1,5 +1,6 @@
-import { Direction } from '@mui/material';
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import type { Direction } from '@mui/material';
+import type { ReactNode } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 // ============================================================
 export type SettingsOptions = { direction: Direction };

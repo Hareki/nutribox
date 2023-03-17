@@ -1,11 +1,12 @@
-import { Pagination, PaginationProps, styled } from '@mui/material';
+import type { PaginationProps } from '@mui/material';
+import { Pagination, styled } from '@mui/material';
 
 export const StyledPagination = styled(Pagination)(({ theme }) => ({
   '& .MuiPaginationItem-root': {
     fontSize: 14,
     fontWeight: 500,
     color: theme.palette.grey[900],
-    border: `1px solid transparent`,
+    border: '1px solid transparent',
   },
   '& .MuiPaginationItem-page:hover': {
     borderRadius: 20,

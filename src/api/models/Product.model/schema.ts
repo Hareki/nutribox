@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 
 import ProductCategory from '../ProductCategory.model';
 
-import { IProduct } from './types';
+import type { IProduct } from './types';
 
 import { updateDependentDoc } from 'api/base/mongoose/dependentHandler';
 import { getSlug } from 'api/helpers/slug.helper';

@@ -1,25 +1,25 @@
 import { StatusCodes } from 'http-status-codes';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import ProductController from 'api/controllers/Product.controller';
 import connectToDB from 'api/database/databaseConnection';
 import { getPaginationParams } from 'api/helpers/pagination.helpers';
-import { IProduct } from 'api/models/Product.model/types';
-import {
+import type { IProduct } from 'api/models/Product.model/types';
+import type {
   GetPaginationPrerenderResult,
   GetPaginationResult,
 } from 'api/types/pagination.type';
-import { JSendResponse } from 'api/types/response.type';
+import type { JSendResponse } from 'api/types/response.type';
 
 type UnionPagination =
   | GetPaginationResult<IProduct>
   | GetPaginationPrerenderResult<IProduct>;
 
 const handler = nc<
-  NextApiRequest,
-  NextApiResponse<JSendResponse<UnionPagination>>
+NextApiRequest,
+NextApiResponse<JSendResponse<UnionPagination>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,

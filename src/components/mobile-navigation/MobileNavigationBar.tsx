@@ -1,5 +1,6 @@
 import { Badge, Box } from '@mui/material';
-import { FC, ReactNode, useEffect, useState } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   iconStyle,

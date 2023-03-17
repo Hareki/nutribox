@@ -1,5 +1,5 @@
-import Review from './Review.model';
-import Shop from './Shop.model';
+import type Review from './Review.model';
+import type Shop from './Shop.model';
 
 interface Product {
   unit?: any;

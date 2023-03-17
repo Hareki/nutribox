@@ -10,7 +10,7 @@ import {
   styled,
 } from '@mui/material';
 import { format } from 'date-fns';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 
@@ -25,7 +25,7 @@ import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import useWindowSize from 'hooks/useWindowSize';
 import { currency } from 'lib';
-import Order from 'models/Order.model';
+import type Order from 'models/Order.model';
 import api from 'utils/__api__/orders';
 
 // styled components

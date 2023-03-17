@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Address from 'models/Address.model';
+import type Address from 'models/Address.model';
 
 const getAddressList = async (): Promise<Address[]> => {
   const response = await axios.get('/api/address/user');

@@ -1,7 +1,7 @@
 import { Place } from '@mui/icons-material';
 import { Box, Button, Grid, TextField } from '@mui/material';
 import { Formik } from 'formik';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import * as yup from 'yup';
 
@@ -9,7 +9,7 @@ import Card1 from 'components/common/Card1';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import Address from 'models/Address.model';
+import type Address from 'models/Address.model';
 import api from 'utils/__api__/address';
 
 // =============================================================

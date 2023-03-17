@@ -1,6 +1,6 @@
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
 
-import { IProductCategory } from '../ProductCategory.model/types';
+import type { IProductCategory } from '../ProductCategory.model/types';
 
 export interface IProduct {
   _id: Types.ObjectId;
@@ -32,8 +32,8 @@ export interface IPopulatedProduct extends Omit<IProduct, 'category'> {
 
 export interface IProductInput
   extends Omit<
-    IProduct,
-    '_id' | 'slug' | 'expirations' | 'available' | 'hot' | 'id'
+  IProduct,
+  '_id' | 'slug' | 'expirations' | 'available' | 'hot' | 'id'
   > {
   expirations?: Types.ObjectId[]; // IExpiration
   available?: boolean;

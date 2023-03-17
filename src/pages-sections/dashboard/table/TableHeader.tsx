@@ -1,6 +1,7 @@
 import { styled, TableCell, TableHead, TableRow } from '@mui/material';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 import UpDown from 'components/icons/UpDown';
 

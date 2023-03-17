@@ -1,6 +1,7 @@
-import { Box, BoxProps, Divider, styled } from '@mui/material';
+import type { BoxProps } from '@mui/material';
+import { Box, Divider, styled } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H2, Paragraph, Span } from 'components/abstract/Typography';
 import CustomImage from 'components/common/input/CustomImage';

@@ -1,7 +1,8 @@
 import { Delete } from '@mui/icons-material';
 import { Button, Divider, Grid, IconButton, TextField } from '@mui/material';
 import { FieldArray, Formik } from 'formik';
-import { FC, Fragment } from 'react';
+import type { FC } from 'react';
+import { Fragment } from 'react';
 
 import { H4 } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';

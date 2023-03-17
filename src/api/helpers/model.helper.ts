@@ -1,13 +1,13 @@
-import { Document, Model, Types } from 'mongoose';
+import type { Document, Model, Types } from 'mongoose';
 
 import { CustomError, CustomErrorCodes } from './error.helper';
 
-import {
+import type {
   ICartItem,
   IPopulatedCartItem,
 } from 'api/models/Account.model/CartItem.schema/types';
 import Product from 'api/models/Product.model';
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 
 export const validateDocExistence = async (
   doc: Document,

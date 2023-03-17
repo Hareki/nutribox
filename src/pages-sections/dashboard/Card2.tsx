@@ -1,6 +1,6 @@
 import { ArrowDropUp } from '@mui/icons-material';
 import { Box, Card } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import { H3, H6, Paragraph } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';

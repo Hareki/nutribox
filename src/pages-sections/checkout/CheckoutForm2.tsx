@@ -16,7 +16,8 @@ import TextField from '@mui/material/TextField';
 import { format } from 'date-fns';
 import { Formik } from 'formik';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 
 import EditAddressForm from './EditAddressForm';

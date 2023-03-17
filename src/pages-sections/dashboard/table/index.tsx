@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import TableHeader from './TableHeader';
 

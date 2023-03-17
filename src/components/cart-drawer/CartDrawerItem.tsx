@@ -1,14 +1,14 @@
 import { Add, Close, Remove } from '@mui/icons-material';
 import { Avatar, Box, Button, IconButton, useTheme } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { H5, Tiny } from '../abstract/Typography';
 import { FlexBox } from '../flex-box';
 
-import { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import { IProduct } from 'api/models/Product.model/types';
-import { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
+import type { IProduct } from 'api/models/Product.model/types';
+import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import { currency } from 'lib';
 
 type CartDrawerItemProps = {

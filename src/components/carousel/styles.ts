@@ -1,4 +1,5 @@
-import { CSSObject, styled } from '@mui/material';
+import type { CSSObject } from '@mui/material';
+import { styled } from '@mui/material';
 import {
   ButtonBack,
   ButtonNext,

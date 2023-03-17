@@ -1,7 +1,7 @@
 import { Box, Grid } from '@mui/material';
-import { FC } from 'react';
+import type { FC } from 'react';
 
-import { IProduct } from 'api/models/Product.model/types';
+import type { IProduct } from 'api/models/Product.model/types';
 import { H3 } from 'components/abstract/Typography';
 import ProductCard from 'components/product-item/ProductCard';
 
