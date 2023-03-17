@@ -2,10 +2,11 @@ import { Schema } from 'mongoose';
 
 import { customerOrderItemSchema } from './CustomerOrderItem.schema';
 import { ICustomerOrderItem } from './CustomerOrderItem.schema/types';
+import { ICustomerOrder } from './types';
 
 import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 
-export const customerOrderSchema = new Schema(
+export const customerOrderSchema = new Schema<ICustomerOrder>(
   {
     items: {
       type: [customerOrderItemSchema],

@@ -36,7 +36,7 @@ const Footer: FC = () => {
     <footer>
       <Box bgcolor='grey.450'>
         <Container sx={{ p: '1rem' }}>
-          <Box py={10} overflow='hidden'>
+          <Box py={5} overflow='hidden'>
             <Grid container spacing={10}>
               <Grid
                 item

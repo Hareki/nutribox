@@ -1,11 +1,10 @@
-import { CreditCard, FavoriteBorder, Person, Place } from '@mui/icons-material';
-import ShoppingBagOutlined from '@mui/icons-material/ShoppingBagOutlined';
+import { Person, Place } from '@mui/icons-material';
+import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import { Card, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FC, Fragment } from 'react';
 
 import { FlexBox } from 'components/flex-box';
-import CustomerService from 'components/icons/CustomerService';
 import NavLink, { NavLinkProps } from 'components/nav-link/NavLink';
 
 // custom styled components
@@ -79,33 +78,15 @@ const Navigations = () => {
 
 const linkList = [
   {
-    title: 'DASHBOARD',
+    title: 'QUẢN LÝ TÀI KHOẢN',
     list: [
-      { href: '/orders', title: 'Orders', icon: ShoppingBagOutlined, count: 5 },
+      { href: '/profile', title: 'Hồ sơ của tôi', icon: Person },
+      { href: '/address', title: 'Địa chỉ', icon: Place, count: 16 },
       {
-        href: '/wish-list',
-        title: 'Wishlist',
-        icon: FavoriteBorder,
-        count: 19,
-      },
-      {
-        href: '/support-tickets',
-        title: 'Support Tickets',
-        icon: CustomerService,
-        count: 1,
-      },
-    ],
-  },
-  {
-    title: 'ACCOUNT SETTINGS',
-    list: [
-      { href: '/profile', title: 'Profile Info', icon: Person, count: 3 },
-      { href: '/address', title: 'Addresses', icon: Place, count: 16 },
-      {
-        href: '/payment-methods',
-        title: 'Payment Methods',
-        icon: CreditCard,
-        count: 4,
+        href: '/orders',
+        title: 'Đơn hàng',
+        icon: ShoppingBag,
+        count: 5,
       },
     ],
   },

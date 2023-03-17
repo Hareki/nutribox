@@ -1,6 +1,8 @@
 import { Schema } from 'mongoose';
 
-export const customerOrderItemSchema = new Schema(
+import { ICustomerOrderItem } from './types';
+
+export const customerOrderItemSchema = new Schema<ICustomerOrderItem>(
   {
     product: {
       type: Schema.Types.ObjectId,

@@ -1,6 +1,8 @@
 import { Schema } from 'mongoose';
 
-export const cartItemSchema = new Schema(
+import { ICartItem } from './types';
+
+export const cartItemSchema = new Schema<ICartItem>(
   {
     product: {
       ref: 'Product',

@@ -3,10 +3,11 @@ import { Schema } from 'mongoose';
 
 import { accountAddressSchema } from './AccountAddress.schema';
 import { cartItemSchema } from './CartItem.schema';
+import { IAccount } from './types';
 
 import { getEmailSchema, getPhoneSchema } from 'api/helpers/schema.helper';
 
-export const accountSchema = new Schema(
+export const accountSchema = new Schema<IAccount>(
   {
     role: {
       type: String,

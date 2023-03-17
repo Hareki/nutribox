@@ -1,9 +1,11 @@
 import { Container, Grid } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
+import ShopLayout1 from '../ShopLayout1';
+
 import Navigations from './Navigations';
 
-import ShopLayout2 from 'components/layouts/ShopLayout2';
+import { Footer } from 'components/common/layout/footer';
 
 /**
  *  Used in:
@@ -19,8 +21,8 @@ type Props = { children: ReactNode };
 // ======================================================
 
 const CustomerDashboardLayout: FC<Props> = ({ children }) => (
-  <ShopLayout2>
-    <Container sx={{ my: '2rem' }}>
+  <ShopLayout1 showNavbar={false} showTopbar={false}>
+    <Container sx={{ my: '6rem' }}>
       <Grid container spacing={3}>
         <Grid
           item
@@ -36,7 +38,8 @@ const CustomerDashboardLayout: FC<Props> = ({ children }) => (
         </Grid>
       </Grid>
     </Container>
-  </ShopLayout2>
+    <Footer />
+  </ShopLayout1>
 );
 
 export default CustomerDashboardLayout;

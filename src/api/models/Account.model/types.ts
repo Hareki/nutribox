@@ -19,6 +19,7 @@ export interface IAccount {
   lastName: string;
   avatarUrl: string;
   email: string;
+  phone: string;
   password: string;
   verified: boolean;
 

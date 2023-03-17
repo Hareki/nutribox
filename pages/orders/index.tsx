@@ -21,7 +21,7 @@ const Orders: NextPage<OrderProps> = ({ orderList }) => {
     <CustomerDashboardLayout>
       {/* TITLE HEADER AREA */}
       <UserDashboardHeader
-        title='My Orders'
+        title='Đơn hàng của tôi'
         icon={ShoppingBag}
         navigation={<CustomerDashboardNavigation />}
       />
@@ -36,19 +36,19 @@ const Orders: NextPage<OrderProps> = ({ orderList }) => {
         }}
       >
         <H5 color='grey.600' my={0} mx={0.75} textAlign='left'>
-          Order #
+          Đơn hàng #
         </H5>
 
         <H5 color='grey.600' my={0} mx={0.75} textAlign='left'>
-          Status
+          Trạng thái
         </H5>
 
         <H5 color='grey.600' my={0} mx={0.75} textAlign='left'>
-          Date purchased
+          Ngày mua
         </H5>
 
         <H5 color='grey.600' my={0} mx={0.75} textAlign='left'>
-          Total
+          Tổng tiền
         </H5>
 
         <H5

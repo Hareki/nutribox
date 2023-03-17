@@ -1,4 +1,5 @@
 import { KeyboardArrowDownOutlined } from '@mui/icons-material';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Box, MenuItem, TextField, styled, useTheme } from '@mui/material';
 import TouchRipple from '@mui/material/ButtonBase';
 import Link from 'next/link';
@@ -90,7 +91,7 @@ const SearchInputWithCategory: FC = () => {
       ))}
     </CustomMenu>
   );
-
+  const test = <ShoppingBagIcon />;
   return (
     <Box
       position='relative'
@@ -102,7 +103,7 @@ const SearchInputWithCategory: FC = () => {
       <TextField
         fullWidth
         variant='outlined'
-        placeholder='Searching for...'
+        placeholder='Tìm kiếm...'
         onChange={handleSearch}
         InputProps={{
           sx: {

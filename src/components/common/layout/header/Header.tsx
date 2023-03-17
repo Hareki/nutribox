@@ -66,7 +66,6 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
 
   const { cartState } = useCart();
 
-  // const [dialogOpen, setDialogOpen] = useState(false);
   const { setLoginDialogOpen } = useLoginDialog();
   const [sidenavOpen, setSidenavOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -79,18 +78,9 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const toggleSearchBar = () => setSearchBarOpen(!searchBarOpen);
   const togglePopover = () => setUserMenuOpen(!userMenuOpen);
 
-  // const { checkingCredentials, handleFormSubmit, signInResponse, incorrect } =
-  //   useLoginForm();
   const { data: session, status } = useSession();
   console.log('file: Header.tsx:87 - session:', session);
   const isAuthenticated = status === 'authenticated';
-
-  // useEffect(() => {
-  //   console.log(signInResponse);
-  //   if (signInResponse && signInResponse.ok) {
-  //     setDialogOpen(false);
-  //   }
-  // }, [signInResponse]);
 
   const user = session?.user;
 
@@ -110,12 +100,14 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
         zIndex: 9999,
       }}
     >
-      <MenuItem>
-        <ListItemIcon>
-          <PermIdentityIcon />
-        </ListItemIcon>
-        Tài khoản của tôi
-      </MenuItem>
+      <Link href='/profile'>
+        <MenuItem>
+          <ListItemIcon>
+            <PermIdentityIcon />
+          </ListItemIcon>
+          Tài khoản của tôi
+        </MenuItem>
+      </Link>
 
       <MenuItem>
         <ListItemIcon>
@@ -138,20 +130,6 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   // Login Dialog and Cart Drawer
   const DialogAndDrawer = (
     <Fragment>
-      {/* <Dialog
-        scroll='body'
-        open={dialogOpen}
-        fullWidth={isMobile}
-        onClose={() => setDialogOpen(false)}
-        sx={{ zIndex: 9999 }}
-      >
-        <Login
-          loading={checkingCredentials}
-          handleFormSubmit={handleFormSubmit}
-          incorrect={incorrect}
-        />
-      </Dialog> */}
-
       <Drawer
         open={sidenavOpen}
         anchor='right'
@@ -222,7 +200,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
           >
             <Box sx={{ width: 'auto', padding: 2, height: '100vh' }}>
               <FlexBetween mb={1}>
-                <Paragraph>Search to Bazaar</Paragraph>
+                <Paragraph>Tìm kiếm sản phẩm</Paragraph>
 
                 <IconButton onClick={toggleSearchBar}>
                   <Clear />

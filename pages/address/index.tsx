@@ -22,7 +22,7 @@ const AddressList: NextPage<AddressListProps> = ({ addressList }) => {
   // SECTION TITLE HEADER BUTTON
   const HEADER_BUTTON = (
     <Button color='primary' sx={{ bgcolor: 'primary.light', px: 4 }}>
-      Add New Address
+      Thêm địa chỉ
     </Button>
   );
 
@@ -36,7 +36,7 @@ const AddressList: NextPage<AddressListProps> = ({ addressList }) => {
       {/* TITLE HEADER AREA */}
       <UserDashboardHeader
         icon={Place}
-        title='My Addresses'
+        title='Địa chỉ'
         button={HEADER_BUTTON}
         navigation={<CustomerDashboardNavigation />}
       />
@@ -50,10 +50,6 @@ const AddressList: NextPage<AddressListProps> = ({ addressList }) => {
 
           <Typography flex='1 1 260px !important' m={0.75} textAlign='left'>
             {`${address.street}, ${address.city}`}
-          </Typography>
-
-          <Typography whiteSpace='pre' m={0.75} textAlign='left'>
-            {address.phone}
           </Typography>
 
           <Typography whiteSpace='pre' textAlign='center' color='grey.600'>
