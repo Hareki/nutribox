@@ -28,7 +28,6 @@ import Card1 from 'components/common/Card1';
 import PhoneInput from 'components/common/input/PhoneInput';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import { FlexBox } from 'components/flex-box';
-import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { phoneRegex } from 'helpers/regex.helper';
 import { reloadSession } from 'helpers/session.helper';
@@ -127,7 +126,7 @@ const ProfileEditor: NextPage<Props> = ({ account, toggleEditing }) => {
   );
 
   return (
-    <CustomerDashboardLayout>
+    <>
       <UserDashboardHeader
         icon={Person}
         title='Sửa thông tin'
@@ -327,7 +326,7 @@ const ProfileEditor: NextPage<Props> = ({ account, toggleEditing }) => {
           )}
         </Formik>
       </Card1>
-    </CustomerDashboardLayout>
+    </>
   );
 };
 

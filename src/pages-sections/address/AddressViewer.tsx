@@ -15,7 +15,6 @@ import TableRow from 'components/data-table/TableRow';
 import ConfirmDialog from 'components/dialog/confirm-dialog';
 import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
-import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { getFullAddress } from 'helpers/address.helper';
 import api from 'utils/__api__/address';
@@ -80,47 +79,49 @@ const AddressViewer: NextPage<AddressViewerProps> = ({
 
   return (
     <>
-      <CustomerDashboardLayout>
-        <UserDashboardHeader
-          icon={Place}
-          title='Địa chỉ'
-          button={HEADER_BUTTON}
-          navigation={<CustomerDashboardNavigation />}
-        />
+      <UserDashboardHeader
+        icon={Place}
+        title='Địa chỉ'
+        button={HEADER_BUTTON}
+        navigation={<CustomerDashboardNavigation />}
+      />
 
-        {!isLoading ? (
-          addresses.map((address) => (
-            <TableRow sx={{ my: 2, padding: '6px 18px' }} key={address.id}>
-              <Typography whiteSpace='pre' m={0.75} textAlign='left'>
-                {address.title}
-              </Typography>
+      {!isLoading ? (
+        addresses.map((address) => (
+          <TableRow sx={{ my: 2, padding: '6px 18px' }} key={address.id}>
+            <Typography whiteSpace='pre' m={0.75} textAlign='left'>
+              {address.title}
+            </Typography>
 
-              <Typography flex='1 1 260px !important' m={0.75} textAlign='left'>
-                {getFullAddress(address)}
-              </Typography>
+            <Typography flex='1 1 260px !important' m={0.75} textAlign='left'>
+              {getFullAddress(address)}
+            </Typography>
 
-              <Typography whiteSpace='pre' textAlign='center' color='grey.600'>
-                <IconButton onClick={() => setEditingAddress(address)}>
-                  <Edit fontSize='small' color='inherit' />
-                </IconButton>
+            <Typography whiteSpace='pre' textAlign='center' color='grey.600'>
+              <IconButton
+                onClick={() => {
+                  setEditingAddress(address);
+                }}
+              >
+                <Edit fontSize='small' color='inherit' />
+              </IconButton>
 
-                <IconButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddressDeleteRequest(address.id);
-                  }}
-                >
-                  <Delete fontSize='small' color='inherit' />
-                </IconButton>
-              </Typography>
-            </TableRow>
-          ))
-        ) : (
-          <FlexRowCenter>
-            <CircularProgress />
-          </FlexRowCenter>
-        )}
-      </CustomerDashboardLayout>
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddressDeleteRequest(address.id);
+                }}
+              >
+                <Delete fontSize='small' color='inherit' />
+              </IconButton>
+            </Typography>
+          </TableRow>
+        ))
+      ) : (
+        <FlexRowCenter>
+          <CircularProgress />
+        </FlexRowCenter>
+      )}
 
       <ConfirmDialog
         open={state.open}

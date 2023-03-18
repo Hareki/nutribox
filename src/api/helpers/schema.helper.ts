@@ -34,6 +34,21 @@ export const getAddressSchema = (
       required: [true, `${prefix}/StreetAddress is required`],
       trim: true,
     },
+
+    provinceId: {
+      type: Number,
+      required: [true, `${prefix}/ProvinceId is required`],
+    },
+
+    districtId: {
+      type: Number,
+      required: [true, `${prefix}/DistrictId is required`],
+    },
+
+    wardId: {
+      type: Number,
+      required: [true, `${prefix}/WardId is required`],
+    },
   };
 };
 

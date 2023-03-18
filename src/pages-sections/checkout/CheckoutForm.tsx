@@ -147,8 +147,8 @@ const CheckoutForm: FC = () => {
                 <Autocomplete
                   fullWidth
                   sx={{ mb: 2 }}
-                  options={countryList}
                   value={values.shipping_country}
+                  options={countryList}
                   getOptionLabel={(option) => option.label}
                   onChange={(_, value) =>
                     setFieldValue('shipping_country', value)
