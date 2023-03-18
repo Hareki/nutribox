@@ -1,19 +1,18 @@
 import type { UpdateAccountRequestBody } from '../../../pages/api/profile/[id]';
 
 import type { IAccount } from 'api/models/Account.model/types';
-import type { JSendResponse } from 'api/types/response.type';
 import axiosInstance from 'utils/axiosInstance';
 
+// Assume it's a success response, because if it's not, it will get to the onError anyway
 export const getAccount = async (accountId: string): Promise<IAccount> => {
   const response = await axiosInstance.get(`/profile/${accountId}`);
-  // console.log('file: profile.ts:10 - getAccount - response:', response);
   return response.data.data;
 };
 
 export const updateAccount = async (
   accountId: string,
   { firstName, lastName, birthday, phone, avatarUrl }: UpdateAccountRequestBody,
-): Promise<JSendResponse<IAccount>> => {
+): Promise<IAccount> => {
   const response = await axiosInstance.put(`/profile/${accountId}`, {
     firstName,
     lastName,
@@ -21,7 +20,7 @@ export const updateAccount = async (
     phone,
     avatarUrl,
   });
-  return response.data;
+  return response.data.data;
 };
 
 const apiCaller = {

@@ -16,6 +16,7 @@ const Profile: NextPage<ProfileProps> = ({ initialAccount }) => {
   const { data: account } = useQuery({
     queryKey: ['account'],
     queryFn: () => apiCaller.getAccount(account.id),
+    onError: (err) => console.log(err),
     initialData: initialAccount,
   });
   return (

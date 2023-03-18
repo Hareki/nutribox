@@ -1,87 +1,60 @@
-import { Delete, Edit, Place } from '@mui/icons-material';
-import { Button, IconButton, Pagination, Typography } from '@mui/material';
-import type { GetStaticProps, NextPage } from 'next';
-import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import type { GetServerSideProps, NextPage } from 'next';
+import { getSession } from 'next-auth/react';
 import { useState } from 'react';
 
-import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
-import TableRow from 'components/data-table/TableRow';
-import { FlexBox } from 'components/flex-box';
-import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
-import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import type Address from 'models/Address.model';
-import api from 'utils/__api__/address';
+import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import AddressEditor from 'pages-sections/address/AddressEditor';
+import AddressViewer from 'pages-sections/address/AddressViewer';
+import apiCaller from 'utils/apiCallers/address';
 
-// =======================================================
-type AddressListProps = { addressList: Address[] };
-// =======================================================
+interface AddressProps {
+  sessionUserId: string;
+}
+const Address: NextPage<AddressProps> = ({ sessionUserId }) => {
+  const [editingAddress, setEditingAddress] = useState<IAccountAddress>();
+  const [isAddMode, setIsAddMode] = useState(false);
 
-const AddressList: NextPage<AddressListProps> = ({ addressList }) => {
-  const [allAddress, setAllAddress] = useState(addressList);
-
-  // SECTION TITLE HEADER BUTTON
-  const HEADER_BUTTON = (
-    <Button color='primary' sx={{ bgcolor: 'primary.light', px: 4 }}>
-      Thêm địa chỉ
-    </Button>
-  );
-
-  // HANDLE ADDRESS DELETE
-  const handleAddressDelete = (id: string) => {
-    setAllAddress(allAddress.filter((item) => item.id !== id));
-  };
+  const { data: addresses, isLoading } = useQuery({
+    queryKey: ['addresses', sessionUserId],
+    queryFn: () => apiCaller.getAddresses(sessionUserId),
+    initialData: [],
+  });
 
   return (
-    <CustomerDashboardLayout>
-      {/* TITLE HEADER AREA */}
-      <UserDashboardHeader
-        icon={Place}
-        title='Địa chỉ'
-        button={HEADER_BUTTON}
-        navigation={<CustomerDashboardNavigation />}
-      />
-
-      {/* ALL ADDRESS LIST AREA */}
-      {allAddress.map((address) => (
-        <TableRow sx={{ my: 2, padding: '6px 18px' }} key={address.id}>
-          <Typography whiteSpace='pre' m={0.75} textAlign='left'>
-            {address.title}
-          </Typography>
-
-          <Typography flex='1 1 260px !important' m={0.75} textAlign='left'>
-            {`${address.street}, ${address.city}`}
-          </Typography>
-
-          <Typography whiteSpace='pre' textAlign='center' color='grey.600'>
-            <Link href={`/address/${address.id}`} passHref legacyBehavior>
-              <IconButton>
-                <Edit fontSize='small' color='inherit' />
-              </IconButton>
-            </Link>
-
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAddressDelete(address.id);
-              }}
-            >
-              <Delete fontSize='small' color='inherit' />
-            </IconButton>
-          </Typography>
-        </TableRow>
-      ))}
-
-      {/* PAGINATION AREA */}
-      <FlexBox justifyContent='center' mt={5}>
-        <Pagination count={5} onChange={(data) => console.log(data)} />
-      </FlexBox>
-    </CustomerDashboardLayout>
+    <>
+      {isAddMode || editingAddress ? (
+        <AddressEditor
+          accountId={sessionUserId}
+          setIsAddMode={setIsAddMode}
+          setEditingAddress={setEditingAddress}
+          editingAddress={editingAddress}
+        />
+      ) : (
+        <AddressViewer
+          isLoading={isLoading}
+          accountId={sessionUserId}
+          setIsAddMode={setIsAddMode}
+          setEditingAddress={setEditingAddress}
+          addresses={addresses}
+        />
+      )}
+    </>
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const addressList = await api.getAddressList();
-  return { props: { addressList } };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({ req: context.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: { sessionUserId: session.user.id } };
 };
 
-export default AddressList;
+export default Address;

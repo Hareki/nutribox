@@ -8,12 +8,18 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
+        token.userId = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      session.user = token.user as any;
+      if (!token.userId) return session;
+
+      await connectToDB();
+      const sessionUser = await AccountController.getSessionUser(token.userId as string);
+
+      token.user = sessionUser.user;
+      session.user = sessionUser.user;
 
       return session;
     },

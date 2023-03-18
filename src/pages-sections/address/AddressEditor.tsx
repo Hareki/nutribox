@@ -5,22 +5,38 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import * as yup from 'yup';
 
+import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import Card1 from 'components/common/Card1';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import type Address from 'models/Address.model';
 import api from 'utils/__api__/address';
 
-// =============================================================
-type Props = { address: Address };
-// =============================================================
+type AddressEditorProps = {
+  accountId: string;
+  editingAddress: IAccountAddress;
+  setIsAddMode: (isAddMode: boolean) => void;
+  setEditingAddress: (info: IAccountAddress) => void;
+};
 
-const AddressEditor: NextPage<Props> = ({ address }) => {
+const AddressEditor: NextPage<AddressEditorProps> = ({
+  accountId,
+  editingAddress,
+  setIsAddMode,
+  setEditingAddress,
+}) => {
+  // const INITIAL_VALUES = {
+  //   name: address.title || '',
+  //   address: address.street || '',
+  //   contact: address.phone || '',
+  // };
+
   const INITIAL_VALUES = {
-    name: address.title || '',
-    address: address.street || '',
-    contact: address.phone || '',
+    title: editingAddress?.title || '',
+    streetAddress: editingAddress?.streetAddress || '',
+    ward: editingAddress?.ward || '',
+    district: editingAddress?.district || '',
+    province: editingAddress?.province || '',
   };
 
   const checkoutSchema = yup.object().shape({
@@ -29,23 +45,27 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
     contact: yup.string().required('required'),
   });
 
-  // handle form submit
   const handleFormSubmit = async (values: any) => {
     console.log(values);
   };
 
-  // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
     <Link href='/address' passHref legacyBehavior>
-      <Button color='primary' sx={{ bgcolor: 'primary.light', px: 4 }}>
-        Back to Address
+      <Button
+        color='primary'
+        sx={{ bgcolor: 'primary.light', px: 4 }}
+        onClick={() => {
+          setIsAddMode(false);
+          setEditingAddress(null);
+        }}
+      >
+        Huỷ bỏ
       </Button>
     </Link>
   );
 
   return (
     <CustomerDashboardLayout>
-      {/* TITLE HEADER AREA */}
       <UserDashboardHeader
         icon={Place}
         button={HEADER_LINK}
@@ -53,7 +73,6 @@ const AddressEditor: NextPage<Props> = ({ address }) => {
         navigation={<CustomerDashboardNavigation />}
       />
 
-      {/* FORM AREA */}
       <Card1>
         <Formik
           onSubmit={handleFormSubmit}
@@ -127,8 +146,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await api.getIds();
 
   return {
-    paths: paths, // indicates that no page needs be created at build time
-    fallback: 'blocking', // indicates the type of fallback
+    paths: paths,
+    fallback: 'blocking',
   };
 };
 

@@ -21,7 +21,7 @@ const StickyScroll: FC<StickyScrollProps> = ({ children }) => {
       className={clsx({ sticky: scrolledDown })}
       sx={{
         position: 'sticky',
-        zIndex: 1500,
+        zIndex: 1000,
         '&[class~="sticky"]': {
           top: 0,
           boxShadow: shadows[2],

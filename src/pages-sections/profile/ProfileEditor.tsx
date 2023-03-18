@@ -24,10 +24,6 @@ import * as yup from 'yup';
 import type { UpdateAccountRequestBody } from '../../../pages/api/profile/[id]';
 
 import type { IAccount } from 'api/models/Account.model/types';
-import type {
-  JSendResponse,
-  JSendSuccessResponse,
-} from 'api/types/response.type';
 import Card1 from 'components/common/Card1';
 import PhoneInput from 'components/common/input/PhoneInput';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
@@ -35,6 +31,7 @@ import { FlexBox } from 'components/flex-box';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { phoneRegex } from 'helpers/regex.helper';
+import { reloadSession } from 'helpers/session.helper';
 import apiCaller from 'utils/apiCallers/profile';
 import { IKPublicContext } from 'utils/constants';
 
@@ -55,12 +52,13 @@ const ProfileEditor: NextPage<Props> = ({ account, toggleEditing }) => {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const { mutate: updateAccount, isLoading } = useMutation<
-    JSendResponse<IAccount>,
+    IAccount,
     any,
     UpdateAccountRequestBody
   >({
     mutationFn: (body) => apiCaller.updateAccount(account.id, body),
     onSuccess: () => {
+      reloadSession();
       enqueueSnackbar('Chỉnh sửa thông tin thành công', { variant: 'success' });
       queryClient.invalidateQueries(['account']);
       toggleEditing();
@@ -74,7 +72,7 @@ const ProfileEditor: NextPage<Props> = ({ account, toggleEditing }) => {
   });
 
   const { mutate: updateAvatar } = useMutation<
-    JSendResponse<IAccount>,
+    IAccount,
     any,
     UpdateAccountRequestBody
   >({
@@ -84,12 +82,12 @@ const ProfileEditor: NextPage<Props> = ({ account, toggleEditing }) => {
     },
     onSuccess: (response) => {
       setIsUploadingImage(false);
+      reloadSession();
       queryClient.invalidateQueries(['account']);
       queryClient.setQueryData(['account'], (oldData: IAccount) => {
         return {
           ...oldData,
-          avatarUrl: (response as JSendSuccessResponse<IAccount>).data
-            .avatarUrl,
+          avatarUrl: response.avatarUrl,
         };
       });
       enqueueSnackbar('Thay đổi ảnh đại diện thành công', {

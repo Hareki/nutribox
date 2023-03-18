@@ -1,5 +1,11 @@
 import { Types } from 'mongoose';
+import type { Session } from 'next-auth';
 
+import type {
+  AddAddressRequestBody,
+  DeleteAddressQueryParams,
+  UpdateAddressRequestBody,
+} from '../../../pages/api/address/[accountId]';
 import type { CartItemRequestBody } from '../../../pages/api/cart/[accountId]';
 
 import {
@@ -9,11 +15,13 @@ import {
   updateOneGenerator,
 } from './generator.controller';
 
+import { CustomError, CustomErrorCodes } from 'api/helpers/error.helper';
 import {
   populateCartItems,
   validateDocExistence,
 } from 'api/helpers/model.helper';
 import Account from 'api/models/Account.model';
+import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import type { ICartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type {
   IAccount,
@@ -27,6 +35,21 @@ const getOne = getOneGenerator<IAccount>(Account);
 
 const createOne = createOneGenerator<IAccount>(Account);
 const updateOne = updateOneGenerator<IAccount>(Account);
+
+const getSessionUser = async (
+  accountId: string,
+): Promise<Pick<Session, 'user'>> => {
+  const account = await getOne({ id: accountId });
+  return {
+    user: {
+      id: account.id,
+      avatarUrl: account.avatarUrl,
+      email: account.email,
+      fullName: account.fullName,
+      role: account.role,
+    },
+  };
+};
 
 const checkCredentials = async (
   email: string,
@@ -97,13 +120,86 @@ const updateCartItem = async (
   return populatedCartItemsAccount;
 };
 
+const getAddresses = async (accountId: string): Promise<IAccountAddress[]> => {
+  const account = await getOne({ id: accountId });
+  return account.addresses;
+};
+
+const addAddress = async (
+  accountId: string,
+  address: AddAddressRequestBody,
+): Promise<IAccountAddress[]> => {
+  const account = await Account.findById(accountId).exec();
+  validateDocExistence(account, Account, accountId);
+
+  account.addresses.push(address);
+  account.save();
+
+  return account.toObject().addresses;
+};
+
+const updateAddress = async (
+  accountId: string,
+  address: UpdateAddressRequestBody,
+): Promise<IAccountAddress[]> => {
+  const account = await Account.findById(accountId).exec();
+  validateDocExistence(account, Account, accountId);
+
+  const addressIndex = account.addresses.findIndex(
+    (addr: IAccountAddress) => addr.id === address.id,
+  );
+
+  delete address.id;
+
+  if (addressIndex === -1) {
+    throw new CustomError(
+      `Address with ID ${address.id} not found`,
+      CustomErrorCodes.DOCUMENT_NOT_FOUND,
+    );
+  }
+
+  account.addresses[addressIndex] = {
+    ...(account.addresses[addressIndex] as any),
+    ...address,
+  };
+
+  await account.save();
+  return account.toObject().addresses;
+};
+
+const deleteAddress = async (
+  accountId: string,
+  params: DeleteAddressQueryParams,
+): Promise<IAccountAddress[]> => {
+  const account = await Account.findById(accountId).exec();
+  validateDocExistence(account, Account, accountId);
+
+  const addressIndex = account.addresses.findIndex(
+    (addr: IAccountAddress) => addr.id === params.addressId,
+  );
+
+  if (addressIndex === -1) {
+    return account.toObject().addresses;
+  }
+
+  account.addresses.splice(addressIndex, 1);
+
+  await account.save();
+  return account.toObject().addresses;
+};
+
 const AccountController = {
   getAll,
   getOne,
   createOne,
   updateOne,
+  getSessionUser,
   checkCredentials,
   getCartItems,
   updateCartItem,
+  getAddresses,
+  addAddress,
+  updateAddress,
+  deleteAddress,
 };
 export default AccountController;
