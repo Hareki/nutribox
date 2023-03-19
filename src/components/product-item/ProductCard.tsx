@@ -17,6 +17,7 @@ import ProductViewDialog from 'components/products/ProductViewDialog';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useCart from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
+import { formatCurrency } from 'lib';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   height: '100%',

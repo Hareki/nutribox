@@ -10,8 +10,8 @@ import * as yup from 'yup';
 import EyeToggleButton from './EyeToggleButton';
 
 import { H1, H4, H6 } from 'components/abstract/Typography';
-import MuiImage from 'components/common/input/MuiImage';
 import CustomTextField from 'components/common/input/CustomTextField';
+import MuiImage from 'components/common/input/MuiImage';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 
 const fbStyle = { background: '#3B5998', color: 'white' };

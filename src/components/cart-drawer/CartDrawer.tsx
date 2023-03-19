@@ -13,6 +13,7 @@ import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useCart from 'hooks/redux-hooks/useCart';
+import { formatCurrency } from 'lib';
 
 type CartDrawerProps = { toggleCartDrawer: () => void };
 

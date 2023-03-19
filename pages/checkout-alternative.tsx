@@ -3,8 +3,8 @@ import type { NextPage } from 'next';
 
 import SEO from 'components/abstract/SEO';
 import ShopLayout1 from 'components/layouts/ShopLayout1';
-import CheckoutForm2 from 'pages-sections/checkout/CheckoutForm2';
-import CheckoutSummary2 from 'pages-sections/checkout/CheckoutSummary2';
+import CheckoutForm2 from 'pages-sections/checkout2/CheckoutForm2';
+import CheckoutSummary2 from 'pages-sections/checkout2/CheckoutSummary2';
 
 const CheckoutAlternative: NextPage = () => {
   return (
