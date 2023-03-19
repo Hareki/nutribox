@@ -201,7 +201,7 @@ export const Paragraph: FC<BoxProps & Props> = ({
       component='p'
       mb={0}
       mt={0}
-      fontSize='14px'
+      fontSize='15px'
       {...props}
     >
       {children}

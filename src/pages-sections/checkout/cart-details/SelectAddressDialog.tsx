@@ -21,6 +21,7 @@ function SelectAddressDialog({
   open,
   setOpen,
   addresses,
+  onSelectAddress,
 }: SelectAddressDialogProps) {
   const { palette, transitions } = useTheme();
 
@@ -35,6 +36,7 @@ function SelectAddressDialog({
       <DialogContent>
         {addresses.map((address) => (
           <TableRow
+            onClick={() => onSelectAddress(address)}
             className='address-row'
             sx={{
               '&.MuiCard-root': {

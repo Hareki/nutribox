@@ -1,9 +1,16 @@
+import { LoadingButton } from '@mui/lab';
 import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useFormik } from 'formik';
 import type { ReactElement } from 'react';
+import { useEffect } from 'react';
 import { Fragment, useReducer, useState } from 'react';
 
+import {
+  checkCurrentFullAddress,
+  checkDistance,
+  checkTime,
+} from './confirmValidation';
 import SelectAddressDialog from './SelectAddressDialog';
 import type { CheckoutFormValues } from './yup';
 import { checkoutFormSchema, getInitialValues } from './yup';
@@ -13,10 +20,17 @@ import type { IAccount } from 'api/models/Account.model/types';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
 import PhoneInput from 'components/common/input/PhoneInput';
+import ConfirmDialog from 'components/dialog/confirm-dialog';
+import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import InfoDialog from 'components/dialog/info-dialog';
 import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import ProductCartItem from 'components/product-item/ProductCartItem';
+import {
+  getFullAddress,
+  transformAddressToFormikValue,
+  transformFormikValueToAddress,
+} from 'helpers/address.helper';
 import useCart from 'hooks/redux-hooks/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
@@ -32,9 +46,18 @@ interface CartDetailsProps {
 function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
   const addresses = account.addresses;
 
+  const [currentFullAddress, setCurrentFullAddress] = useState('');
+  const [isEstimating, setIsEstimating] = useState(false);
   const [selectAddressDialogOpen, setSelectAddressDialogOpen] = useState(false);
   const { cartState } = useCart();
-  const [state, dispatch] = useReducer(infoDialogReducer, { open: false });
+
+  const [infoState, dispatchInfo] = useReducer(infoDialogReducer, {
+    open: false,
+  });
+  const [confirmState, dispatchConfirm] = useReducer(confirmDialogReducer, {
+    open: false,
+  });
+
   const cartList = cartState.cart;
 
   const getTotalPrice = () =>
@@ -44,19 +67,38 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
       0,
     );
 
-  const handleDeliveryInfoRequest = async () => {
+  const showDeliveryInfoConfirmation = async () => {
+    if (
+      !checkTime(dispatchInfo) ||
+      !checkCurrentFullAddress(dispatchInfo, currentFullAddress)
+    ) {
+      return;
+    }
+
+    setIsEstimating(true);
     const deliveryInfo = await apiCaller.getDeliveryInfo(
-      '12 Đ. 12, P. Bình An, Quận 2, Thành phố Hồ Chí Minh, Vietnam',
+      currentFullAddress,
       'Landmark 81 Skyscraper, Nguyễn Hữu Cảnh, Bình Thạnh, Thành phố Hồ Chí Minh, Vietnam',
     );
+    setIsEstimating(false);
+
+    if (!checkDistance(dispatchInfo, deliveryInfo.distance)) return;
 
     const estimatedTime = formatDateTime(
       calculateEndTime(PREPARATION_TIME + deliveryInfo.durationInTraffic),
     );
 
-    const content = (
+    const confirmContent = (
       <Fragment>
-        <ul>
+        <Paragraph>
+          Vui lòng đọc và xác nhận thời gian giao hàng dự kiến dưới đây:
+        </Paragraph>
+        <ul
+          style={{
+            listStyle: 'inside',
+            marginLeft: 20,
+          }}
+        >
           <li>
             Quãng đường:{' '}
             <Span fontWeight={600}>{deliveryInfo.distance} km</Span>
@@ -67,39 +109,34 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
           </li>
         </ul>
         {deliveryInfo.heavyTraffic && (
-          <Paragraph color='error.400' fontStyle='italic' mt={2}>
-            Thời gian giao hàng lâu hơn thông thường do tình trạng giao thông ùn
-            tắc, xin quý khách thông cảm vì sự bất tiện này.
+          <Paragraph color='grey.600' fontStyle='italic' mt={2} fontSize={13}>
+            Lưu ý: Thời gian giao hàng lâu hơn thông thường do tình trạng giao
+            thông ùn tắc, xin quý khách thông cảm vì sự bất tiện này.
           </Paragraph>
         )}
       </Fragment>
     );
 
-    dispatch({
+    dispatchConfirm({
       type: 'open_dialog',
       payload: {
-        content,
-        title: 'Thông tin vận chuyển',
-        variant: 'info',
+        content: confirmContent,
+        title: 'Xác nhận thời gian giao hàng',
       },
     });
   };
 
   const handleFormSubmit = (values: CheckoutFormValues) => {
     console.log(values);
-    dispatch({
-      type: 'open_dialog',
-      payload: {
-        content: 'Đặt hàng thành công',
-        title: 'Thông báo',
-        variant: 'info',
-      },
-    });
-    // nextStep();
+    showDeliveryInfoConfirmation();
   };
 
   const handleSelectAddress = (address: IAccountAddress) => {
     setSelectAddressDialogOpen(false);
+    const transformedAddress = transformAddressToFormikValue(address);
+    for (const key in transformedAddress) {
+      setFieldValue(key, transformedAddress[key]);
+    }
   };
 
   const {
@@ -118,6 +155,11 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
   const hasProvince = values.province !== null;
   const hasDistrict = values.district !== null;
+
+  useEffect(() => {
+    const address = transformFormikValueToAddress(values);
+    setCurrentFullAddress(getFullAddress(address));
+  }, [values, touched, errors]);
 
   const {
     provinces,
@@ -282,7 +324,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
               <TextField
                 fullWidth
-                sx={{ mb: 2 }}
+                sx={{ mb: 4 }}
                 name='streetAddress'
                 label='Số nhà, tên đường'
                 onBlur={handleBlur}
@@ -294,34 +336,33 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 }
               />
 
-              <Button
-                onClick={() => handleDeliveryInfoRequest()}
-                variant='outlined'
-                color='primary'
-                fullWidth
-                sx={{ mb: 5 }}
-              >
-                Xem thông tin vận chuyển
-              </Button>
-
-              <Button
+              <LoadingButton
+                loading={isEstimating}
                 variant='contained'
                 color='primary'
                 fullWidth
                 type='submit'
               >
                 Thanh toán ngay
-              </Button>
+              </LoadingButton>
             </Card>
           </form>
         </Grid>
       </Grid>
       <InfoDialog
-        open={state.open}
-        content={state.content}
-        title={state.title}
-        variant={state.variant}
-        handleClose={() => dispatch({ type: 'close_dialog' })}
+        open={infoState.open}
+        content={infoState.content}
+        title={infoState.title}
+        variant={infoState.variant}
+        handleClose={() => dispatchInfo({ type: 'close_dialog' })}
+      />
+
+      <ConfirmDialog
+        open={confirmState.open}
+        content={confirmState.content}
+        title={confirmState.title}
+        handleCancel={() => dispatchConfirm({ type: 'cancel_dialog' })}
+        handleConfirm={() => nextStep()}
       />
 
       <SelectAddressDialog

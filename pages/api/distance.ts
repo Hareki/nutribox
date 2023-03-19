@@ -16,16 +16,24 @@ const handler = nc<
 }).get(async (req, res) => {
   await connectToDB();
   const { address1, address2 } = req.query;
+  console.log('file: distance.ts:20 - address2:', address2);
+  console.log('file: distance.ts:20 - address1:', address1);
 
-  // const { distance, durationInTraffic, heavyTraffic } = await getDeliveryInfo(
+  // const deliveryInfo = await getDeliveryInfo(
   //   address1 as string,
   //   address2 as string,
   // );
+  // console.log('file: distance.ts:26 - deliveryInfo:', deliveryInfo);
+
+  // res.status(StatusCodes.OK).json({
+  //   status: 'success',
+  //   data: deliveryInfo,
+  // });
 
   res.status(StatusCodes.OK).json({
     status: 'success',
     data: {
-      distance: 3.44,
+      distance: 16.44,
       durationInTraffic: 4.123,
       heavyTraffic: true,
     },

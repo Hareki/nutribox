@@ -102,18 +102,33 @@ export const components: Components = {
         }),
         ...(ownerState.color === 'dark' &&
           ownerState.variant === 'outlined' && {
-          color: dark.main,
-          borderRadius: '3px',
-          transition: 'all 0.3s',
-          ':hover': { backgroundColor: dark.main, color: 'white' },
-        }),
+            color: dark.main,
+            borderRadius: '3px',
+            transition: 'all 0.3s',
+            ':hover': { backgroundColor: dark.main, color: 'white' },
+          }),
         ...(ownerState.color === 'primary' &&
           ownerState.variant === 'contained' && {
-          color: white.main,
-        }),
+            color: white.main,
+          }),
       }),
       sizeLarge: { padding: '.6rem 2.5rem' },
     },
     defaultProps: { color: 'inherit' },
   },
+
+  // MuiDialogContent: {
+  //   styleOverrides: {
+  //     root: {
+  //       fontSize: fontSize,
+  //     },
+  //   },
+  // },
+  // MuiTypography: {
+  //   styleOverrides: {
+  //     root: {
+  //       fontSize: fontSize,
+  //     },
+  //   },
+  // },
 };
