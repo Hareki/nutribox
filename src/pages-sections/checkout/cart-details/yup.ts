@@ -16,6 +16,7 @@ export const getInitialValues = (account: IAccount) => {
     ...transformedAddressValues,
   };
 };
+export type CheckoutFormValues = ReturnType<typeof getInitialValues>;
 
 export const checkoutFormSchema = yup.object().shape({
   note: yup.string().max(500, 'Lời nhắn không được quá 500 ký tự'),

@@ -92,7 +92,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
 
       {cartList.length > 0 && (
         <Box p={2.5}>
-          <Link href='/checkout-alternative' passHref legacyBehavior>
+          <Link href='/checkout' passHref legacyBehavior>
             <Button
               fullWidth
               color='primary'

@@ -11,22 +11,23 @@ import TableRow from 'components/data-table/TableRow';
 import { getFullAddress } from 'helpers/address.helper';
 
 interface SelectAddressDialogProps {
-  selectAddressDialogOpen: boolean;
-  setSelectAddressDialogOpen: (value: boolean) => void;
+  open: boolean;
+  setOpen: (value: boolean) => void;
   addresses: IAccountAddress[];
+  onSelectAddress: (address: IAccountAddress) => void;
 }
 
 function SelectAddressDialog({
-  selectAddressDialogOpen,
-  setSelectAddressDialogOpen,
+  open,
+  setOpen,
   addresses,
 }: SelectAddressDialogProps) {
-  const { shadows, palette, transitions } = useTheme();
+  const { palette, transitions } = useTheme();
 
   return (
     <Dialog
-      open={selectAddressDialogOpen}
-      onClose={() => setSelectAddressDialogOpen(false)}
+      open={open}
+      onClose={() => setOpen(false)}
       aria-labelledby='alert-dialog-title'
       aria-describedby='alert-dialog-description'
     >
@@ -34,11 +35,14 @@ function SelectAddressDialog({
       <DialogContent>
         {addresses.map((address) => (
           <TableRow
+            className='address-row'
             sx={{
+              '&.MuiCard-root': {
+                backgroundColor: palette.grey[100],
+              },
               my: 2,
               transition: `all 0.2s ${transitions.easing.easeInOut}`,
               padding: '6px 18px',
-              // boxShadow: shadows[3],
               ':hover': {
                 backgroundColor: palette.primary.light,
                 color: palette.primary.dark,

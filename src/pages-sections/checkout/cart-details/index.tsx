@@ -5,8 +5,10 @@ import type { ReactElement } from 'react';
 import { Fragment, useReducer, useState } from 'react';
 
 import SelectAddressDialog from './SelectAddressDialog';
+import type { CheckoutFormValues } from './yup';
 import { checkoutFormSchema, getInitialValues } from './yup';
 
+import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import type { IAccount } from 'api/models/Account.model/types';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
@@ -18,6 +20,7 @@ import ProductCartItem from 'components/product-item/ProductCartItem';
 import useCart from 'hooks/redux-hooks/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
+import type { AddressAPI } from 'utils/apiCallers/address';
 import apiCaller from 'utils/apiCallers/checkout';
 import { PREPARATION_TIME } from 'utils/constants';
 
@@ -82,7 +85,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     });
   };
 
-  const handleFormSubmit = (values: any) => {
+  const handleFormSubmit = (values: CheckoutFormValues) => {
     console.log(values);
     dispatch({
       type: 'open_dialog',
@@ -95,6 +98,10 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     // nextStep();
   };
 
+  const handleSelectAddress = (address: IAccountAddress) => {
+    setSelectAddressDialogOpen(false);
+  };
+
   const {
     values,
     errors,
@@ -103,7 +110,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     handleChange,
     handleSubmit,
     setFieldValue,
-  } = useFormik({
+  } = useFormik<CheckoutFormValues>({
     initialValues: getInitialValues(account),
     onSubmit: handleFormSubmit,
     validationSchema: checkoutFormSchema,
@@ -215,7 +222,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 options={provinces || []}
                 disabled={isLoadingProvince}
                 value={values.province}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => (option as AddressAPI).name}
                 onChange={(_, value) => {
                   setFieldValue('province', value);
                   setFieldValue('district', null);
@@ -238,7 +245,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 options={districts || []}
                 disabled={!hasProvince || isLoadingDistricts}
                 value={values.district}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => (option as AddressAPI).name}
                 onChange={(_, value) => {
                   setFieldValue('district', value);
                   setFieldValue('ward', null);
@@ -260,7 +267,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 options={wards || []}
                 disabled={!hasDistrict || isLoadingWards}
                 value={values.ward}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => (option as AddressAPI).name}
                 onChange={(_, value) => setFieldValue('ward', value)}
                 renderInput={(params) => (
                   <TextField
@@ -319,8 +326,9 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
       <SelectAddressDialog
         addresses={addresses}
-        selectAddressDialogOpen={selectAddressDialogOpen}
-        setSelectAddressDialogOpen={setSelectAddressDialogOpen}
+        open={selectAddressDialogOpen}
+        setOpen={setSelectAddressDialogOpen}
+        onSelectAddress={handleSelectAddress}
       />
     </Fragment>
   );

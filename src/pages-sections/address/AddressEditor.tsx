@@ -15,6 +15,7 @@ import UserDashboardHeader from 'components/common/layout/header/UserDashboardHe
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { transformAddressToFormikValue } from 'helpers/address.helper';
 import { useAddressQuery } from 'hooks/useAddressQuery';
+import type { AddressAPI } from 'utils/apiCallers/address';
 import apiCaller from 'utils/apiCallers/address';
 
 type MutateAddressVariables = {
@@ -40,29 +41,6 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
   const goBack = () => {
     setIsAddMode(false);
     setEditingAddress(null);
-  };
-  const handleFormSubmit = async (values: any) => {
-    const type = isAddMode ? 'add' : 'edit';
-    let isDefault = false;
-    if (isAddMode) {
-      const addresses = await apiCaller.getAddresses(accountId);
-      isDefault = addresses.length === 0;
-    }
-    const body = {
-      title: values.title,
-      province: values.province.name,
-      district: values.district.name,
-      ward: values.ward.name,
-      streetAddress: values.streetAddress,
-
-      provinceId: values.province.code,
-      districtId: values.district.code,
-      wardId: values.ward.code,
-      isDefault,
-    };
-    console.log('file: AddressEditor.tsx:48 - handleFormSubmit - body:', body);
-
-    mutateAddress({ type, baseBody: body });
   };
 
   const HEADER_LINK = (
@@ -94,6 +72,32 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     }
   };
 
+  type AddressFormValues = ReturnType<typeof getInitialValues>;
+
+  const handleFormSubmit = async (values: AddressFormValues) => {
+    const type = isAddMode ? 'add' : 'edit';
+    let isDefault = false;
+    if (isAddMode) {
+      const addresses = await apiCaller.getAddresses(accountId);
+      isDefault = addresses.length === 0;
+    }
+    const body = {
+      title: values.title,
+      province: values.province.name,
+      district: values.district.name,
+      ward: values.ward.name,
+      streetAddress: values.streetAddress,
+
+      provinceId: values.province.code,
+      districtId: values.district.code,
+      wardId: values.ward.code,
+      isDefault,
+    };
+    console.log('file: AddressEditor.tsx:48 - handleFormSubmit - body:', body);
+
+    mutateAddress({ type, baseBody: body });
+  };
+
   const {
     values,
     errors,
@@ -102,7 +106,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     handleBlur,
     handleSubmit,
     setFieldValue,
-  } = useFormik({
+  } = useFormik<AddressFormValues>({
     initialValues: getInitialValues(editingAddress),
     validationSchema: addressSchema,
     onSubmit: handleFormSubmit,
@@ -187,7 +191,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
                   options={provinces || []}
                   disabled={isLoadingProvince}
                   value={values.province}
-                  getOptionLabel={(option) => option.name}
+                  getOptionLabel={(option) => (option as AddressAPI).name}
                   onChange={(_, value) => {
                     setFieldValue('province', value);
                     setFieldValue('district', null);
@@ -214,7 +218,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
                   options={districts || []}
                   disabled={!hasProvince || isLoadingDistricts}
                   value={values.district}
-                  getOptionLabel={(option) => option.name}
+                  getOptionLabel={(option) => (option as AddressAPI).name}
                   onChange={(_, value) => {
                     setFieldValue('district', value);
                     setFieldValue('ward', null);
@@ -240,7 +244,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
                   options={wards || []}
                   disabled={!hasDistrict || isLoadingWards}
                   value={values.ward}
-                  getOptionLabel={(option) => option.name}
+                  getOptionLabel={(option) => (option as AddressAPI).name}
                   onChange={(_, value) => setFieldValue('ward', value)}
                   renderInput={(params) => (
                     <TextField
@@ -301,8 +305,5 @@ const addressSchema = yup.object().shape({
     .required('Vui lòng nhập Phường/Xã'),
   streetAddress: yup.string().required('Vui lòng nhập Số nhà, tên đường'),
 });
-
-
-
 
 export default AddressEditor;

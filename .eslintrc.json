@@ -16,6 +16,7 @@
     "@next/next/no-img-element": "off",
     "spaced-comment": "error",
     "no-undef": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
     "react/jsx-curly-brace-presence": "error",
     "react/jsx-boolean-value": "error",
     "react/self-closing-comp": "error",
