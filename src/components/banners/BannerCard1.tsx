@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { FC } from 'react';
 
 import { H2, Paragraph, Span } from 'components/abstract/Typography';
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 
 // custom styled components
 const CardWrapper = styled(Box)({
@@ -69,7 +69,7 @@ const BannerCard1: FC<BannerCard1Props & BoxProps> = ({
 }) => {
   return (
     <CardWrapper {...props}>
-      <CustomImage alt='category' height='100%' width='100%' src={img} />
+      <MuiImage alt='category' height='100%' width='100%' src={img} />
 
       <CardContent contentAlign={contentPosition} className='content'>
         <H2>{title}</H2>

@@ -6,7 +6,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
-import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
+import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import AddressEditor from 'pages-sections/address/AddressEditor';
 import AddressViewer from 'pages-sections/address/AddressViewer';
 import apiCaller from 'utils/apiCallers/address';
@@ -14,6 +14,7 @@ import apiCaller from 'utils/apiCallers/address';
 interface AddressProps {
   sessionUserId: string;
 }
+
 function Address({ sessionUserId }: AddressProps): ReactElement {
   const [editingAddress, setEditingAddress] = useState<IAccountAddress>();
   const [isAddMode, setIsAddMode] = useState(false);
@@ -61,8 +62,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return { props: { sessionUserId: session.user.id } };
 };
-
-Address.getLayout = function getLayout(page: ReactElement) {
-  return <CustomerDashboardLayout>{page}</CustomerDashboardLayout>;
-};
+Address.getLayout = getCustomerDashboardLayout;
 export default Address;

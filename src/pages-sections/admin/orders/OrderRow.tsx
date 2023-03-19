@@ -10,7 +10,7 @@ import {
   StyledTableRow,
 } from '../StyledComponents';
 
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 // ========================================================================
 type OrderRowProps = { order: any };
@@ -34,7 +34,7 @@ const OrderRow: FC<OrderRowProps> = ({ order }) => {
         {billingAddress}
       </StyledTableCell>
 
-      <StyledTableCell align='left'>{currency(amount)}</StyledTableCell>
+      <StyledTableCell align='left'>{formatCurrency(amount)}</StyledTableCell>
 
       <StyledTableCell align='left'>
         <StatusWrapper status={status}>{status}</StatusWrapper>

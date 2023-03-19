@@ -16,7 +16,7 @@ import Link from 'next/link';
 import type { FC } from 'react';
 
 import { H3 } from 'components/abstract/Typography';
-import Image from 'components/common/input/CustomImage';
+import Image from 'components/common/input/MuiImage';
 import { FlexBox } from 'components/flex-box';
 import Facebook from 'components/icons/Facebook';
 import Google from 'components/icons/Google';

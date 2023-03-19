@@ -15,7 +15,7 @@ import type { FC } from 'react';
 
 import { H5, H6, Paragraph, Span } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 import type Order from 'models/Order.model';
 
 // ===================================================================
@@ -89,7 +89,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
 
                   <FlexBox alignItems='center' gap={1}>
                     <Paragraph fontSize={14} color='grey.600'>
-                      {currency(item.product_price)} x
+                      {formatCurrency(item.product_price)} x
                     </Paragraph>
 
                     <Box maxWidth={60}>
@@ -150,7 +150,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
 
           <FlexBetween mb={1.5}>
             <Paragraph color='grey.600'>Subtotal:</Paragraph>
-            <H6>{currency(order.totalPrice)}</H6>
+            <H6>{formatCurrency(order.totalPrice)}</H6>
           </FlexBetween>
 
           <FlexBetween mb={1.5}>
@@ -185,7 +185,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
 
           <FlexBetween mb={2}>
             <H6>Total</H6>
-            <H6>{currency(order.totalPrice)}</H6>
+            <H6>{formatCurrency(order.totalPrice)}</H6>
           </FlexBetween>
 
           <Paragraph>Paid by Credit/Debit Card</Paragraph>

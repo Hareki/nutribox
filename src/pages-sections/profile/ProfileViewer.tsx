@@ -13,7 +13,7 @@ import UserDashboardHeader from 'components/common/layout/header/UserDashboardHe
 import TableRow from 'components/data-table/TableRow';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { date } from 'lib';
+import { formatDate } from 'lib';
 import apiCaller from 'utils/apiCallers/profile';
 
 type ProfileProps = {
@@ -120,7 +120,7 @@ const ProfileViewer: FC<ProfileProps> = ({ account, toggleEditing }) => {
         <TableRowItem title='Tên' value={account.firstName} />
         <TableRowItem title='Email' value={account.email} />
         <TableRowItem title='Số điện thoại' value={account.phone} />
-        <TableRowItem title='Ngày sinh' value={date(account.birthday)} />
+        <TableRowItem title='Ngày sinh' value={formatDate(account.birthday)} />
       </TableRow>
     </Fragment>
   );

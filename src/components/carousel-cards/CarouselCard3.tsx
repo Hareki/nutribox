@@ -4,7 +4,7 @@ import type { FC } from 'react';
 
 import { H2, Paragraph, Small } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 import { FlexBox } from 'components/flex-box';
 import type Product from 'models/BazaarProduct.model';
 
@@ -49,7 +49,7 @@ const CarouselCard3: FC<Props> = ({ product }) => {
         </Link>
       </StyledFlexBox>
 
-      <CustomImage width='100%' src={product.thumbnail} alt='shoes' />
+      <MuiImage width='100%' src={product.thumbnail} alt='shoes' />
     </ContentWrapper>
   );
 };

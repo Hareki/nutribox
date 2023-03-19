@@ -1,12 +1,13 @@
 import { Types } from 'mongoose';
 import type { Session } from 'next-auth';
 
+import type { CartItemRequestBody } from '../../../pages/api/cart/[accountId]';
 import type {
   AddAddressRequestBody,
   DeleteAddressQueryParams,
   UpdateAddressRequestBody,
-} from '../../../pages/api/address/[accountId]';
-import type { CartItemRequestBody } from '../../../pages/api/cart/[accountId]';
+} from '../../../pages/api/profile/address/[accountId]';
+import type { SetDefaultAddressRequestBody } from '../../../pages/api/profile/address/default/[accountId]';
 
 import {
   getAllGenerator,
@@ -149,6 +150,34 @@ const updateAddress = async (
     (addr: IAccountAddress) => addr.id === address.id,
   );
 
+  if (addressIndex === -1) {
+    throw new CustomError(
+      `Address with ID ${address.id} not found`,
+      CustomErrorCodes.DOCUMENT_NOT_FOUND,
+    );
+  }
+
+  for (const key in address) {
+    if (Object.prototype.hasOwnProperty.call(address, key)) {
+      account.addresses[addressIndex][key] = address[key];
+    }
+  }
+
+  await account.save();
+  return account.toObject().addresses;
+};
+
+const setDefaultAddress = async (
+  accountId: string,
+  address: SetDefaultAddressRequestBody,
+): Promise<IAccountAddress[]> => {
+  const account = await Account.findById(accountId).exec();
+  validateDocExistence(account, Account, accountId);
+
+  const addressIndex = account.addresses.findIndex(
+    (addr: IAccountAddress) => addr.id === address.id,
+  );
+
   delete address.id;
 
   if (addressIndex === -1) {
@@ -158,10 +187,14 @@ const updateAddress = async (
     );
   }
 
-  account.addresses[addressIndex] = {
-    ...(account.addresses[addressIndex] as any),
-    ...address,
-  };
+  const currentDefaultIndex = account.addresses.findIndex(
+    (addr: IAccountAddress) => addr.isDefault,
+  );
+  if (currentDefaultIndex !== -1) {
+    account.addresses[currentDefaultIndex].isDefault = false;
+  }
+
+  account.addresses[addressIndex].isDefault = true;
 
   await account.save();
   return account.toObject().addresses;
@@ -200,6 +233,7 @@ const AccountController = {
   getAddresses,
   addAddress,
   updateAddress,
+  setDefaultAddress,
   deleteAddress,
 };
 export default AccountController;

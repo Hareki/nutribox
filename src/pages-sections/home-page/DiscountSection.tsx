@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
 import { H1, Paragraph } from 'components/abstract/Typography';
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 
 const Container = styled(Card)(({ theme }) => ({
   padding: '50px',
@@ -43,7 +43,7 @@ const DiscountSection: FC = () => {
           </Grid>
 
           <Grid item sm={5}>
-            <CustomImage
+            <MuiImage
               width='100%'
               alt='discount'
               src='/assets/images/Groceries Shop/vegetable.png'

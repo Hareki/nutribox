@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import EyeToggleButton from './EyeToggleButton';
 
 import { H1, H4, H6 } from 'components/abstract/Typography';
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 import CustomTextField from 'components/common/input/CustomTextField';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 
@@ -64,7 +64,7 @@ const Login: FC<LoginProps> = ({
   return (
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
       <form onSubmit={handleSubmit}>
-        <CustomImage
+        <MuiImage
           src='/assets/images/bazaar-black-sm.svg'
           sx={{ m: 'auto', height: 50 }}
         />

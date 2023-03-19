@@ -12,7 +12,7 @@ import {
 import { Paragraph, Small } from 'components/abstract/Typography';
 import CustomSwitch from 'components/common/input/CustomSwitch';
 import { FlexBox } from 'components/flex-box';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 // ========================================================================
 type SellerRowProps = { seller: any };
@@ -50,7 +50,7 @@ const SellerRow: FC<SellerRowProps> = ({ seller }) => {
       </StyledTableCell>
 
       <StyledTableCell align='left' sx={{ fontWeight: 400 }}>
-        {currency(balance)}
+        {formatCurrency(balance)}
       </StyledTableCell>
 
       <StyledTableCell align='left'>

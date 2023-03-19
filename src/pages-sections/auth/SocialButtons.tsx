@@ -2,7 +2,7 @@ import { Box, Button, Divider } from '@mui/material';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 import { FlexBox } from 'components/flex-box';
 
 // =======================================
@@ -33,7 +33,7 @@ const SocialButtons: FC<SocialButtonsProps> = (props) => {
         fullWidth
         sx={{ height: 44 }}
       >
-        <CustomImage
+        <MuiImage
           src='/assets/images/icons/facebook-filled-white.svg'
           alt='facebook'
         />
@@ -48,7 +48,7 @@ const SocialButtons: FC<SocialButtonsProps> = (props) => {
         fullWidth
         sx={{ height: 44 }}
       >
-        <CustomImage src='/assets/images/icons/google-1.svg' alt='facebook' />
+        <MuiImage src='/assets/images/icons/google-1.svg' alt='facebook' />
         <Box fontSize='12px' ml={1}>
           Tiếp tục với Google
         </Box>

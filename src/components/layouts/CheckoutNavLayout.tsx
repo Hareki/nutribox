@@ -1,9 +1,9 @@
 import { Box, Container, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
-import type { FC, ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import type { ReactNode, ReactElement } from 'react';
+import { useState } from 'react';
 
-import ShopLayout2 from './ShopLayout2';
+import PageLayout from './PageLayout';
 
 import Stepper from 'components/Stepper';
 
@@ -16,75 +16,39 @@ import Stepper from 'components/Stepper';
 
 // ======================================================
 type CheckoutNavLayoutProps = { children: ReactNode };
-// ======================================================
 
-const CheckoutNavLayout: FC<CheckoutNavLayoutProps> = ({ children }) => {
+// ======================================================
+CheckoutNavLayout.getLayout = function getLayout(page: ReactElement) {
+  return <PageLayout>{page}</PageLayout>;
+};
+
+function CheckoutNavLayout({ children }: CheckoutNavLayoutProps) {
   const [selectedStep, setSelectedStep] = useState(0);
 
   const router = useRouter();
   const { pathname } = router;
 
-  const handleStepChange = (step: number) => {
-    switch (step) {
-      case 0:
-        router.push('/cart');
-        break;
-      case 1:
-        router.push('/checkout');
-        break;
-      case 2:
-        router.push('/payment');
-        break;
-      case 3:
-        router.push('/orders');
-        break;
-      default:
-        break;
-    }
-  };
-
-  useEffect(() => {
-    switch (pathname) {
-      case '/cart':
-        setSelectedStep(1);
-        break;
-      case '/checkout':
-        setSelectedStep(2);
-        break;
-      case '/payment':
-        setSelectedStep(3);
-        break;
-      default:
-        break;
-    }
-  }, [pathname]);
+  const nextStep = () => setSelectedStep((prev) => prev + 1);
+  const prevStep = () => setSelectedStep((prev) => prev - 1);
 
   return (
-    <ShopLayout2>
-      <Container sx={{ my: 4 }}>
-        <Box mb={3} display={{ sm: 'block', xs: 'none' }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Stepper
-                stepperList={stepperList}
-                selectedStep={selectedStep}
-                onChange={handleStepChange}
-              />
-            </Grid>
+    <Container sx={{ my: 4 }}>
+      <Box mb={3} display={{ sm: 'block', xs: 'none' }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Stepper stepperList={stepperList} selectedStep={selectedStep} />
           </Grid>
-        </Box>
+        </Grid>
+      </Box>
 
-        {children}
-      </Container>
-    </ShopLayout2>
+      {children}
+    </Container>
   );
-};
+}
 
 const stepperList = [
-  { title: 'Cart', disabled: false },
-  { title: 'Details', disabled: false },
-  { title: 'Payment', disabled: false },
-  { title: 'Review', disabled: true },
+  { title: 'Chi tiết giỏ hàng', disabled: false },
+  { title: 'Thanh toán', disabled: false },
 ];
 
 export default CheckoutNavLayout;

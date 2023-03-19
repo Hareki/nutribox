@@ -27,7 +27,7 @@ import MobileMenu from '../navbar/MobileMenu';
 
 import { Paragraph } from 'components/abstract/Typography';
 import CartDrawer from 'components/cart-drawer/CartDrawer';
-import Image from 'components/common/input/CustomImage';
+import Image from 'components/common/input/MuiImage';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Icon from 'components/icons';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';

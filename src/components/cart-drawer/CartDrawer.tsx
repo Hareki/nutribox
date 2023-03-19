@@ -13,7 +13,6 @@ import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useCart from 'hooks/redux-hooks/useCart';
-import { currency } from 'lib';
 
 type CartDrawerProps = { toggleCartDrawer: () => void };
 
@@ -33,7 +32,6 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
       0,
     );
   };
-
 
   return (
     <Box width={380}>
@@ -101,7 +99,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
               sx={{ mb: '0.75rem', height: '40px', color: '#fff' }}
               onClick={toggleCartDrawer}
             >
-              Checkout Now ({currency(getTotalPrice())})
+              Thanh toán ngay ({formatCurrency(getTotalPrice())})
             </Button>
           </Link>
 
@@ -113,7 +111,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
               sx={{ height: 40 }}
               onClick={toggleCartDrawer}
             >
-              View Cart
+              Xem giỏ hàng
             </Button>
           </Link>
         </Box>

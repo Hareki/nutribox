@@ -2,7 +2,7 @@ import { Button, Grid, styled } from '@mui/material';
 import type { FC } from 'react';
 
 import { Paragraph } from 'components/abstract/Typography';
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 import { FlexBetween } from 'components/flex-box';
 
 // styled component
@@ -77,7 +77,7 @@ const CarouselCard1: FC<CarouselCard1Props> = ({
         </Grid>
 
         <Grid item sm={5} xs={12}>
-          <CustomImage
+          <MuiImage
             src={imgUrl}
             alt='apple-watch-1'
             sx={{

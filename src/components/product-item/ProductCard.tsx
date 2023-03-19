@@ -17,7 +17,6 @@ import ProductViewDialog from 'components/products/ProductViewDialog';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useCart from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
-import { currency } from 'lib';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   height: '100%',
@@ -182,7 +181,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
 
           <FlexBox gap={1} alignItems='center' mt={0.5}>
             <Box fontWeight={600} color='primary.main'>
-              {currency(retailPrice)}
+              {formatCurrency(retailPrice)}
             </Box>
           </FlexBox>
         </Box>

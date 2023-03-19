@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Paragraph } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
 import { FlexBetween } from 'components/flex-box';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 const PaymentSummary: FC = () => {
   return (
@@ -12,7 +12,7 @@ const PaymentSummary: FC = () => {
       <FlexBetween mb={1}>
         <Paragraph color='grey.600'>Subtotal:</Paragraph>
         <Paragraph fontSize={18} fontWeight={600} lineHeight={1}>
-          {currency(2610)}
+          {formatCurrency(2610)}
         </Paragraph>
       </FlexBetween>
 
@@ -26,7 +26,7 @@ const PaymentSummary: FC = () => {
       <FlexBetween mb={1}>
         <Paragraph color='grey.600'>Tax:</Paragraph>
         <Paragraph fontSize={18} fontWeight={600} lineHeight={1}>
-          {currency(40)}
+          {formatCurrency(40)}
         </Paragraph>
       </FlexBetween>
 
@@ -45,7 +45,7 @@ const PaymentSummary: FC = () => {
         lineHeight={1}
         textAlign='right'
       >
-        {currency(2650)}
+        {formatCurrency(2650)}
       </Paragraph>
     </Card1>
   );

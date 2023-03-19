@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { FC } from 'react';
 
 import { H1, H3, Paragraph } from 'components/abstract/Typography';
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 
 // custom styled components
 const CardWrapper = styled(Box)({
@@ -47,7 +47,7 @@ const BannerCard2: FC<BannerCard2Props> = ({
 }) => {
   return (
     <CardWrapper>
-      <CustomImage alt='category' height='100%' width='100%' src={img} />
+      <MuiImage alt='category' height='100%' width='100%' src={img} />
 
       <CardContent>
         <Box>

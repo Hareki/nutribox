@@ -4,7 +4,7 @@ import type {
   AddAddressRequestBody,
   DeleteAddressQueryParams,
   UpdateAddressRequestBody,
-} from '../../../pages/api/address/[accountId]';
+} from '../../../pages/api/profile/address/[accountId]';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import appAxios from 'utils/axiosInstance';
@@ -19,7 +19,7 @@ const AddressAPIBaseURL = 'https://provinces.open-api.vn/api';
 export const getAddresses = async (
   accountId: string,
 ): Promise<IAccountAddress[]> => {
-  const response = await appAxios.get(`/address/${accountId}`);
+  const response = await appAxios.get(`/profile/address/${accountId}`);
   return response.data.data;
 };
 
@@ -27,7 +27,10 @@ export const addAddress = async (
   accountId: string,
   addBody: AddAddressRequestBody,
 ): Promise<IAccountAddress[]> => {
-  const response = await appAxios.post(`/address/${accountId}`, addBody);
+  const response = await appAxios.post(
+    `/profile/address/${accountId}`,
+    addBody,
+  );
   return response.data.data;
 };
 
@@ -35,7 +38,20 @@ export const updateAddress = async (
   accountId: string,
   updateBody: UpdateAddressRequestBody,
 ): Promise<IAccountAddress[]> => {
-  const response = await appAxios.put(`/address/${accountId}`, updateBody);
+  const response = await appAxios.put(
+    `/profile/address/${accountId}`,
+    updateBody,
+  );
+  return response.data.data;
+};
+
+export const setDefaultAddress = async (
+  accountId: string,
+  addressId: string,
+): Promise<IAccountAddress[]> => {
+  const response = await appAxios.put(`/profile/address/default/${accountId}`, {
+    id: addressId,
+  });
   return response.data.data;
 };
 
@@ -43,7 +59,7 @@ export const deleteAddress = async (
   accountId: string,
   { addressId }: DeleteAddressQueryParams,
 ): Promise<IAccountAddress[]> => {
-  const response = await appAxios.delete(`/address/${accountId}`, {
+  const response = await appAxios.delete(`/profile/address/${accountId}`, {
     params: { addressId },
   });
   return response.data.data;
@@ -78,6 +94,7 @@ const apiCaller = {
   getAddresses,
   addAddress,
   updateAddress,
+  setDefaultAddress,
   deleteAddress,
   getProvinces,
   getDistricts,

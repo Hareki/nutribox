@@ -3,7 +3,7 @@ import NextImage from 'next/legacy/image';
 import type { FC } from 'react';
 
 import { H3, H5, Paragraph } from 'components/abstract/Typography';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 const WishCard: FC = () => {
   return (
@@ -27,7 +27,7 @@ const WishCard: FC = () => {
       <H3 mt={3}>15,350.25</H3>
       <Paragraph color='grey.600'>Today’s Visit</Paragraph>
 
-      <H3 mt={1.5}>{currency(10360.66)}</H3>
+      <H3 mt={1.5}>{formatCurrency(10360.66)}</H3>
       <Paragraph color='grey.600'>Today’s total sales</Paragraph>
 
       <Box

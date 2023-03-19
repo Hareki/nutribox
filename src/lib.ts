@@ -56,7 +56,7 @@ function renderProductCount(
 
 function calculateDiscount(price: number, discount: number) {
   const afterDiscount = Number((price - price * (discount / 100)).toFixed(2));
-  return currency(afterDiscount);
+  return formatCurrency(afterDiscount);
 }
 
 /**
@@ -66,7 +66,7 @@ function calculateDiscount(price: number, discount: number) {
  * @returns - RETURN PRICE WITH CURRENCY
  */
 
-function currency(price: number, fraction = 0) {
+function formatCurrency(price: number, fraction = 0) {
   const { publicRuntimeConfig } = getConfig();
 
   const formatCurrency = new Intl.NumberFormat(undefined, {
@@ -79,9 +79,9 @@ function currency(price: number, fraction = 0) {
   return formatCurrency.format(price);
 }
 
-function date(date: string) {
+function formatDate(date: string) {
   const realDate = new Date(date);
-  const formatter = new Intl.DateTimeFormat('en-GB', {
+  const formatter = new Intl.DateTimeFormat('vi-VN', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -90,10 +90,33 @@ function date(date: string) {
   return formattedDate;
 }
 
+function calculateEndTime(duration: number): Date {
+  const currentTime = new Date();
+  const endTime = new Date(currentTime.getTime() + duration * 60000); // 60000 milliseconds in a minute
+  return endTime;
+}
+
+function formatDateTime(date: Date): string {
+  const formatter = new Intl.DateTimeFormat('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour12: false,
+  });
+  const formattedDateTime = formatter.format(date);
+  const formattedTime = formattedDateTime.slice(0, 5);
+  const formattedDate = formattedDateTime.slice(6);
+  return `${formattedTime} - ${formattedDate}`;
+}
+
 export {
   renderProductCount,
   calculateDiscount,
-  currency,
+  formatCurrency,
   getDateDifference,
-  date,
+  formatDate,
+  calculateEndTime,
+  formatDateTime,
 };

@@ -10,7 +10,7 @@ import {
 
 import { Paragraph } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 // ========================================================================
 type CustomerRowProps = { customer: any };
@@ -37,7 +37,7 @@ const CustomerRow: FC<CustomerRowProps> = ({ customer }) => {
       </StyledTableCell>
 
       <StyledTableCell align='left' sx={{ fontWeight: 400 }}>
-        {currency(balance)}
+        {formatCurrency(balance)}
       </StyledTableCell>
 
       <StyledTableCell align='left' sx={{ fontWeight: 400 }}>

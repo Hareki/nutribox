@@ -7,7 +7,7 @@ import type { Assign, ObjectShape } from 'yup/lib/object';
 
 import { UploadImageBox, StyledClear } from '../StyledComponents';
 
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 import DropZone from 'components/DropZone';
 import { FlexBox } from 'components/flex-box';
 
@@ -98,7 +98,7 @@ const ProductForm: FC<ProductFormProps> = (props) => {
                   {files.map((file, index) => {
                     return (
                       <UploadImageBox key={index}>
-                        <CustomImage src={file.preview} width='100%' />
+                        <MuiImage src={file.preview} width='100%' />
                         <StyledClear onClick={handleFileDelete(file)} />
                       </UploadImageBox>
                     );

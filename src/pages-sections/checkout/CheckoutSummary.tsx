@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import Card1 from 'components/common/Card1';
 import { FlexBetween } from 'components/flex-box';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 const CheckoutSummary: FC = () => {
   return (
@@ -11,28 +11,28 @@ const CheckoutSummary: FC = () => {
       <FlexBetween mb={1}>
         <Typography color='grey.600'>Subtotal:</Typography>
         <Typography fontSize='18px' fontWeight='600' lineHeight='1'>
-          {currency(2610)}
+          {formatCurrency(2610)}
         </Typography>
       </FlexBetween>
 
       <FlexBetween mb={1}>
         <Typography color='grey.600'>Shipping:</Typography>
         <Typography fontSize='18px' fontWeight='600' lineHeight='1'>
-          {currency(0)}
+          {formatCurrency(0)}
         </Typography>
       </FlexBetween>
 
       <FlexBetween mb={1}>
         <Typography color='grey.600'>Tax:</Typography>
         <Typography fontSize='18px' fontWeight='600' lineHeight='1'>
-          {currency(40)}
+          {formatCurrency(40)}
         </Typography>
       </FlexBetween>
 
       <FlexBetween mb={2}>
         <Typography color='grey.600'>Discount:</Typography>
         <Typography fontSize='18px' fontWeight='600' lineHeight='1'>
-          {currency(0)}
+          {formatCurrency(0)}
         </Typography>
       </FlexBetween>
 
@@ -45,7 +45,7 @@ const CheckoutSummary: FC = () => {
         textAlign='right'
         mb={3}
       >
-        {currency(2610)}
+        {formatCurrency(2610)}
       </Typography>
 
       <TextField

@@ -24,7 +24,7 @@ import TruckFilled from 'components/icons/TruckFilled';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import useWindowSize from 'hooks/useWindowSize';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 import type Order from 'models/Order.model';
 import api from 'utils/__api__/orders';
 
@@ -190,7 +190,8 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
                   <H6 my='0px'>{item.product_name}</H6>
 
                   <Typography fontSize='14px' color='grey.600'>
-                    {currency(item.product_price)} x {item.product_quantity}
+                    {formatCurrency(item.product_price)} x{' '}
+                    {item.product_quantity}
                   </Typography>
                 </Box>
               </FlexBox>
@@ -236,7 +237,7 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
                 Subtotal:
               </Typography>
 
-              <H6 my='0px'>{currency(order.totalPrice)}</H6>
+              <H6 my='0px'>{formatCurrency(order.totalPrice)}</H6>
             </FlexBetween>
 
             <FlexBetween mb={1}>
@@ -244,7 +245,7 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
                 Shipping fee:
               </Typography>
 
-              <H6 my='0px'>{currency(0)}</H6>
+              <H6 my='0px'>{formatCurrency(0)}</H6>
             </FlexBetween>
 
             <FlexBetween mb={1}>
@@ -252,14 +253,14 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
                 Discount:
               </Typography>
 
-              <H6 my='0px'>{currency(order.discount)}</H6>
+              <H6 my='0px'>{formatCurrency(order.discount)}</H6>
             </FlexBetween>
 
             <Divider sx={{ mb: 1 }} />
 
             <FlexBetween mb={2}>
               <H6 my='0px'>Total</H6>
-              <H6 my='0px'>{currency(order.totalPrice)}</H6>
+              <H6 my='0px'>{formatCurrency(order.totalPrice)}</H6>
             </FlexBetween>
 
             <Typography fontSize={14}>Paid by Credit/Debit Card</Typography>

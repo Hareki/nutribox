@@ -18,3 +18,5 @@ export const IKPublicContext = {
   authenticationEndpoint:
     process.env.NEXT_PUBLIC_IMAGEKIT_AUTHENTICATION_ENDPOINT,
 };
+
+export const PREPARATION_TIME = 10; // in minutes

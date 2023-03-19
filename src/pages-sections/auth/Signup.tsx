@@ -13,8 +13,8 @@ import EyeToggleButton from './EyeToggleButton';
 import { Wrapper } from './Login';
 
 import { H1, H6 } from 'components/abstract/Typography';
-import CustomImage from 'components/common/input/CustomImage';
 import CustomTextField from 'components/common/input/CustomTextField';
+import MuiImage from 'components/common/input/MuiImage';
 import PhoneInput from 'components/common/input/PhoneInput';
 import CustomPickersDay from 'components/CustomPickersDay';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
@@ -49,7 +49,7 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
   return (
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
       <form onSubmit={handleSubmit}>
-        <CustomImage
+        <MuiImage
           src='/assets/images/bazaar-black-sm.svg'
           sx={{ m: 'auto', height: 50 }}
         />

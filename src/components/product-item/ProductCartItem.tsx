@@ -7,12 +7,12 @@ import type { FC } from 'react';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import { Span } from 'components/abstract/Typography';
-import Image from 'components/common/input/CustomImage';
+import MuiNextImage from 'components/common/input/MuiNextImage';
 import { FlexBox } from 'components/flex-box';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useCart from 'hooks/redux-hooks/useCart';
 import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 const Wrapper = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -55,11 +55,15 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
 
   return (
     <Wrapper>
-      <Image
+      <MuiNextImage
         alt={name}
         width={140}
         height={140}
         display='block'
+        style={{
+          objectFit: 'contain',
+          padding: '8px',
+        }}
         src={imageUrls[0]}
       />
 
@@ -80,11 +84,11 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
 
         <FlexBox gap={1} flexWrap='wrap' alignItems='center'>
           <Span color='grey.600'>
-            {currency(retailPrice)} x {quantity}
+            {formatCurrency(retailPrice)} x {quantity}
           </Span>
 
           <Span fontWeight={600} color='primary.main'>
-            {currency(retailPrice * quantity)}
+            {formatCurrency(retailPrice * quantity)}
           </Span>
         </FlexBox>
 

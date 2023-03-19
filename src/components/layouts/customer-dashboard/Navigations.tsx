@@ -34,17 +34,18 @@ const StyledNavLink = styled<FC<StyledNavLinkProps & NavLinkProps>>(
   marginBottom: '1.25rem',
   justifyContent: 'space-between',
   borderColor: isCurrentPath ? theme.palette.primary.main : 'transparent',
-  '& .nav-icon': {
+  '& .nav-icon, & .nav-text': {
     color: isCurrentPath ? theme.palette.primary.main : theme.palette.grey[600],
   },
   '&:hover': {
     borderColor: theme.palette.primary.main,
-    '& .nav-icon': { color: theme.palette.primary.main },
+    '& .nav-icon, & .nav-text': { color: theme.palette.primary.main },
   },
 }));
 
 const Navigations = () => {
   const { pathname } = useRouter();
+  console.log('file: Navigations.tsx:48 - Navigations - pathname:', pathname);
 
   return (
     <MainContainer>
@@ -58,7 +59,7 @@ const Navigations = () => {
             <StyledNavLink
               href={item.href}
               key={item.title}
-              isCurrentPath={pathname.includes(item.href)}
+              isCurrentPath={pathname === item.href}
             >
               <FlexBox alignItems='center' gap={1}>
                 <item.icon
@@ -66,7 +67,7 @@ const Navigations = () => {
                   fontSize='small'
                   className='nav-icon'
                 />
-                <span>{item.title}</span>
+                <span className='nav-text'>{item.title}</span>
               </FlexBox>
 
               <span>{item.count}</span>
@@ -83,9 +84,9 @@ const linkList = [
     title: 'QUẢN LÝ TÀI KHOẢN',
     list: [
       { href: '/profile', title: 'Hồ sơ của tôi', icon: Person },
-      { href: '/address', title: 'Địa chỉ', icon: Place, count: 16 },
+      { href: '/profile/address', title: 'Địa chỉ', icon: Place, count: 16 },
       {
-        href: '/orders',
+        href: '/profile/orders',
         title: 'Đơn hàng',
         icon: ShoppingBag,
         count: 5,

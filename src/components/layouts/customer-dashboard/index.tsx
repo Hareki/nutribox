@@ -1,11 +1,9 @@
 import { Container, Grid } from '@mui/material';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode, ReactElement } from 'react';
 
-import ShopLayout1 from '../ShopLayout1';
+import { getPageLayout } from '../PageLayout';
 
 import Navigations from './Navigations';
-
-import { Footer } from 'components/common/layout/footer';
 
 /**
  *  Used in:
@@ -18,10 +16,11 @@ import { Footer } from 'components/common/layout/footer';
  */
 // ======================================================
 type Props = { children: ReactNode };
+
 // ======================================================
 
-const CustomerDashboardLayout: FC<Props> = ({ children }) => (
-  <ShopLayout1 showNavbar={false} showTopbar={false}>
+function CustomerDashboardLayout({ children }: Props) {
+  return (
     <Container sx={{ my: '6rem' }}>
       <Grid container spacing={3}>
         <Grid
@@ -38,8 +37,11 @@ const CustomerDashboardLayout: FC<Props> = ({ children }) => (
         </Grid>
       </Grid>
     </Container>
-    <Footer />
-  </ShopLayout1>
-);
+  );
+}
+
+export const getCustomerDashboardLayout = (page: ReactElement) =>
+  getPageLayout(<CustomerDashboardLayout>{page}</CustomerDashboardLayout>);
+
 
 export default CustomerDashboardLayout;

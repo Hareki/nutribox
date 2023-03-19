@@ -15,11 +15,11 @@ import { useState, useEffect } from 'react';
 import type { IProduct } from 'api/models/Product.model/types';
 import { H1, H2, H3, Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 import { FlexBox } from 'components/flex-box';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useCart from 'hooks/redux-hooks/useCart';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
 // styled components
@@ -96,7 +96,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                 visibleSlides={1}
               >
                 {product.imageUrls.map((item: string, index: number) => (
-                  <CustomImage
+                  <MuiImage
                     key={index}
                     src={item}
                     sx={{
@@ -117,7 +117,9 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                 DANH MỤC: {categoryName}
               </Paragraph>
 
-              <H1 color='primary.main'>{currency(product.retailPrice)}</H1>
+              <H1 color='primary.main'>
+                {formatCurrency(product.retailPrice)}
+              </H1>
 
               <Paragraph my={2}>{product.description}</Paragraph>
 

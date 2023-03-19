@@ -12,7 +12,7 @@ import { FlexBox } from 'components/flex-box';
 import Reload from 'components/icons/Reload';
 import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 // styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -99,7 +99,7 @@ const DataListTable: FC<ListTableProps> = ({
                     </StyledTableCell>
 
                     <StyledTableCell align='center'>
-                      {currency(amount)}
+                      {formatCurrency(amount)}
                     </StyledTableCell>
                   </StyledTableRow>
                 );
@@ -124,7 +124,7 @@ const DataListTable: FC<ListTableProps> = ({
                     </StyledTableCell>
 
                     <StyledTableCell align='center'>
-                      {currency(amount)}
+                      {formatCurrency(amount)}
                     </StyledTableCell>
                   </StyledTableRow>
                 );

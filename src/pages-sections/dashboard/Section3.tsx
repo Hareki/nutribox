@@ -5,7 +5,7 @@ import type { FC } from 'react';
 import Card2 from './Card2';
 import * as options from './chartsOptions';
 
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 // apext chart instance
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
@@ -31,7 +31,7 @@ const Section3: FC = () => {
           <Card2
             title='Weekly Sales'
             percentage='25.25%'
-            amount={currency(10240, 0)}
+            amount={formatCurrency(10240, 0)}
           >
             <ReactApexChart
               type='bar'
@@ -59,7 +59,7 @@ const Section3: FC = () => {
           <Card2
             title='Total Order'
             percentage='2.65%'
-            amount={currency(12260, 0)}
+            amount={formatCurrency(12260, 0)}
           >
             <ReactApexChart
               type='area'
@@ -75,7 +75,7 @@ const Section3: FC = () => {
           <Card2
             title='Market Share'
             percentage='2.65%'
-            amount={currency(14260, 0)}
+            amount={formatCurrency(14260, 0)}
           >
             <ReactApexChart
               height={130}

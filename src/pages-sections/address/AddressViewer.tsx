@@ -1,4 +1,5 @@
 import { Delete, Edit, Place } from '@mui/icons-material';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import {
   Button,
   CircularProgress,
@@ -7,6 +8,7 @@ import {
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { GetStaticProps, NextPage } from 'next';
+import { useSnackbar } from 'notistack';
 import { useReducer, useState } from 'react';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
@@ -38,6 +40,8 @@ const AddressViewer: NextPage<AddressViewerProps> = ({
   const [state, dispatch] = useReducer(confirmDialogReducer, {
     open: false,
   });
+  const { enqueueSnackbar } = useSnackbar();
+
   const [deleteAddressId, setDeleteAddressId] = useState<string>();
 
   const queryClient = useQueryClient();
@@ -50,8 +54,37 @@ const AddressViewer: NextPage<AddressViewerProps> = ({
     mutationFn: (addressId) =>
       apiCaller.deleteAddress(accountId, { addressId }),
     onSuccess: (newAddresses) => {
+      enqueueSnackbar('Xoá địa chỉ đã chọn thành công', { variant: 'success' });
       queryClient.invalidateQueries(['addresses', accountId]);
       queryClient.setQueryData(['addresses', accountId], newAddresses);
+    },
+    onError: (err) => {
+      console.log(err);
+      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+        variant: 'error',
+      });
+    },
+  });
+
+  const { mutate: setDefaultAddress } = useMutation<
+    IAccountAddress[],
+    unknown,
+    string
+  >({
+    mutationFn: (addressId) =>
+      apiCaller.setDefaultAddress(accountId, addressId),
+    onSuccess: (newAddresses) => {
+      enqueueSnackbar('Đặt làm địa chỉ mặc định thành công', {
+        variant: 'success',
+      });
+      queryClient.invalidateQueries(['addresses', accountId]);
+      queryClient.setQueryData(['addresses', accountId], newAddresses);
+    },
+    onError: (err) => {
+      console.log(err);
+      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+        variant: 'error',
+      });
     },
   });
 
@@ -64,6 +97,11 @@ const AddressViewer: NextPage<AddressViewerProps> = ({
       Thêm địa chỉ
     </Button>
   );
+
+  const handleSetDefaultAddressRequest = (address: IAccountAddress) => {
+    if (address.isDefault) return;
+    setDefaultAddress(address.id);
+  };
 
   const handleAddressDeleteRequest = (id: string) => {
     setDeleteAddressId(id);
@@ -98,6 +136,15 @@ const AddressViewer: NextPage<AddressViewerProps> = ({
             </Typography>
 
             <Typography whiteSpace='pre' textAlign='center' color='grey.600'>
+              <IconButton
+                color={address.isDefault ? 'primary' : 'inherit'}
+                onClick={() => {
+                  handleSetDefaultAddressRequest(address);
+                }}
+              >
+                <LocalShippingIcon fontSize='small' color='inherit' />
+              </IconButton>
+
               <IconButton
                 onClick={() => {
                   setEditingAddress(address);

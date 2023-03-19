@@ -1,21 +1,20 @@
 import { Place } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { Autocomplete, Box, Button, Grid, TextField } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import type { NextPage } from 'next';
-import Link from 'next/link';
 import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
 
-import type { AddAddressRequestBody } from '../../../pages/api/address/[accountId]';
+import type { AddAddressRequestBody } from '../../../pages/api/profile/address/[accountId]';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import Card1 from 'components/common/Card1';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { transformAddressToFormikValue } from 'helpers/address.helper';
-import type { AddressAPI } from 'utils/apiCallers/address';
+import { useAddressQuery } from 'hooks/useAddressQuery';
 import apiCaller from 'utils/apiCallers/address';
 
 type MutateAddressVariables = {
@@ -44,6 +43,11 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
   };
   const handleFormSubmit = async (values: any) => {
     const type = isAddMode ? 'add' : 'edit';
+    let isDefault = false;
+    if (isAddMode) {
+      const addresses = await apiCaller.getAddresses(accountId);
+      isDefault = addresses.length === 0;
+    }
     const body = {
       title: values.title,
       province: values.province.name,
@@ -54,6 +58,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
       provinceId: values.province.code,
       districtId: values.district.code,
       wardId: values.ward.code,
+      isDefault,
     };
     console.log('file: AddressEditor.tsx:48 - handleFormSubmit - body:', body);
 
@@ -61,15 +66,13 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
   };
 
   const HEADER_LINK = (
-    <Link href='/address' passHref legacyBehavior>
-      <Button
-        color='primary'
-        sx={{ bgcolor: 'primary.light', px: 4 }}
-        onClick={() => goBack()}
-      >
-        Huỷ bỏ
-      </Button>
-    </Link>
+    <Button
+      color='primary'
+      sx={{ bgcolor: 'primary.light', px: 4 }}
+      onClick={() => goBack()}
+    >
+      Huỷ bỏ
+    </Button>
   );
 
   const getInitialValues = (editingAddress: IAccountAddress) => {
@@ -108,22 +111,14 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
   const hasProvince = values.province !== null;
   const hasDistrict = values.district !== null;
 
-  const { data: provinces, isLoading: isLoadingProvince } = useQuery({
-    queryKey: ['provinces'],
-    queryFn: () => apiCaller.getProvinces(),
-  });
-
-  const { data: districts, isLoading: isLoadingDistricts } = useQuery({
-    queryKey: ['districts', (values.province as AddressAPI)?.code],
-    queryFn: () => apiCaller.getDistricts(values.province.code),
-    enabled: hasProvince,
-  });
-
-  const { data: wards, isLoading: isLoadingWards } = useQuery({
-    queryKey: ['wards', (values.district as AddressAPI)?.code],
-    queryFn: () => apiCaller.getWards(values.district.code),
-    enabled: hasDistrict,
-  });
+  const {
+    provinces,
+    isLoadingProvince,
+    districts,
+    isLoadingDistricts,
+    wards,
+    isLoadingWards,
+  } = useAddressQuery(values, hasProvince, hasDistrict);
 
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
@@ -196,6 +191,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
                   onChange={(_, value) => {
                     setFieldValue('province', value);
                     setFieldValue('district', null);
+                    setFieldValue('ward', null);
                   }}
                   renderInput={(params) => (
                     <TextField

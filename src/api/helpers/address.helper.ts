@@ -1,15 +1,22 @@
 import type { ClientResponse } from '@google/maps';
 import { createClient } from '@google/maps';
 
+
+export interface DeliveryInfo {
+  distance: number;
+  durationInTraffic: number;
+  heavyTraffic: boolean;
+}
+
 const googleMapsClient = createClient({
   key: process.env.GOOGLE_API_KEY,
   Promise: Promise,
 });
 
-export async function getDistanceAndEstimatedTime(
+export async function getDeliveryInfo(
   address1: string,
   address2: string,
-): Promise<{ distance: number; duration: number } | null> {
+): Promise<DeliveryInfo | null> {
   try {
     const [response1, response2] = await Promise.all([
       googleMapsClient.geocode({ address: address1 }).asPromise(),
@@ -30,7 +37,6 @@ export async function getDistanceAndEstimatedTime(
           origins: [location1],
           destinations: [location2],
           units: 'metric',
-          mode: 'driving',
           departure_time: 'now',
         })
         .asPromise();
@@ -42,9 +48,12 @@ export async function getDistanceAndEstimatedTime(
       ) {
         const element = response.json.rows[0].elements[0];
         const distance = element.distance.value / 1000; // Convert meters to kilometers
-        const duration = element.duration_in_traffic.value / 60; // Convert seconds to minutes
+        const duration = element.duration.value / 60; // Convert seconds to minutes
+        const durationInTraffic = element.duration_in_traffic.value / 60; // Convert seconds to minutes
 
-        return { distance, duration };
+        const heavyTraffic = durationInTraffic > duration * 1.5;
+
+        return { distance, durationInTraffic, heavyTraffic };
       }
     }
 

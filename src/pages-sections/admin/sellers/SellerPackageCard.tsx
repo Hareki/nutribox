@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { H1, H3, H5 } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import Verify from 'components/icons/Verify';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 // styled components
 const Wrapper = styled(Card)({
@@ -40,7 +40,7 @@ const SellerPackageCard: FC<SellerPackageCardProps> = ({ listItem }) => {
         {packageName} Package
       </H3>
 
-      <PackageHeading fontSize={60}>{currency(price, 0)}</PackageHeading>
+      <PackageHeading fontSize={60}>{formatCurrency(price, 0)}</PackageHeading>
 
       <Box mt={1} mb={2}>
         {features.map((item, index) => (

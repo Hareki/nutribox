@@ -9,7 +9,7 @@ import { FlexBox } from '../flex-box';
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IProduct } from 'api/models/Product.model/types';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 
 type CartDrawerItemProps = {
   cartItem: IPopulatedCartItem;
@@ -90,11 +90,11 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
         </Link>
 
         <Tiny color='grey.600'>
-          {currency(cartItem.product.retailPrice)} x {cartItem.quantity}
+          {formatCurrency(cartItem.product.retailPrice)} x {cartItem.quantity}
         </Tiny>
 
         <Box fontWeight={600} fontSize='14px' color='primary.main' mt={0.5}>
-          {currency(cartItem.quantity * cartItem.product.retailPrice)}
+          {formatCurrency(cartItem.quantity * cartItem.product.retailPrice)}
         </Box>
       </Box>
 

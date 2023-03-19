@@ -11,7 +11,7 @@ import { H1, H2, H3, H6 } from 'components/abstract/Typography';
 import LazyImage from 'components/LazyImage';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useCart from 'hooks/redux-hooks/useCart';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
 // ================================================================
@@ -133,7 +133,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
 
           <Box pt={1} mb={3}>
             <H2 color='primary.main' mb={0.5} lineHeight='1'>
-              {currency(retailPrice)}
+              {formatCurrency(retailPrice)}
             </H2>
             <Box color='inherit'>{available ? 'Còn hàng' : 'Hết hàng'}</Box>
           </Box>

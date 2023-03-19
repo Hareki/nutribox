@@ -6,7 +6,7 @@ import type { FC } from 'react';
 
 import { H5 } from 'components/abstract/Typography';
 import TableRow from 'components/data-table/TableRow';
-import { currency } from 'lib';
+import { formatCurrency } from 'lib';
 import type Order from 'models/Order.model';
 
 // =================================================
@@ -62,7 +62,7 @@ const OrderRow: FC<OrderRowProps> = ({ order }) => {
         </Typography>
 
         <Typography m={0.75} textAlign='left'>
-          {currency(order.totalPrice)}
+          {formatCurrency(order.totalPrice)}
         </Typography>
 
         <Typography

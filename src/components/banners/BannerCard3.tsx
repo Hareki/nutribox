@@ -2,7 +2,7 @@ import type { BoxProps } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import type { FC, ReactNode } from 'react';
 
-import CustomImage from 'components/common/input/CustomImage';
+import MuiImage from 'components/common/input/MuiImage';
 
 // custom styled components
 const CardWrapper = styled(Box)({
@@ -37,7 +37,7 @@ const BannerCard3: FC<BannerCard1Props & BoxProps> = ({
 }) => {
   return (
     <CardWrapper {...props}>
-      <CustomImage alt='category' height='100%' width='100%' src={img} />
+      <MuiImage alt='category' height='100%' width='100%' src={img} />
 
       <CardContent>{children}</CardContent>
     </CardWrapper>
