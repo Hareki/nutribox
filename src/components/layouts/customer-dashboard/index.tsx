@@ -43,5 +43,4 @@ function CustomerDashboardLayout({ children }: Props) {
 export const getCustomerDashboardLayout = (page: ReactElement) =>
   getPageLayout(<CustomerDashboardLayout>{page}</CustomerDashboardLayout>);
 
-
 export default CustomerDashboardLayout;

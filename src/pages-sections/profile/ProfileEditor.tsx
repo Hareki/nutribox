@@ -353,5 +353,4 @@ const checkoutSchema = yup.object().shape({
     .required('Vui lòng nhập ngày sinh'),
 });
 
-
 export default ProfileEditor;

@@ -8,7 +8,6 @@ import connectToDB from 'api/database/databaseConnection';
 import type { IAccount } from 'api/models/Account.model/types';
 import type { JSendResponse } from 'api/types/response.type';
 
-
 export interface UpdateAccountRequestBody
   extends Partial<
     Pick<
@@ -50,6 +49,5 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IAccount>>>({
       data: updatedAccount,
     });
   });
-
 
 export default handler;

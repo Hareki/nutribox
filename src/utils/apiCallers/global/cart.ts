@@ -4,8 +4,6 @@ import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types'
 import type { CartState } from 'hooks/redux-hooks/useCart';
 import axiosInstance from 'utils/axiosInstance';
 
-
-
 export const updateCartItem = async (
   accountId: string,
   { productId, quantity }: CartItemRequestBody,

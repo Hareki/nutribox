@@ -1,7 +1,6 @@
 import type { ClientResponse } from '@google/maps';
 import { createClient } from '@google/maps';
 
-
 export interface DeliveryInfo {
   distance: number;
   durationInTraffic: number;

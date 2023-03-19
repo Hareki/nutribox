@@ -12,8 +12,6 @@ import { getMessageList } from 'helpers/feedback.helper';
 import Signup from 'pages-sections/auth/Signup';
 import apiCaller from 'utils/apiCallers/signup';
 
-
-
 const SignUpPage: NextPage = () => {
   const [state, dispatch] = useReducer(infoDialogReducer, {
     open: false,

@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type { ErrorHandler } from 'next-connect';
 import nc from 'next-connect';
 
-
 import { defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
@@ -23,13 +22,11 @@ import type {
   JSendSuccessResponse,
 } from 'api/types/response.type';
 
-
 export interface SignUpRequestBody
   extends Pick<
     IAccount,
     'firstName' | 'lastName' | 'email' | 'phone' | 'password' | 'birthday'
   > {}
-
 
 export const onSignUpError: ErrorHandler<
 NextApiRequest,

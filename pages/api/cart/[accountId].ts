@@ -15,7 +15,6 @@ import type {
 } from 'api/types/response.type';
 import type { CartState } from 'hooks/redux-hooks/useCart';
 
-
 export interface CartItemRequestBody {
   productId: string;
   quantity: number;
