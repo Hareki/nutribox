@@ -18,6 +18,7 @@ import ShopLayout1 from 'components/layouts/ShopLayout1';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
 import { extractIdFromSlug } from 'helpers/slug.helper';
+import LoginDialog from 'pages-sections/auth/LoginDialog';
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -62,6 +63,7 @@ const ProductDetails: FC<ProductDetailsProps> = (props) => {
         <RelatedProductsSection products={relatedProducts} />
       </Container>
       <Footer />
+      <LoginDialog />
     </ShopLayout1>
   );
 };

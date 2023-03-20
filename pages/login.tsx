@@ -1,7 +1,9 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 import { useEffect, useState } from 'react';
+
+import { authOptions } from './api/auth/[...nextauth]';
 
 import SEO from 'components/abstract/SEO';
 import { FlexRowCenter } from 'components/flex-box';
@@ -35,7 +37,7 @@ const LoginPage: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   if (session) {
     return {

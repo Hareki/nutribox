@@ -6,7 +6,6 @@ import {
   useQueries,
   useQuery,
 } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { GetStaticProps, NextPage } from 'next';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 // Footer1
@@ -32,6 +31,7 @@ import SideNavContainer from 'components/side-nav/SidenavContainer';
 import type Product from 'models/BazaarProduct.model';
 import type { MainCarouselItem } from 'models/Grocery-3.model';
 import type Service from 'models/Service.model';
+import LoginDialog from 'pages-sections/auth/LoginDialog';
 import AllProducts from 'pages-sections/home-page/AllProducts';
 import HeroSection from 'pages-sections/home-page/HeroSection';
 import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
@@ -219,8 +219,8 @@ const HomePage: NextPage<HomePageProps> = (props) => {
         <MobileNavigationBar>
           <CategoryNavbar navList={categoryNavigation} />
         </MobileNavigationBar>
+        <LoginDialog />
       </ShopLayout1>
-      <ReactQueryDevtools />
     </>
   );
 };

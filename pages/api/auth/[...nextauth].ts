@@ -1,10 +1,11 @@
+import type { AuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -16,7 +17,9 @@ export default NextAuth({
       if (!token.userId) return session;
 
       await connectToDB();
-      const sessionUser = await AccountController.getSessionUser(token.userId as string);
+      const sessionUser = await AccountController.getSessionUser(
+        token.userId as string,
+      );
 
       token.user = sessionUser.user;
       session.user = sessionUser.user;
@@ -62,4 +65,5 @@ export default NextAuth({
       },
     }),
   ],
-});
+};
+export default NextAuth(authOptions);

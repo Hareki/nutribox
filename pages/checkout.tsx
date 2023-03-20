@@ -1,9 +1,11 @@
 import { Grid } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import type { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 import { useState, Fragment } from 'react';
 import type { ReactElement } from 'react';
+
+import { authOptions } from './api/auth/[...nextauth]';
 
 import type { IAccount } from 'api/models/Account.model/types';
 import SEO from 'components/abstract/SEO';
@@ -11,7 +13,7 @@ import PageLayout from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
 import CartDetails from 'pages-sections/checkout/cart-details';
 import Payment from 'pages-sections/checkout/payment';
-import accountApiCaller from 'utils/apiCallers/profile';
+import apiCaller from 'utils/apiCallers/profile';
 
 Checkout.getLayout = function getLayout(page: ReactElement) {
   return <PageLayout>{page}</PageLayout>;
@@ -55,7 +57,7 @@ function Checkout({ initialAccount }: CheckoutProps): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
+  const session = await getServerSession(context.req, context.res, authOptions);
   if (!session) {
     return {
       redirect: {
@@ -65,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const initialAccount = await accountApiCaller.getAccount(session.user.id);
+  const initialAccount = await apiCaller.getAccount(session.user.id);
   return { props: { initialAccount } };
 };
 

@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
+
+import { authOptions } from '../api/auth/[...nextauth]';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
@@ -50,7 +52,7 @@ function Address({ sessionUserId }: AddressProps): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
+  const session = await getServerSession(context.req, context.res, authOptions);
   if (!session) {
     return {
       redirect: {

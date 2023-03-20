@@ -1,8 +1,6 @@
 import { Person } from '@mui/icons-material';
 import type { Theme } from '@mui/material';
 import { Avatar, Box, Button, Card, Grid, useMediaQuery } from '@mui/material';
-import type { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
@@ -14,7 +12,6 @@ import TableRow from 'components/data-table/TableRow';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { formatDate } from 'lib';
-import apiCaller from 'utils/apiCallers/profile';
 
 type ProfileProps = {
   account: IAccount;
@@ -135,24 +132,6 @@ const TableRowItem = ({ title, value }) => {
       <span>{value}</span>
     </FlexBox>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-  const account = await apiCaller.getAccount(session.user.id);
-  console.log(
-    'file: index.tsx:156 - const getServerSideProps:GetServerSideProps - account:',
-    account,
-  );
-  return { props: { account: account } };
 };
 
 export default ProfileViewer;

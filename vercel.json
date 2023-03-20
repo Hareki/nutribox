@@ -1,0 +1,11 @@
+{
+  "framework": "nextjs",
+  "functions": {
+    "pages/**/*.ts": {
+      "maxDuration": 60
+    },
+    "pages/**/*.tsx": {
+      "maxDuration": 60
+    }
+  }
+}

@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
+
+import { authOptions } from '../api/auth/[...nextauth]';
 
 import type { IAccount } from 'api/models/Account.model/types';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
@@ -33,7 +35,7 @@ function Profile({ initialAccount }: ProfileProps): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
+  const session = await getServerSession(context.req, context.res, authOptions);
   if (!session) {
     return {
       redirect: {

@@ -15,7 +15,6 @@ import nextI18NextConfig from '../next-i18next.config';
 import QueryClientSsrProvider from 'contexts/QueryClientSsrProvider';
 import SettingsProvider from 'contexts/SettingContext';
 import SnackbarProvider from 'contexts/SnackbarProvider';
-import LoginDialog from 'pages-sections/auth/LoginDialog';
 import { store as reduxStore } from 'store';
 import MuiTheme from 'theme/MuiTheme';
 import OpenGraphTags from 'utils/OpenGraphTags';
@@ -70,7 +69,6 @@ const App = ({
                   dehydratedState={dehydratedState}
                 >
                   {getLayout(<AnyComponent {...pageProps} />)}
-                  <LoginDialog />
                 </QueryClientSsrProvider>
               </SnackbarProvider>
             </MuiTheme>
