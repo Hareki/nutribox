@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import ProductController from 'api/controllers/Product.controller';
+import { getProductSlugs } from 'api/base/pre-render';
 import connectToDB from 'api/database/databaseConnection';
 import type { JSendResponse } from 'api/types/response.type';
 
@@ -13,12 +13,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<string[]>>>({
 }).get(async (_req, res) => {
   await connectToDB();
 
-  const products: { name: string; slug: string }[] =
-    await ProductController.getAll({
-      includeFields: ['name', 'slug'],
-    });
-
-  const slugs = products.map((product) => product.slug);
+  const slugs = await getProductSlugs();
 
   res.status(StatusCodes.OK).json({
     status: 'success',
@@ -27,3 +22,4 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<string[]>>>({
 });
 
 export default handler;
+

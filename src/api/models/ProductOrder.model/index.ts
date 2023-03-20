@@ -5,5 +5,5 @@ import { models } from 'mongoose';
 
 import type { IProductOrder } from './types';
 
-const ProductOrder = models.ProductOrder as Model<IProductOrder>;
-export default ProductOrder;
+const ProductOrderModel = () => models?.ProductOrder as Model<IProductOrder>;
+export default ProductOrderModel;

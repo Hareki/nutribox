@@ -3,6 +3,13 @@ import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
+import {
+  getProduct,
+  getProductSlugs,
+  getRelatedProducts,
+} from 'api/base/pre-render';
+import connectToDB from 'api/database/databaseConnection';
+import { serialize } from 'api/helpers/object.helper';
 import type { IProduct } from 'api/models/Product.model/types';
 import SEO from 'components/abstract/SEO';
 import { H2 } from 'components/abstract/Typography';
@@ -10,7 +17,7 @@ import { Footer } from 'components/common/layout/footer';
 import ShopLayout1 from 'components/layouts/ShopLayout1';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
-import apiCaller from 'utils/apiCallers/product/[slug]';
+import { extractIdFromSlug } from 'helpers/slug.helper';
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -60,7 +67,9 @@ const ProductDetails: FC<ProductDetailsProps> = (props) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const productSlugs = await apiCaller.getSlugs();
+  await connectToDB();
+
+  const productSlugs = await getProductSlugs();
 
   const paths = productSlugs.map((slug) => ({
     params: { slug },
@@ -73,16 +82,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const product = await apiCaller.getProduct(params.slug as string);
+  await connectToDB();
+
+  const id = extractIdFromSlug(params.slug as string);
+  const product = await getProduct(id, false);
+
   const productId = product.id;
   const categoryId = product.category.toString();
 
-  const relatedProducts = await apiCaller.getRelatedProducts(
-    productId,
-    categoryId,
-  );
+  const relatedProducts = await getRelatedProducts(productId, categoryId);
 
-  return { props: { product, relatedProducts } };
+  return {
+    props: {
+      product: serialize(product),
+      relatedProducts: serialize(relatedProducts),
+    },
+  };
 };
 
 export default ProductDetails;

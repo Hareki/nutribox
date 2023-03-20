@@ -35,15 +35,20 @@ const globalSchemaOptions = {
   },
 };
 
-function registerModels() {
+export function registerModels() {
   for (const { name, schema } of schemasWithNames) {
     if (!mongoose.models[name]) {
       mongoose.model(name, schema);
     }
   }
 }
+let registered = false;
 
-mongoose.set('toJSON', globalSchemaOptions.toJSON);
-mongoose.set('toObject', globalSchemaOptions.toObject);
-mongoose.plugin(mongooseLeanVirtuals);
-registerModels();
+if (!registered) {
+  mongoose.set('toJSON', globalSchemaOptions.toJSON);
+  mongoose.set('toObject', globalSchemaOptions.toObject);
+  mongoose.plugin(mongooseLeanVirtuals);
+  registerModels();
+  registered = true;
+}
+

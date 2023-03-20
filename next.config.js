@@ -9,7 +9,7 @@ module.exports = {
     theme: 'DEFAULT',
     currency: 'VND',
   },
-  distDir: process.env.NODE_ENV === 'production' ? 'build' : '.next',
+  // distDir: process.env.NODE_ENV === 'production' ? '.next' : '.dev',
   images: {
     remotePatterns: [
       {

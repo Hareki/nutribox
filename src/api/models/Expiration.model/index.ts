@@ -4,5 +4,5 @@ import { models } from 'mongoose';
 
 import type { IExpiration } from './types';
 
-const Expiration = models?.Expiration as Model<IExpiration>;
-export default Expiration;
+const ExpirationModel = () => models?.Expiration as Model<IExpiration>;
+export default ExpirationModel;

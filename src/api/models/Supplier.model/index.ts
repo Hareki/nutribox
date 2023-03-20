@@ -4,5 +4,5 @@ import { models } from 'mongoose';
 
 import type { ISupplier } from './types';
 
-const Supplier = models.Supplier as Model<ISupplier>;
-export default Supplier;
+const SupplierModel = () => models?.Supplier as Model<ISupplier>;
+export default SupplierModel;

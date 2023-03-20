@@ -21,21 +21,21 @@ import {
   populateCartItems,
   validateDocExistence,
 } from 'api/helpers/model.helper';
-import Account from 'api/models/Account.model';
+import AccountModel from 'api/models/Account.model';
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import type { ICartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type {
   IAccount,
   IPopulatedCartItemsAccount,
 } from 'api/models/Account.model/types';
-import Product from 'api/models/Product.model';
+import ProductModel from 'api/models/Product.model';
 import type { CartState } from 'hooks/redux-hooks/useCart';
 
-const getAll = getAllGenerator<IAccount>(Account);
-const getOne = getOneGenerator<IAccount>(Account);
+const getAll = getAllGenerator<IAccount>(AccountModel());
+const getOne = getOneGenerator<IAccount>(AccountModel());
 
-const createOne = createOneGenerator<IAccount>(Account);
-const updateOne = updateOneGenerator<IAccount>(Account);
+const createOne = createOneGenerator<IAccount>(AccountModel());
+const updateOne = updateOneGenerator<IAccount>(AccountModel());
 
 const getSessionUser = async (
   accountId: string,
@@ -56,7 +56,7 @@ const checkCredentials = async (
   email: string,
   password: string,
 ): Promise<IAccount | null> => {
-  const account = await Account.findOne({ email }).exec();
+  const account = await AccountModel().findOne({ email }).exec();
   if (!account) return null;
 
   const isPasswordMatch = await account.isPasswordMatch(
@@ -69,8 +69,8 @@ const checkCredentials = async (
 };
 
 const getCartItems = async (accountId: string): Promise<CartState> => {
-  const account = await Account.findById(accountId).exec();
-  validateDocExistence(account, Account, accountId);
+  const account = await AccountModel().findById(accountId).exec();
+  validateDocExistence(account, AccountModel(), accountId);
 
   const cartItemsDoc: ICartItem[] = account.cartItems.toObject();
   const populatedCartItems = await populateCartItems(cartItemsDoc);
@@ -85,11 +85,11 @@ const updateCartItem = async (
   accountId: string,
   { productId, quantity }: CartItemRequestBody,
 ): Promise<IPopulatedCartItemsAccount> => {
-  const account = await Account.findById(accountId).exec();
-  validateDocExistence(account, Account, accountId);
+  const account = await AccountModel().findById(accountId).exec();
+  validateDocExistence(account, AccountModel(), accountId);
 
-  const product = await Product.findById(productId).exec();
-  validateDocExistence(product, Product, productId);
+  const product = await ProductModel().findById(productId).exec();
+  validateDocExistence(product, ProductModel(), productId);
 
   const existingCartItemIndex = account.cartItems.findIndex(
     (item) => item.product.toString() === productId,
@@ -130,8 +130,8 @@ const addAddress = async (
   accountId: string,
   address: AddAddressRequestBody,
 ): Promise<IAccountAddress[]> => {
-  const account = await Account.findById(accountId).exec();
-  validateDocExistence(account, Account, accountId);
+  const account = await AccountModel().findById(accountId).exec();
+  validateDocExistence(account, AccountModel(), accountId);
 
   account.addresses.push(address);
   account.save();
@@ -143,8 +143,8 @@ const updateAddress = async (
   accountId: string,
   address: UpdateAddressRequestBody,
 ): Promise<IAccountAddress[]> => {
-  const account = await Account.findById(accountId).exec();
-  validateDocExistence(account, Account, accountId);
+  const account = await AccountModel().findById(accountId).exec();
+  validateDocExistence(account, AccountModel(), accountId);
 
   const addressIndex = account.addresses.findIndex(
     (addr: IAccountAddress) => addr.id === address.id,
@@ -171,8 +171,8 @@ const setDefaultAddress = async (
   accountId: string,
   address: SetDefaultAddressRequestBody,
 ): Promise<IAccountAddress[]> => {
-  const account = await Account.findById(accountId).exec();
-  validateDocExistence(account, Account, accountId);
+  const account = await AccountModel().findById(accountId).exec();
+  validateDocExistence(account, AccountModel(), accountId);
 
   const addressIndex = account.addresses.findIndex(
     (addr: IAccountAddress) => addr.id === address.id,
@@ -204,8 +204,8 @@ const deleteAddress = async (
   accountId: string,
   params: DeleteAddressQueryParams,
 ): Promise<IAccountAddress[]> => {
-  const account = await Account.findById(accountId).exec();
-  validateDocExistence(account, Account, accountId);
+  const account = await AccountModel().findById(accountId).exec();
+  validateDocExistence(account, AccountModel(), accountId);
 
   const addressIndex = account.addresses.findIndex(
     (addr: IAccountAddress) => addr.id === params.addressId,

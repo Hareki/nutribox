@@ -6,9 +6,9 @@ import nc from 'next-connect';
 import { revertUpdateDependentDoc } from 'api/base/mongoose/dependentHandler';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/databaseConnection';
-import Product from 'api/models/Product.model';
+import ProductModel from 'api/models/Product.model';
 import type { IProductInput } from 'api/models/Product.model/types';
-import ProductCategory from 'api/models/ProductCategory.model';
+import ProductCategoryModel from 'api/models/ProductCategory.model';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,
@@ -107,17 +107,20 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     },
   ];
   dataArray.forEach(async (data) => {
-    const productDoc = new Product(data);
+    const ProductModelVar = ProductModel();
+    const productDoc = new ProductModelVar(data);
     try {
       await productDoc.save();
     } catch (error) {
-      const categoryDoc = await ProductCategory.findById(productDoc.category);
+      const categoryDoc = await ProductCategoryModel().findById(
+        productDoc.category,
+      );
       revertUpdateDependentDoc(productDoc._id, categoryDoc, 'products');
       console.log(error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).end('Goodbye World!');
     }
   });
-  const categoryDoc = await ProductCategory.findById(
+  const categoryDoc = await ProductCategoryModel().findById(
     '64087f60248e58a08bdc3e1b',
   );
 

@@ -5,5 +5,5 @@ import { models } from 'mongoose';
 
 import type { IAccount } from './types';
 
-const Account = models.Account as Model<IAccount>;
-export default Account;
+const AccountModel = () => models?.Account as Model<IAccount>;
+export default AccountModel;

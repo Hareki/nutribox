@@ -27,6 +27,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
 
   useEffect(() => {
     if (categoryName === 'đang tải...') {
+      console.log('axiosInstance.getUri()', axiosInstance.getUri());
       axiosInstance.get(`/category/${category}`).then((res) => {
         setCategoryName(res.data.data.name);
       });

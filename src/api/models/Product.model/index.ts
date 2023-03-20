@@ -4,5 +4,5 @@ import { models } from 'mongoose';
 
 import type { IProduct } from './types';
 
-const Product = models.Product as Model<IProduct>;
-export default Product;
+const ProductModel = () => models?.Product as Model<IProduct>;
+export default ProductModel;

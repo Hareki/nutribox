@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import ProductCategory from '../ProductCategory.model';
+import ProductCategoryModel from '../ProductCategory.model';
 
 import type { IProduct } from './types';
 
@@ -104,7 +104,7 @@ productSchema.virtual('slug').get(function () {
 
 productSchema.pre('save', async function (next) {
   try {
-    const categoryDoc = await ProductCategory.findById(this.category);
+    const categoryDoc = await ProductCategoryModel().findById(this.category);
     await updateDependentDoc(this._id, categoryDoc, 'products');
     next();
   } catch (err) {

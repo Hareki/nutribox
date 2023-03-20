@@ -11,6 +11,14 @@ import type { GetStaticProps, NextPage } from 'next';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 // Footer1
 
+import {
+  getAllCategories,
+  getAllProducts,
+  getHotProducts,
+  getNewProducts,
+} from 'api/base/pre-render';
+import connectToDB from 'api/database/databaseConnection';
+import { serialize } from 'api/helpers/object.helper';
 import type { IProduct } from 'api/models/Product.model/types';
 import type { GetPaginationResult } from 'api/types/pagination.type';
 // ShopLayout2
@@ -31,6 +39,7 @@ import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
 import apiCaller from 'utils/apiCallers';
+import { paginationConstant } from 'utils/constants';
 
 function getElementHeightIncludingMargin(element: HTMLElement) {
   if (!element) return 0;
@@ -215,11 +224,10 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     </>
   );
 };
-function serialize(data: any) {
-  return JSON.parse(JSON.stringify(data));
-}
 
 export const getStaticProps: GetStaticProps = async () => {
+  await connectToDB();
+
   const serviceList = await api.getServices();
   const testimonials = await api.getTestimonials();
 
@@ -227,17 +235,17 @@ export const getStaticProps: GetStaticProps = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['products', 'category-navigation'],
-    queryFn: apiCaller.getAllCategories,
+    queryFn: () => getAllCategories(false),
   });
 
   await queryClient.prefetchQuery({
     queryKey: ['products', 'hot'],
-    queryFn: apiCaller.getHotProducts,
+    queryFn: () => getHotProducts(false),
   });
 
   await queryClient.prefetchQuery({
     queryKey: ['products', 'new'],
-    queryFn: apiCaller.getNewProducts,
+    queryFn: () => getNewProducts(false),
   });
 
   await queryClient.prefetchInfiniteQuery({
@@ -248,7 +256,8 @@ export const getStaticProps: GetStaticProps = async () => {
       pages: [],
     },
     // Can NOT access the initial pageParam here, it will be UNDEFINED. Specify the initial pageParam or not, it's always be UNDEFINED
-    queryFn: () => apiCaller.getAllProducts(1),
+    queryFn: () =>
+      getAllProducts(paginationConstant.docsPerPage.toString(), '1', false),
   });
 
   return {

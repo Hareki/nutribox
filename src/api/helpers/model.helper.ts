@@ -6,7 +6,7 @@ import type {
   ICartItem,
   IPopulatedCartItem,
 } from 'api/models/Account.model/CartItem.schema/types';
-import Product from 'api/models/Product.model';
+import ProductModel from 'api/models/Product.model';
 import type { IProduct } from 'api/models/Product.model/types';
 
 export const validateDocExistence = async (
@@ -28,9 +28,10 @@ export const populateCartItems = async (
   const productIds: Types.ObjectId[] = cartItemsDoc.map(
     (cartItem) => cartItem.product,
   );
-  const products: IProduct[] = await Product.find({
-    _id: { $in: productIds },
-  })
+  const products: IProduct[] = await ProductModel()
+    .find({
+      _id: { $in: productIds },
+    })
     .lean({ virtuals: true })
     .exec();
 
