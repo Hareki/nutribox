@@ -6,7 +6,7 @@ import type { FC } from 'react';
 import CartDrawerItem from './CartDrawerItem';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import { Paragraph } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
@@ -22,7 +22,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
   const cartList = cartState.cart;
 
   const handleCartAmountChange =
-    (amount: number, product: IProduct, type: CartItemActionType) => () => {
+    (amount: number, product: IUpeProduct, type: CartItemActionType) => () => {
       updateCartAmount({ product, quantity: amount }, type);
     };
 

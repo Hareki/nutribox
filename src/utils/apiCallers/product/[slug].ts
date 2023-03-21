@@ -10,9 +10,7 @@ const getSlugs = async (): Promise<string[]> => {
 
 const getProduct = async (slug: string): Promise<IProduct> => {
   const id = extractIdFromSlug(slug);
-  const response = await axiosInstance.get(`/product/${id}`, {
-    // params: { populate: true },
-  });
+  const response = await axiosInstance.get(`/product/${id}`);
   return response.data.data;
 };
 

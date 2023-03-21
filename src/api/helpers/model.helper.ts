@@ -6,8 +6,10 @@ import type {
   ICartItem,
   IPopulatedCartItem,
 } from 'api/models/Account.model/CartItem.schema/types';
+import ExpirationModel from 'api/models/Expiration.model';
+import type { IExpiration } from 'api/models/Expiration.model/types';
 import ProductModel from 'api/models/Product.model';
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IProduct, IUpeProduct } from 'api/models/Product.model/types';
 
 export const validateDocExistence = async (
   doc: Document,
@@ -35,8 +37,12 @@ export const populateCartItems = async (
     .lean({ virtuals: true })
     .exec();
 
+  const upeProducts = await populateUnexpiredExpiration(products);
+
   const cartItems: IPopulatedCartItem[] = cartItemsDoc.map((cartItem) => {
-    const product = products.find((p) => p.id === cartItem.product.toString());
+    const product = upeProducts.find(
+      (p) => p.id === cartItem.product.toString(),
+    );
     if (!product) {
       throw new CustomError(
         `Product not found for cart item: ${cartItem.id}`,
@@ -52,4 +58,36 @@ export const populateCartItems = async (
   });
 
   return cartItems;
+};
+
+export const populateUnexpiredExpiration = async (
+  products: IProduct[],
+): Promise<IUpeProduct[]> => {
+  const getUnexpiredExpirations = async (
+    productId: string,
+  ): Promise<IExpiration[]> => {
+    try {
+      const unexpiredExpirations = await ExpirationModel()
+        .find({
+          product: productId,
+          expirationDate: { $gt: new Date() },
+        })
+        .lean()
+        .exec();
+
+      return unexpiredExpirations;
+    } catch (error) {
+      console.error('Error retrieving unexpired Expirations:', error);
+      return null;
+    }
+  };
+
+  const promises = products.map(async (product) => {
+    const expirations = await getUnexpiredExpirations(product.id);
+    return { ...product, expirations };
+  });
+
+  const populatedProducts: IUpeProduct[] = await Promise.all(promises);
+
+  return populatedProducts;
 };

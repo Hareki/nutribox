@@ -1,6 +1,6 @@
 import type { Types } from 'mongoose';
 
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 
 export interface ICartItem {
   // _id: Types.ObjectId;
@@ -15,7 +15,7 @@ export interface ICartItem {
 export interface IPopulatedCartItem
   extends Omit<ICartItem, '_id' | 'id' | 'product'> {
   id?: string;
-  product: IProduct;
+  product: IUpeProduct;
   quantity: number;
 }
 

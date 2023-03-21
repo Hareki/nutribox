@@ -1,19 +1,16 @@
 import { paginationConstant } from './../constants';
 
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import type {
   IProductCategory,
-  IPopulatedProductCategory,
+  IPopulatedUpeProductCategory,
 } from 'api/models/ProductCategory.model/types';
 import type { GetPaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
 
 const getAllCategories = async (): Promise<IProductCategory[]> => {
-  const response = await axiosInstance.get('/category/all', {
-    // params: { populate: true },
-  });
+  const response = await axiosInstance.get('/category/all');
   const allCategory: IProductCategory = {
-    _id: '' as any, // Bypass type checking, because we don't have and don't need it anyway
     id: '',
     name: 'Tất cả',
     slug: '',
@@ -26,7 +23,7 @@ const getAllCategories = async (): Promise<IProductCategory[]> => {
 
 const getAllProducts = async (
   pageNumInput: number,
-): Promise<GetPaginationResult<IProduct>> => {
+): Promise<GetPaginationResult<IUpeProduct>> => {
   let pageNum: number, docsPerPage: number;
   if (!pageNumInput) {
     pageNum = 1;
@@ -48,26 +45,20 @@ const getAllProducts = async (
   return response.data.data;
 };
 
-const getHotProducts = async (): Promise<IProduct[]> => {
-  const response = await axiosInstance.get('/product/hot', {
-    // params: { populate: true },
-  });
+const getHotProducts = async (): Promise<IUpeProduct[]> => {
+  const response = await axiosInstance.get('/product/hot');
   return response.data.data;
 };
 
 const getCategoryWithProducts = async (
   categoryId: string,
-): Promise<IPopulatedProductCategory> => {
-  const response = await axiosInstance.get(`/category/${categoryId}`, {
-    params: { populate: true },
-  });
+): Promise<IPopulatedUpeProductCategory> => {
+  const response = await axiosInstance.get(`/category/${categoryId}`);
   return response.data.data;
 };
 
-const getNewProducts = async (): Promise<IProduct[]> => {
-  const response = await axiosInstance.get('/product/new', {
-    // params: { populate: true },
-  });
+const getNewProducts = async (): Promise<IUpeProduct[]> => {
+  const response = await axiosInstance.get('/product/new');
   return response.data.data;
 };
 

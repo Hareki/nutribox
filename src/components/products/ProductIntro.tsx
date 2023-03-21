@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { FlexBox, FlexRowCenter } from '../flex-box';
 
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import { H1, H2, H3, H6 } from 'components/abstract/Typography';
 import LazyImage from 'components/LazyImage';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
@@ -15,7 +15,7 @@ import { formatCurrency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
 // ================================================================
-type ProductIntroProps = { product: IProduct; sx?: SxProps<Theme> };
+type ProductIntroProps = { product: IUpeProduct; sx?: SxProps<Theme> };
 // ================================================================
 
 const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {

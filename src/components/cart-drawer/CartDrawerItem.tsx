@@ -7,7 +7,7 @@ import { H5, Tiny } from '../abstract/Typography';
 import { FlexBox } from '../flex-box';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import { formatCurrency } from 'lib';
 
@@ -15,7 +15,7 @@ type CartDrawerItemProps = {
   cartItem: IPopulatedCartItem;
   handleCartAmountChange: (
     amount: number,
-    product: IProduct,
+    product: IUpeProduct,
     type: CartItemActionType,
   ) => () => void;
 };

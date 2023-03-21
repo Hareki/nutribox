@@ -7,10 +7,10 @@ import {
   getProduct,
   getProductSlugs,
   getRelatedProducts,
-} from 'api/base/pre-render';
+} from 'api/base/server-side-getters';
 import connectToDB from 'api/database/databaseConnection';
 import { serialize } from 'api/helpers/object.helper';
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import SEO from 'components/abstract/SEO';
 import { H2 } from 'components/abstract/Typography';
 import { Footer } from 'components/common/layout/footer';
@@ -35,8 +35,8 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
 
 // ===============================================================
 type ProductDetailsProps = {
-  product: IProduct;
-  relatedProducts: IProduct[];
+  product: IUpeProduct;
+  relatedProducts: IUpeProduct[];
 };
 // ===============================================================
 

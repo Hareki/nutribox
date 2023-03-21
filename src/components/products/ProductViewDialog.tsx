@@ -12,7 +12,7 @@ import {
 import type { FC } from 'react';
 import { useState, useEffect } from 'react';
 
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import { H1, H2, H3, Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
 import MuiImage from 'components/common/input/MuiImage';
@@ -47,7 +47,7 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
 
 // =====================================================
 type ProductViewDialogProps = {
-  product: IProduct;
+  product: IUpeProduct;
   categoryName?: string;
   openDialog: boolean;
   handleCloseDialog: () => void;

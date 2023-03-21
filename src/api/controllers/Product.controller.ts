@@ -26,13 +26,15 @@ export const getAll = getAllGenerator<IProduct>(ProductModel());
 export const getOne = getOneGenerator<IProduct>(ProductModel());
 export const getTotal = getTotalGenerator(ProductModel());
 
-export const getHotProducts = async ({
-  populate,
-  ignoreFields,
-}: GetHotProductsOptions) => {
+export const getHotProducts = async (
+  options?: GetHotProductsOptions,
+): Promise<IProduct[]> => {
   const query = ProductModel().find({ hot: true });
 
-  buildBaseQuery(query, { populate, ignoreFields });
+  buildBaseQuery(query, {
+    populate: options.populate,
+    ignoreFields: options.ignoreFields,
+  });
 
   const hotProducts = await query.exec();
   return hotProducts;
@@ -41,7 +43,7 @@ export const getHotProducts = async ({
 export const getRelatedProducts = async (
   { categoryId, productId }: GetRelatedProductsParams,
   { populate, ignoreFields, limit = 100 }: GetRelatedProductOptions,
-) => {
+): Promise<IProduct[]> => {
   const query = ProductModel().find({
     category: categoryId,
     _id: { $ne: productId },
@@ -53,13 +55,15 @@ export const getRelatedProducts = async (
   return hotProducts;
 };
 
-export const getNewProducts = async ({
-  populate,
-  ignoreFields,
-}: GetNewProductsOptions) => {
+export const getNewProducts = async (
+  options?: GetNewProductsOptions,
+): Promise<IProduct[]> => {
   const query = ProductModel().find().sort({ createdAt: -1 });
 
-  buildBaseQuery(query, { populate, ignoreFields });
+  buildBaseQuery(query, {
+    populate: options.populate,
+    ignoreFields: options.ignoreFields,
+  });
 
   const relatedProducts = await query.exec();
   return relatedProducts;

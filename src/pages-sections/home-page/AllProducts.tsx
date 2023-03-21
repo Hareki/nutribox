@@ -2,7 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Box, CircularProgress, Grid, styled } from '@mui/material';
 import type { FC } from 'react';
 
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import { Paragraph } from 'components/abstract/Typography';
 import CategorySectionCreator from 'components/CategorySectionCreator';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
@@ -24,7 +24,7 @@ export interface PaginationType {
 
 // ========================================================
 type AllProductsProps = {
-  products: IProduct[];
+  products: IUpeProduct[];
   title?: string;
   subtitle?: string;
   isLoading?: boolean;

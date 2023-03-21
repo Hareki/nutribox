@@ -4,7 +4,3 @@ export interface GetPaginationResult<T> {
   docs: T[];
 }
 
-export interface GetPaginationPrerenderResult<T> {
-  pages: GetPaginationResult<T>[];
-  pageParams: number[];
-}

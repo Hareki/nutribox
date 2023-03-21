@@ -15,10 +15,10 @@ import {
   getAllProducts,
   getHotProducts,
   getNewProducts,
-} from 'api/base/pre-render';
+} from 'api/base/server-side-getters';
 import connectToDB from 'api/database/databaseConnection';
 import { serialize } from 'api/helpers/object.helper';
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import type { GetPaginationResult } from 'api/types/pagination.type';
 // ShopLayout2
 import SEO from 'components/abstract/SEO';
@@ -28,7 +28,6 @@ import ShopLayout1 from 'components/layouts/ShopLayout1';
 import { MobileNavigationBar } from 'components/mobile-navigation';
 import CategoryNavbar from 'components/page-sidenav/CategoryNavbar';
 import SideNavContainer from 'components/side-nav/SidenavContainer';
-import type Product from 'models/BazaarProduct.model';
 import type { MainCarouselItem } from 'models/Grocery-3.model';
 import type Service from 'models/Service.model';
 import LoginDialog from 'pages-sections/auth/LoginDialog';
@@ -51,11 +50,10 @@ function getElementHeightIncludingMargin(element: HTMLElement) {
 }
 
 type HomePageProps = {
-  hotProducts: IProduct[];
-  newProducts: IProduct[];
+  hotProducts: IUpeProduct[];
+  newProducts: IUpeProduct[];
 
   serviceList: Service[];
-  popularProducts: Product[];
   mainCarouselData: MainCarouselItem[];
   testimonials: any[];
 };
@@ -63,7 +61,7 @@ type HomePageProps = {
 const HomePage: NextPage<HomePageProps> = (props) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
   const [selectedCategoryName, setSelectedCategoryName] = useState('');
-  const [filterProducts, setFilterProducts] = useState<IProduct[]>([]);
+  const [filterProducts, setFilterProducts] = useState<IUpeProduct[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sideNavBottomOffset, setSideNavBottomOffset] = useState('0px');
 
@@ -91,7 +89,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery<GetPaginationResult<IProduct>>({
+  } = useInfiniteQuery<GetPaginationResult<IUpeProduct>>({
     queryKey: ['products', 'infinite', { categoryId: undefined }],
     // CAN access the initial pageParam here, if initial pageParam is NOT specified, it will be NULL
     // Can NOT set a default value for pageParam like this ({ pageParam = 1}). Because default value has no effect with NULL, only with UNDEFINED.
@@ -257,7 +255,7 @@ export const getStaticProps: GetStaticProps = async () => {
     },
     // Can NOT access the initial pageParam here, it will be UNDEFINED. Specify the initial pageParam or not, it's always be UNDEFINED
     queryFn: () =>
-      getAllProducts(paginationConstant.docsPerPage.toString(), '1', false),
+      getAllProducts(paginationConstant.docsPerPage.toString(), '1', []),
   });
 
   return {

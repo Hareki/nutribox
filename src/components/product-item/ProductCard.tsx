@@ -3,12 +3,11 @@ import { Add, Remove, RemoveRedEye } from '@mui/icons-material';
 import ShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Box, Button, styled } from '@mui/material';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import type { FC } from 'react';
 import { Fragment, useCallback, useState } from 'react';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import { H3, Span } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
@@ -16,7 +15,6 @@ import LazyImage from 'components/LazyImage';
 import ProductViewDialog from 'components/products/ProductViewDialog';
 import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
 import useCart from 'hooks/redux-hooks/useCart';
-import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
 import { formatCurrency } from 'lib';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
@@ -88,7 +86,7 @@ const ContentWrapper = styled(FlexBox)({
 });
 
 type ProductCardProps = {
-  product: IProduct;
+  product: IUpeProduct;
   onPreview?: () => void;
 };
 
@@ -101,8 +99,6 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   } = props;
 
   const { cartState, updateCartAmount } = useCart();
-  const { status } = useSession();
-  const { setLoginDialogOpen } = useLoginDialog();
   const [openModal, setOpenModal] = useState(false);
 
   const toggleDialog = useCallback(() => {
@@ -111,20 +107,12 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   }, [onPreview]);
 
   const cartItem: IPopulatedCartItem | undefined = cartState.cart.find(
-    (item) => item.id === id,
+    (item) => item.product.id === id,
   );
 
   const handleCartAmountChange = (amount: number, type: CartItemActionType) => {
+    if (isNaN(amount)) amount = 1;
     updateCartAmount({ product: props.product, quantity: amount }, type);
-  };
-
-  const handleCartAmountButtonClick = (type: CartItemActionType) => {
-    if (status === 'authenticated') {
-      const quantity = type === 'add' ? 1 : -1;
-      handleCartAmountChange((cartItem?.quantity || 0) + quantity, type);
-    } else {
-      setLoginDialogOpen(true);
-    }
   };
 
   return (
@@ -152,7 +140,11 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             <RemoveRedEye />
           </Span>
 
-          <Span onClick={() => handleCartAmountButtonClick('add')}>
+          <Span
+            onClick={() =>
+              handleCartAmountChange(cartItem?.quantity + 1, 'add')
+            }
+          >
             <ShoppingCartIcon />
           </Span>
         </HoverWrapper>
@@ -198,7 +190,9 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             color='primary'
             variant='outlined'
             sx={{ padding: '3px' }}
-            onClick={() => handleCartAmountButtonClick('add')}
+            onClick={() =>
+              handleCartAmountChange(cartItem?.quantity + 1, 'add')
+            }
           >
             <Add fontSize='small' />
           </Button>
@@ -213,7 +207,9 @@ const ProductCard: FC<ProductCardProps> = (props) => {
                 color='primary'
                 variant='outlined'
                 sx={{ padding: '3px' }}
-                onClick={() => handleCartAmountButtonClick('remove')}
+                onClick={() =>
+                  handleCartAmountChange(cartItem?.quantity - 1, 'remove')
+                }
               >
                 <Remove fontSize='small' />
               </Button>

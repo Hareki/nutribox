@@ -2,7 +2,7 @@ import { Box, styled, useTheme } from '@mui/material';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
-import type { IProduct } from 'api/models/Product.model/types';
+import type { IUpeProduct } from 'api/models/Product.model/types';
 import { Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
 import CategorySectionCreator from 'components/CategorySectionCreator';
@@ -21,7 +21,7 @@ const SubTitle = styled(Paragraph)(({ theme }) => ({
 type ProductCarouselProps = {
   title: string;
   subtitle?: string;
-  products: IProduct[];
+  products: IUpeProduct[];
 };
 // =================================================================
 

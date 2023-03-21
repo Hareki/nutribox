@@ -1,6 +1,6 @@
 import type { Types } from 'mongoose';
 
-import type { IProduct } from '../Product.model/types';
+import type { IProduct, IUpeProduct } from '../Product.model/types';
 
 export interface IProductCategory {
   // _id: Types.ObjectId;
@@ -10,11 +10,16 @@ export interface IProductCategory {
   slug: string;
   name: string;
 }
-
 export interface IPopulatedProductCategory
   extends Omit<IProductCategory, 'products' | '_id'> {
   _id?: Types.ObjectId;
   products: IProduct[];
+}
+
+export interface IPopulatedUpeProductCategory
+  extends Omit<IProductCategory, 'products' | '_id'> {
+  _id?: Types.ObjectId;
+  products: IUpeProduct[];
 }
 
 export interface IProductCategoryInput

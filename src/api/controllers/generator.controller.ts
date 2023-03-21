@@ -15,9 +15,7 @@ export interface GetOneGeneratorOptions
   extends Omit<GetOneDocsOptions, 'model'> {}
 
 export function getAllGenerator<T>(model: Model<any>) {
-  const getAll = async ({
-    ...options
-  }: GetAllGeneratorOptions): Promise<T[]> => {
+  const getAll = async (options?: GetAllGeneratorOptions): Promise<T[]> => {
     const allDocs: T[] = await getAllDocs({
       model,
       ...options,
@@ -29,7 +27,7 @@ export function getAllGenerator<T>(model: Model<any>) {
 }
 
 export function getOneGenerator<T>(model: Model<any>) {
-  const getOne = async ({ ...options }: GetOneGeneratorOptions) => {
+  const getOne = async (options?: GetOneGeneratorOptions) => {
     const oneDoc: T = await getOneDoc({
       model,
       ...options,
