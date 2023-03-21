@@ -1,10 +1,7 @@
 {
   "framework": "nextjs",
   "functions": {
-    "pages/**/*.ts": {
-      "maxDuration": 60
-    },
-    "pages/**/*.tsx": {
+    "pages/**/*.{ts,tsx}": {
       "maxDuration": 60
     }
   }
