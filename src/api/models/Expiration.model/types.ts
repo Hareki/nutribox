@@ -9,4 +9,4 @@ export interface IExpiration {
   quantity: number;
 }
 
-export interface IExpirationInput extends Omit<IExpiration, '_id'> {}
+export interface IExpirationInput extends Omit<IExpiration, '_id' | 'id'> {}

@@ -1,6 +1,9 @@
+import type { Document } from 'mongoose';
 import { Schema } from 'mongoose';
 
 import type { IExpiration } from './types';
+
+import { handleReferenceChange } from 'api/base/mongoose/reference';
 
 export const expirationSchema = new Schema<IExpiration>(
   {
@@ -27,5 +30,30 @@ export const expirationSchema = new Schema<IExpiration>(
   },
   {
     timestamps: true,
+  },
+);
+
+expirationSchema.post('save', function (doc: Document<IExpiration>, next) {
+  handleReferenceChange({
+    action: 'save',
+    doc,
+    fieldName: 'product',
+    referencedFieldName: 'expirations',
+    referencedModelName: 'Product',
+    next,
+  });
+});
+
+expirationSchema.post(
+  'findOneAndDelete',
+  function (doc: Document<IExpiration>, next) {
+    handleReferenceChange({
+      action: 'findOneAndDelete',
+      doc,
+      fieldName: 'product',
+      referencedFieldName: 'expirations',
+      referencedModelName: 'Product',
+      next,
+    });
   },
 );

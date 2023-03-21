@@ -1,10 +1,9 @@
+import type { Document } from 'mongoose';
 import { Schema } from 'mongoose';
-
-import ProductCategoryModel from '../ProductCategory.model';
 
 import type { IProduct } from './types';
 
-import { updateDependentDoc } from 'api/base/mongoose/dependentHandler';
+import { handleReferenceChange } from 'api/base/mongoose/reference';
 import { getSlug } from 'api/helpers/slug.helper';
 
 export const productSchema = new Schema<IProduct>(
@@ -102,12 +101,27 @@ productSchema.virtual('slug').get(function () {
   return getSlug(this.name, this._id.toString());
 });
 
-productSchema.pre('save', async function (next) {
-  try {
-    const categoryDoc = await ProductCategoryModel().findById(this.category);
-    await updateDependentDoc(this._id, categoryDoc, 'products');
-    next();
-  } catch (err) {
-    next(err);
-  }
+productSchema.post('save', function (doc: Document<IProduct>, next) {
+  handleReferenceChange({
+    action: 'save',
+    doc,
+    fieldName: 'category',
+    referencedFieldName: 'products',
+    referencedModelName: 'ProductCategory',
+    next,
+  });
 });
+
+productSchema.post(
+  'findOneAndDelete',
+  function (doc: Document<IProduct>, next) {
+    handleReferenceChange({
+      action: 'findOneAndDelete',
+      doc,
+      fieldName: 'category',
+      referencedFieldName: 'products',
+      referencedModelName: 'ProductCategory',
+      next,
+    });
+  },
+);
