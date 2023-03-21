@@ -2,9 +2,12 @@ import { LoadingButton } from '@mui/lab';
 import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useFormik } from 'formik';
-import type { ReactElement } from 'react';
+import type { ReactElement} from 'react';
+import { useMemo } from 'react';
 import { useEffect } from 'react';
 import { Fragment, useReducer, useState } from 'react';
+
+import type { Step1Data } from '../../../../pages/checkout';
 
 import {
   checkCurrentFullAddress,
@@ -39,7 +42,7 @@ import apiCaller from 'utils/apiCallers/checkout';
 import { PREPARATION_TIME } from 'utils/constants';
 
 interface CartDetailsProps {
-  nextStep: () => void;
+  nextStep: (data: Step1Data, currentStep: number) => void;
   account: IAccount;
 }
 
@@ -60,12 +63,12 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
   const cartList = cartState.cart;
 
-  const getTotalPrice = () =>
-    cartList.reduce(
-      (accumulate, item) =>
-        accumulate + item.product.retailPrice * item.quantity,
-      0,
-    );
+  const total = useMemo(() =>
+  cartList.reduce(
+    (accumulate, item) =>
+      accumulate + item.product.retailPrice * item.quantity,
+    0,
+  ), [cartList])
 
   const showDeliveryInfoConfirmation = async () => {
     if (
@@ -139,6 +142,17 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     }
   };
 
+  const handleNextStep = () => {
+    const address = transformFormikValueToAddress(values);
+
+    const cartItems = cartList;
+    const note = values.note;
+    const phone = values.phone;
+    const fullAddress = getFullAddress(address);
+
+    nextStep({ cartItems , note, phone, fullAddress, total }, 1);
+  };
+
   const {
     values,
     errors,
@@ -187,7 +201,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 <Span color='grey.600'>Tổng tiền:</Span>
 
                 <Span fontSize={18} fontWeight={600} lineHeight='1'>
-                  {formatCurrency(getTotalPrice())}
+                  {formatCurrency(total)}
                 </Span>
               </FlexBetween>
 
@@ -362,7 +376,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
         content={confirmState.content}
         title={confirmState.title}
         handleCancel={() => dispatchConfirm({ type: 'cancel_dialog' })}
-        handleConfirm={() => nextStep()}
+        handleConfirm={handleNextStep}
       />
 
       <SelectAddressDialog

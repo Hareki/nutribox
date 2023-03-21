@@ -35,7 +35,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
   };
 
   return (
-    <Box width={380}>
+    <FlexBox width={380} height='100%' flexDirection='column'>
       <Box
         overflow='auto'
         height={`calc(100vh - ${cartList.length ? '80px - 3.25rem' : '0px'})`}
@@ -90,34 +90,24 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
         ))}
       </Box>
 
-      {cartList.length > 0 && (
-        <Box p={2.5}>
-          <Link href='/checkout' passHref legacyBehavior>
-            <Button
-              fullWidth
-              color='primary'
-              variant='contained'
-              sx={{ mb: '0.75rem', height: '40px', color: '#fff' }}
-              onClick={toggleCartDrawer}
-            >
-              Thanh toán ngay ({formatCurrency(getTotalPrice())})
-            </Button>
-          </Link>
-
-          <Link href='/cart' passHref legacyBehavior>
-            <Button
-              fullWidth
-              color='primary'
-              variant='outlined'
-              sx={{ height: 40 }}
-              onClick={toggleCartDrawer}
-            >
-              Xem giỏ hàng
-            </Button>
-          </Link>
-        </Box>
-      )}
-    </Box>
+      <Box mt='auto'>
+        {cartList.length > 0 && (
+          <Box p={2.5}>
+            <Link href='/checkout' passHref legacyBehavior>
+              <Button
+                fullWidth
+                color='primary'
+                variant='contained'
+                sx={{ mb: '0.75rem', height: '40px', color: '#fff' }}
+                onClick={toggleCartDrawer}
+              >
+                Thanh toán ngay ({formatCurrency(getTotalPrice())})
+              </Button>
+            </Link>
+          </Box>
+        )}
+      </Box>
+    </FlexBox>
   );
 };
 

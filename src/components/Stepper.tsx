@@ -22,23 +22,21 @@ const Stepper: FC<StepperProps> = ({ selectedStep, stepperList }) => {
             label={`${index + 1}. ${step.title}`}
             sx={{
               backgroundColor:
-                index <= selectedStep ? 'primary.main' : 'primary.light',
-              color: index <= selectedStep ? 'white' : 'primary.main',
+                index + 1 <= selectedStep ? 'primary.main' : 'primary.light',
+              color: index + 1 <= selectedStep ? 'white' : 'primary.main',
               p: '0.5rem 1rem',
               fontSize: '14px',
               fontWeight: '600',
               my: '4px',
-              '&:hover:not(:disabled)': {
-                backgroundColor: 'primary.main',
-                color: 'white',
-              },
             }}
           />
           {index < stepperList.length - 1 && (
             <Box
               width='50px'
               height='4px'
-              bgcolor={index < selectedStep ? 'primary.main' : 'primary.light'}
+              bgcolor={
+                index + 1 < selectedStep ? 'primary.main' : 'primary.light'
+              }
             />
           )}
         </Fragment>

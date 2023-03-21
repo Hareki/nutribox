@@ -30,7 +30,7 @@ interface PaymentFormProps {
   prevStep: (currentStep: number) => void;
 }
 const PaymentForm: FC<PaymentFormProps> = ({ prevStep }) => {
-  const [paymentMethod, setPaymentMethod] = useState('credit-card');
+  const [paymentMethod, setPaymentMethod] = useState('cod');
 
   const width = useWindowSize();
   const router = useRouter();

@@ -1,9 +1,7 @@
-import type { Types } from 'mongoose';
-
 import type { IAddress } from 'api/types/schema.type';
 
 export interface IAccountAddress extends IAddress {
-  _id: Types.ObjectId;
+  // _id: Types.ObjectId;
   isDefault?: boolean;
 
   id?: string;

@@ -7,26 +7,44 @@ import type { ReactElement } from 'react';
 
 import { authOptions } from './api/auth/[...nextauth]';
 
+import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IAccount } from 'api/models/Account.model/types';
 import SEO from 'components/abstract/SEO';
-import PageLayout from 'components/layouts/PageLayout';
+import { getPageLayout } from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
 import CartDetails from 'pages-sections/checkout/cart-details';
 import Payment from 'pages-sections/checkout/payment';
 import apiCaller from 'utils/apiCallers/profile';
 
-Checkout.getLayout = function getLayout(page: ReactElement) {
-  return <PageLayout>{page}</PageLayout>;
-};
+Checkout.getLayout = getPageLayout;
 
 interface CheckoutProps {
   initialAccount: IAccount;
 }
-function Checkout({ initialAccount }: CheckoutProps): ReactElement {
-  const [selectedStep, setSelectedStep] = useState(0);
 
-  const nextStep = () => setSelectedStep((prev) => prev + 1);
-  const prevStep = () => setSelectedStep((prev) => prev - 1);
+export interface Step1Data {
+  cartItems: IPopulatedCartItem[];
+  total: number;
+  note: string;
+  phone: string;
+  fullAddress: string;
+}
+
+export interface Step2Data {}
+
+type StepData = Step1Data | Step2Data;
+
+function Checkout({ initialAccount }: CheckoutProps): ReactElement {
+  const [selectedStep, setSelectedStep] = useState(1);
+  const [step1Data, setStep1Data] = useState<Step1Data>();
+
+  const nextStep = (data: StepData, currentStep: number) => {
+    if (currentStep === 1) {
+      setStep1Data(data as Step1Data);
+      setSelectedStep(currentStep + 1);
+    }
+  };
+  const prevStep = (currentStep: number) => setSelectedStep(currentStep - 1);
 
   return (
     <Fragment>
@@ -40,16 +58,12 @@ function Checkout({ initialAccount }: CheckoutProps): ReactElement {
           </Grid>
         </Box>
 
-        {selectedStep === 0 && (
+        {selectedStep === 1 && (
           <CartDetails nextStep={nextStep} account={initialAccount} />
         )}
 
-        {selectedStep === 1 && (
-          <Payment
-            nextStep={nextStep}
-            prevStep={prevStep}
-            account={initialAccount}
-          />
+        {selectedStep === 2 && (
+          <Payment step1Data={step1Data} prevStep={prevStep} account={initialAccount} />
         )}
       </Container>
     </Fragment>

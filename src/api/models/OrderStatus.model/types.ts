@@ -1,7 +1,5 @@
-import type { Types } from 'mongoose';
-
 export interface IOrderStatus {
-  _id: Types.ObjectId;
+  // _id: Types.ObjectId;
   id: string;
   name: string;
 

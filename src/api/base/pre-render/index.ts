@@ -5,7 +5,6 @@ import type { IProduct } from 'api/models/Product.model/types';
 import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 
 export async function getAllCategories(isPopulate: boolean) {
-  console.log('getAllCategories');
   const result: IProductCategory[] = await ProductCategoryController.getAll({
     populate: isPopulate ? ['products'] : undefined,
   });

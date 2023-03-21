@@ -72,7 +72,7 @@ const AllProducts: FC<AllProductsProps> = ({
       </FlexBox>
     );
   const productsJSX = (products ?? []).map((item) => (
-    <Grid key={item._id.toString()} item md={4} sm={6} xs={12}>
+    <Grid key={item.id} item md={4} sm={6} xs={12}>
       <ProductCard product={item} />
     </Grid>
   ));

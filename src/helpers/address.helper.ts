@@ -27,7 +27,7 @@ export const transformAddressToFormikValue = (address: IAccountAddress) => {
   };
 };
 
-export const transformFormikValueToAddress = (values: any) => {
+export const transformFormikValueToAddress = (values: any): IAddress => {
   const { province, district, ward, streetAddress } = values;
   if (!province || !district || !ward) return null;
   return {

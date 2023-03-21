@@ -19,6 +19,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import type { FC, ReactElement } from 'react';
 import { Fragment, useState } from 'react';
@@ -64,7 +65,7 @@ type HeaderProps = {
 
 const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const theme = useTheme();
-
+  const router = useRouter();
   const { cartState } = useCart();
 
   const { setLoginDialogOpen } = useLoginDialog();
@@ -80,8 +81,9 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const togglePopover = () => setUserMenuOpen(!userMenuOpen);
 
   const { data: session, status } = useSession();
-  console.log('file: Header.tsx:87 - session:', session);
+  // console.log('file: Header.tsx:87 - session:', session);
   const isAuthenticated = status === 'authenticated';
+  const isCheckingOut = router.pathname === '/checkout';
 
   const user = session?.user;
 
@@ -260,16 +262,18 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
             )}
           </Box>
 
-          <Badge badgeContent={cartState.cart.length} color='primary'>
-            <Box
-              p={1.25}
-              bgcolor='grey.200'
-              component={IconButton}
-              onClick={toggleCartDrawer}
-            >
-              <ShoppingBagOutlined />
-            </Box>
-          </Badge>
+          {!isCheckingOut && (
+            <Badge badgeContent={cartState.cart.length} color='primary'>
+              <Box
+                p={1.25}
+                bgcolor='grey.200'
+                component={IconButton}
+                onClick={toggleCartDrawer}
+              >
+                <ShoppingBagOutlined />
+              </Box>
+            </Badge>
+          )}
         </FlexBox>
 
         {/* LOGIN FORM DIALOG AND CART SIDE BAR  */}

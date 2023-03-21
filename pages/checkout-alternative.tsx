@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import SEO from 'components/abstract/SEO';
 import ShopLayout1 from 'components/layouts/ShopLayout1';
 import CheckoutForm2 from 'pages-sections/checkout2/CheckoutForm2';
-import CheckoutSummary2 from 'pages-sections/checkout2/CheckoutSummary2';
+import PaymentSummary from 'pages-sections/checkout2/CheckoutSummary2';
 
 const CheckoutAlternative: NextPage = () => {
   return (
@@ -17,7 +17,7 @@ const CheckoutAlternative: NextPage = () => {
           </Grid>
 
           <Grid item lg={4} md={4} xs={12}>
-            <CheckoutSummary2 />
+            <PaymentSummary />
           </Grid>
         </Grid>
       </Container>

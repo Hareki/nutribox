@@ -4,7 +4,7 @@ import type { IAccountAddress } from './AccountAddress.schema/types';
 import type { ICartItem, IPopulatedCartItem } from './CartItem.schema/types';
 
 export interface IAccount {
-  _id: Types.ObjectId;
+  // _id: Types.ObjectId;
   id: string;
   role: 'ADMIN' | 'CUSTOMER' | 'SUPPLIER';
   // Embedded documents can be accessed directly this way

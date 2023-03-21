@@ -36,7 +36,7 @@ export const populateCartItems = async (
     .exec();
 
   const cartItems: IPopulatedCartItem[] = cartItemsDoc.map((cartItem) => {
-    const product = products.find((p) => p._id.equals(cartItem.product));
+    const product = products.find((p) => p.id === cartItem.product.toString());
     if (!product) {
       throw new CustomError(
         `Product not found for cart item: ${cartItem.id}`,

@@ -68,10 +68,17 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
 
       <Link href={`/product/${cartItem.id}`}>
         <Avatar
+          variant='square'
           alt={cartItem.product.name}
-          // FIXME
           src={cartItem.product.imageUrls[0]}
-          sx={{ mx: 2, width: 76, height: 76 }}
+          sx={{
+            mx: 2,
+            width: 76,
+            height: 76,
+            '& .MuiAvatar-img': {
+              objectFit: 'contain',
+            },
+          }}
         />
       </Link>
 

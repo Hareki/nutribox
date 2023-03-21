@@ -3,7 +3,7 @@ import type { Types } from 'mongoose';
 import type { IProductCategory } from '../ProductCategory.model/types';
 
 export interface IProduct {
-  _id: Types.ObjectId;
+  // _id: Types.ObjectId;
   id: string;
   slug: string;
   imageUrls: string[];

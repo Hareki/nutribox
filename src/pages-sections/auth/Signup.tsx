@@ -115,7 +115,7 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
           value={values.phone}
           onChange={handleChange}
           label='Số điện thoại'
-          placeholder='000-000-0000'
+          placeholder='XXX-XXX-XXXX'
           error={!!touched.phone && !!errors.phone}
           helperText={(touched.phone && errors.phone) as string}
           InputProps={{

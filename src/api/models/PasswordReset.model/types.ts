@@ -1,7 +1,7 @@
 import type { Types } from 'mongoose';
 
 export interface IPasswordReset {
-  _id: Types.ObjectId;
+  // _id: Types.ObjectId;
   id: string;
   status: 'PENDING' | 'RESOLVED' | 'EXPIRED';
   account: Types.ObjectId; // IAccount

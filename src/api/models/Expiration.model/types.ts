@@ -1,7 +1,7 @@
 import type { Types } from 'mongoose';
 
 export interface IExpiration {
-  _id: Types.ObjectId;
+  // _id: Types.ObjectId;
   id: string;
   product: Types.ObjectId; // IProduct
 

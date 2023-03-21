@@ -33,7 +33,7 @@ const handler = nc<
   res.status(StatusCodes.OK).json({
     status: 'success',
     data: {
-      distance: 16.44,
+      distance: 9.44,
       durationInTraffic: 4.123,
       heavyTraffic: true,
     },

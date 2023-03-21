@@ -7,10 +7,12 @@ import { useState } from 'react';
 import { authOptions } from '../api/auth/[...nextauth]';
 
 import type { IAccount } from 'api/models/Account.model/types';
-import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
+import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
 import apiCaller from 'utils/apiCallers/profile';
+
+Profile.getLayout = getCustomerDashboardLayout;
 
 type ProfileProps = { initialAccount: IAccount };
 function Profile({ initialAccount }: ProfileProps): ReactElement {
@@ -49,7 +51,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { initialAccount } };
 };
 
-Profile.getLayout = function getLayout(page: ReactElement) {
-  return <CustomerDashboardLayout>{page}</CustomerDashboardLayout>;
-};
 export default Profile;

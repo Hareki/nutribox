@@ -3,7 +3,7 @@ import type { Types } from 'mongoose';
 import type { IAddress } from 'api/types/schema.type';
 
 export interface ISupplier extends IAddress {
-  _id: Types.ObjectId;
+  // _id: Types.ObjectId;
   id: string;
   // NOTE: We might want to see all the orders of a supplier in the future
   productOrders: Types.ObjectId[]; // IProductOrder
