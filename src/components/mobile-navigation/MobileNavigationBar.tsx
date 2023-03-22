@@ -14,7 +14,7 @@ import CategoryOutlined from 'components/icons/CategoryOutline';
 import Home from 'components/icons/Home';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import User2 from 'components/icons/User2';
-import useCart from 'hooks/redux-hooks/useCart';
+import useCart from 'hooks/global-states/useCart';
 import useWindowSize from 'hooks/useWindowSize';
 import { layoutConstant } from 'utils/constants';
 

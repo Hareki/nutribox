@@ -15,8 +15,7 @@ export const getProduct = async (id: string): Promise<IUpeProduct> => {
   const product = await ProductController.getOne({
     id,
   });
-
-  const populatedProduct = await populateUnexpiredExpiration([product])[0];
+  const populatedProduct = (await populateUnexpiredExpiration([product]))[0];
 
   return populatedProduct;
 };

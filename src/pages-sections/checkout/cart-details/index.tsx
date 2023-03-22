@@ -2,7 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useFormik } from 'formik';
-import type { ReactElement} from 'react';
+import type { ReactElement } from 'react';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
 import { Fragment, useReducer, useState } from 'react';
@@ -34,7 +34,7 @@ import {
   transformAddressToFormikValue,
   transformFormikValueToAddress,
 } from 'helpers/address.helper';
-import useCart from 'hooks/redux-hooks/useCart';
+import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
 import type { AddressAPI } from 'utils/apiCallers/address';
@@ -63,12 +63,15 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
   const cartList = cartState.cart;
 
-  const total = useMemo(() =>
-  cartList.reduce(
-    (accumulate, item) =>
-      accumulate + item.product.retailPrice * item.quantity,
-    0,
-  ), [cartList])
+  const total = useMemo(
+    () =>
+      cartList.reduce(
+        (accumulate, item) =>
+          accumulate + item.product.retailPrice * item.quantity,
+        0,
+      ),
+    [cartList],
+  );
 
   const showDeliveryInfoConfirmation = async () => {
     if (
@@ -150,7 +153,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     const phone = values.phone;
     const fullAddress = getFullAddress(address);
 
-    nextStep({ cartItems , note, phone, fullAddress, total }, 1);
+    nextStep({ cartItems, note, phone, fullAddress, total }, 1);
   };
 
   const {

@@ -13,7 +13,7 @@ import type {
   JSendFailResponse,
   JSendResponse,
 } from 'api/types/response.type';
-import type { CartState } from 'hooks/redux-hooks/useCart';
+import type { CartState } from 'hooks/global-states/useCart';
 
 export interface CartItemRequestBody {
   productId: string;
@@ -21,8 +21,8 @@ export interface CartItemRequestBody {
 }
 
 const onCartItemError: ErrorHandler<
-NextApiRequest,
-NextApiResponse<JSendFailResponse<string> | JSendErrorResponse>
+  NextApiRequest,
+  NextApiResponse<JSendFailResponse<string> | JSendErrorResponse>
 > = (err: CustomError, _req, res) => {
   console.log(JSON.stringify(err));
 
@@ -41,12 +41,12 @@ NextApiResponse<JSendFailResponse<string> | JSendErrorResponse>
 };
 
 const handler = nc<
-NextApiRequest,
-NextApiResponse<
-| JSendResponse<CartState | IPopulatedCartItemsAccount>
-| JSendFailResponse<string>
-| JSendErrorResponse
->
+  NextApiRequest,
+  NextApiResponse<
+    | JSendResponse<CartState | IPopulatedCartItemsAccount>
+    | JSendFailResponse<string>
+    | JSendErrorResponse
+  >
 >({
   attachParams: true,
   onError: onCartItemError,

@@ -28,7 +28,12 @@ export async function handleReferenceChange<T extends Document>({
 
     if (referencedDoc) {
       if (action === 'save') {
-        referencedDoc[referencedFieldName].push(currentDoc._id);
+        const currentDocIndex = referencedDoc[referencedFieldName].findIndex(
+          (docId: Types.ObjectId) => docId.toString() === currentDoc.id,
+        );
+        if (currentDocIndex !== -1) {
+          referencedDoc[referencedFieldName].push(currentDoc._id);
+        }
       } else if (action === 'findOneAndDelete') {
         referencedDoc[referencedFieldName] = referencedDoc[
           referencedFieldName

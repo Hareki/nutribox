@@ -8,7 +8,7 @@ import { FlexBox } from '../flex-box';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IUpeProduct } from 'api/models/Product.model/types';
-import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/global-states/useCart';
 import { formatCurrency } from 'lib';
 
 type CartDrawerItemProps = {

@@ -9,9 +9,9 @@ import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schem
 import { Span } from 'components/abstract/Typography';
 import MuiNextImage from 'components/common/input/MuiNextImage';
 import { FlexBox } from 'components/flex-box';
-import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
-import useCart from 'hooks/redux-hooks/useCart';
-import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
+import type { CartItemActionType } from 'hooks/global-states/useCart';
+import useCart from 'hooks/global-states/useCart';
+import useLoginDialog from 'hooks/global-states/useLoginDialog';
 import { formatCurrency } from 'lib';
 
 const Wrapper = styled(Card)(({ theme }) => ({

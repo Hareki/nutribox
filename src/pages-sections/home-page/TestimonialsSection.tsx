@@ -74,7 +74,7 @@ const TestimonialsSection: FC<Props> = ({ testimonials = [] }) => {
       }}
     >
       {testimonials.map((data, index) => (
-        <StyledBazaarCard key={index}>
+        <StyledBazaarCard key={index} style={{ height: '100%' }}>
           <StyledFlexBox position='relative' flexWrap='wrap'>
             <StyledQuote sx={{ left: 0, top: 0 }} />
 

@@ -31,13 +31,20 @@ const handler = nc<
     populate: ['products'],
   });
 
-  let result: IProductCategory | IPopulatedUpeProductCategory =
-    category as IProductCategory;
+  const populatedCategory = category as IPopulatedProductCategory;
+
+  console.log('==========');
+  console.log('length 1:', populatedCategory.products.length);
+  console.log('==========');
 
   const upeProducts = await populateUnexpiredExpiration(
-    (category as IPopulatedProductCategory).products,
+    populatedCategory.products,
   );
-  result = { ...category, products: upeProducts };
+  console.log('==========');
+  console.log('length 2:', upeProducts.length);
+  console.log('==========');
+
+  const result = { ...category, products: upeProducts };
 
   res.status(StatusCodes.OK).json({
     status: 'success',

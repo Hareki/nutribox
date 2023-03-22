@@ -19,7 +19,7 @@ type MutateCartItemType = {
 
 export type CartItemActionType = 'add' | 'remove';
 
-const useCart = () => {
+const useCart = (productId?: string) => {
   const queryClient = useQueryClient();
   const { setLoginDialogOpen } = useLoginDialog();
   const { data: session, status } = useSession();
@@ -51,9 +51,9 @@ const useCart = () => {
       queryClient.invalidateQueries(['cart', accountId]);
 
       if (type === 'remove') {
-        enqueueSnackbar('Removed from Cart', { variant: 'error' });
+        enqueueSnackbar('Đã xoá khỏi giỏ hàng', { variant: 'error' });
       } else {
-        enqueueSnackbar('Added to Cart', { variant: 'success' });
+        enqueueSnackbar('Đã thêm vào giỏ hàng', { variant: 'success' });
       }
     },
   });
@@ -63,6 +63,9 @@ const useCart = () => {
     type: CartItemActionType,
   ) => {
     if (status === 'authenticated') {
+      // const inStock = item.product.expirations.length > 0;
+      // if (!inStock && type === 'add') return;
+
       mutateCartItem({
         cart: {
           productId: item.product.id,
@@ -75,7 +78,13 @@ const useCart = () => {
     }
   };
 
+  let cartItem: IPopulatedCartItem;
+  if (productId) {
+    cartItem = cartState.cart.find((item) => item.product.id === productId);
+  }
+
   return {
+    cartItem,
     cartState,
     isLoading,
     updateCartAmount,

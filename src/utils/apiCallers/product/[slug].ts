@@ -1,5 +1,5 @@
 import type { IProduct } from 'api/models/Product.model/types';
-import { extractIdFromSlug } from 'helpers/slug.helper';
+import { extractIdFromSlug } from 'helpers/product.helper';
 import axiosInstance from 'utils/axiosInstance';
 
 const getSlugs = async (): Promise<string[]> => {

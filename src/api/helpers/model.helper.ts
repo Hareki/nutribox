@@ -88,6 +88,10 @@ export const populateUnexpiredExpiration = async (
   });
 
   const populatedProducts: IUpeProduct[] = await Promise.all(promises);
+  console.log(
+    'file: model.helper.ts:91 - populatedProducts:',
+    populatedProducts,
+  );
 
   return populatedProducts;
 };

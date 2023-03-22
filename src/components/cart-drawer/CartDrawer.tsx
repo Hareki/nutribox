@@ -11,8 +11,8 @@ import { Paragraph } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
-import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
-import useCart from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/global-states/useCart';
+import useCart from 'hooks/global-states/useCart';
 import { formatCurrency } from 'lib';
 
 type CartDrawerProps = { toggleCartDrawer: () => void };

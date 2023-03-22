@@ -12,9 +12,11 @@ import { H3, Span } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
+import OutOfStockChip from 'components/products/OutOfStockChip';
 import ProductViewDialog from 'components/products/ProductViewDialog';
-import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
-import useCart from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/global-states/useCart';
+import useCart from 'hooks/global-states/useCart';
+import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
@@ -69,7 +71,10 @@ const HoverWrapper = styled(FlexBetween)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    '&:hover': { cursor: 'pointer', background: '#f3f5f9' },
+    '&:hover:not([aria-disabled=true])': {
+      cursor: 'pointer',
+      background: '#f3f5f9',
+    },
   },
   '& span': { padding: '0px 10px' },
   '& svg': { fontSize: 18, color: theme.palette.grey[600] },
@@ -94,7 +99,7 @@ type ProductCardProps = {
 
 const ProductCard: FC<ProductCardProps> = (props) => {
   const {
-    product: { id, imageUrls, retailPrice, name, slug },
+    product: { id, imageUrls, retailPrice, name, slug, expirations },
     onPreview,
   } = props;
 
@@ -110,7 +115,14 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     (item) => item.product.id === id,
   );
 
+  const { inStock, disableAddToCart } = useQuantityLimitation(
+    expirations,
+    cartItem,
+  );
+
   const handleCartAmountChange = (amount: number, type: CartItemActionType) => {
+    if (type === 'add' && disableAddToCart) return;
+
     if (isNaN(amount)) amount = 1;
     updateCartAmount({ product: props.product, quantity: amount }, type);
   };
@@ -118,6 +130,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   return (
     <StyledBazaarCard hoverEffect>
       <ImageWrapper>
+        {!inStock && <OutOfStockChip />}
         <Link href={`/product/${slug}`}>
           <LazyImage
             alt={name}
@@ -126,6 +139,9 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             height={190}
             layout='responsive'
             objectFit='contain'
+            style={{
+              filter: !inStock ? 'grayscale(100%)' : 'none',
+            }}
           />
         </Link>
 
@@ -141,6 +157,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           </Span>
 
           <Span
+            aria-disabled={disableAddToCart}
             onClick={() =>
               handleCartAmountChange(cartItem?.quantity + 1, 'add')
             }
@@ -173,7 +190,10 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           </Link>
 
           <FlexBox gap={1} alignItems='center' mt={0.5}>
-            <Box fontWeight={600} color='primary.main'>
+            <Box
+              fontWeight={600}
+              color={inStock ? 'primary.main' : 'text.secondary'}
+            >
               {formatCurrency(retailPrice)}
             </Box>
           </FlexBox>
@@ -187,6 +207,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           justifyContent={cartItem?.quantity ? 'space-between' : 'flex-start'}
         >
           <Button
+            disabled={disableAddToCart}
             color='primary'
             variant='outlined'
             sx={{ padding: '3px' }}

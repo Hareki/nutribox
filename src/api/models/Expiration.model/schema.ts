@@ -34,14 +34,16 @@ export const expirationSchema = new Schema<IExpiration>(
 );
 
 expirationSchema.post('save', function (doc: Document<IExpiration>, next) {
-  handleReferenceChange({
-    action: 'save',
-    doc,
-    fieldName: 'product',
-    referencedFieldName: 'expirations',
-    referencedModelName: 'Product',
-    next,
-  });
+  if (doc.isNew) {
+    handleReferenceChange({
+      action: 'save',
+      doc,
+      fieldName: 'product',
+      referencedFieldName: 'expirations',
+      referencedModelName: 'Product',
+      next,
+    });
+  }
 });
 
 expirationSchema.post(

@@ -9,8 +9,9 @@ import { FlexBox, FlexRowCenter } from '../flex-box';
 import type { IUpeProduct } from 'api/models/Product.model/types';
 import { H1, H2, H3, H6 } from 'components/abstract/Typography';
 import LazyImage from 'components/LazyImage';
-import type { CartItemActionType } from 'hooks/redux-hooks/useCart';
-import useCart from 'hooks/redux-hooks/useCart';
+import type { CartItemActionType } from 'hooks/global-states/useCart';
+import useCart from 'hooks/global-states/useCart';
+import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
@@ -19,8 +20,16 @@ type ProductIntroProps = { product: IUpeProduct; sx?: SxProps<Theme> };
 // ================================================================
 
 const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
-  const { id, retailPrice, name, imageUrls, description, category, available } =
-    product;
+  const {
+    id,
+    retailPrice,
+    name,
+    imageUrls,
+    description,
+    category,
+    available,
+    expirations,
+  } = product;
 
   const { palette } = useTheme();
   const [categoryName, setCategoryName] = useState('đang tải...');
@@ -34,30 +43,18 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
     }
   }, [category, categoryName]);
 
-  const { cartState, updateCartAmount } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectVariants, setSelectVariants] = useState({
-    option: 'option 1',
-    type: 'type 1',
-  });
+  const { cartItem, updateCartAmount } = useCart(id);
+  const { inStock, disableAddToCart } = useQuantityLimitation(
+    expirations,
+    cartItem,
+  );
 
-  // HANDLE CHANGE TYPE AND OPTIONS
-  const handleChangeVariant = (variantName: string, value: string) => () => {
-    setSelectVariants((state) => ({
-      ...state,
-      [variantName.toLowerCase()]: value,
-    }));
-  };
-
-  // CHECK PRODUCT EXIST OR NOT IN THE CART
-  const cartItem = cartState.cart.find((item) => item.id === id);
-
-  // HANDLE SELECT IMAGE
   const handleImageClick = (index: number) => () => setSelectedImage(index);
 
-  // HANDLE CHANGE CART
   const handleCartAmountChange =
     (amount: number, type: CartItemActionType) => () => {
+      if (type === 'add' && !disableAddToCart) return;
       updateCartAmount(
         {
           quantity: amount,
@@ -141,6 +138,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
 
           {!cartItem?.quantity ? (
             <Button
+              disabled={disableAddToCart}
               color='primary'
               variant='contained'
               onClick={handleCartAmountChange(1, 'add')}
@@ -168,6 +166,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
               </H3>
 
               <Button
+                disabled={disableAddToCart}
                 size='small'
                 sx={{ p: 1 }}
                 color='primary'

@@ -32,8 +32,8 @@ import Image from 'components/common/input/MuiImage';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Icon from 'components/icons';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
-import useCart from 'hooks/redux-hooks/useCart';
-import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
+import useCart from 'hooks/global-states/useCart';
+import useLoginDialog from 'hooks/global-states/useLoginDialog';
 import { layoutConstant } from 'utils/constants';
 
 // styled component

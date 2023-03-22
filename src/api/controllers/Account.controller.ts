@@ -29,7 +29,7 @@ import type {
   IPopulatedCartItemsAccount,
 } from 'api/models/Account.model/types';
 import ProductModel from 'api/models/Product.model';
-import type { CartState } from 'hooks/redux-hooks/useCart';
+import type { CartState } from 'hooks/global-states/useCart';
 
 const getAll = getAllGenerator<IAccount>(AccountModel());
 const getOne = getOneGenerator<IAccount>(AccountModel());

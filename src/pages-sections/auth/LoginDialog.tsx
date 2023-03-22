@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import Login from './Login';
 
-import useLoginDialog from 'hooks/redux-hooks/useLoginDialog';
+import useLoginDialog from 'hooks/global-states/useLoginDialog';
 import { useLoginForm } from 'hooks/useLoginForm';
 
 const LoginDialog = () => {

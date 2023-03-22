@@ -233,17 +233,17 @@ export const getStaticProps: GetStaticProps = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['products', 'category-navigation'],
-    queryFn: () => getAllCategories(false),
+    queryFn: () => getAllCategories(),
   });
 
   await queryClient.prefetchQuery({
     queryKey: ['products', 'hot'],
-    queryFn: () => getHotProducts(false),
+    queryFn: () => getHotProducts(),
   });
 
   await queryClient.prefetchQuery({
     queryKey: ['products', 'new'],
-    queryFn: () => getNewProducts(false),
+    queryFn: () => getNewProducts(),
   });
 
   await queryClient.prefetchInfiniteQuery({

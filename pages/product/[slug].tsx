@@ -17,7 +17,7 @@ import { Footer } from 'components/common/layout/footer';
 import ShopLayout1 from 'components/layouts/ShopLayout1';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
-import { extractIdFromSlug } from 'helpers/slug.helper';
+import { extractIdFromSlug } from 'helpers/product.helper';
 import LoginDialog from 'pages-sections/auth/LoginDialog';
 
 // styled component
@@ -87,7 +87,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   await connectToDB();
 
   const id = extractIdFromSlug(params.slug as string);
-  const product = await getProduct(id, false);
+
+  const product = await getProduct(id);
 
   const productId = product.id;
   const categoryId = product.category.toString();

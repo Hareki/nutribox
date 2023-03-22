@@ -32,8 +32,8 @@ export const getHotProducts = async (
   const query = ProductModel().find({ hot: true });
 
   buildBaseQuery(query, {
-    populate: options.populate,
-    ignoreFields: options.ignoreFields,
+    populate: options?.populate,
+    ignoreFields: options?.ignoreFields,
   });
 
   const hotProducts = await query.exec();
@@ -61,8 +61,8 @@ export const getNewProducts = async (
   const query = ProductModel().find().sort({ createdAt: -1 });
 
   buildBaseQuery(query, {
-    populate: options.populate,
-    ignoreFields: options.ignoreFields,
+    populate: options?.populate,
+    ignoreFields: options?.ignoreFields,
   });
 
   const relatedProducts = await query.exec();
