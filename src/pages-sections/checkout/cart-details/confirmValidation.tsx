@@ -6,8 +6,9 @@ import { MAX_DELIVERY_RANGE } from 'utils/constants';
 export const checkTime = (
   dispatchInfo: (value: InfoDialogAction) => void,
 ): boolean => {
+  return true;
   const now = getLocalTimeInVietnam();
-  if (now.getHours() > 18) {
+  if (now.getHours() >= 18) {
     dispatchInfo({
       type: 'open_dialog',
       payload: {

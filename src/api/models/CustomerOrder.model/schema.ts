@@ -59,3 +59,35 @@ export const customerOrderSchema = new Schema<ICustomerOrder>(
   },
   { timestamps: true, collection: 'customerOrders' },
 );
+
+// customerOrderSchema.pre('save', preSaveWasNew);
+
+// customerOrderSchema.post(
+//   'save',
+//   function (doc: Document<ICustomerOrder>, next) {
+//     if (!doc.wasNew) next();
+
+//     handleReferenceChange({
+//       action: 'save',
+//       doc,
+//       fieldName: 'account',
+//       referencedFieldName: 'customerOrders',
+//       referencedModelName: 'Account',
+//       next,
+//     });
+//   },
+// );
+
+// customerOrderSchema.post(
+//   'findOneAndDelete',
+//   function (doc: Document<ICustomerOrder>, next) {
+//     handleReferenceChange({
+//       action: 'findOneAndDelete',
+//       doc,
+//       fieldName: 'account',
+//       referencedFieldName: 'customerOrders',
+//       referencedModelName: 'Account',
+//       next,
+//     });
+//   },
+// );

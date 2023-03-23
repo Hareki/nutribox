@@ -111,26 +111,27 @@ function formatDateTime(date: Date): string {
   return `${formattedTime} - ${formattedDate}`;
 }
 
- function getUtcDate() {
-   const now = new Date();
-   const utcDate = new Date(
-     now.getUTCFullYear(),
-     now.getUTCMonth(),
-     now.getUTCDate(),
-     now.getUTCHours(),
-     now.getUTCMinutes(),
-     now.getUTCSeconds(),
-   );
-   return utcDate;
- }
+function getUtcDate() {
+  const now = new Date();
+  const utcDate = new Date(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    now.getUTCHours(),
+    now.getUTCMinutes(),
+    now.getUTCSeconds(),
+  );
+  return utcDate;
+}
 
- function getLocalTimeInVietnam() {
-   const utcNow = getUtcDate();
-   const vietnamTimeZoneOffset = 7 * 60 * 60 * 1000; // Vietnam Time Zone offset in milliseconds (UTC+7)
+function getLocalTimeInVietnam() {
+  const utcNow = getUtcDate();
+  const vietnamTimeZoneOffset = 7 * 60 * 60 * 1000; // Vietnam Time Zone offset in milliseconds (UTC+7)
 
-   const localTime = new Date(utcNow.getTime() + vietnamTimeZoneOffset);
-   return localTime;
- }
+  const localTime = new Date(utcNow.getTime() + vietnamTimeZoneOffset);
+
+  return localTime;
+}
 
 export {
   renderProductCount,

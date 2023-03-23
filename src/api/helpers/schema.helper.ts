@@ -1,4 +1,7 @@
-import type { SchemaDefinitionProperty } from 'mongoose';
+import type {
+  CallbackWithoutResultAndOptionalError,
+  SchemaDefinitionProperty,
+} from 'mongoose';
 import validator from 'validator';
 
 import type {
@@ -123,3 +126,8 @@ export const getValidationErrorMessages = (errorObj: ValidationError) => {
 
   return errorMessages;
 };
+
+export function preSaveWasNew(next: CallbackWithoutResultAndOptionalError) {
+  this.wasNew = this.isNew;
+  next();
+}

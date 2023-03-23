@@ -50,7 +50,7 @@ export function getTotalGenerator(model: Model<any>) {
 
 export function createOneGenerator<T>(model: Model<any>) {
   const createOne = async (data: any, session?: ClientSession) => {
-    const newDoc: T = await createOneDoc(model, data, session);
+    const newDoc: T = (await createOneDoc(model, data, session))[0];
     return newDoc;
   };
 

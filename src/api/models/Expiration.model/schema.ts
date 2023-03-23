@@ -4,6 +4,7 @@ import { Schema } from 'mongoose';
 import type { IExpiration } from './types';
 
 import { handleReferenceChange } from 'api/base/mongoose/reference';
+import { preSaveWasNew } from 'api/helpers/schema.helper';
 
 export const expirationSchema = new Schema<IExpiration>(
   {
@@ -31,9 +32,10 @@ export const expirationSchema = new Schema<IExpiration>(
     timestamps: true,
   },
 );
+expirationSchema.pre('save', preSaveWasNew);
 
 expirationSchema.post('save', function (doc: Document<IExpiration>, next) {
-  if (!doc.isNew) next();
+  if (!doc.wasNew) next();
 
   handleReferenceChange({
     action: 'save',

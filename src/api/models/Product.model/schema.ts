@@ -4,6 +4,7 @@ import { Schema } from 'mongoose';
 import type { IProduct } from './types';
 
 import { handleReferenceChange } from 'api/base/mongoose/reference';
+import { preSaveWasNew } from 'api/helpers/schema.helper';
 import { getSlug } from 'api/helpers/slug.helper';
 
 export const productSchema = new Schema<IProduct>(
@@ -101,8 +102,10 @@ productSchema.virtual('slug').get(function () {
   return getSlug(this.name, this._id.toString());
 });
 
+productSchema.pre('save', preSaveWasNew);
+
 productSchema.post('save', function (doc: Document<IProduct>, next) {
-  if (!doc.isNew) next();
+  if (!doc.wasNew) next();
 
   handleReferenceChange({
     action: 'save',

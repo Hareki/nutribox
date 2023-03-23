@@ -88,14 +88,13 @@ export const createOneDoc = async (
   model: Model<any>,
   data: any,
   session?: ClientSession,
-): Promise<any> => {
-  // looks silly but just for sure
+): Promise<any[]> => {
   if (session) {
+    // must pass data as an array when using session, so the returned value will also be an array
     const doc = await model.create([data], { session });
-    console.log('doc created');
     return doc;
   } else {
-    const doc = await model.create(data);
+    const doc = await model.create([data]);
     return doc;
   }
 };

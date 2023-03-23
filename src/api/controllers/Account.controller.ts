@@ -238,6 +238,21 @@ const deleteAddress = async (
   return account.toObject().addresses;
 };
 
+const addCustomerOrder = async (
+  accountId: string,
+  customerOrderId: string,
+  session: ClientSession,
+): Promise<void> => {
+  console.log(
+    'file: Account.controller.ts:246 - customerOrderId:',
+    customerOrderId,
+  );
+  const account = await AccountModel().findById(accountId);
+  account.customerOrders.push(new Types.ObjectId(customerOrderId));
+  // Can't use pre/pose save hook to update this, because it will conflict with the session
+  await account.save({ session });
+};
+
 const AccountController = {
   getAll,
   getOne,
@@ -253,5 +268,6 @@ const AccountController = {
   updateAddress,
   setDefaultAddress,
   deleteAddress,
+  addCustomerOrder,
 };
 export default AccountController;

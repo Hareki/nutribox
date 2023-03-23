@@ -66,39 +66,50 @@ const handler = nc<
     account,
     items,
   };
-  console.log('file: checkout.ts:65 - customerOrderInput:', customerOrderInput);
+  console.log('0. CUSTOMER ORDER INPUT:', customerOrderInput);
 
+  const accountId = customerOrderInput.account.toString();
   await connectToDB();
   const session = await startSession();
   session.startTransaction();
   try {
-    console.log('START CONSUME CUSTOMER ORDER');
-    await ProductController.consumeProducts(customerOrderInput.items, session);
-    console.log('START CREATE CUSTOMER ORDER');
+    console.log('1. START CLEAR CART ITEMS');
+    await AccountController.clearCartItems(accountId, session);
+
+    console.log('2. START CREATE CUSTOMER ORDER');
     const customerOrder = await CustomerOrderController.createOne(
       customerOrderInput,
       session,
     );
-    console.log('START CLEAR CART ITEMS');
-    await AccountController.clearCartItems(
-      customerOrderInput.account.toString(),
+
+    console.log('3. START ADD CUSTOMER ORDER TO ACCOUNT');
+    await AccountController.addCustomerOrder(
+      accountId,
+      customerOrder.id,
       session,
     );
-    console.log('ALL DONE, ABOUT TO COMMIT TRANSACTION');
 
+    console.log('4. START CONSUME CUSTOMER ORDER');
+    await ProductController.consumeProducts(customerOrderInput.items, session);
+
+    console.log('5. ALL DONE, ABOUT TO COMMIT TRANSACTION');
     await session.commitTransaction();
-    console.log('TRANSACTION COMMITTED');
+
+    console.log('6. END SESSION');
     session.endSession();
-    console.log('SESSION ENDED');
+
+    console.log('7. SESSION ENDED');
 
     res.status(StatusCodes.OK).json({
       status: 'success',
       data: customerOrder,
     });
   } catch (error) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     session.endSession();
-    console.log('ERROR OCCURRED');
+    console.log('X. ERROR OCCURRED');
     console.log(error);
 
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
