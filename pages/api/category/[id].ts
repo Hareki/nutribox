@@ -5,7 +5,7 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import CategoryController from 'api/controllers/ProductCategory.controller';
 import connectToDB from 'api/database/databaseConnection';
-import { populateUnexpiredExpiration } from 'api/helpers/model.helper';
+import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import type {
   IPopulatedProductCategory,
   IPopulatedUpeProductCategory,
@@ -33,16 +33,9 @@ const handler = nc<
 
   const populatedCategory = category as IPopulatedProductCategory;
 
-  console.log('==========');
-  console.log('length 1:', populatedCategory.products.length);
-  console.log('==========');
-
-  const upeProducts = await populateUnexpiredExpiration(
+  const upeProducts = await populateAscUnexpiredExpiration(
     populatedCategory.products,
   );
-  console.log('==========');
-  console.log('length 2:', upeProducts.length);
-  console.log('==========');
 
   const result = { ...category, products: upeProducts };
 

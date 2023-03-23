@@ -1,6 +1,6 @@
 import ProductController from 'api/controllers/Product.controller';
 import ProductCategoryController from 'api/controllers/ProductCategory.controller';
-import { populateUnexpiredExpiration } from 'api/helpers/model.helper';
+import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import { getPaginationParams } from 'api/helpers/pagination.helpers';
 import type { IUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { IProductCategory } from 'api/models/ProductCategory.model/types';
@@ -15,7 +15,7 @@ export const getProduct = async (id: string): Promise<IUpeProduct> => {
   const product = await ProductController.getOne({
     id,
   });
-  const populatedProduct = (await populateUnexpiredExpiration([product]))[0];
+  const populatedProduct = (await populateAscUnexpiredExpiration([product]))[0];
 
   return populatedProduct;
 };
@@ -39,7 +39,7 @@ export const getAllProducts = async (
     limit,
   });
 
-  const populatedProducts = await populateUnexpiredExpiration(products);
+  const populatedProducts = await populateAscUnexpiredExpiration(products);
 
   const result = {
     nextPageNum,
@@ -52,7 +52,7 @@ export const getAllProducts = async (
 
 export const getHotProducts = async (): Promise<IUpeProduct[]> => {
   const products: IProduct[] = await ProductController.getHotProducts();
-  const populatedProducts = await populateUnexpiredExpiration(products);
+  const populatedProducts = await populateAscUnexpiredExpiration(products);
 
   return populatedProducts;
 };
@@ -60,7 +60,7 @@ export const getHotProducts = async (): Promise<IUpeProduct[]> => {
 export const getNewProducts = async (): Promise<IUpeProduct[]> => {
   const products: IProduct[] = await ProductController.getNewProducts();
 
-  const populatedProducts = await populateUnexpiredExpiration(products);
+  const populatedProducts = await populateAscUnexpiredExpiration(products);
   return populatedProducts;
 };
 
@@ -73,7 +73,7 @@ export async function getRelatedProducts(
     { limit: 4 },
   );
 
-  const populatedProducts = await populateUnexpiredExpiration(products);
+  const populatedProducts = await populateAscUnexpiredExpiration(products);
   return populatedProducts;
 }
 

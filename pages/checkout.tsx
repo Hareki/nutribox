@@ -9,6 +9,7 @@ import { authOptions } from './api/auth/[...nextauth]';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IAccount } from 'api/models/Account.model/types';
+import type { IAddress } from 'api/types/schema.type';
 import SEO from 'components/abstract/SEO';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
@@ -27,10 +28,13 @@ export interface Step1Data {
   total: number;
   note: string;
   phone: string;
-  fullAddress: string;
+  address: IAddress;
 }
 
-export interface Step2Data {}
+export interface Step2Data {
+  accountId: string;
+  paid: boolean;
+}
 
 type StepData = Step1Data | Step2Data;
 
@@ -63,7 +67,11 @@ function Checkout({ initialAccount }: CheckoutProps): ReactElement {
         )}
 
         {selectedStep === 2 && (
-          <Payment step1Data={step1Data} prevStep={prevStep} account={initialAccount} />
+          <Payment
+            step1Data={step1Data}
+            prevStep={prevStep}
+            account={initialAccount}
+          />
         )}
       </Container>
     </Fragment>

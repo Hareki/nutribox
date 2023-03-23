@@ -73,6 +73,7 @@ export const getEmailSchema = (
 
 export const getPhoneSchema = (
   prefix: string,
+  unique = true,
 ): Record<string, SchemaDefinitionProperty<any>> => {
   return {
     phone: {
@@ -86,7 +87,7 @@ export const getPhoneSchema = (
         },
         message: `Invalid ${prefix}/Phone format`,
       },
-      unique: true,
+      unique,
       trim: true,
     },
   };
@@ -100,8 +101,7 @@ export const getDuplicateKeyErrorMessage = (errorObj: DuplicateKeyError) => {
     const fieldValue = errorObj.keyValue[fieldName];
     errorMessage[fieldName] = `${fieldName} ${fieldValue} đã tồn tại!`;
   } else {
-    errorMessage.unknown =
-      'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
+    errorMessage.unknown = 'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
   }
 
   return errorMessage;

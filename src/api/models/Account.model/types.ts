@@ -38,13 +38,13 @@ export interface IPopulatedCartItemsAccount
 
 export interface IAccountInput
   extends Omit<
-  IAccount,
-  | '_id'
-  | 'cartItems'
-  | 'addresses'
-  | 'customerOrders'
-  | 'passwordReset'
-  | 'verified'
+    IAccount,
+    | '_id'
+    | 'cartItems'
+    | 'addresses'
+    | 'customerOrders'
+    | 'passwordReset'
+    | 'verified'
   > {
   cartItems?: Types.DocumentArray<ICartItem>; // ICartItem
   addresses?: Types.DocumentArray<IAccountAddress>; // IAccountAddress

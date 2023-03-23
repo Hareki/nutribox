@@ -32,8 +32,8 @@ export interface IUpeProduct extends Omit<IProduct, 'expirations'> {
 
 export interface IProductInput
   extends Omit<
-  IProduct,
-  '_id' | 'slug' | 'expirations' | 'available' | 'hot' | 'id'
+    IProduct,
+    '_id' | 'slug' | 'expirations' | 'available' | 'hot' | 'id'
   > {
   expirations?: Types.ObjectId[]; // IExpiration
   available?: boolean;

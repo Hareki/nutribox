@@ -1,12 +1,15 @@
+import { LoadingButton } from '@mui/lab';
 import { Box, Button, Divider, Grid, Radio, TextField } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Formik } from 'formik';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import { Fragment, useState } from 'react';
 import * as yup from 'yup';
 
+import type { Step2Data } from '../../../../pages/checkout';
+
+import type { IAccount } from 'api/models/Account.model/types';
 import { Paragraph } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
 import CardCvcInput from 'components/common/input/CardCvcInput';
@@ -28,8 +31,16 @@ type FormValues = typeof initialValues;
 
 interface PaymentFormProps {
   prevStep: (currentStep: number) => void;
+  completeOrder: (data: Step2Data) => void;
+  account: IAccount;
+  isLoading: boolean;
 }
-const PaymentForm: FC<PaymentFormProps> = ({ prevStep }) => {
+const PaymentForm: FC<PaymentFormProps> = ({
+  prevStep,
+  completeOrder,
+  account,
+  isLoading,
+}) => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
 
   const width = useWindowSize();
@@ -40,6 +51,11 @@ const PaymentForm: FC<PaymentFormProps> = ({ prevStep }) => {
 
   const handlePaymentMethodChange = ({ target: { name } }: any) => {
     setPaymentMethod(name);
+  };
+
+  const handleCheckout = () => {
+    const paid = paymentMethod === 'cod' ? false : true;
+    completeOrder({ accountId: account.id, paid });
   };
 
   return (
@@ -210,7 +226,7 @@ const PaymentForm: FC<PaymentFormProps> = ({ prevStep }) => {
                   </Grid>
                 </Box>
 
-                {/* <Button variant='outlined' color='primary' sx={{ mb: 4 }}>
+                {/* <Button type='submit variant='outlined' color='primary' sx={{ mb: 4 }}>
                   Tiếp tục
                 </Button> */}
 
@@ -224,6 +240,7 @@ const PaymentForm: FC<PaymentFormProps> = ({ prevStep }) => {
       <Grid container spacing={7}>
         <Grid item sm={6} xs={12}>
           <Button
+            disabled={isLoading}
             variant='outlined'
             color='primary'
             type='button'
@@ -235,11 +252,16 @@ const PaymentForm: FC<PaymentFormProps> = ({ prevStep }) => {
         </Grid>
 
         <Grid item sm={6} xs={12}>
-          <Link href='/orders' passHref legacyBehavior>
-            <Button variant='contained' color='primary' type='submit' fullWidth>
-              Thanh toán
-            </Button>
-          </Link>
+          <LoadingButton
+            onClick={() => handleCheckout()}
+            loading={isLoading}
+            variant='contained'
+            color='primary'
+            type='submit'
+            fullWidth
+          >
+            Thanh toán
+          </LoadingButton>
         </Grid>
       </Grid>
     </Fragment>

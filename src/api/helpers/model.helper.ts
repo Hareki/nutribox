@@ -37,7 +37,7 @@ export const populateCartItems = async (
     .lean({ virtuals: true })
     .exec();
 
-  const upeProducts = await populateUnexpiredExpiration(products);
+  const upeProducts = await populateAscUnexpiredExpiration(products);
 
   const cartItems: IPopulatedCartItem[] = cartItemsDoc.map((cartItem) => {
     const product = upeProducts.find(
@@ -60,7 +60,7 @@ export const populateCartItems = async (
   return cartItems;
 };
 
-export const populateUnexpiredExpiration = async (
+export const populateAscUnexpiredExpiration = async (
   products: IProduct[],
 ): Promise<IUpeProduct[]> => {
   const getUnexpiredExpirations = async (
@@ -72,7 +72,8 @@ export const populateUnexpiredExpiration = async (
           product: productId,
           expirationDate: { $gt: new Date() },
         })
-        .lean()
+        .sort({ expirationDate: 1 })
+        .lean({ virtuals: true })
         .exec();
 
       return unexpiredExpirations;
@@ -88,10 +89,6 @@ export const populateUnexpiredExpiration = async (
   });
 
   const populatedProducts: IUpeProduct[] = await Promise.all(promises);
-  console.log(
-    'file: model.helper.ts:91 - populatedProducts:',
-    populatedProducts,
-  );
 
   return populatedProducts;
 };

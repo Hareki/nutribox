@@ -1,3 +1,6 @@
+import type { CheckoutItemsRequestBody } from '../../pages/api/checkout';
+
+import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IExpiration } from 'api/models/Expiration.model/types';
 
 export function extractIdFromSlug(slug: string) {
@@ -13,4 +16,19 @@ export function getMaxUpeQuantity(expirations: IExpiration[]) {
   }, 0);
 
   return result;
+}
+
+// RB = request body
+export function convertCartToOrderRb(
+  cartItem: IPopulatedCartItem,
+): CheckoutItemsRequestBody {
+  const { product, quantity } = cartItem;
+  const { wholesalePrice, retailPrice } = product;
+
+  return {
+    productId: product.id,
+    quantity,
+    unitWholesalePrice: wholesalePrice,
+    unitRetailPrice: retailPrice,
+  };
 }

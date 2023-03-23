@@ -1,24 +1,23 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { Pagination } from '@mui/material';
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps } from 'next';
+import { Fragment } from 'react';
 
 import { H5 } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
-import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
+import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import type Order from 'models/Order.model';
 import OrderRow from 'pages-sections/orders/OrderRow';
 import api from 'utils/__api__/orders';
 
-// ====================================================
 type OrderProps = { orderList: Order[] };
-// ====================================================
 
-const Orders: NextPage<OrderProps> = ({ orderList }) => {
+function Orders({ orderList }: OrderProps) {
   return (
-    <CustomerDashboardLayout>
+    <Fragment>
       {/* TITLE HEADER AREA */}
       <UserDashboardHeader
         title='Đơn hàng của tôi'
@@ -72,9 +71,11 @@ const Orders: NextPage<OrderProps> = ({ orderList }) => {
           onChange={(data) => console.log(data)}
         />
       </FlexBox>
-    </CustomerDashboardLayout>
+    </Fragment>
   );
-};
+}
+
+Orders.getLayout = getCustomerDashboardLayout;
 
 export const getStaticProps: GetStaticProps = async () => {
   const orderList = await api.getOrders();

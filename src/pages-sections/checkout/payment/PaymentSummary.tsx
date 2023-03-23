@@ -5,6 +5,7 @@ import type { Step1Data } from '../../../../pages/checkout';
 
 import { Paragraph, Span } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
+import { getFullAddress } from 'helpers/address.helper';
 import { formatCurrency } from 'lib';
 
 interface PaymentSummaryProps {
@@ -48,7 +49,7 @@ const PaymentSummary: FC<PaymentSummaryProps> = ({ step1Data }) => {
 
       <Box mb={1.5}>
         <Paragraph color='grey.600'>Địa chỉ</Paragraph>
-        <Paragraph>{step1Data.fullAddress}</Paragraph>
+        <Paragraph>{getFullAddress(step1Data.address)}</Paragraph>
       </Box>
 
       <Box>

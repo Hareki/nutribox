@@ -102,16 +102,16 @@ productSchema.virtual('slug').get(function () {
 });
 
 productSchema.post('save', function (doc: Document<IProduct>, next) {
-  if (doc.isNew) {
-    handleReferenceChange({
-      action: 'save',
-      doc,
-      fieldName: 'category',
-      referencedFieldName: 'products',
-      referencedModelName: 'ProductCategory',
-      next,
-    });
-  }
+  if (!doc.isNew) next();
+
+  handleReferenceChange({
+    action: 'save',
+    doc,
+    fieldName: 'category',
+    referencedFieldName: 'products',
+    referencedModelName: 'ProductCategory',
+    next,
+  });
 });
 
 productSchema.post(

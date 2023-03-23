@@ -14,6 +14,6 @@ export interface IPasswordReset {
 
 export interface IPasswordResetInput
   extends Omit<
-  IPasswordReset,
-  '_id' | 'createdAt' | 'updatedAt' | 'expirationDate'
+    IPasswordReset,
+    '_id' | 'createdAt' | 'updatedAt' | 'expirationDate'
   > {}

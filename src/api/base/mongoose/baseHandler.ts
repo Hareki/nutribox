@@ -1,4 +1,4 @@
-import type { Model, Types } from 'mongoose';
+import type { ClientSession, Model, Types } from 'mongoose';
 
 export interface BaseGetOptions {
   model: Model<any>;
@@ -87,7 +87,15 @@ export const getOneDoc = async ({
 export const createOneDoc = async (
   model: Model<any>,
   data: any,
+  session?: ClientSession,
 ): Promise<any> => {
-  const doc = await model.create(data);
-  return doc;
+  // looks silly but just for sure
+  if (session) {
+    const doc = await model.create([data], { session });
+    console.log('doc created');
+    return doc;
+  } else {
+    const doc = await model.create(data);
+    return doc;
+  }
 };

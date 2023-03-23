@@ -36,6 +36,7 @@ import {
 } from 'helpers/address.helper';
 import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
+import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
 import type { AddressAPI } from 'utils/apiCallers/address';
 import apiCaller from 'utils/apiCallers/checkout';
@@ -53,7 +54,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
   const [isEstimating, setIsEstimating] = useState(false);
   const [selectAddressDialogOpen, setSelectAddressDialogOpen] = useState(false);
   const { cartState } = useCart();
-
+  const { hasOverLimitItem } = useGlobalQuantityLimitation();
   const [infoState, dispatchInfo] = useReducer(infoDialogReducer, {
     open: false,
   });
@@ -151,9 +152,8 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     const cartItems = cartList;
     const note = values.note;
     const phone = values.phone;
-    const fullAddress = getFullAddress(address);
 
-    nextStep({ cartItems, note, phone, fullAddress, total }, 1);
+    nextStep({ cartItems, note, phone, address, total }, 1);
   };
 
   const {
@@ -354,6 +354,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
               />
 
               <LoadingButton
+                disabled={hasOverLimitItem}
                 loading={isEstimating}
                 variant='contained'
                 color='primary'

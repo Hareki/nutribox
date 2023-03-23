@@ -1,7 +1,10 @@
+import type { CheckoutRequestBody } from '../../../pages/api/checkout';
+
 import type { DeliveryInfo } from 'api/helpers/address.helper';
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import axiosInstance from 'utils/axiosInstance';
 
-export const getShippingInfo = async (
+export const getDeliveryInfo = async (
   address1: string,
   address2: string,
 ): Promise<DeliveryInfo> => {
@@ -14,8 +17,17 @@ export const getShippingInfo = async (
   return response.data.data;
 };
 
+export const completeOrder = async (
+  requestBody: CheckoutRequestBody,
+): Promise<ICustomerOrder> => {
+  console.log('file: checkout.ts:23 - requestBody:', requestBody);
+  const response = await axiosInstance.post('/checkout', requestBody);
+  return response.data.data;
+};
+
 const apiCaller = {
-  getDeliveryInfo: getShippingInfo,
+  getDeliveryInfo,
+  completeOrder,
 };
 
 export default apiCaller;

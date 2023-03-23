@@ -8,8 +8,19 @@ export interface ICustomerOrderItem {
   // customerOrder: ICustomerOrder;
 
   quantity: number;
+  unitWholesalePrice: number;
+  unitRetailPrice: number;
+}
+
+export interface IPopulatedCustomerOrderItem
+  extends Omit<ICustomerOrderItem, 'id' | 'product'> {
+  id?: string;
+  product: Types.ObjectId;
+
+  quantity: number;
+  unitWholesalePrice: number;
   unitRetailPrice: number;
 }
 
 export interface ICustomerOrderItemInput
-  extends Omit<ICustomerOrderItem, '_id'> {}
+  extends Omit<ICustomerOrderItem, '_id' | 'id'> {}

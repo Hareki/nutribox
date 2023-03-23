@@ -13,6 +13,7 @@ import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
+import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { formatCurrency } from 'lib';
 
 type CartDrawerProps = { toggleCartDrawer: () => void };
@@ -26,6 +27,8 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
       updateCartAmount({ product, quantity: amount }, type);
     };
 
+  const { hasOverLimitItem } = useGlobalQuantityLimitation();
+
   const getTotalPrice = () => {
     return cartList.reduce(
       (accumulation, item) =>
@@ -35,7 +38,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
   };
 
   return (
-    <FlexBox width={380} height='100%' flexDirection='column'>
+    <FlexBox width={400} height='100%' flexDirection='column'>
       <Box
         overflow='auto'
         height={`calc(100vh - ${cartList.length ? '80px - 3.25rem' : '0px'})`}
@@ -95,6 +98,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
           <Box p={2.5}>
             <Link href='/checkout' passHref legacyBehavior>
               <Button
+                disabled={hasOverLimitItem}
                 fullWidth
                 color='primary'
                 variant='contained'

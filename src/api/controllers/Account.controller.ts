@@ -1,3 +1,4 @@
+import type { ClientSession } from 'mongoose';
 import { Types } from 'mongoose';
 import type { Session } from 'next-auth';
 
@@ -121,6 +122,22 @@ const updateCartItem = async (
   return populatedCartItemsAccount;
 };
 
+const clearCartItems = async (
+  accountId: string,
+  session: ClientSession,
+): Promise<IAccount> => {
+  const account = await AccountModel().findById(accountId).exec();
+  validateDocExistence(account, AccountModel(), accountId);
+
+  const idArray = account.cartItems.map((item) => item._id);
+  idArray.forEach((id) => {
+    account.cartItems.remove(id);
+  });
+
+  await account.save({ session });
+  return account;
+};
+
 const getAddresses = async (accountId: string): Promise<IAccountAddress[]> => {
   const account = await getOne({ id: accountId });
   return account.addresses;
@@ -230,6 +247,7 @@ const AccountController = {
   checkCredentials,
   getCartItems,
   updateCartItem,
+  clearCartItems,
   getAddresses,
   addAddress,
   updateAddress,

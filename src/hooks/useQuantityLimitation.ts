@@ -14,6 +14,7 @@ export function useQuantityLimitation(
   );
   const inStock = maxQuantity > 0;
   const disableAddToCart = (cartItem?.quantity || 0) >= maxQuantity;
+  const overLimit = (cartItem?.quantity || 0) > maxQuantity;
 
-  return { maxQuantity, inStock, disableAddToCart };
+  return { maxQuantity, inStock, disableAddToCart, overLimit };
 }

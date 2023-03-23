@@ -31,7 +31,7 @@ export const customerOrderSchema = new Schema<ICustomerOrder>(
       required: [true, 'CustomerOrder/Status is required'],
     },
 
-    ...getPhoneSchema('CustomerOrder'),
+    ...getPhoneSchema('CustomerOrder', false),
 
     paid: {
       type: Boolean,

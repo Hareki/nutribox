@@ -21,3 +21,11 @@ export const IKPublicContext = {
 
 export const PREPARATION_TIME = 10; // in minutes
 export const MAX_DELIVERY_RANGE = 10; // in km
+
+export const OrderStatus = Object.freeze({
+  Pending: { id: '641ae36318e353f785a7f695', name: 'Chờ xác nhận' },
+  Processing: { id: '641ae39318e353f785a7f696', name: 'Đang xử lý' },
+  Delivering: { id: '641ae3b318e353f785a7f697', name: 'Đang giao hàng' },
+  Delivered: { id: '641ae3cd18e353f785a7f699', name: 'Giao thành công' },
+  Cancelled: { id: '641ae3c218e353f785a7f698', name: 'Đã hủy đơn' },
+});

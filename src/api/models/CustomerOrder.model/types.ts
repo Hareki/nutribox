@@ -1,6 +1,9 @@
 import type { Types } from 'mongoose';
 
-import type { ICustomerOrderItem } from './CustomerOrderItem.schema/types';
+import type {
+  ICustomerOrderItem,
+  ICustomerOrderItemInput,
+} from './CustomerOrderItem.schema/types';
 
 import type { IAddress } from 'api/types/schema.type';
 
@@ -19,4 +22,6 @@ export interface ICustomerOrder extends IAddress {
 }
 
 export interface ICustomerOrderInput
-  extends Omit<ICustomerOrder, '_id' | 'note'> {}
+  extends Omit<ICustomerOrder, '_id' | 'id' | 'createdAt' | 'items'> {
+  items: ICustomerOrderItemInput[];
+}

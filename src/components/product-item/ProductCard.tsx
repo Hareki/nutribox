@@ -81,7 +81,7 @@ const HoverWrapper = styled(FlexBetween)(({ theme }) => ({
 }));
 
 const ContentWrapper = styled(FlexBox)({
-  minHeight: 110,
+  minHeight: 120,
   padding: '1rem',
   '& .title, & .categories': {
     overflow: 'hidden',
@@ -210,7 +210,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             disabled={disableAddToCart}
             color='primary'
             variant='outlined'
-            sx={{ padding: '3px' }}
+            sx={{ padding: '3px', borderRadius: '50%' }}
             onClick={() =>
               handleCartAmountChange(cartItem?.quantity + 1, 'add')
             }
@@ -227,7 +227,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
               <Button
                 color='primary'
                 variant='outlined'
-                sx={{ padding: '3px' }}
+                sx={{ padding: '3px', borderRadius: '50%' }}
                 onClick={() =>
                   handleCartAmountChange(cartItem?.quantity - 1, 'remove')
                 }

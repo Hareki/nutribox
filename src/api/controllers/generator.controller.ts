@@ -1,8 +1,9 @@
-import type { Model } from 'mongoose';
+import type { ClientSession, Model } from 'mongoose';
 
 import type {
   GetManyDocsOptions,
-  GetOneDocsOptions } from 'api/base/mongoose/baseHandler';
+  GetOneDocsOptions,
+} from 'api/base/mongoose/baseHandler';
 import {
   createOneDoc,
   getAllDocs,
@@ -48,8 +49,8 @@ export function getTotalGenerator(model: Model<any>) {
 }
 
 export function createOneGenerator<T>(model: Model<any>) {
-  const createOne = async (data: any) => {
-    const newDoc: T = await createOneDoc(model, data);
+  const createOne = async (data: any, session?: ClientSession) => {
+    const newDoc: T = await createOneDoc(model, data, session);
     return newDoc;
   };
 

@@ -25,7 +25,6 @@ export const expirationSchema = new Schema<IExpiration>(
     quantity: {
       type: Number,
       required: [true, 'Expiration/Quantity is required'],
-      min: [1, 'Expiration/Quantity should be at least 1'],
     },
   },
   {
@@ -34,16 +33,16 @@ export const expirationSchema = new Schema<IExpiration>(
 );
 
 expirationSchema.post('save', function (doc: Document<IExpiration>, next) {
-  if (doc.isNew) {
-    handleReferenceChange({
-      action: 'save',
-      doc,
-      fieldName: 'product',
-      referencedFieldName: 'expirations',
-      referencedModelName: 'Product',
-      next,
-    });
-  }
+  if (!doc.isNew) next();
+
+  handleReferenceChange({
+    action: 'save',
+    doc,
+    fieldName: 'product',
+    referencedFieldName: 'expirations',
+    referencedModelName: 'Product',
+    next,
+  });
 });
 
 expirationSchema.post(

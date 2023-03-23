@@ -156,7 +156,12 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                     size='small'
                     color='primary'
                     variant='outlined'
-                    sx={{ p: '.6rem', height: 45 }}
+                    sx={{
+                      p: '.6rem',
+                      width: 45,
+                      height: 45,
+                      borderRadius: '50%',
+                    }}
                     onClick={() =>
                       handleCartAmountChange(cartItem?.quantity - 1, 'remove')
                     }
@@ -173,7 +178,12 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                     size='small'
                     color='primary'
                     variant='outlined'
-                    sx={{ p: '.6rem', height: 45 }}
+                    sx={{
+                      p: '.6rem',
+                      width: 45,
+                      height: 45,
+                      borderRadius: '50%',
+                    }}
                     onClick={() =>
                       handleCartAmountChange(cartItem?.quantity + 1, 'add')
                     }

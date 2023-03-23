@@ -6,12 +6,13 @@ import { useSession } from 'next-auth/react';
 import type { FC } from 'react';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import { Span } from 'components/abstract/Typography';
+import { Paragraph, Span } from 'components/abstract/Typography';
 import MuiNextImage from 'components/common/input/MuiNextImage';
 import { FlexBox } from 'components/flex-box';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
 import useLoginDialog from 'hooks/global-states/useLoginDialog';
+import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
 
 const Wrapper = styled(Card)(({ theme }) => ({
@@ -34,12 +35,18 @@ interface ProductCartItemProps extends IPopulatedCartItem {}
 
 const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
   const { slug, imageUrls, name, retailPrice } = product;
-  const { updateCartAmount } = useCart();
+  const { updateCartAmount, cartItem } = useCart(product.id);
   const { setLoginDialogOpen } = useLoginDialog();
   const { status } = useSession();
-  // handle change cart
+  const { overLimit, maxQuantity, disableAddToCart } = useQuantityLimitation(
+    product.expirations,
+    cartItem,
+  );
+
   const handleCartAmountChange =
     (amount: number, type: CartItemActionType) => () => {
+      if (disableAddToCart && type === 'add') return;
+
       if (status === 'authenticated') {
         updateCartAmount(
           {
@@ -95,7 +102,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
         <FlexBox alignItems='center'>
           <Button
             color='primary'
-            sx={{ p: '5px' }}
+            sx={{ p: '5px', borderRadius: '50%' }}
             variant='outlined'
             disabled={quantity === 1}
             onClick={handleCartAmountChange(quantity - 1, 'remove')}
@@ -107,14 +114,22 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
             {quantity}
           </Span>
           <Button
+            disabled={disableAddToCart}
             color='primary'
-            sx={{ p: '5px' }}
+            sx={{ p: '5px', borderRadius: '50%' }}
             variant='outlined'
             onClick={handleCartAmountChange(quantity + 1, 'add')}
           >
             <Add fontSize='small' />
           </Button>
         </FlexBox>
+
+        {overLimit && (
+          <Paragraph color='error.500'>
+            Chỉ còn <Span fontWeight={600}>{maxQuantity}</Span> sản phẩm này,
+            vui lòng giảm số lượng
+          </Paragraph>
+        )}
       </FlexBox>
     </Wrapper>
   );
