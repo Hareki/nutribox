@@ -256,7 +256,15 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
           >
             {isAuthenticated ? (
               <>
-                <Avatar alt={user.fullName} src={user.avatarUrl} />
+                <Avatar
+                  alt={user.fullName}
+                  src={user.avatarUrl}
+                  sx={{
+                    '& .MuiAvatar-img': {
+                      objectFit: 'fill',
+                    },
+                  }}
+                />
                 {UserMenu}
               </>
             ) : (

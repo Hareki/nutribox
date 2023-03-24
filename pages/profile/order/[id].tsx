@@ -274,7 +274,13 @@ function OrderDetails({ initialOrder, sessionUserId }: Props) {
                   <Avatar
                     variant='square'
                     src={product.imageUrls[0]}
-                    sx={{ height: 64, width: 64 }}
+                    sx={{
+                      height: 64,
+                      width: 64,
+                      '& .MuiAvatar-img': {
+                        objectFit: 'contain',
+                      },
+                    }}
                   />
                   <Box ml={2.5}>
                     <H6 my='0px'>{product.name}</H6>

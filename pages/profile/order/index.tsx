@@ -96,7 +96,7 @@ function Order({ sessionUserId }: AddressProps): ReactElement {
 
       <FlexBox justifyContent='center' mt={5}>
         <Pagination
-          count={orderListPagination.totalPages}
+          count={orderListPagination?.totalPages || 0}
           color='primary'
           variant='outlined'
           onChange={(_, value) => setCurrPageNum(value)}
