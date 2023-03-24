@@ -19,7 +19,7 @@ import {
 import connectToDB from 'api/database/databaseConnection';
 import { serialize } from 'api/helpers/object.helper';
 import type { IUpeProduct } from 'api/models/Product.model/types';
-import type { GetPaginationResult } from 'api/types/pagination.type';
+import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 // ShopLayout2
 import SEO from 'components/abstract/SEO';
 import { Footer } from 'components/common/layout/footer';
@@ -38,7 +38,7 @@ import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
 import apiCaller from 'utils/apiCallers';
-import { paginationConstant } from 'utils/constants';
+import { ProductPaginationConstant } from 'utils/constants';
 
 function getElementHeightIncludingMargin(element: HTMLElement) {
   if (!element) return 0;
@@ -89,7 +89,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery<GetPaginationResult<IUpeProduct>>({
+  } = useInfiniteQuery<GetInfinitePaginationResult<IUpeProduct>>({
     queryKey: ['products', 'infinite', { categoryId: undefined }],
     // CAN access the initial pageParam here, if initial pageParam is NOT specified, it will be NULL
     // Can NOT set a default value for pageParam like this ({ pageParam = 1}). Because default value has no effect with NULL, only with UNDEFINED.
@@ -255,7 +255,7 @@ export const getStaticProps: GetStaticProps = async () => {
     },
     // Can NOT access the initial pageParam here, it will be UNDEFINED. Specify the initial pageParam or not, it's always be UNDEFINED
     queryFn: () =>
-      getAllProducts(paginationConstant.docsPerPage.toString(), '1', []),
+      getAllProducts(ProductPaginationConstant.docsPerPage.toString(), '1', []),
   });
 
   return {

@@ -16,7 +16,7 @@ import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import User2 from 'components/icons/User2';
 import useCart from 'hooks/global-states/useCart';
 import useWindowSize from 'hooks/useWindowSize';
-import { layoutConstant } from 'utils/constants';
+import { LayoutConstant } from 'utils/constants';
 
 // ===================================================
 type Props = { children?: ReactNode };
@@ -33,7 +33,7 @@ const MobileNavigationBar: FC<Props> = ({ children }) => {
   const { cartState } = useCart();
   const [open, setOpen] = useState(false);
 
-  const { mobileNavHeight, topbarHeight } = layoutConstant;
+  const { mobileNavHeight, topbarHeight } = LayoutConstant;
   const total = mobileNavHeight + topbarHeight;
   const [totalHeight, setTotalHeight] = useState<number>(total);
 

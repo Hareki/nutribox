@@ -6,14 +6,17 @@ import {
   createOneGenerator,
   getOneGenerator,
   updateOneGenerator,
+  getTotalGenerator,
 } from './generator.controller';
 
 import AccountModel from 'api/models/Account.model';
 import CustomerOrderModel from 'api/models/CustomerOrder.model';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import type { GetAllDependentPaginationParams } from 'api/types/pagination.type';
 import { OrderStatus } from 'utils/constants';
 
 export const getOne = getOneGenerator<ICustomerOrder>(CustomerOrderModel());
+export const getTotal = getTotalGenerator(CustomerOrderModel());
 
 const createOne = createOneGenerator<ICustomerOrder>(CustomerOrderModel());
 const updateOne = updateOneGenerator<ICustomerOrder>(CustomerOrderModel());
@@ -33,7 +36,14 @@ const getProfit = (items: CheckoutItemsRequestBody[]): number => {
 const getOrders = async (accountId: string): Promise<ICustomerOrder[]> => {
   const accountDoc = await AccountModel()
     .findById(accountId)
-    .populate('customerOrders')
+    .populate({
+      path: 'customerOrders',
+      options: {
+        sort: {
+          createdAt: -1,
+        },
+      },
+    })
     .lean({ virtuals: true })
     .exec();
 
@@ -54,6 +64,30 @@ const cancelOrder = async (orderId: string): Promise<ICustomerOrder> => {
   return customerOrder.toObject();
 };
 
+const getOrdersBelongToAccountPaginated = async ({
+  id,
+  skip,
+  limit,
+}: GetAllDependentPaginationParams): Promise<ICustomerOrder[]> => {
+  const accountWithOrdersPaginated = await AccountModel()
+    .findById(id)
+    .populate({
+      path: 'customerOrders',
+      options: {
+        sort: {
+          createdAt: -1,
+        },
+        skip,
+        limit,
+      },
+    })
+    .exec();
+
+  const orders =
+    accountWithOrdersPaginated.customerOrders as unknown as ICustomerOrder[];
+  return orders;
+};
+
 const CustomerOrderController = {
   getOne,
   getProfit,
@@ -62,5 +96,7 @@ const CustomerOrderController = {
   cancelOrder,
   createOne,
   updateOne,
+  getTotal,
+  getOrdersBelongToAccountPaginated,
 };
 export default CustomerOrderController;

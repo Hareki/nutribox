@@ -2,8 +2,10 @@ import { ShoppingBag } from '@mui/icons-material';
 import { Pagination, Skeleton } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
+import { useState } from 'react';
 import { Fragment } from 'react';
 
 import { authOptions } from '../../api/auth/[...nextauth]';
@@ -22,9 +24,15 @@ interface AddressProps {
 }
 
 function Order({ sessionUserId }: AddressProps): ReactElement {
-  const { data: orderList, isLoading } = useQuery({
-    queryKey: ['orders', sessionUserId],
-    queryFn: () => apiCaller.getOrders(sessionUserId),
+  const router = useRouter();
+  const initialPageStr = router.query.p as string;
+  const initialPageNum = parseInt(initialPageStr);
+
+  const [currPageNum, setCurrPageNum] = useState(initialPageNum || 1);
+  const { data: orderListPagination, isLoading } = useQuery({
+    queryKey: ['orders', sessionUserId, currPageNum],
+    queryFn: () => apiCaller.getOrders(sessionUserId, currPageNum),
+    keepPreviousData: true,
   });
 
   return (
@@ -82,14 +90,16 @@ function Order({ sessionUserId }: AddressProps): ReactElement {
               }}
             />
           ))
-        : orderList.map((order) => <OrderRow order={order} key={order.id} />)}
+        : orderListPagination.docs.map((order) => (
+            <OrderRow order={order} key={order.id} />
+          ))}
 
       <FlexBox justifyContent='center' mt={5}>
         <Pagination
-          count={5}
+          count={orderListPagination.totalPages}
           color='primary'
           variant='outlined'
-          onChange={(data) => console.log(data)}
+          onChange={(_, value) => setCurrPageNum(value)}
         />
       </FlexBox>
     </Fragment>

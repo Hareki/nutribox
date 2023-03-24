@@ -1,11 +1,11 @@
-import { paginationConstant } from './../constants';
+import { ProductPaginationConstant } from './../constants';
 
 import type { IUpeProduct } from 'api/models/Product.model/types';
 import type {
   IProductCategory,
   IPopulatedUpeProductCategory,
 } from 'api/models/ProductCategory.model/types';
-import type { GetPaginationResult } from 'api/types/pagination.type';
+import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
 
 const getAllCategories = async (): Promise<IProductCategory[]> => {
@@ -23,17 +23,17 @@ const getAllCategories = async (): Promise<IProductCategory[]> => {
 
 const getAllProducts = async (
   pageNumInput: number,
-): Promise<GetPaginationResult<IUpeProduct>> => {
+): Promise<GetInfinitePaginationResult<IUpeProduct>> => {
   let pageNum: number, docsPerPage: number;
   if (!pageNumInput) {
     pageNum = 1;
-    docsPerPage = paginationConstant.infiniteDocsPerPage;
+    docsPerPage = ProductPaginationConstant.infiniteDocsPerPage;
   } else {
     pageNum = pageNumInput;
-    docsPerPage = paginationConstant.docsPerPage;
+    docsPerPage = ProductPaginationConstant.docsPerPage;
   }
 
-  if (docsPerPage === paginationConstant.infiniteDocsPerPage)
+  if (docsPerPage === ProductPaginationConstant.infiniteDocsPerPage)
     console.warn('WARNING: docsPerPage is infiniteDocsPerPage');
 
   const response = await axiosInstance.get('/product/all', {

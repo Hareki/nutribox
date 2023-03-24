@@ -1,10 +1,18 @@
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
+import { OrderPaginationConstant } from 'utils/constants';
 
 export const getOrders = async (
   accountId: string,
-): Promise<ICustomerOrder[]> => {
-  const response = await axiosInstance.get(`profile/order/${accountId}`);
+  page: number,
+): Promise<GetAllPaginationResult<ICustomerOrder>> => {
+  const response = await axiosInstance.get(`profile/order/${accountId}`, {
+    params: {
+      docsPerPage: OrderPaginationConstant.docsPerPage,
+      page,
+    },
+  });
   return response.data.data;
 };
 

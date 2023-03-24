@@ -8,6 +8,7 @@ interface PaginationOutput {
   skip: number;
   limit: number;
   nextPageNum: number;
+  totalPages: number;
 }
 
 export const getPaginationParams: (
@@ -25,5 +26,5 @@ export const getPaginationParams: (
   const skip = docsPerPageNum * (pageNum - 1);
   const limit = docsPerPageNum;
 
-  return { skip, limit, nextPageNum };
+  return { skip, limit, nextPageNum, totalPages };
 };

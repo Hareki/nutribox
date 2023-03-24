@@ -81,13 +81,7 @@ const OrderViewer: FC<OrderProps> = ({
               }}
             />
           ))
-        : orderList.map((order) => (
-            <OrderRow
-              setOrderDetails={setOrderDetails}
-              order={order}
-              key={order.id}
-            />
-          ))}
+        : orderList.map((order) => <OrderRow order={order} key={order.id} />)}
 
       <FlexBox justifyContent='center' mt={5}>
         <Pagination

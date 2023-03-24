@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import type { FC, ReactNode } from 'react';
 import { useState } from 'react';
 
-import { layoutConstant } from 'utils/constants';
+import { LayoutConstant } from 'utils/constants';
 
 const StyledContainer = styled(Container)<{ side_nav_bottom_offset: string }>(
   ({ theme, side_nav_bottom_offset }) => ({
@@ -15,15 +15,15 @@ const StyledContainer = styled(Container)<{ side_nav_bottom_offset: string }>(
       top: 0,
       bottom: 0,
       position: 'relative',
-      width: layoutConstant.grocerySidenavWidth,
-      minWidth: layoutConstant.grocerySidenavWidth,
+      width: LayoutConstant.grocerySidenavWidth,
+      minWidth: LayoutConstant.grocerySidenavWidth,
       // height: `calc(100vh - ${layoutConstant.headerHeight}px)`,
       height: 'fit-content',
       '& .MuiPaper-root': { borderRadius: 5 },
     },
     '.sticky': {
       position: 'sticky',
-      top: layoutConstant.headerHeight,
+      top: LayoutConstant.headerHeight,
       marginBottom: side_nav_bottom_offset,
     },
 
@@ -31,10 +31,10 @@ const StyledContainer = styled(Container)<{ side_nav_bottom_offset: string }>(
       left: 'unset',
       position: 'relative',
       marginLeft: '1.75rem',
-      width: `calc(100% - 2rem - ${layoutConstant.grocerySidenavWidth}px)`,
+      width: `calc(100% - 2rem - ${LayoutConstant.grocerySidenavWidth}px)`,
     },
 
-    '.pageContentShifted': { left: layoutConstant.grocerySidenavWidth },
+    '.pageContentShifted': { left: LayoutConstant.grocerySidenavWidth },
 
     '.section1': { marginBottom: '3rem', marginTop: '1.75rem' },
     '@keyframes slideDown': {

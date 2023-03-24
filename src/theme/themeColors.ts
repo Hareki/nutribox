@@ -162,7 +162,8 @@ export const paste = {
 };
 
 export const warning = {
-  100: '#FFF8E5',
+  // 100: '#FFF8E5',
+  100: '#ffe195',
   main: '#FFCD4E',
   contrastText: '#FFFFFF',
 };
@@ -179,6 +180,7 @@ export const themeColors = {
   warning,
   success,
   secondary,
+  blue,
   info: blue,
   divider: grey[200],
   background: { default: grey[100] },

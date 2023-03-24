@@ -1,7 +1,7 @@
 import { Box, Drawer, styled } from '@mui/material';
 
 import { NavLink } from 'components/nav-link';
-import { layoutConstant } from 'utils/constants';
+import { LayoutConstant } from 'utils/constants';
 
 // styled components
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -12,7 +12,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   position: 'fixed',
   justifyContent: 'space-around',
   zIndex: theme.zIndex.drawer + 1,
-  height: layoutConstant.mobileNavHeight,
+  height: LayoutConstant.mobileNavHeight,
   backgroundColor: theme.palette.background.paper,
   boxShadow: '0px 1px 4px 3px rgba(0, 0, 0, 0.1)',
   '@media only screen and (max-width: 900px)': {
@@ -52,7 +52,7 @@ const StyledDrawer = styled(Drawer)<{ totalheight: number }>(
       boxSizing: 'border-box',
       boxShadow: theme.shadows[2],
       height: `calc(100% - ${
-        totalheight + layoutConstant.mobileHeaderHeight
+        totalheight + LayoutConstant.mobileHeaderHeight
       }px)`,
     },
   }),

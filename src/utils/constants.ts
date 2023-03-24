@@ -1,4 +1,4 @@
-export const layoutConstant = {
+export const LayoutConstant = {
   topbarHeight: 40,
   headerHeight: 80,
   mobileNavHeight: 64,
@@ -7,8 +7,13 @@ export const layoutConstant = {
   grocerySidenavWidth: 280,
 };
 
-export const paginationConstant = {
+export const ProductPaginationConstant = {
   docsPerPage: 6,
+  infiniteDocsPerPage: 9999,
+};
+
+export const OrderPaginationConstant = {
+  docsPerPage: 5,
   infiniteDocsPerPage: 9999,
 };
 

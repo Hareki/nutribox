@@ -22,19 +22,19 @@ const OrderRow: FC<OrderRowProps> = ({ order }) => {
 
   const getColor = () => {
     switch (statusId) {
-      case OrderStatus.Pending.name:
+      case OrderStatus.Pending.id:
         return 'secondary';
 
-      case OrderStatus.Processing.name:
-        return 'secondary';
+      case OrderStatus.Processing.id:
+        return 'warning';
 
-      case OrderStatus.Delivered.name:
+      case OrderStatus.Delivered.id:
         return 'success';
 
-      case OrderStatus.Cancelled.name:
+      case OrderStatus.Cancelled.id:
         return 'error';
 
-      case OrderStatus.Delivering.name:
+      case OrderStatus.Delivering.id:
         return 'paste';
 
       default:

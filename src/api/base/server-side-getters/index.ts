@@ -5,7 +5,7 @@ import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import { getPaginationParams } from 'api/helpers/pagination.helpers';
 import type { IUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { IProductCategory } from 'api/models/ProductCategory.model/types';
-import type { GetPaginationResult } from 'api/types/pagination.type';
+import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 
 export async function getAllCategories() {
   const result: IProductCategory[] = await ProductCategoryController.getAll();
@@ -24,8 +24,8 @@ export const getProduct = async (id: string): Promise<IUpeProduct> => {
 export const getAllProducts = async (
   docsPerPage: string,
   page: string,
-  populate: string[],
-): Promise<GetPaginationResult<IUpeProduct>> => {
+  populate: string[] = [],
+): Promise<GetInfinitePaginationResult<IUpeProduct>> => {
   const totalDocs = await ProductController.getTotal();
 
   const { skip, limit, nextPageNum } = getPaginationParams({

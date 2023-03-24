@@ -133,7 +133,9 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
             <H2 color='primary.main' mb={0.5} lineHeight='1'>
               {formatCurrency(retailPrice)}
             </H2>
-            <Box color='inherit'>{available ? 'Còn hàng' : 'Hết hàng'}</Box>
+            <Box color='inherit'>
+              {!disableAddToCart ? 'Còn hàng' : 'Hết hàng'}
+            </Box>
           </Box>
 
           {!cartItem?.quantity ? (
@@ -144,7 +146,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
               onClick={handleCartAmountChange(1, 'add')}
               sx={{ mb: 4.5, px: '1.75rem', height: 40 }}
             >
-              Thêm vào giỏ hàng
+              {disableAddToCart ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
             </Button>
           ) : (
             <FlexBox alignItems='center' mb={4.5}>

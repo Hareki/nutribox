@@ -34,17 +34,17 @@ import Icon from 'components/icons';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import useCart from 'hooks/global-states/useCart';
 import useLoginDialog from 'hooks/global-states/useLoginDialog';
-import { layoutConstant } from 'utils/constants';
+import { LayoutConstant } from 'utils/constants';
 
 // styled component
 export const HeaderWrapper = styled(Box)(({ theme }) => ({
   zIndex: 3,
   position: 'sticky',
-  height: layoutConstant.headerHeight,
+  height: LayoutConstant.headerHeight,
   transition: 'height 250ms ease-in-out',
   background: theme.palette.background.paper,
   [theme.breakpoints.down('sm')]: {
-    height: layoutConstant.mobileHeaderHeight,
+    height: LayoutConstant.mobileHeaderHeight,
   },
 }));
 
