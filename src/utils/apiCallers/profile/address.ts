@@ -4,7 +4,7 @@ import type {
   AddAddressRequestBody,
   DeleteAddressQueryParams,
   UpdateAddressRequestBody,
-} from '../../../pages/api/profile/address/[accountId]';
+} from '../../../../pages/api/profile/address/[accountId]';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import appAxios from 'utils/axiosInstance';

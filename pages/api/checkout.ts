@@ -41,9 +41,7 @@ const handler = nc<
 }).post(async (req, res) => {
   const checkoutRequestBody = req.body as CheckoutRequestBody;
 
-  const profit = await CustomerOrderController.getProfit(
-    checkoutRequestBody.items,
-  );
+  const profit = CustomerOrderController.getProfit(checkoutRequestBody.items);
   const status = new Types.ObjectId(OrderStatus.Pending.id);
   const account = new Types.ObjectId(checkoutRequestBody.accountId);
   delete checkoutRequestBody.accountId;

@@ -54,7 +54,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
 
   const handleCartAmountChange =
     (amount: number, type: CartItemActionType) => () => {
-      if (type === 'add' && !disableAddToCart) return;
+      if (type === 'add' && disableAddToCart) return;
       updateCartAmount(
         {
           quantity: amount,

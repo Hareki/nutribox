@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { AddressAPI } from 'utils/apiCallers/address';
-import apiCaller from 'utils/apiCallers/address';
+import type { AddressAPI } from 'utils/apiCallers/profile/address';
+import apiCaller from 'utils/apiCallers/profile/address';
 
 export function useAddressQuery(
   values: any,

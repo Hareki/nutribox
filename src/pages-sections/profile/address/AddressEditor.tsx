@@ -7,7 +7,7 @@ import type { NextPage } from 'next';
 import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
 
-import type { AddAddressRequestBody } from '../../../pages/api/profile/address/[accountId]';
+import type { AddAddressRequestBody } from '../../../../pages/api/profile/address/[accountId]';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import Card1 from 'components/common/Card1';
@@ -15,8 +15,8 @@ import UserDashboardHeader from 'components/common/layout/header/UserDashboardHe
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { transformAddressToFormikValue } from 'helpers/address.helper';
 import { useAddressQuery } from 'hooks/useAddressQuery';
-import type { AddressAPI } from 'utils/apiCallers/address';
-import apiCaller from 'utils/apiCallers/address';
+import type { AddressAPI } from 'utils/apiCallers/profile/address';
+import apiCaller from 'utils/apiCallers/profile/address';
 
 type MutateAddressVariables = {
   type: 'add' | 'edit';

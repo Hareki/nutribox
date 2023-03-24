@@ -51,8 +51,28 @@ export const customerOrderSchema = new Schema<ICustomerOrder>(
 
     profit: {
       type: Number,
-      required: [true, 'Profit is required'],
+      required: [true, 'CustomerOrder/Profit is required'],
       min: [0, 'Customer/Profit must be greater than or equal to 0'],
+    },
+
+    total: {
+      type: Number,
+      required: [true, 'Customer/Total is required'],
+      min: [0, 'CustomerOrder/Total must be greater than or equal to 0'],
+    },
+
+    estimatedDeliveryTime: {
+      type: Date,
+      required: [true, 'CustomerOrder/EstimatedDeliveryTime is required'],
+    },
+
+    estimatedDistance: {
+      type: Number,
+      required: [true, 'CustomerOrder/EstimatedDistance is required'],
+    },
+
+    deliveredOn: {
+      type: Date,
     },
 
     ...getAddressSchema('CustomerOrder'),

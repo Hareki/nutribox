@@ -7,6 +7,8 @@ import type { ReactElement } from 'react';
 
 import { authOptions } from './api/auth/[...nextauth]';
 
+import { getAccount } from 'api/base/server-side-getters';
+import { serialize } from 'api/helpers/object.helper';
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IAccount } from 'api/models/Account.model/types';
 import type { IAddress } from 'api/types/schema.type';
@@ -15,7 +17,6 @@ import { getPageLayout } from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
 import CartDetails from 'pages-sections/checkout/cart-details';
 import Payment from 'pages-sections/checkout/payment';
-import apiCaller from 'utils/apiCallers/profile';
 
 Checkout.getLayout = getPageLayout;
 
@@ -29,6 +30,9 @@ export interface Step1Data {
   note: string;
   phone: string;
   address: IAddress;
+
+  estimatedDeliveryTime: Date;
+  estimatedDistance: number;
 }
 
 export interface Step2Data {
@@ -89,8 +93,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const initialAccount = await apiCaller.getAccount(session.user.id);
-  return { props: { initialAccount } };
+  const initialAccount = await getAccount(session.user.id);
+  return { props: { initialAccount: serialize(initialAccount) } };
 };
 
 const stepperList = [

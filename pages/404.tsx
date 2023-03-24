@@ -26,12 +26,12 @@ const Error404: NextPage = () => {
           sx={{ m: 1 }}
           onClick={handleGoBack}
         >
-          Go Back
+          Quay lại
         </Button>
 
         <Link href='/' passHref legacyBehavior>
           <Button variant='contained' color='primary' sx={{ m: 1 }}>
-            Go to Home
+            Về trang chủ
           </Button>
         </Link>
       </FlexBox>

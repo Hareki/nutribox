@@ -1,13 +1,16 @@
 import { Person, Place } from '@mui/icons-material';
 import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import { Card, styled, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
 import { FlexBox } from 'components/flex-box';
 import type { NavLinkProps } from 'components/nav-link/NavLink';
 import NavLink from 'components/nav-link/NavLink';
+import apiCaller from 'utils/apiCallers/profile/count';
 
 // custom styled components
 const MainContainer = styled(Card)(({ theme }) => ({
@@ -45,7 +48,13 @@ const StyledNavLink = styled<FC<StyledNavLinkProps & NavLinkProps>>(
 
 const Navigations = () => {
   const { pathname } = useRouter();
-  console.log('file: Navigations.tsx:48 - Navigations - pathname:', pathname);
+  const { data: session, status } = useSession();
+
+  const { data: count } = useQuery({
+    queryKey: ['count', session?.user?.id],
+    queryFn: () => apiCaller.countAddressAndOrder(session.user.id),
+    enabled: status === 'authenticated' && !!session,
+  });
 
   return (
     <MainContainer>
@@ -70,7 +79,10 @@ const Navigations = () => {
                 <span className='nav-text'>{item.title}</span>
               </FlexBox>
 
-              <span>{item.count}</span>
+              <span className='nav-text'>
+                {item.title === 'Địa chỉ' && count?.addressCount}
+                {item.title === 'Đơn hàng' && count?.orderCount}
+              </span>
             </StyledNavLink>
           ))}
         </Fragment>
@@ -84,12 +96,11 @@ const linkList = [
     title: 'QUẢN LÝ TÀI KHOẢN',
     list: [
       { href: '/profile', title: 'Hồ sơ của tôi', icon: Person },
-      { href: '/profile/address', title: 'Địa chỉ', icon: Place, count: 16 },
+      { href: '/profile/address', title: 'Địa chỉ', icon: Place },
       {
-        href: '/profile/orders',
+        href: '/profile/order',
         title: 'Đơn hàng',
         icon: ShoppingBag,
-        count: 5,
       },
     ],
   },

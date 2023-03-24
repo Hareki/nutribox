@@ -112,12 +112,14 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
         </MenuItem>
       </Link>
 
-      <MenuItem>
-        <ListItemIcon>
-          <ReceiptLongIcon fontSize='small' />
-        </ListItemIcon>
-        <ListItemText>Đơn mua</ListItemText>
-      </MenuItem>
+      <Link href='/profile/order'>
+        <MenuItem>
+          <ListItemIcon>
+            <ReceiptLongIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText>Đơn mua</ListItemText>
+        </MenuItem>
+      </Link>
 
       <Divider />
 

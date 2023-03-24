@@ -1,7 +1,12 @@
 import { ShoppingBag } from '@mui/icons-material';
-import { Pagination } from '@mui/material';
-import type { GetStaticProps } from 'next';
+import { Pagination, Skeleton } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import type { GetServerSideProps } from 'next';
+import { getServerSession } from 'next-auth';
+import type { ReactElement } from 'react';
 import { Fragment } from 'react';
+
+import { authOptions } from '../../api/auth/[...nextauth]';
 
 import { H5 } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
@@ -9,23 +14,27 @@ import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import type Order from 'models/Order.model';
-import OrderRow from 'pages-sections/orders/OrderRow';
-import api from 'utils/__api__/orders';
+import OrderRow from 'pages-sections/profile/order/OrderRow';
+import apiCaller from 'utils/apiCallers/profile/order';
 
-type OrderProps = { orderList: Order[] };
+interface AddressProps {
+  sessionUserId: string;
+}
 
-function Orders({ orderList }: OrderProps) {
+function Order({ sessionUserId }: AddressProps): ReactElement {
+  const { data: orderList, isLoading } = useQuery({
+    queryKey: ['orders', sessionUserId],
+    queryFn: () => apiCaller.getOrders(sessionUserId),
+  });
+
   return (
     <Fragment>
-      {/* TITLE HEADER AREA */}
       <UserDashboardHeader
         title='Đơn hàng của tôi'
         icon={ShoppingBag}
         navigation={<CustomerDashboardNavigation />}
       />
 
-      {/* ORDER LIST AREA */}
       <TableRow
         elevation={0}
         sx={{
@@ -59,9 +68,21 @@ function Orders({ orderList }: OrderProps) {
         />
       </TableRow>
 
-      {orderList.map((order) => (
-        <OrderRow order={order} key={order.id} />
-      ))}
+      {isLoading
+        ? Array.from({ length: 4 }).map((_, index) => (
+            <Skeleton
+              key={index}
+              variant='rectangular'
+              animation='wave'
+              width='100%'
+              height={50}
+              sx={{
+                borderRadius: '8px',
+                my: '1rem',
+              }}
+            />
+          ))
+        : orderList.map((order) => <OrderRow order={order} key={order.id} />)}
 
       <FlexBox justifyContent='center' mt={5}>
         <Pagination
@@ -75,11 +96,18 @@ function Orders({ orderList }: OrderProps) {
   );
 }
 
-Orders.getLayout = getCustomerDashboardLayout;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const orderList = await api.getOrders();
-  return { props: { orderList } };
+  return { props: { sessionUserId: session.user.id } };
 };
-
-export default Orders;
+Order.getLayout = getCustomerDashboardLayout;
+export default Order;

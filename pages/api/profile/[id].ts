@@ -23,13 +23,10 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IAccount>>>({
 })
   .get(async (req, res) => {
     await connectToDB();
-    const { populate } = req.query;
 
     const id = req.query.id as string;
-    // const fakeId = 'someIdThatDoesNotExist' as string;
     const account = await AccountController.getOne({
       id,
-      populate: populate ? ['customerOrders', 'passwordReset'] : undefined,
     });
 
     res.status(StatusCodes.OK).json({

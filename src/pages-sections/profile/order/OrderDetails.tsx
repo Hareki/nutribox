@@ -4,16 +4,16 @@ import {
   Box,
   Button,
   Card,
-  Divider,
   Grid,
   Typography,
   styled,
 } from '@mui/material';
+import { useQueries } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
+import type { FC } from 'react';
 import { Fragment } from 'react';
 
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H5, H6, Paragraph } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
@@ -23,12 +23,11 @@ import PackageBox from 'components/icons/PackageBox';
 import TruckFilled from 'components/icons/TruckFilled';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import { getFullAddress } from 'helpers/address.helper';
 import useWindowSize from 'hooks/useWindowSize';
 import { formatCurrency } from 'lib';
-import type Order from 'models/Order.model';
-import api from 'utils/__api__/orders';
+import apiCaller from 'utils/apiCallers/product/[slug]';
 
-// styled components
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
   flexWrap: 'wrap',
   marginTop: '2rem',
@@ -44,12 +43,13 @@ const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
 
 type OrderStatus = 'Packaging' | 'Shipping' | 'Delivering' | 'Complete';
 
-// =============================================================
-type Props = { order: Order };
-// =============================================================
+type Props = {
+  accountId: string;
+  setOrderDetails: (order: ICustomerOrder) => void;
+  order: ICustomerOrder;
+};
 
-const OrderDetails: NextPage<Props> = ({ order }) => {
-  const router = useRouter();
+const OrderDetails: FC<Props> = ({ order, setOrderDetails }) => {
   const width = useWindowSize();
   const orderStatus: OrderStatus = 'Shipping';
   const orderStatusList = ['Packaging', 'Shipping', 'Delivering', 'Complete'];
@@ -58,21 +58,25 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
   const breakpoint = 350;
   const statusIndex = orderStatusList.indexOf(orderStatus);
 
-  // SECTION TITLE HEADER
+  const result = useQueries({
+    queries: order.items.map((item) => ({
+      queryKey: ['product', item.product.toString()],
+      queryFn: () => apiCaller.getProduct(item.product.toString()),
+    })),
+  });
+
   const HEADER_BUTTON = (
-    <Button color='primary' sx={{ bgcolor: 'primary.light', px: 4 }}>
-      Order Again
+    <Button
+      color='primary'
+      sx={{ bgcolor: 'primary.light', px: 4 }}
+      onClick={() => setOrderDetails(null)}
+    >
+      Quay lại
     </Button>
   );
 
-  // Show a loading state when the fallback is rendered
-  if (router.isFallback) {
-    return <h1>Loading...</h1>;
-  }
-
   return (
     <CustomerDashboardLayout>
-      {/* TITLE HEADER AREA */}
       <UserDashboardHeader
         icon={ShoppingBag}
         title='Order Details'
@@ -80,7 +84,6 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
         button={HEADER_BUTTON}
       />
 
-      {/* ORDER PROGRESS AREA */}
       <Card sx={{ p: '2rem 1.5rem', mb: '30px' }}>
         <StyledFlexbox>
           {stepIconList.map((Icon, index) => (
@@ -136,7 +139,6 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
         </FlexBox>
       </Card>
 
-      {/* ORDERED PRODUCT LIST */}
       <Card sx={{ p: 0, mb: '30px' }}>
         <TableRow
           sx={{
@@ -176,39 +178,45 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
         </TableRow>
 
         <Box py={1}>
-          {order.items.map((item, index) => (
-            <FlexBox
-              px={2}
-              py={1}
-              flexWrap='wrap'
-              alignItems='center'
-              key={index}
-            >
-              <FlexBox flex='2 2 260px' m={0.75} alignItems='center'>
-                <Avatar src={item.product_img} sx={{ height: 64, width: 64 }} />
-                <Box ml={2.5}>
-                  <H6 my='0px'>{item.product_name}</H6>
+          {result.map((item, index) => {
+            const product = item.data;
+            return (
+              <FlexBox
+                px={2}
+                py={1}
+                flexWrap='wrap'
+                alignItems='center'
+                key={index}
+              >
+                <FlexBox flex='2 2 260px' m={0.75} alignItems='center'>
+                  <Avatar
+                    src={product.imageUrls[0]}
+                    sx={{ height: 64, width: 64 }}
+                  />
+                  <Box ml={2.5}>
+                    <H6 my='0px'>{product.name}</H6>
 
+                    <Typography fontSize='14px' color='grey.600'>
+                      {formatCurrency(product.retailPrice)} x{' '}
+                      {order.items[index].quantity}
+                    </Typography>
+                  </Box>
+                </FlexBox>
+
+                <FlexBox flex='1 1 260px' m={0.75} alignItems='center'>
                   <Typography fontSize='14px' color='grey.600'>
-                    {formatCurrency(item.product_price)} x{' '}
-                    {item.product_quantity}
+                    Product properties: Black, L
                   </Typography>
-                </Box>
-              </FlexBox>
+                </FlexBox>
 
-              <FlexBox flex='1 1 260px' m={0.75} alignItems='center'>
-                <Typography fontSize='14px' color='grey.600'>
-                  Product properties: Black, L
-                </Typography>
+                <FlexBox flex='160px' m={0.75} alignItems='center'>
+                  <Button variant='text' color='primary'>
+                    <Typography fontSize='14px'>Write a Review</Typography>
+                  </Button>
+                </FlexBox>
               </FlexBox>
-
-              <FlexBox flex='160px' m={0.75} alignItems='center'>
-                <Button variant='text' color='primary'>
-                  <Typography fontSize='14px'>Write a Review</Typography>
-                </Button>
-              </FlexBox>
-            </FlexBox>
-          ))}
+            );
+          })}
         </Box>
       </Card>
 
@@ -221,7 +229,7 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
             </H5>
 
             <Paragraph fontSize={14} my={0}>
-              {order.shippingAddress}
+              {getFullAddress(order)}
             </Paragraph>
           </Card>
         </Grid>
@@ -232,57 +240,12 @@ const OrderDetails: NextPage<Props> = ({ order }) => {
               Total Summary
             </H5>
 
-            <FlexBetween mb={1}>
-              <Typography fontSize={14} color='grey.600'>
-                Subtotal:
-              </Typography>
-
-              <H6 my='0px'>{formatCurrency(order.totalPrice)}</H6>
-            </FlexBetween>
-
-            <FlexBetween mb={1}>
-              <Typography fontSize={14} color='grey.600'>
-                Shipping fee:
-              </Typography>
-
-              <H6 my='0px'>{formatCurrency(0)}</H6>
-            </FlexBetween>
-
-            <FlexBetween mb={1}>
-              <Typography fontSize={14} color='grey.600'>
-                Discount:
-              </Typography>
-
-              <H6 my='0px'>{formatCurrency(order.discount)}</H6>
-            </FlexBetween>
-
-            <Divider sx={{ mb: 1 }} />
-
-            <FlexBetween mb={2}>
-              <H6 my='0px'>Total</H6>
-              <H6 my='0px'>{formatCurrency(order.totalPrice)}</H6>
-            </FlexBetween>
-
             <Typography fontSize={14}>Paid by Credit/Debit Card</Typography>
           </Card>
         </Grid>
       </Grid>
     </CustomerDashboardLayout>
   );
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await api.getIds();
-
-  return {
-    paths: paths, // indicates that no page needs be created at build time
-    fallback: 'blocking', // indicates the type of fallback
-  };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const order = await api.getOrder(String(params.id));
-  return { props: { order } };
 };
 
 export default OrderDetails;

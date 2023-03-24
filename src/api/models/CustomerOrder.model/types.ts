@@ -14,11 +14,18 @@ export interface ICustomerOrder extends IAddress {
   account: Types.ObjectId; // IAccount
   status: Types.ObjectId; // IOrderStatus
 
-  createdAt: Date;
+  createdAt: string;
   phone: string;
   paid: boolean;
   note: string;
   profit: number;
+  total: number;
+
+  // have to be Date type for the schema, although when serializing to JSON, it will be string
+  estimatedDeliveryTime: Date | string;
+  estimatedDistance: number;
+
+  deliveredOn?: Date | string;
 }
 
 export interface ICustomerOrderInput

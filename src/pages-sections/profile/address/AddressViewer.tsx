@@ -7,8 +7,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps } from 'next';
 import { useSnackbar } from 'notistack';
+import type { FC } from 'react';
 import { useReducer, useState } from 'react';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
@@ -20,7 +21,7 @@ import { FlexRowCenter } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { getFullAddress } from 'helpers/address.helper';
 import api from 'utils/__api__/address';
-import apiCaller from 'utils/apiCallers/address';
+import apiCaller from 'utils/apiCallers/profile/address';
 
 type AddressViewerProps = {
   isLoading: boolean;
@@ -30,7 +31,7 @@ type AddressViewerProps = {
   setEditingAddress: (info: IAccountAddress) => void;
 };
 
-const AddressViewer: NextPage<AddressViewerProps> = ({
+const AddressViewer: FC<AddressViewerProps> = ({
   isLoading,
   accountId,
   addresses,

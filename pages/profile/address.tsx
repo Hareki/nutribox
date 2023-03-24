@@ -9,9 +9,9 @@ import { authOptions } from '../api/auth/[...nextauth]';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
-import AddressEditor from 'pages-sections/address/AddressEditor';
-import AddressViewer from 'pages-sections/address/AddressViewer';
-import apiCaller from 'utils/apiCallers/address';
+import AddressEditor from 'pages-sections/profile/address/AddressEditor';
+import AddressViewer from 'pages-sections/profile/address/AddressViewer';
+import apiCaller from 'utils/apiCallers/profile/address';
 
 interface AddressProps {
   sessionUserId: string;

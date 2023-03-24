@@ -38,8 +38,8 @@ import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
-import type { AddressAPI } from 'utils/apiCallers/address';
 import apiCaller from 'utils/apiCallers/checkout';
+import type { AddressAPI } from 'utils/apiCallers/profile/address';
 import { PREPARATION_TIME } from 'utils/constants';
 
 interface CartDetailsProps {
@@ -47,9 +47,17 @@ interface CartDetailsProps {
   account: IAccount;
 }
 
+interface EstimatedInfo {
+  heavyTraffic: boolean;
+  estimatedDuration: number;
+  estimatedDistance: number;
+  estimatedDeliveryTime: Date;
+}
+
 function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
   const addresses = account.addresses;
 
+  const [estimated, setEstimated] = useState<EstimatedInfo>();
   const [currentFullAddress, setCurrentFullAddress] = useState('');
   const [isEstimating, setIsEstimating] = useState(false);
   const [selectAddressDialogOpen, setSelectAddressDialogOpen] = useState(false);
@@ -74,6 +82,29 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     [cartList],
   );
 
+  useEffect(() => {
+    if (!currentFullAddress) return;
+
+    setIsEstimating(true);
+    apiCaller
+      .getDeliveryInfo(
+        currentFullAddress,
+        'Landmark 81 Skyscraper, Nguyễn Hữu Cảnh, Bình Thạnh, Thành phố Hồ Chí Minh, Vietnam',
+      )
+      .then((deliveryInfo) => {
+        setEstimated({
+          heavyTraffic: deliveryInfo.heavyTraffic,
+
+          estimatedDuration: deliveryInfo.durationInTraffic,
+          estimatedDistance: deliveryInfo.distance,
+          estimatedDeliveryTime: calculateEndTime(
+            PREPARATION_TIME + deliveryInfo.durationInTraffic,
+          ),
+        });
+        setIsEstimating(false);
+      });
+  }, [currentFullAddress]);
+
   const showDeliveryInfoConfirmation = async () => {
     if (
       !checkTime(dispatchInfo) ||
@@ -82,18 +113,13 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
       return;
     }
 
-    setIsEstimating(true);
-    const deliveryInfo = await apiCaller.getDeliveryInfo(
-      currentFullAddress,
-      'Landmark 81 Skyscraper, Nguyễn Hữu Cảnh, Bình Thạnh, Thành phố Hồ Chí Minh, Vietnam',
-    );
-    setIsEstimating(false);
+    const {
+      estimatedDistance,
+      estimatedDeliveryTime,
+      heavyTraffic: heavyInTraffic,
+    } = estimated;
 
-    if (!checkDistance(dispatchInfo, deliveryInfo.distance)) return;
-
-    const estimatedTime = formatDateTime(
-      calculateEndTime(PREPARATION_TIME + deliveryInfo.durationInTraffic),
-    );
+    if (!checkDistance(dispatchInfo, estimatedDistance)) return;
 
     const confirmContent = (
       <Fragment>
@@ -107,15 +133,16 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
           }}
         >
           <li>
-            Quãng đường:{' '}
-            <Span fontWeight={600}>{deliveryInfo.distance} km</Span>
+            Quãng đường: <Span fontWeight={600}>{estimatedDistance} km</Span>
           </li>
           <li>
             Thời gian giao hàng dự kiến:{' '}
-            <Span fontWeight={600}>{estimatedTime}</Span>
+            <Span fontWeight={600}>
+              {formatDateTime(estimatedDeliveryTime)}
+            </Span>
           </li>
         </ul>
-        {deliveryInfo.heavyTraffic && (
+        {heavyInTraffic && (
           <Paragraph color='grey.600' fontStyle='italic' mt={2} fontSize={13}>
             Lưu ý: Thời gian giao hàng lâu hơn thông thường do tình trạng giao
             thông ùn tắc, xin quý khách thông cảm vì sự bất tiện này.
@@ -148,12 +175,24 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
   const handleNextStep = () => {
     const address = transformFormikValueToAddress(values);
+    const { estimatedDeliveryTime, estimatedDistance } = estimated;
 
     const cartItems = cartList;
     const note = values.note;
     const phone = values.phone;
 
-    nextStep({ cartItems, note, phone, address, total }, 1);
+    nextStep(
+      {
+        cartItems,
+        note,
+        phone,
+        address,
+        total,
+        estimatedDeliveryTime,
+        estimatedDistance,
+      },
+      1,
+    );
   };
 
   const {

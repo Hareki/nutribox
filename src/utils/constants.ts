@@ -29,3 +29,13 @@ export const OrderStatus = Object.freeze({
   Delivered: { id: '641ae3cd18e353f785a7f699', name: 'Giao thành công' },
   Cancelled: { id: '641ae3c218e353f785a7f698', name: 'Đã hủy đơn' },
 });
+
+export const AllStatusIdArray = Object.freeze([
+  OrderStatus.Pending.id, // 0
+  OrderStatus.Processing.id, // 1
+  OrderStatus.Delivering.id, // 2
+  OrderStatus.Delivered.id, // 3
+  OrderStatus.Cancelled.id, // 4
+]);
+
+export const CancelIndexThreshHold = 1;

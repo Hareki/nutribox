@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import { authOptions } from '../api/auth/[...nextauth]';
 
+import { getAccount } from 'api/base/server-side-getters';
 import type { IAccount } from 'api/models/Account.model/types';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
@@ -47,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const initialAccount = await apiCaller.getAccount(session.user.id);
+  const initialAccount = await getAccount(session.user.id);
   return { props: { initialAccount } };
 };
 

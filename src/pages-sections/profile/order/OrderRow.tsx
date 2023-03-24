@@ -1,32 +1,41 @@
 import { East } from '@mui/icons-material';
 import { Box, Chip, IconButton, Typography } from '@mui/material';
-import { format } from 'date-fns';
 import Link from 'next/link';
 import type { FC } from 'react';
+import { useMemo } from 'react';
 
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H5 } from 'components/abstract/Typography';
 import TableRow from 'components/data-table/TableRow';
-import { formatCurrency } from 'lib';
-import type Order from 'models/Order.model';
+import { getOrderStatusName } from 'helpers/order.helper';
+import { formatCurrency, formatDate } from 'lib';
+import { OrderStatus } from 'utils/constants';
 
-// =================================================
-type OrderRowProps = { order: Order };
-// =================================================
-
+type OrderRowProps = {
+  order: ICustomerOrder;
+};
 const OrderRow: FC<OrderRowProps> = ({ order }) => {
-  const getColor = (status: string) => {
-    switch (status) {
-      case 'Pending':
+  const statusId = useMemo(() => {
+    return order.status.toString();
+  }, [order.status]);
+  const statusName = getOrderStatusName(statusId);
+
+  const getColor = () => {
+    switch (statusId) {
+      case OrderStatus.Pending.name:
         return 'secondary';
 
-      case 'Processing':
+      case OrderStatus.Processing.name:
         return 'secondary';
 
-      case 'Delivered':
+      case OrderStatus.Delivered.name:
         return 'success';
 
-      case 'Cancelled':
+      case OrderStatus.Cancelled.name:
         return 'error';
+
+      case OrderStatus.Delivering.name:
+        return 'paste';
 
       default:
         return '';
@@ -34,35 +43,31 @@ const OrderRow: FC<OrderRowProps> = ({ order }) => {
   };
 
   return (
-    <Link href={`/orders/${order.id}`} passHref>
+    <Link href={`/profile/order/${order.id}`} passHref>
       <TableRow sx={{ my: '1rem', padding: '6px 18px' }}>
         <H5 m={0.75} textAlign='left'>
-          {order.id.split('-')[0]}
+          {order.id.slice(-6)}
         </H5>
 
         <Box m={0.75}>
           <Chip
             size='small'
-            label={order.status}
+            label={statusName}
             sx={{
               p: '0.25rem 0.5rem',
               fontSize: 12,
-              color: getColor(order.status)
-                ? `${getColor(order.status)}.900`
-                : 'inherit',
-              backgroundColor: getColor(order.status)
-                ? `${getColor(order.status)}.100`
-                : 'none',
+              color: getColor() ? `${getColor()}.900` : 'inherit',
+              backgroundColor: getColor() ? `${getColor()}.100` : 'none',
             }}
           />
         </Box>
 
         <Typography className='pre' m={0.75} textAlign='left'>
-          {format(new Date(order.createdAt), 'MMM dd, yyyy')}
+          {formatDate(order.createdAt)}
         </Typography>
 
         <Typography m={0.75} textAlign='left'>
-          {formatCurrency(order.totalPrice)}
+          {formatCurrency(order.total)}
         </Typography>
 
         <Typography
@@ -74,14 +79,7 @@ const OrderRow: FC<OrderRowProps> = ({ order }) => {
           }}
         >
           <IconButton>
-            <East
-              fontSize='small'
-              color='inherit'
-              sx={{
-                transform: ({ direction }) =>
-                  `rotate(${direction === 'rtl' ? '180deg' : '0deg'})`,
-              }}
-            />
+            <East fontSize='small' color='inherit' />
           </IconButton>
         </Typography>
       </TableRow>

@@ -1,4 +1,4 @@
-import type { UpdateAccountRequestBody } from '../../../pages/api/profile/[id]';
+import type { UpdateAccountRequestBody } from '../../../../pages/api/profile/[id]';
 
 import type { IAccount } from 'api/models/Account.model/types';
 import axiosInstance from 'utils/axiosInstance';

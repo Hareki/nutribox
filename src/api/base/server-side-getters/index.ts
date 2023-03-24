@@ -1,3 +1,4 @@
+import AccountController from 'api/controllers/Account.controller';
 import ProductController from 'api/controllers/Product.controller';
 import ProductCategoryController from 'api/controllers/ProductCategory.controller';
 import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
@@ -85,4 +86,12 @@ export async function getProductSlugs() {
 
   const slugs = products.map((product) => product.slug);
   return slugs;
+}
+
+export async function getAccount(accountId: string) {
+  const account = await AccountController.getOne({
+    id: accountId,
+  });
+
+  return account;
 }

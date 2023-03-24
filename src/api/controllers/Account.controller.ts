@@ -29,6 +29,7 @@ import type {
   IAccount,
   IPopulatedCartItemsAccount,
 } from 'api/models/Account.model/types';
+import CustomerOrderModel from 'api/models/CustomerOrder.model';
 import ProductModel from 'api/models/Product.model';
 import type { CartState } from 'hooks/global-states/useCart';
 
@@ -243,14 +244,24 @@ const addCustomerOrder = async (
   customerOrderId: string,
   session: ClientSession,
 ): Promise<void> => {
-  console.log(
-    'file: Account.controller.ts:246 - customerOrderId:',
-    customerOrderId,
-  );
   const account = await AccountModel().findById(accountId);
   account.customerOrders.push(new Types.ObjectId(customerOrderId));
   // Can't use pre/pose save hook to update this, because it will conflict with the session
   await account.save({ session });
+};
+
+const countAddress = async (accountId: string): Promise<number> => {
+  const account = await AccountModel().findById(accountId).exec();
+  const count = account.addresses.length;
+  return count;
+};
+
+const countOrder = async (accountId: string): Promise<number> => {
+  const count = await CustomerOrderModel()
+    .find({ account: accountId })
+    .countDocuments();
+
+  return count;
 };
 
 const AccountController = {
@@ -269,5 +280,7 @@ const AccountController = {
   setDefaultAddress,
   deleteAddress,
   addCustomerOrder,
+  countAddress,
+  countOrder,
 };
 export default AccountController;
