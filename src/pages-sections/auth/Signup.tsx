@@ -50,7 +50,7 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
       <form onSubmit={handleSubmit}>
         <MuiImage
-          src='/assets/images/bazaar-black-sm.svg'
+          src='/assets/images/logo-sm.svg'
           sx={{ m: 'auto', height: 50 }}
         />
 

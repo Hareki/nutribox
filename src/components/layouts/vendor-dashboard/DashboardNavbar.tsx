@@ -1,4 +1,3 @@
-import { Search } from '@mui/icons-material';
 import type { Theme } from '@mui/material';
 import { Box, Button, styled, useMediaQuery } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -8,9 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
-import AccountPopover from './popovers/AccountPopover';
-import NotificationsPopover from './popovers/NoficationPopover';
-
+import AccountMenu from 'components/AccountMenu';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import Globe from 'components/icons/Globe';
 import Toggle from 'components/icons/Toggle';
@@ -61,11 +58,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   [theme.breakpoints.down('md')]: { display: 'none' },
 }));
 
-// ===================================================================
 type DashboardNavbarProps = {
   handleDrawerToggle: () => void;
 };
-// ===================================================================
 
 const DashboardNavbar: FC<DashboardNavbarProps> = ({ handleDrawerToggle }) => {
   const router = useRouter();
@@ -85,19 +80,13 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({ handleDrawerToggle }) => {
             onClick={() => router.push('/')}
             startIcon={<Globe sx={{ color: 'grey.900' }} />}
           >
-            Browse Website
+            Xem trang bán hàng
           </CustomButton>
 
           <Box flexGrow={1} />
 
           <FlexBox alignItems='center' gap={2}>
-            <StyledInputBase
-              placeholder='Search anything...'
-              startAdornment={<Search sx={{ color: 'grey.500', mr: 1 }} />}
-            />
-
-            <NotificationsPopover />
-            <AccountPopover />
+            <AccountMenu />
           </FlexBox>
         </StyledToolBar>
       </Container>

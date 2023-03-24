@@ -1,18 +1,5 @@
-import { Clear, Logout, PersonOutline } from '@mui/icons-material';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import {
-  Avatar,
-  Badge,
-  Box,
-  Divider,
-  Drawer,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  styled,
-} from '@mui/material';
+import { Clear } from '@mui/icons-material';
+import { Badge, Box, Drawer, styled } from '@mui/material';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
@@ -20,13 +7,14 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import type { FC, ReactElement } from 'react';
 import { Fragment, useState } from 'react';
 
 import MobileMenu from '../navbar/MobileMenu';
 
 import { Paragraph } from 'components/abstract/Typography';
+import AccountMenu from 'components/AccountMenu';
 import CartDrawer from 'components/cart-drawer/CartDrawer';
 import Image from 'components/common/input/MuiImage';
 import { FlexBetween, FlexBox } from 'components/flex-box';
@@ -78,7 +66,10 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
 
   const toggleCartDrawer = () => setSidenavOpen(!sidenavOpen);
   const toggleSearchBar = () => setSearchBarOpen(!searchBarOpen);
-  const togglePopover = () => setUserMenuOpen(!userMenuOpen);
+  const togglePopover = () => {
+    console.log('toggle');
+    setUserMenuOpen(!userMenuOpen);
+  };
 
   const { data: session, status } = useSession();
   // console.log('file: Header.tsx:87 - session:', session);
@@ -86,51 +77,6 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const isCheckingOut = router.pathname === '/checkout';
 
   const user = session?.user;
-
-  const UserMenu = (
-    <Menu
-      open={isAuthenticated && userMenuOpen}
-      anchorEl={isAuthenticated && document.getElementById('user-button')}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      sx={{
-        zIndex: 9999,
-      }}
-    >
-      <Link href='/profile'>
-        <MenuItem>
-          <ListItemIcon>
-            <PermIdentityIcon />
-          </ListItemIcon>
-          Tài khoản của tôi
-        </MenuItem>
-      </Link>
-
-      <Link href='/profile/order'>
-        <MenuItem>
-          <ListItemIcon>
-            <ReceiptLongIcon fontSize='small' />
-          </ListItemIcon>
-          <ListItemText>Đơn mua</ListItemText>
-        </MenuItem>
-      </Link>
-
-      <Divider />
-
-      <MenuItem onClick={() => signOut()}>
-        <ListItemIcon>
-          <Logout fontSize='small' />
-        </ListItemIcon>
-        Đăng xuất
-      </MenuItem>
-    </Menu>
-  );
 
   // Login Dialog and Cart Drawer
   const DialogAndDrawer = (
@@ -162,11 +108,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
 
             {/* MIDDLE CONTENT - LOGO */}
             <Link href='/'>
-              <Image
-                height={44}
-                src='/assets/images/bazaar-black-sm.svg'
-                alt='logo'
-              />
+              <Image height={44} src='/assets/images/logo-sm.svg' alt='logo' />
             </Link>
 
             {/* RIGHT CONTENT - LOGIN, CART, SEARCH BUTTON */}
@@ -175,17 +117,8 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
                 <Icon.Search sx={ICON_STYLE} />
               </Box>
 
-              <Box
-                component={IconButton}
-                onClick={() => {
-                  if (isAuthenticated) {
-                    togglePopover();
-                  } else {
-                    setLoginDialogOpen(true);
-                  }
-                }}
-              >
-                <Icon.User sx={ICON_STYLE} />
+              <Box>
+                <AccountMenu />
               </Box>
 
               <Box component={IconButton} onClick={toggleCartDrawer}>
@@ -230,7 +163,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
         {/* LEFT CONTENT - LOGO AND CATEGORY */}
         <FlexBox mr={2} minWidth='170px' alignItems='center'>
           <Link href='/'>
-            <Image height={44} src='/assets/images/logo2.svg' alt='logo' />
+            <Image height={44} src='/assets/images/logo.svg' alt='logo' />
           </Link>
         </FlexBox>
 
@@ -241,35 +174,8 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
 
         {/* LOGIN AND CART BUTTON */}
         <FlexBox gap={1.5} alignItems='center'>
-          <Box
-            id='user-button'
-            component={IconButton}
-            p={isAuthenticated ? 0 : 1.25}
-            bgcolor='grey.200'
-            onClick={() => {
-              if (isAuthenticated) {
-                togglePopover();
-              } else {
-                setLoginDialogOpen(true);
-              }
-            }}
-          >
-            {isAuthenticated ? (
-              <>
-                <Avatar
-                  alt={user.fullName}
-                  src={user.avatarUrl}
-                  sx={{
-                    '& .MuiAvatar-img': {
-                      objectFit: 'fill',
-                    },
-                  }}
-                />
-                {UserMenu}
-              </>
-            ) : (
-              <PersonOutline />
-            )}
+          <Box>
+            <AccountMenu />
           </Box>
 
           {!isCheckingOut && (

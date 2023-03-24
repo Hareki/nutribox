@@ -48,6 +48,8 @@ const getSessionUser = async (
       id: account.id,
       avatarUrl: account.avatarUrl,
       email: account.email,
+      firstName: account.firstName,
+      lastName: account.lastName,
       fullName: account.fullName,
       role: account.role,
     },

@@ -12,12 +12,21 @@ declare module 'next-auth' {
   // }
 
   interface Session {
-    user: Pick<IAccount, 'id' | 'fullName' | 'email' | 'avatarUrl' | 'role'>;
+    user: Pick<
+      IAccount,
+      | 'id'
+      | 'fullName'
+      | 'firstName'
+      | 'lastName'
+      | 'email'
+      | 'avatarUrl'
+      | 'role'
+    >;
   }
 
   interface User
     extends Pick<
-    IAccount,
-    'id' | 'fullName' | 'email' | 'avatarUrl' | 'role'
+      IAccount,
+      'id' | 'fullName' | 'email' | 'avatarUrl' | 'role'
     > {}
 }

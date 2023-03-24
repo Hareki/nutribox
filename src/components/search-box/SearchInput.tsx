@@ -1,14 +1,7 @@
 import { Box, Button, MenuItem, TextField } from '@mui/material';
 import Link from 'next/link';
-import type {
-  ChangeEvent,
-  FC } from 'react';
-import {
-  useEffect,
-  useRef,
-  useState,
-  useTransition,
-} from 'react';
+import type { ChangeEvent, FC } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 
 import { SearchOutlinedIcon, SearchResultCard } from './styled';
 
@@ -21,7 +14,7 @@ const SearchInput: FC = () => {
 
   const getProducts = async (searchText: string) => {
     const data = await api.searchProducts(searchText);
-    setResultList(data);
+    // setResultList(data);
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +52,7 @@ const SearchInput: FC = () => {
             paddingRight: 0,
             borderRadius: 300,
             color: 'grey.700',
-            overflow: 'hidden',
+            // overflow: 'hidden',
             '&:hover .MuiOutlinedInput-notchedOutline': {
               borderColor: 'primary.main',
             },

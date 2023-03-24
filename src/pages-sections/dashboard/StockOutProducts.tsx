@@ -22,10 +22,10 @@ const StockOutProducts: FC<StockOutProductsProps> = ({ data }) => {
   return (
     <Card sx={{ height: '100%' }}>
       <FlexBetween px={3} py={2.5}>
-        <H5>Stock Out Products</H5>
+        <H5>Các sản phẩm sắp hết hàng</H5>
 
-        <Button size='small' color='info' variant='outlined'>
-          All Products
+        <Button size='small' color='primary' variant='outlined'>
+          Tất cả sản phẩm
         </Button>
       </FlexBetween>
 

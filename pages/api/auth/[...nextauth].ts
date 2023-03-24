@@ -56,6 +56,8 @@ export const authOptions: AuthOptions = {
         // by manually add them at the session callback
         const user = {
           id: account.id,
+          firstName: account.firstName,
+          lastName: account.lastName,
           fullName: account.fullName,
           email: account.email,
           avatarUrl: account.avatarUrl,
