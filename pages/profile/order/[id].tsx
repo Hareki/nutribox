@@ -44,7 +44,7 @@ import { getOrderStatusName } from 'helpers/order.helper';
 import { formatCurrency, formatDateTime } from 'lib';
 import productApiCaller from 'utils/apiCallers/product/[slug]';
 import orderApiCaller from 'utils/apiCallers/profile/order';
-import { AllStatusIdArray } from 'utils/constants';
+import { AllStatusIdArray, CancelIndexThreshHold } from 'utils/constants';
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
   flexWrap: 'wrap',
   marginTop: '2rem',
@@ -88,6 +88,7 @@ function OrderDetails({ initialOrder, sessionUserId }: Props) {
 
   const statusIndex = AllStatusIdArray.indexOf(order.status.toString());
   const isCancel = statusIndex === cancelIndex;
+  const canCancel = statusIndex <= CancelIndexThreshHold;
 
   let iconList = stepIconList;
   if (statusIndex === cancelIndex) {
@@ -338,7 +339,7 @@ function OrderDetails({ initialOrder, sessionUserId }: Props) {
             </Paragraph>
           </Card>
         </Grid>
-        {!isCancel && (
+        {!isCancel && canCancel && (
           <LoadingButton
             onClick={() =>
               dispatchConfirm({
