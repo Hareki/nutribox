@@ -6,8 +6,8 @@ import {
   useQueries,
   useQuery,
 } from '@tanstack/react-query';
-import type { GetStaticProps, NextPage } from 'next';
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import type { GetStaticProps } from 'next';
+import { useCallback, useEffect, useState, useMemo, Fragment } from 'react';
 // Footer1
 
 import {
@@ -23,7 +23,7 @@ import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 // ShopLayout2
 import SEO from 'components/abstract/SEO';
 import { Footer } from 'components/common/layout/footer';
-import ShopLayout1 from 'components/layouts/ShopLayout1';
+import { getPageLayout } from 'components/layouts/PageLayout';
 // MobileNavigationBar2
 import { MobileNavigationBar } from 'components/mobile-navigation';
 import CategoryNavbar from 'components/page-sidenav/CategoryNavbar';
@@ -58,7 +58,9 @@ type HomePageProps = {
   testimonials: any[];
 };
 
-const HomePage: NextPage<HomePageProps> = (props) => {
+HomePage.getLayout = getPageLayout;
+
+function HomePage(props: HomePageProps) {
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
   const [selectedCategoryName, setSelectedCategoryName] = useState('');
   const [filterProducts, setFilterProducts] = useState<IUpeProduct[]>([]);
@@ -164,64 +166,62 @@ const HomePage: NextPage<HomePageProps> = (props) => {
   );
 
   return (
-    <>
-      <ShopLayout1 showNavbar={false} showTopbar={false}>
-        <SEO title='Trang chủ' />
-        <HeroSection />
-        <ServicesSection services={props.serviceList} />
+    <Fragment>
+      <SEO title='Trang chủ' />
+      <HeroSection />
+      <ServicesSection services={props.serviceList} />
 
-        {/* SIDEBAR WITH OTHER CONTENTS */}
-        <SideNavContainer
-          sideNavBottomOffset={sideNavBottomOffset}
-          SideNav={SideNav}
-        >
-          <Stack id='main-content' spacing={6} mt={2} mb={6}>
-            <div id='products-section'>
-              {selectedCategoryId ? (
-                <AllProducts
-                  isLoading={isLoading}
-                  products={filterProducts}
-                  title={selectedCategoryName}
+      {/* SIDEBAR WITH OTHER CONTENTS */}
+      <SideNavContainer
+        sideNavBottomOffset={sideNavBottomOffset}
+        SideNav={SideNav}
+      >
+        <Stack id='main-content' spacing={6} mt={2} mb={6}>
+          <div id='products-section'>
+            {selectedCategoryId ? (
+              <AllProducts
+                isLoading={isLoading}
+                products={filterProducts}
+                title={selectedCategoryName}
+              />
+            ) : (
+              <>
+                <ProductCarousel
+                  title='Các sản phẩm mới'
+                  subtitle='Trải nghiệm thử các sản phẩm mới đến từ Nutribox!'
+                  products={newProducts}
                 />
-              ) : (
-                <>
-                  <ProductCarousel
-                    title='Các sản phẩm mới'
-                    subtitle='Trải nghiệm thử các sản phẩm mới đến từ Nutribox!'
-                    products={newProducts}
-                  />
 
-                  <ProductCarousel
-                    title='Các sản phẩm bán chạy'
-                    subtitle='Khám phá các sản phẩm được nhiều khách hàng săn đón!'
-                    products={hotProducts}
-                  />
+                <ProductCarousel
+                  title='Các sản phẩm bán chạy'
+                  subtitle='Khám phá các sản phẩm được nhiều khách hàng săn đón!'
+                  products={hotProducts}
+                />
 
-                  <AllProducts
-                    products={allProducts}
-                    pagination={{
-                      fetchNextPage,
-                      hasNextPage,
-                      isFetchingNextPage,
-                    }}
-                  />
-                </>
-              )}
-            </div>
-            <TestimonialsSection testimonials={props.testimonials} />
-          </Stack>
-        </SideNavContainer>
-        <Footer />
+                <AllProducts
+                  products={allProducts}
+                  pagination={{
+                    fetchNextPage,
+                    hasNextPage,
+                    isFetchingNextPage,
+                  }}
+                />
+              </>
+            )}
+          </div>
+          <TestimonialsSection testimonials={props.testimonials} />
+        </Stack>
+      </SideNavContainer>
+      <Footer />
 
-        {/* MOBILE NAVIGATION WITH SIDE NAVBAR */}
-        <MobileNavigationBar>
-          <CategoryNavbar navList={categoryNavigation} />
-        </MobileNavigationBar>
-        <LoginDialog />
-      </ShopLayout1>
-    </>
+      {/* MOBILE NAVIGATION WITH SIDE NAVBAR */}
+      <MobileNavigationBar>
+        <CategoryNavbar navList={categoryNavigation} />
+      </MobileNavigationBar>
+      <LoginDialog />
+    </Fragment>
   );
-};
+}
 
 export const getStaticProps: GetStaticProps = async () => {
   await connectToDB();

@@ -1,7 +1,7 @@
 // Shop Layout 2 Previously
 import { Box } from '@mui/material';
 import type { FC, ReactNode } from 'react';
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment } from 'react';
 
 import StickyScroll from 'components/abstract/StickyScroll';
 import Header from 'components/common/layout/header/Header';
@@ -15,21 +15,18 @@ import SearchInput from 'components/search-box/SearchInput';
  */
 
 // =======================================================
-type ShopLayout1Props = {
+type ShopLayoutProps = {
   children: ReactNode;
   showNavbar?: boolean;
   showTopbar?: boolean;
 };
 // =======================================================
 
-const ShopLayout1: FC<ShopLayout1Props> = ({
+const ShopLayout: FC<ShopLayoutProps> = ({
   children,
   showTopbar = true,
   showNavbar = true,
 }) => {
-  const [isFixed, setIsFixed] = useState(false);
-  const toggleIsFixed = useCallback((fixed: boolean) => setIsFixed(fixed), []);
-
   return (
     <Fragment>
       {/* TOPBAR */}
@@ -51,4 +48,4 @@ const ShopLayout1: FC<ShopLayout1Props> = ({
   );
 };
 
-export default ShopLayout1;
+export default ShopLayout;

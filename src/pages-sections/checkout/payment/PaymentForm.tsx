@@ -34,14 +34,12 @@ interface PaymentFormProps {
   completeOrder: (data: Step2Data) => void;
   account: IAccount;
   isLoading: boolean;
-  redirecting: boolean;
 }
 const PaymentForm: FC<PaymentFormProps> = ({
   prevStep,
   completeOrder,
   account,
   isLoading,
-  redirecting,
 }) => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
 
@@ -242,7 +240,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
       <Grid container spacing={7}>
         <Grid item sm={6} xs={12}>
           <Button
-            disabled={redirecting}
+            disabled={isLoading}
             variant='outlined'
             color='primary'
             type='button'
@@ -255,7 +253,6 @@ const PaymentForm: FC<PaymentFormProps> = ({
 
         <Grid item sm={6} xs={12}>
           <LoadingButton
-            disabled={redirecting}
             onClick={() => handleCheckout()}
             loading={isLoading}
             variant='contained'
@@ -263,7 +260,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
             type='submit'
             fullWidth
           >
-            {redirecting ? 'Đang chuyển hướng...' : 'Thanh toán'}
+            Thanh toán
           </LoadingButton>
         </Grid>
       </Grid>

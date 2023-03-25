@@ -16,6 +16,7 @@ import SEO from 'components/abstract/SEO';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
 import CartDetails from 'pages-sections/checkout/cart-details';
+import OrderCompleted from 'pages-sections/checkout/order-completed';
 import Payment from 'pages-sections/checkout/payment';
 
 Checkout.getLayout = getPageLayout;
@@ -46,9 +47,13 @@ function Checkout({ initialAccount }: CheckoutProps): ReactElement {
   const [selectedStep, setSelectedStep] = useState(1);
   const [step1Data, setStep1Data] = useState<Step1Data>();
 
-  const nextStep = (data: StepData, currentStep: number) => {
+  const nextStep = (data: StepData | undefined, currentStep: number) => {
     if (currentStep === 1) {
       setStep1Data(data as Step1Data);
+      setSelectedStep(currentStep + 1);
+      return;
+    }
+    if (currentStep === 2) {
       setSelectedStep(currentStep + 1);
     }
   };
@@ -74,9 +79,12 @@ function Checkout({ initialAccount }: CheckoutProps): ReactElement {
           <Payment
             step1Data={step1Data}
             prevStep={prevStep}
+            nextStep={nextStep}
             account={initialAccount}
           />
         )}
+
+        {selectedStep === 3 && <OrderCompleted />}
       </Container>
     </Fragment>
   );

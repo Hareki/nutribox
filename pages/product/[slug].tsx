@@ -1,7 +1,6 @@
 import { Container, styled, Tabs } from '@mui/material';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
+import { Fragment } from 'react';
 
 import {
   getProduct,
@@ -14,7 +13,7 @@ import type { IUpeProduct } from 'api/models/Product.model/types';
 import SEO from 'components/abstract/SEO';
 import { H2 } from 'components/abstract/Typography';
 import { Footer } from 'components/common/layout/footer';
-import ShopLayout1 from 'components/layouts/ShopLayout1';
+import { getPageLayout } from 'components/layouts/PageLayout';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
 import { extractIdFromSlug } from 'helpers/product.helper';
@@ -33,40 +32,33 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   },
 }));
 
-// ===============================================================
 type ProductDetailsProps = {
   product: IUpeProduct;
   relatedProducts: IUpeProduct[];
 };
-// ===============================================================
 
-const ProductDetails: FC<ProductDetailsProps> = (props) => {
+ProductDetails.getLayout = getPageLayout;
+
+function ProductDetails(props: ProductDetailsProps) {
   const { product, relatedProducts } = props;
 
-  const router = useRouter();
-
-  // Show a loading state when the fallback is rendered
-  if (router.isFallback) {
-    return <h1>Loading...</h1>;
-  }
-
   return (
-    <ShopLayout1 showTopbar={false} showNavbar={false}>
+    <Fragment>
       <SEO title={product.name} />
       <Container sx={{ my: 5 }}>
         {product ? (
           <ProductIntro product={product} sx={{ mb: 10 }} />
         ) : (
-          <H2>Loading...</H2>
+          <H2>Đang tải...</H2>
         )}
 
         <RelatedProductsSection products={relatedProducts} />
       </Container>
       <Footer />
       <LoginDialog />
-    </ShopLayout1>
+    </Fragment>
   );
-};
+}
 
 export const getStaticPaths: GetStaticPaths = async () => {
   await connectToDB();

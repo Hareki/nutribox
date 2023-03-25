@@ -1,6 +1,6 @@
 import type { ReactNode, FC, ReactElement } from 'react';
 
-import ShopLayout1 from './ShopLayout1';
+import ShopLayout from './ShopLayout';
 
 import { Footer } from 'components/common/layout/footer';
 
@@ -11,10 +11,10 @@ export const getPageLayout = (page: ReactElement) => (
 type Props = { children: ReactNode };
 const PageLayout: FC<Props> = ({ children }) => {
   return (
-    <ShopLayout1 showNavbar={false} showTopbar={false}>
+    <ShopLayout showNavbar={false} showTopbar={false}>
       {children}
       <Footer />
-    </ShopLayout1>
+    </ShopLayout>
   );
 };
 

@@ -1,9 +1,6 @@
 import { Grid } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
-import { useState } from 'react';
 
 import type { CheckoutRequestBody } from '../../../../pages/api/checkout';
 import type { Step1Data, Step2Data } from '../../../../pages/checkout';
@@ -24,6 +21,7 @@ Payment.getLayout = function getLayout(page: ReactElement) {
 interface PaymentProps {
   step1Data: Step1Data;
   prevStep: (currentStep: number) => void;
+  nextStep: (data: undefined, currentStep: number) => void;
   account: IAccount;
 }
 
@@ -44,11 +42,13 @@ const convertDataToRequestBody = (input: ConvertInput): CheckoutRequestBody => {
   return requestBody;
 };
 
-function Payment({ account, prevStep, step1Data }: PaymentProps): ReactElement {
+function Payment({
+  account,
+  prevStep,
+  nextStep,
+  step1Data,
+}: PaymentProps): ReactElement {
   const queryClient = useQueryClient();
-  const router = useRouter();
-  const [redirecting, setRedirecting] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
 
   const { mutate: completeOrder, isLoading } = useMutation<
     ICustomerOrder,
@@ -65,9 +65,7 @@ function Payment({ account, prevStep, step1Data }: PaymentProps): ReactElement {
     },
     onSuccess: () => {
       queryClient.refetchQueries(['cart', account.id]);
-      enqueueSnackbar('Đặt hàng thành công', { variant: 'success' });
-      setRedirecting(true);
-      router.push('/profile/order');
+      nextStep(undefined, 2);
     },
   });
   return (
@@ -78,7 +76,6 @@ function Payment({ account, prevStep, step1Data }: PaymentProps): ReactElement {
           completeOrder={completeOrder}
           account={account}
           isLoading={isLoading}
-          redirecting={redirecting}
         />
       </Grid>
 
