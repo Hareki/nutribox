@@ -19,12 +19,12 @@ const StyledBox = styled(Box, {
 type Props = {
   ellipsis?: any;
   textTransform?:
-  | 'none'
-  | 'capitalize'
-  | 'uppercase'
-  | 'lowercase'
-  | 'initial'
-  | 'inherit';
+    | 'none'
+    | 'capitalize'
+    | 'uppercase'
+    | 'lowercase'
+    | 'initial'
+    | 'inherit';
 };
 // ============================================
 
@@ -71,7 +71,7 @@ export const H2: FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize='25px'
-      fontWeight='700'
+      fontWeight='600'
       lineHeight='1.5'
       {...props}
     >
@@ -93,7 +93,7 @@ export const H3: FC<BoxProps & Props> = ({
       mt={0}
       component='h3'
       fontSize='20px'
-      fontWeight='700'
+      fontWeight='600'
       lineHeight='1.5'
       ellipsis={ellipsis ? 1 : undefined}
       textTransformStyle={textTransform}
@@ -148,7 +148,7 @@ export const H5: FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize='16px'
-      fontWeight='600'
+      fontWeight='500'
       lineHeight='1.5'
       {...props}
     >
@@ -175,7 +175,7 @@ export const H6: FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize='14px'
-      fontWeight='600'
+      fontWeight='500'
       lineHeight='1.5'
       {...props}
     >

@@ -4,7 +4,8 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/databaseConnection';
-import ExpirationModel from 'api/models/Expiration.model';
+import SupplierModel from 'api/models/Supplier.model';
+import type { ISupplierInput } from 'api/models/Supplier.model/types';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,
@@ -12,22 +13,89 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 }).get(async (req, res) => {
   await connectToDB();
 
-  // await ExpirationModel().findOneAndDelete({ _id: '64198eb215b75e0b2cd4c278' });
-  // await ExpirationModel().findOneAndDelete({ _id: '64198eb215b75e0b2cd4c279' });
-  // await ExpirationModel().findOneAndDelete({ _id: '64198eb215b75e0b2cd4c277' });
+  const dataArray: ISupplierInput[] = [
+    {
+      name: 'Supplier 1',
+      phone: '033-875-8008',
+      email: 'supplier1@gmail.com',
 
-  const expDoc = await ExpirationModel().findById('64198efa15b75e0b2cd4c2aa');
-  expDoc.quantity = 5;
-  await expDoc.save();
+      province: 'TP. Hồ Chí Minh',
+      district: 'Quận 1',
+      ward: 'Phường Tân Định',
 
-  const expDoc2 = await ExpirationModel().findById('64198efa15b75e0b2cd4c2aa');
-  console.log(expDoc2);
-  // console.log('=========================');
-  // console.log('file: test.ts:53 - expirations:', expirations);
+      provinceId: 79,
+      districtId: 760,
+      wardId: 26734,
+
+      streetAddress: '12/12 Đường 49',
+    },
+    {
+      name: 'Supplier 2',
+      phone: '033-831-1008',
+      email: 'supplier2@gmail.com',
+
+      province: 'TP. Hồ Chí Minh',
+      district: 'Quận 1',
+      ward: 'Phường Đa Kao"',
+
+      provinceId: 79,
+      districtId: 760,
+      wardId: 26737,
+
+      streetAddress: '12/12 Đường 49',
+    },
+    {
+      name: 'Supplier 3',
+      phone: '033-835-8862',
+      email: 'supplier3@gmail.com',
+
+      province: 'TP. Hồ Chí Minh',
+      district: 'Quận 1',
+      ward: 'Phường Bến Nghé',
+
+      provinceId: 79,
+      districtId: 760,
+      wardId: 26740,
+
+      streetAddress: '12/12 Đường 49',
+    },
+    {
+      name: 'Supplier 4',
+      phone: '033-865-8008',
+      email: 'supplier4@gmail.com',
+
+      province: 'TP. Hồ Chí Minh',
+      district: 'Quận 1',
+      ward: 'Phường Bến Thành',
+
+      provinceId: 79,
+      districtId: 760,
+      wardId: 26743,
+
+      streetAddress: '12/12 Đường 49',
+    },
+    {
+      name: 'Supplier 5',
+      phone: '033-875-1238',
+      email: 'supplier5@gmail.com',
+
+      province: 'TP. Hồ Chí Minh',
+      district: 'Quận 1',
+      ward: 'Phường Nguyễn Thái Bình',
+
+      provinceId: 79,
+      districtId: 760,
+      wardId: 26746,
+
+      streetAddress: '12/12 Đường 49',
+    },
+  ];
+
+  await SupplierModel().insertMany(dataArray);
 
   res.status(StatusCodes.OK).json({
     status: 'success',
-    data: expDoc2,
+    data: 'done',
   });
 });
 

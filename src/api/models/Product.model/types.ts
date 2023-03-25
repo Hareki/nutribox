@@ -30,6 +30,10 @@ export interface IUpeProduct extends Omit<IProduct, 'expirations'> {
   expirations: IExpiration[];
 }
 
+export interface IProductWithTotalQuantity extends IProduct {
+  totalQuantity: number;
+}
+
 export interface IProductInput
   extends Omit<
     IProduct,

@@ -14,6 +14,6 @@ export interface ISupplier extends IAddress {
 }
 
 export interface ISupplierInput
-  extends Omit<ISupplier, '_id' | 'productOrders'> {
+  extends Omit<ISupplier, '_id' | 'productOrders' | 'id'> {
   productOrders?: Types.ObjectId[]; // IProductOrder
 }

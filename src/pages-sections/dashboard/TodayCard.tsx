@@ -5,11 +5,11 @@ import type { FC } from 'react';
 import { H3, H5, Paragraph } from 'components/abstract/Typography';
 import { formatCurrency } from 'lib';
 
-interface WishCardProps {
+interface TodayCardProps {
   adminFirstName: string;
 }
 
-const WishCard: FC<WishCardProps> = ({ adminFirstName }) => {
+const TodayCard: FC<TodayCardProps> = ({ adminFirstName }) => {
   return (
     <Card
       sx={{
@@ -29,7 +29,7 @@ const WishCard: FC<WishCardProps> = ({ adminFirstName }) => {
       </Paragraph>
 
       <H3 mt={1.5}>{formatCurrency(251000)}</H3>
-      <Paragraph color='grey.600'>Lợi nhuận</Paragraph>
+      <Paragraph color='grey.600'>Doanh thu</Paragraph>
 
       <H3 mt={3}>15</H3>
       <Paragraph color='grey.600'>Đơn hàng </Paragraph>
@@ -53,4 +53,4 @@ const WishCard: FC<WishCardProps> = ({ adminFirstName }) => {
   );
 };
 
-export default WishCard;
+export default TodayCard;

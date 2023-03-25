@@ -1,6 +1,4 @@
-import { Done } from '@mui/icons-material';
-import { styled, Table, TableContainer } from '@mui/material';
-import Box from '@mui/material/Box';
+import { styled, Table, TableContainer, Tooltip } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
@@ -8,8 +6,10 @@ import type { FC } from 'react';
 
 import TableHeader from './TableHeader';
 
-import { FlexBox } from 'components/flex-box';
-import Reload from 'components/icons/Reload';
+import type { IAccount } from 'api/models/Account.model/types';
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import type { IProductWithTotalQuantity } from 'api/models/Product.model/types';
+import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
 import { formatCurrency } from 'lib';
@@ -25,32 +25,17 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   ':first-of-type': { paddingLeft: 24 },
 }));
 
-const StatusWrapper = styled(FlexBox)<{ payment: any }>(
-  ({ theme, payment }) => ({
-    borderRadius: '8px',
-    padding: '3px 12px',
-    display: 'inline-flex',
-    color: payment ? theme.palette.error.main : theme.palette.success.main,
-    backgroundColor: payment
-      ? theme.palette.error[100]
-      : theme.palette.success[100],
-  }),
-);
-
 const StyledTableRow = styled(TableRow)({
   ':last-child .MuiTableCell-root': { border: 0 },
 });
 
-// =============================================================================
-
 type ListTableProps = {
-  dataList: any[];
+  dataList: ICustomerOrder[] | IProductWithTotalQuantity[];
   tableHeading: any[];
   type: 'STOCK_OUT' | 'RECENT_PURCHASE';
 };
-// =============================================================================
 
-const DataListTable: FC<ListTableProps> = ({
+const StatisticTable: FC<ListTableProps> = ({
   dataList,
   tableHeading,
   type,
@@ -59,11 +44,9 @@ const DataListTable: FC<ListTableProps> = ({
     listData: dataList,
   });
 
-  const recentPurchase = type === 'RECENT_PURCHASE';
-
   return (
     <Scrollbar>
-      <TableContainer sx={{ minWidth: recentPurchase ? 600 : 0 }}>
+      <TableContainer>
         <Table>
           <TableHeader
             order={order}
@@ -71,35 +54,25 @@ const DataListTable: FC<ListTableProps> = ({
             heading={tableHeading}
             onRequestSort={handleRequestSort}
           />
-          {/* recent purchase table body */}
-          {recentPurchase && (
+
+          {type === 'RECENT_PURCHASE' && (
             <TableBody>
               {filteredList.map((row, index) => {
-                const { id, amount, payment, product } = row;
+                const { id, account, phone, total } = row as ICustomerOrder;
 
                 return (
                   <StyledTableRow key={index}>
-                    <StyledTableCell align='left'>{id}</StyledTableCell>
-                    <StyledTableCell align='left'>{product}</StyledTableCell>
-
                     <StyledTableCell align='left'>
-                      <StatusWrapper
-                        gap={1}
-                        alignItems='center'
-                        payment={payment === 'Pending' ? 1 : 0}
-                      >
-                        <Box>{payment}</Box>
-                        {payment === 'Pending' && (
-                          <Reload sx={{ fontSize: 13 }} />
-                        )}
-                        {payment !== 'Pending' && (
-                          <Done sx={{ fontSize: 13 }} />
-                        )}
-                      </StatusWrapper>
+                      {id.slice(-6)}
+                    </StyledTableCell>
+                    <StyledTableCell align='left'>
+                      {(account as unknown as IAccount).fullName}
                     </StyledTableCell>
 
+                    <StyledTableCell align='left'>{phone}</StyledTableCell>
+
                     <StyledTableCell align='center'>
-                      {formatCurrency(amount)}
+                      {formatCurrency(total)}
                     </StyledTableCell>
                   </StyledTableRow>
                 );
@@ -107,24 +80,29 @@ const DataListTable: FC<ListTableProps> = ({
             </TableBody>
           )}
 
-          {/* stock out table body */}
           {type === 'STOCK_OUT' && (
             <TableBody>
               {filteredList.map((row, index) => {
-                const { amount, stock, product } = row;
+                const { name, totalQuantity, category } =
+                  row as IProductWithTotalQuantity;
 
                 return (
                   <StyledTableRow key={index}>
-                    <StyledTableCell align='left'>{product}</StyledTableCell>
+                    <Tooltip placement='top' title={name}>
+                      <StyledTableCell align='left'>
+                        {name.slice(0, 30).concat('...')}
+                      </StyledTableCell>
+                    </Tooltip>
+
+                    <StyledTableCell align='left'>
+                      {(category as unknown as IProductCategory).name}
+                    </StyledTableCell>
+
                     <StyledTableCell
                       align='center'
                       sx={{ color: 'error.main' }}
                     >
-                      {stock}
-                    </StyledTableCell>
-
-                    <StyledTableCell align='center'>
-                      {formatCurrency(amount)}
+                      {totalQuantity}
                     </StyledTableCell>
                   </StyledTableRow>
                 );
@@ -137,4 +115,4 @@ const DataListTable: FC<ListTableProps> = ({
   );
 };
 
-export default DataListTable;
+export default StatisticTable;

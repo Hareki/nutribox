@@ -1,4 +1,6 @@
 import { Box, Grid } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps } from 'next';
 import type { Session } from 'next-auth';
 import { getServerSession } from 'next-auth';
@@ -9,11 +11,13 @@ import { authOptions } from '../api/auth/[...nextauth]';
 import { serialize } from 'api/helpers/object.helper';
 import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
 import { formatCurrency } from 'lib';
-import Card1 from 'pages-sections/dashboard/Card1';
-import RecentPurchase from 'pages-sections/dashboard/RecentPurchase';
+import Analytics from 'pages-sections/dashboard/Analytics';
+import RecentOrders from 'pages-sections/dashboard/RecentPurchase';
+import StatisticCard from 'pages-sections/dashboard/StatisticCard';
+import StatisticProductCard from 'pages-sections/dashboard/StatisticProductCard';
 import StockOutProducts from 'pages-sections/dashboard/StockOutProducts';
-import WishCard from 'pages-sections/dashboard/WishCard';
-import api from 'utils/__api__/dashboard';
+import TodayCard from 'pages-sections/dashboard/TodayCard';
+import apiCaller from 'utils/apiCallers/admin/dashboard';
 
 VendorDashboard.getLayout = function getLayout(page: ReactElement) {
   return <VendorDashboardLayout>{page}</VendorDashboardLayout>;
@@ -27,50 +31,125 @@ type DashboardProps = {
 };
 
 export default function VendorDashboard(props: DashboardProps) {
-  const { recentPurchase, stockOutProducts, user } = props;
+  const { user } = props;
+  const { data: statisticData, isLoading } = useQuery({
+    queryKey: ['statistic'],
+    queryFn: () => apiCaller.getStatisticData(),
+  });
+
+  const {
+    thisMonthProfit,
+    prevMonthProfit,
+    thisMonthOrderNumber,
+    prevMonthOrderNumber,
+  } = statisticData || {};
+
+  const cardSkeleton = (
+    <Skeleton
+      variant='rectangular'
+      animation='wave'
+      height='100%'
+      width='100%'
+      sx={{ borderRadius: '8px' }}
+    />
+  );
+
+  const tableSkeleton = (
+    <Skeleton
+      variant='rectangular'
+      animation='wave'
+      height='400px'
+      width='100%'
+      sx={{ borderRadius: '8px' }}
+    />
+  );
 
   return (
     <Box py={4}>
       <Grid container spacing={3}>
         <Grid item md={6} xs={12}>
-          <WishCard adminFirstName={user?.user?.firstName} />
+          <TodayCard adminFirstName={user?.user?.firstName} />
         </Grid>
 
         <Grid container item md={6} xs={12} spacing={3}>
           <Grid item md={6} sm={6} xs={12}>
-            <Card1
-              title={placeholders[0].title}
-              amount={placeholders[0].amount1}
-            />
+            {isLoading ? (
+              cardSkeleton
+            ) : (
+              <StatisticCard
+                title='Doanh thu tháng này'
+                amount={formatCurrency(thisMonthProfit)}
+                subAmount={prevMonthProfit}
+                percentage={calculatePercentageDifference(
+                  thisMonthProfit,
+                  prevMonthProfit,
+                )}
+                status={thisMonthProfit > prevMonthProfit ? 'up' : 'down'}
+              />
+            )}
           </Grid>
           <Grid item md={6} sm={6} xs={12}>
-            <Card1
-              title={placeholders[1].title}
-              amount={placeholders[1].amount1}
-            />
+            {isLoading ? (
+              cardSkeleton
+            ) : (
+              <StatisticCard
+                title='Số đơn hàng tháng này'
+                amount={thisMonthOrderNumber}
+                subAmount={prevMonthOrderNumber}
+                percentage={calculatePercentageDifference(
+                  thisMonthOrderNumber,
+                  prevMonthOrderNumber,
+                )}
+                status={
+                  thisMonthOrderNumber > prevMonthOrderNumber ? 'up' : 'down'
+                }
+              />
+            )}
           </Grid>
           <Grid item md={6} sm={6} xs={12}>
-            <Card1
-              title={placeholders[2].title}
-              amount={formatCurrency(parseInt(placeholders[2].amount1))}
-            />
+            {isLoading ? (
+              cardSkeleton
+            ) : (
+              <StatisticProductCard
+                title='Sản phẩm bán chạy nhất'
+                soldProducts={statisticData.mostSoldProducts}
+                type='most'
+              />
+            )}
           </Grid>
           <Grid item md={6} sm={6} xs={12}>
-            <Card1
-              title={placeholders[3].title}
-              amount={placeholders[3].amount1}
-            />
+            {isLoading ? (
+              cardSkeleton
+            ) : (
+              <StatisticProductCard
+                title='Sản phẩm bán chậm nhất'
+                soldProducts={statisticData.leastSoldProducts}
+                type='least'
+              />
+            )}
           </Grid>
         </Grid>
 
-        {/* RECENT PURCHASE AREA */}
-        <Grid item md={7} xs={12}>
-          <RecentPurchase data={recentPurchase} />
+        <Grid item xs={12}>
+          <Analytics monthlyProfits={statisticData.monthlyProfits} />
         </Grid>
 
-        {/* STOCK OUT PRODUCTS */}
-        <Grid item md={5} xs={12}>
-          <StockOutProducts data={stockOutProducts} />
+        <Grid item md={6} xs={12}>
+          {isLoading ? (
+            tableSkeleton
+          ) : (
+            <RecentOrders data={statisticData.fiveMostRecentOrders} />
+          )}
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          {isLoading ? (
+            tableSkeleton
+          ) : (
+            <StockOutProducts
+              data={statisticData.fiveAlmostOutOfStockProducts}
+            />
+          )}
         </Grid>
       </Grid>
     </Box>
@@ -79,8 +158,6 @@ export default function VendorDashboard(props: DashboardProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
-  const recentPurchase = await api.recentPurchase();
-  const stockOutProducts = await api.stockOutProducts();
 
   if (!session) {
     return {
@@ -92,25 +169,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   return {
-    props: { user: serialize(session), recentPurchase, stockOutProducts },
+    props: { user: serialize(session) },
   };
 };
 
-const placeholders = [
-  {
-    amount1: '32,350',
-    title: 'Tổng đơn hàng',
-  },
-  {
-    amount1: '2,360',
-    title: 'Tổng sản phẩm bán được',
-  },
-  {
-    amount1: '12460',
-    title: 'Tổng doanh thu',
-  },
-  {
-    amount1: '$6,240',
-    title: 'Số loại sản phẩm',
-  },
-];
+function calculatePercentageDifference(
+  thisMonthValue: number,
+  prevMonthValue: number,
+) {
+  if (prevMonthValue === 0) {
+    // If prevMonthProfit is 0, return 100% if there is any profit this month, otherwise return 0%
+    return thisMonthValue > 0 ? 100 : 0;
+  }
+
+  const difference = thisMonthValue - prevMonthValue;
+  const percentageDifference = (difference / prevMonthValue) * 100;
+
+  return percentageDifference;
+}
