@@ -13,7 +13,7 @@ import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.sc
 import Card1 from 'components/common/Card1';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { transformAddressToFormikValue } from 'helpers/address.helper';
+import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import type { AddressAPI } from 'utils/apiCallers/profile/address';
 import apiCaller from 'utils/apiCallers/profile/address';
@@ -60,7 +60,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     );
 
     if (editingAddress) {
-      return transformAddressToFormikValue(editingAddress);
+      return transformAccountAddressToFormikValue(editingAddress);
     } else {
       return {
         title: '',

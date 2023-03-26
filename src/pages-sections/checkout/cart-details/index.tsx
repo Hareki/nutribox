@@ -1,6 +1,7 @@
 import { LoadingButton } from '@mui/lab';
 import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
+import { useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
@@ -31,16 +32,17 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import ProductCartItem from 'components/product-item/ProductCartItem';
 import {
   getFullAddress,
-  transformAddressToFormikValue,
+  transformAccountAddressToFormikValue,
   transformFormikValueToAddress,
 } from 'helpers/address.helper';
 import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
+import storeApiCaller from 'utils/apiCallers/admin/store';
 import apiCaller from 'utils/apiCallers/checkout';
 import type { AddressAPI } from 'utils/apiCallers/profile/address';
-import { PREPARATION_TIME } from 'utils/constants';
+import { PREPARATION_TIME, StoreId } from 'utils/constants';
 
 interface CartDetailsProps {
   nextStep: (data: Step1Data, currentStep: number) => void;
@@ -70,6 +72,11 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     open: false,
   });
 
+  const { data: storeInfo, isLoading: isLoadingStoreInfo } = useQuery({
+    queryKey: ['store', StoreId],
+    queryFn: () => storeApiCaller.getStoreInfo(StoreId),
+  });
+
   const cartList = cartState.cart;
 
   const total = useMemo(
@@ -83,14 +90,12 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
   );
 
   useEffect(() => {
+    if (isLoadingStoreInfo) return;
     if (!currentFullAddress) return;
 
     setIsEstimating(true);
     apiCaller
-      .getDeliveryInfo(
-        currentFullAddress,
-        'Landmark 81 Skyscraper, Nguyễn Hữu Cảnh, Bình Thạnh, Thành phố Hồ Chí Minh, Vietnam',
-      )
+      .getDeliveryInfo(currentFullAddress, getFullAddress(storeInfo))
       .then((deliveryInfo) => {
         setEstimated({
           heavyTraffic: deliveryInfo.heavyTraffic,
@@ -103,11 +108,12 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
         });
         setIsEstimating(false);
       });
-  }, [currentFullAddress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentFullAddress, isLoadingStoreInfo]);
 
   const showDeliveryInfoConfirmation = async () => {
     if (
-      !checkTime(dispatchInfo) ||
+      !checkTime(dispatchInfo, storeInfo) ||
       !checkCurrentFullAddress(dispatchInfo, currentFullAddress)
     ) {
       return;
@@ -167,7 +173,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
   const handleSelectAddress = (address: IAccountAddress) => {
     setSelectAddressDialogOpen(false);
-    const transformedAddress = transformAddressToFormikValue(address);
+    const transformedAddress = transformAccountAddressToFormikValue(address);
     for (const key in transformedAddress) {
       setFieldValue(key, transformedAddress[key]);
     }

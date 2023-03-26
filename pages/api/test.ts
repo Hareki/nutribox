@@ -17,38 +17,38 @@ const handler = nc<NextApiRequest, NextApiResponse>({
   const dataArray: IStoreHourInput[] = [
     {
       dayOfWeek: 'MONDAY',
-      openTime: new Date('1970-01-01T08:00:00.000Z'),
-      closeTime: new Date('2021-01-01T18:00:00.000Z'),
+      openTime: new Date('2000-09-13T08:00:00.000+07:00'),
+      closeTime: new Date('2000-09-13T18:00:00.000+07:00'),
     },
     {
       dayOfWeek: 'TUESDAY',
-      openTime: new Date('1970-01-01T08:00:00.000Z'),
-      closeTime: new Date('2021-01-01T18:00:00.000Z'),
+      openTime: new Date('2000-09-13T08:00:00.000+07:00'),
+      closeTime: new Date('2000-09-13T18:00:00.000+07:00'),
     },
     {
       dayOfWeek: 'WEDNESDAY',
-      openTime: new Date('1970-01-01T08:00:00.000Z'),
-      closeTime: new Date('2021-01-01T18:00:00.000Z'),
+      openTime: new Date('2000-09-13T08:00:00.000+07:00'),
+      closeTime: new Date('2000-09-13T18:00:00.000+07:00'),
     },
     {
       dayOfWeek: 'THURSDAY',
-      openTime: new Date('1970-01-01T08:00:00.000Z'),
-      closeTime: new Date('2021-01-01T18:00:00.000Z'),
+      openTime: new Date('2000-09-13T08:00:00.000+07:00'),
+      closeTime: new Date('2000-09-13T18:00:00.000+07:00'),
     },
     {
       dayOfWeek: 'FRIDAY',
-      openTime: new Date('1970-01-01T07:00:00.000Z'),
-      closeTime: new Date('2021-01-01T20:00:00.000Z'),
+      openTime: new Date('2000-09-13T07:00:00.000+07:00'),
+      closeTime: new Date('2000-09-13T20:00:00.000+07:00'),
     },
     {
       dayOfWeek: 'SATURDAY',
-      openTime: new Date('1970-01-01T07:00:00.000Z'),
-      closeTime: new Date('2021-01-01T20:00:00.000Z'),
+      openTime: new Date('2000-09-13T07:00:00.000+07:00'),
+      closeTime: new Date('2000-09-13T20:00:00.000+07:00'),
     },
     {
       dayOfWeek: 'SUNDAY',
-      openTime: new Date('1970-01-01T07:00:00.000Z'),
-      closeTime: new Date('2021-01-01T20:00:00.000Z'),
+      openTime: new Date('2000-09-13T07:00:00.000+07:00'),
+      closeTime: new Date('2000-09-13T20:00:00.000+07:00'),
     },
   ];
 

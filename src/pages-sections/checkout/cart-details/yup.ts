@@ -1,13 +1,13 @@
 import * as yup from 'yup';
 
 import type { IAccount } from 'api/models/Account.model/types';
-import { transformAddressToFormikValue } from 'helpers/address.helper';
+import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
 import { phoneRegex } from 'helpers/regex.helper';
 
 export const getInitialValues = (account: IAccount) => {
   const defaultAddress = account.addresses.find((address) => address.isDefault);
   const transformedAddressValues =
-    transformAddressToFormikValue(defaultAddress);
+    transformAccountAddressToFormikValue(defaultAddress);
   delete transformedAddressValues.title;
 
   return {

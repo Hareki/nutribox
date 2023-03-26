@@ -3,7 +3,6 @@ import type { FC, ReactNode } from 'react';
 import { Fragment } from 'react';
 
 import StickyScroll from 'components/abstract/StickyScroll';
-import { Footer } from 'components/common/layout/footer';
 import Header from 'components/common/layout/header/Header';
 import Navbar from 'components/common/layout/navbar/Navbar';
 import Topbar from 'components/common/layout/Topbar';
@@ -55,7 +54,7 @@ const ShopLayout2: FC<ShopLayout2Props> = ({
       <MobileNavigationBar />
 
       {/* FOOTER */}
-      <Footer />
+      {/* <Footer /> */}
     </Fragment>
   );
 };

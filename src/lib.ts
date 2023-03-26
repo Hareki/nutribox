@@ -111,7 +111,7 @@ function formatDateTime(date: Date): string {
   return `${formattedTime} - ${formattedDate}`;
 }
 
-export function getUtcDate(date: Date) {
+function getUtcDate(date: Date) {
   const utcDate = new Date(
     date.getUTCFullYear(),
     date.getUTCMonth(),
@@ -132,6 +132,34 @@ function getLocalTimeInVietnam() {
   return localTime;
 }
 
+function getTodaysDayOfWeekAllCaps(): string {
+  const today = getLocalTimeInVietnam();
+  const formatter = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
+  const dayOfWeek = formatter.format(today).toUpperCase();
+  return dayOfWeek;
+}
+
+function compareTimes(date1: Date, date2: Date) {
+  const hours1 = date1.getHours();
+  const minutes1 = date1.getMinutes();
+  const hours2 = date2.getHours();
+  const minutes2 = date2.getMinutes();
+
+  if (hours1 < hours2) {
+    return -1;
+  } else if (hours1 > hours2) {
+    return 1;
+  } else {
+    if (minutes1 < minutes2) {
+      return -1;
+    } else if (minutes1 > minutes2) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+}
+
 export {
   renderProductCount,
   calculateDiscount,
@@ -141,4 +169,6 @@ export {
   calculateEndTime,
   formatDateTime,
   getLocalTimeInVietnam,
+  getTodaysDayOfWeekAllCaps,
+  compareTimes,
 };

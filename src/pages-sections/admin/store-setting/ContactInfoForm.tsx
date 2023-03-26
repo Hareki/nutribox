@@ -1,27 +1,68 @@
 import { LoadingButton } from '@mui/lab';
 import { Autocomplete, Grid, TextField } from '@mui/material';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
 
+import type { UpdateStoreContactInfoRb } from '../../../../pages/api/admin/store';
+
+import type { IStore } from 'api/models/Store.model/types';
+import type { IAddress } from 'api/types/schema.type';
 import PhoneInput from 'components/common/input/PhoneInput';
+import {
+  transformAddressToFormikValue,
+  transformFormikValueToAddress,
+} from 'helpers/address.helper';
 import { phoneRegex } from 'helpers/regex.helper';
 import { useAddressQuery } from 'hooks/useAddressQuery';
+import apiCaller from 'utils/apiCallers/admin/store';
 import type { AddressAPI } from 'utils/apiCallers/profile/address';
+import { StoreId } from 'utils/constants';
 
-export default function ContactInfoForm() {
-  const getInitialValues = () => ({
-    phone: '',
-    email: '',
-    province: null,
-    district: null,
-    ward: null,
-    streetAddress: '',
+interface ContactInfoFormProps {
+  initialStoreInfo: IStore;
+}
+
+export default function ContactInfoForm({
+  initialStoreInfo,
+}: ContactInfoFormProps) {
+  const { enqueueSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+
+  const { mutate: updateStoreInfo, isLoading } = useMutation<
+    IStore,
+    unknown,
+    UpdateStoreContactInfoRb
+  >({
+    mutationFn: (body) => apiCaller.updateStoreInfo(body),
+    onSuccess: () => {
+      enqueueSnackbar('Cập nhật thông tin liên hệ thành công', {
+        variant: 'success',
+      });
+      queryClient.invalidateQueries(['store', initialStoreInfo.id]);
+    },
   });
+
+  const getInitialValues = (initialStoreInfo: IStore) => {
+    return {
+      phone: initialStoreInfo?.phone || '',
+      email: initialStoreInfo?.email || '',
+      ...transformAddressToFormikValue(initialStoreInfo),
+    };
+  };
 
   type ShopInfoFormValues = ReturnType<typeof getInitialValues>;
 
   const handleFormSubmit = (values: ShopInfoFormValues) => {
-    console.log(values);
+    const address: IAddress = transformFormikValueToAddress(values);
+    const input: UpdateStoreContactInfoRb = {
+      id: StoreId,
+      ...address,
+      phone: values.phone,
+      email: values.email,
+    };
+    updateStoreInfo(input);
   };
 
   const {
@@ -33,7 +74,7 @@ export default function ContactInfoForm() {
     handleSubmit,
     setFieldValue,
   } = useFormik<ShopInfoFormValues>({
-    initialValues: getInitialValues(),
+    initialValues: getInitialValues(initialStoreInfo),
     validationSchema,
     onSubmit: handleFormSubmit,
   });
@@ -167,12 +208,12 @@ export default function ContactInfoForm() {
       </Grid>
 
       <LoadingButton
-        loading={false}
+        loading={isLoading}
         type='submit'
         variant='contained'
         color='primary'
       >
-        Cập nhật
+        Lưu thay đổi
       </LoadingButton>
     </form>
   );

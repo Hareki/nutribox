@@ -25,7 +25,7 @@ export const navigations = [
   {
     name: 'Cài đặt',
     icon: duotone.SiteSetting,
-    path: '/admin/shop-setting',
+    path: '/admin/store-setting',
   },
   { name: 'Đăng xuất', icon: duotone.Session, handleClick: () => signOut() },
 ];

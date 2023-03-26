@@ -42,6 +42,7 @@ type ProductDetailsProps = {
 };
 
 ProductDetails.getLayout = getPageLayout;
+ProductDetails.haveOwnFooter = true;
 
 function ProductDetails(props: ProductDetailsProps) {
   const { product, relatedProducts, initialStoreInfo } = props;

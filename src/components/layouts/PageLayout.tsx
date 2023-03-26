@@ -23,8 +23,8 @@ const PageLayout: FC<Props> = ({ children }) => {
 };
 
 export const getPageLayout = (page: ReactElement) => {
-  const name = (page.type as any).name;
-  if (name === 'HomePage' || name === 'ProductDetails') {
+  const haveOwnFooter = (page.type as any).haveOwnFooter;
+  if (haveOwnFooter) {
     return <BasePageLayout>{page}</BasePageLayout>;
   }
   return <PageLayout>{page}</PageLayout>;

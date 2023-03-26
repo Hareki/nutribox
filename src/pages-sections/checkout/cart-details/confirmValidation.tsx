@@ -1,21 +1,44 @@
+import type { IStoreHour } from 'api/models/Store.model/StoreHour.schema/types';
+import type { IStore } from 'api/models/Store.model/types';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import type { InfoDialogAction } from 'components/dialog/info-dialog/reducer';
-import { getLocalTimeInVietnam } from 'lib';
+import {
+  getDayOfWeekLabel,
+  getStoreHoursLabel,
+} from 'helpers/storeHours.helper';
+import {
+  compareTimes,
+  getLocalTimeInVietnam,
+  getTodaysDayOfWeekAllCaps,
+} from 'lib';
 import { MAX_DELIVERY_RANGE } from 'utils/constants';
 
 export const checkTime = (
   dispatchInfo: (value: InfoDialogAction) => void,
+  storeInfo: IStore,
 ): boolean => {
-  return true;
   const now = getLocalTimeInVietnam();
-  if (now.getHours() >= 18) {
+  const todayDayOfWeekAllCaps = getTodaysDayOfWeekAllCaps();
+  const getTodayStoreHours: IStoreHour = storeInfo.storeHours.find(
+    (item) => item.dayOfWeek === todayDayOfWeekAllCaps,
+  );
+  const todayOpenTime = new Date(getTodayStoreHours.openTime);
+  const todayCloseTime = new Date(getTodayStoreHours.closeTime);
+  const tooEarly = compareTimes(now, todayOpenTime) === -1;
+  const tooLate = compareTimes(now, todayCloseTime) === 1;
+
+  if (tooEarly || tooLate) {
     dispatchInfo({
       type: 'open_dialog',
       payload: {
         content: (
           <Paragraph>
-            Chúng tôi chỉ giao hàng từ <Span fontWeight={600}>8h đến 18h</Span>{' '}
-            hàng ngày, vui lòng quay lại vào ngày mai.
+            Chúng tôi chỉ giao hàng trong khoảng thời gian{' '}
+            <Span fontWeight={600}>
+              {getStoreHoursLabel(todayOpenTime, todayCloseTime)}
+            </Span>{' '}
+            vào ngày {getDayOfWeekLabel(todayDayOfWeekAllCaps).toLowerCase()},
+            vui lòng quay lại sau.
           </Paragraph>
         ),
         title: 'Đã xảy ra lỗi',

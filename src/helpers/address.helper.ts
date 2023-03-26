@@ -7,9 +7,8 @@ export const getFullAddress = (address: IAddress) => {
   return `${streetAddress}, ${ward}, ${district}, ${province}, Việt Nam`;
 };
 
-export const transformAddressToFormikValue = (address: IAccountAddress) => {
+export const transformAddressToFormikValue = (address: IAddress) => {
   const {
-    title,
     streetAddress,
     ward,
     district,
@@ -19,11 +18,20 @@ export const transformAddressToFormikValue = (address: IAccountAddress) => {
     provinceId,
   } = address;
   return {
-    title,
     province: { name: province, code: provinceId },
     district: { name: district, code: districtId },
     ward: { name: ward, code: wardId },
     streetAddress,
+  };
+};
+
+export const transformAccountAddressToFormikValue = (
+  address: IAccountAddress,
+) => {
+  const { title, ...otherInfo } = address;
+  return {
+    title,
+    ...transformAddressToFormikValue(otherInfo),
   };
 };
 

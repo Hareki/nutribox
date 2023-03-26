@@ -36,6 +36,7 @@ const StoreHoursInput = ({
       <H5>{getDayOfWeekLabel(dayOfWeek)}</H5>
       <FlexBox alignItems='flex-start' gap={1} my={1}>
         <TimePicker
+          ampm={false}
           value={fromValue}
           onChange={onFromChange}
           renderInput={(params) => (
@@ -48,6 +49,7 @@ const StoreHoursInput = ({
         />
         <Paragraph mt={1}>đến</Paragraph>
         <TimePicker
+          ampm={false}
           value={toValue}
           onChange={onToChange}
           renderInput={(params) => (

@@ -61,6 +61,7 @@ type HomePageProps = {
 };
 
 HomePage.getLayout = getPageLayout;
+HomePage.haveOwnFooter = true;
 
 function HomePage(props: HomePageProps) {
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
