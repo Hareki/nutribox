@@ -9,10 +9,10 @@ import type { ReactElement } from 'react';
 import { authOptions } from '../api/auth/[...nextauth]';
 
 import { serialize } from 'api/helpers/object.helper';
-import VendorDashboardLayout from 'components/layouts/vendor-dashboard';
+import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { formatCurrency } from 'lib';
 import Analytics from 'pages-sections/dashboard/Analytics';
-import RecentOrders from 'pages-sections/dashboard/RecentPurchase';
+import RecentOrders from 'pages-sections/dashboard/RecentOrders';
 import StatisticCard from 'pages-sections/dashboard/StatisticCard';
 import StatisticProductCard from 'pages-sections/dashboard/StatisticProductCard';
 import StockOutProducts from 'pages-sections/dashboard/StockOutProducts';
@@ -20,7 +20,7 @@ import TodayCard from 'pages-sections/dashboard/TodayCard';
 import apiCaller from 'utils/apiCallers/admin/dashboard';
 
 VendorDashboard.getLayout = function getLayout(page: ReactElement) {
-  return <VendorDashboardLayout>{page}</VendorDashboardLayout>;
+  return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 type DashboardProps = {
   cardList: any[];
@@ -44,6 +44,15 @@ export default function VendorDashboard(props: DashboardProps) {
     prevMonthOrderNumber,
   } = statisticData || {};
 
+  const todayCardSkeleton = (
+    <Skeleton
+      variant='rectangular'
+      animation='wave'
+      height='350px'
+      width='100%'
+      sx={{ borderRadius: '8px' }}
+    />
+  );
   const cardSkeleton = (
     <Skeleton
       variant='rectangular'
@@ -68,7 +77,15 @@ export default function VendorDashboard(props: DashboardProps) {
     <Box py={4}>
       <Grid container spacing={3}>
         <Grid item md={6} xs={12}>
-          <TodayCard adminFirstName={user?.user?.firstName} />
+          {isLoading ? (
+            todayCardSkeleton
+          ) : (
+            <TodayCard
+              adminFirstName={user?.user?.firstName}
+              todayOrderNumber={statisticData.todayOrderNumber}
+              todayProfit={statisticData.todayProfit}
+            />
+          )}
         </Grid>
 
         <Grid container item md={6} xs={12} spacing={3}>
@@ -131,7 +148,11 @@ export default function VendorDashboard(props: DashboardProps) {
         </Grid>
 
         <Grid item xs={12}>
-          <Analytics monthlyProfits={statisticData.monthlyProfits} />
+          {isLoading ? (
+            tableSkeleton
+          ) : (
+            <Analytics monthlyProfits={statisticData.monthlyProfits} />
+          )}
         </Grid>
 
         <Grid item md={6} xs={12}>

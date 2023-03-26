@@ -154,7 +154,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
         {userRole === 'ADMIN' && (
           <div>
             <Divider />
-            <Link href='/vendor/dashboard'>
+            <Link href='/admin/dashboard'>
               <MenuItem>
                 <ListItemIcon>
                   <ChromeReaderModeOutlinedIcon />

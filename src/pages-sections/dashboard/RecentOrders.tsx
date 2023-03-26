@@ -1,7 +1,7 @@
 import { Button, Card } from '@mui/material';
 import type { FC } from 'react';
 
-import StatisticTable from './table';
+import StatisticTable from './StatisticTable';
 
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H3 } from 'components/abstract/Typography';
@@ -10,7 +10,7 @@ import { FlexBetween } from 'components/flex-box';
 // table column list
 const tableHeading = [
   { id: 'id', label: 'Mã đơn', alignRight: false },
-  { id: 'product', label: 'Khách hàng', alignRight: false },
+  { id: 'customerName', label: 'Khách hàng', alignRight: false },
   { id: 'phone', label: 'SĐT', alignRight: false },
   { id: 'total', label: 'Thành tiền', alignCenter: true },
 ];

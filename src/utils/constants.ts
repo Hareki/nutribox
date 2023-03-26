@@ -44,3 +44,5 @@ export const AllStatusIdArray = Object.freeze([
 ]);
 
 export const CancelIndexThreshHold = 1;
+
+export const StoreId = '641fc04a048ba2f374872a58';

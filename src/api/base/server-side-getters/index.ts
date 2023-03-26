@@ -1,10 +1,12 @@
 import AccountController from 'api/controllers/Account.controller';
 import ProductController from 'api/controllers/Product.controller';
 import ProductCategoryController from 'api/controllers/ProductCategory.controller';
+import StoreController from 'api/controllers/Store.controller';
 import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import { getPaginationParams } from 'api/helpers/pagination.helpers';
 import type { IUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { IProductCategory } from 'api/models/ProductCategory.model/types';
+import type { IStore } from 'api/models/Store.model/types';
 import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 
 export async function getAllCategories() {
@@ -95,3 +97,8 @@ export async function getAccount(accountId: string) {
 
   return account;
 }
+
+export const getStore = async (id: string): Promise<IStore> => {
+  const result = await StoreController.getOne({ id });
+  return result;
+};

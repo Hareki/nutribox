@@ -3,7 +3,11 @@ import { Schema } from 'mongoose';
 import { storeHourSchema } from './StoreHour.schema';
 import type { IStoreHour } from './StoreHour.schema/types';
 
-import { getAddressSchema, getPhoneSchema } from 'api/helpers/schema.helper';
+import {
+  getAddressSchema,
+  getEmailSchema,
+  getPhoneSchema,
+} from 'api/helpers/schema.helper';
 
 export const storeSchema = new Schema(
   {
@@ -27,6 +31,8 @@ export const storeSchema = new Schema(
     ...getPhoneSchema('Store'),
 
     ...getAddressSchema('Store'),
+
+    ...getEmailSchema('Store'),
   },
   { timestamps: true },
 );

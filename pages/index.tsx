@@ -8,19 +8,19 @@ import {
 } from '@tanstack/react-query';
 import type { GetStaticProps } from 'next';
 import { useCallback, useEffect, useState, useMemo, Fragment } from 'react';
-// Footer1
 
 import {
   getAllCategories,
   getAllProducts,
   getHotProducts,
   getNewProducts,
+  getStore,
 } from 'api/base/server-side-getters';
 import connectToDB from 'api/database/databaseConnection';
 import { serialize } from 'api/helpers/object.helper';
 import type { IUpeProduct } from 'api/models/Product.model/types';
+import type { IStore } from 'api/models/Store.model/types';
 import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
-// ShopLayout2
 import SEO from 'components/abstract/SEO';
 import { Footer } from 'components/common/layout/footer';
 import { getPageLayout } from 'components/layouts/PageLayout';
@@ -38,7 +38,7 @@ import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
 import apiCaller from 'utils/apiCallers';
-import { ProductPaginationConstant } from 'utils/constants';
+import { ProductPaginationConstant, StoreId } from 'utils/constants';
 
 function getElementHeightIncludingMargin(element: HTMLElement) {
   if (!element) return 0;
@@ -56,6 +56,8 @@ type HomePageProps = {
   serviceList: Service[];
   mainCarouselData: MainCarouselItem[];
   testimonials: any[];
+
+  initialStoreInfo: IStore;
 };
 
 HomePage.getLayout = getPageLayout;
@@ -212,13 +214,13 @@ function HomePage(props: HomePageProps) {
           <TestimonialsSection testimonials={props.testimonials} />
         </Stack>
       </SideNavContainer>
-      <Footer />
 
       {/* MOBILE NAVIGATION WITH SIDE NAVBAR */}
       <MobileNavigationBar>
         <CategoryNavbar navList={categoryNavigation} />
       </MobileNavigationBar>
       <LoginDialog />
+      <Footer initialStoreInfo={props.initialStoreInfo} />
     </Fragment>
   );
 }
@@ -246,6 +248,8 @@ export const getStaticProps: GetStaticProps = async () => {
     queryFn: () => getNewProducts(),
   });
 
+  const initialStoreInfo = await getStore(StoreId);
+
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['products', 'infinite', { categoryId: undefined }],
     initialData: {
@@ -262,7 +266,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       serviceList,
       testimonials,
-
+      initialStoreInfo: serialize(initialStoreInfo),
       dehydratedState: serialize(dehydrate(queryClient)),
     },
   };

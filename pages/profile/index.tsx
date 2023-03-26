@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { authOptions } from '../api/auth/[...nextauth]';
 
 import { getAccount } from 'api/base/server-side-getters';
+import { serialize } from 'api/helpers/object.helper';
 import type { IAccount } from 'api/models/Account.model/types';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
@@ -49,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const initialAccount = await getAccount(session.user.id);
-  return { props: { initialAccount } };
+  return { props: { initialAccount: serialize(initialAccount) } };
 };
 
 export default Profile;

@@ -45,6 +45,7 @@
     "bcryptjs": "^2.4.3",
     "clsx": "^1.2.1",
     "date-fns": "^2.28.0",
+    "dayjs": "^1.11.7",
     "eslint-plugin-react-hooks": "^4.6.0",
     "formik": "^2.2.9",
     "http-status-codes": "^2.2.0",

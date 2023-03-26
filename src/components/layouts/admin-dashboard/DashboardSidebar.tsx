@@ -108,7 +108,9 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
               key={item.name}
               className='navItem'
               active={activeRoute(item.path)}
-              onClick={() => handleNavigation(item.path)}
+              onClick={() =>
+                item.handleClick?.() || handleNavigation(item.path)
+              }
             >
               {item?.icon ? (
                 <ListIconWrapper>
@@ -158,7 +160,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             alt='Logo'
             width={105}
             height={50}
-            src='/assets/images/logo dark.svg'
+            src='/assets/images/logo-white.svg'
             style={{ marginLeft: 8 }}
           />
         </Box>

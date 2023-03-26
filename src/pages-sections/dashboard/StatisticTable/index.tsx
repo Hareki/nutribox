@@ -16,11 +16,11 @@ import { formatCurrency } from 'lib';
 
 // styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  fontSize: 13,
+  fontSize: 14,
   paddingTop: 16,
-  fontWeight: 600,
+  fontWeight: 400,
   paddingBottom: 16,
-  color: theme.palette.grey[600],
+  color: theme.palette.grey[900],
   borderBottom: `1px solid ${theme.palette.grey[300]}`,
   ':first-of-type': { paddingLeft: 24 },
 }));

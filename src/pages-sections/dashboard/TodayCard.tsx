@@ -7,9 +7,15 @@ import { formatCurrency } from 'lib';
 
 interface TodayCardProps {
   adminFirstName: string;
+  todayOrderNumber: number;
+  todayProfit: number;
 }
 
-const TodayCard: FC<TodayCardProps> = ({ adminFirstName }) => {
+const TodayCard: FC<TodayCardProps> = ({
+  adminFirstName,
+  todayOrderNumber,
+  todayProfit,
+}) => {
   return (
     <Card
       sx={{
@@ -28,10 +34,10 @@ const TodayCard: FC<TodayCardProps> = ({ adminFirstName }) => {
         Đây là những gì diễn ra trong ngày hôm nay
       </Paragraph>
 
-      <H3 mt={1.5}>{formatCurrency(251000)}</H3>
+      <H3 mt={1.5}>{formatCurrency(todayProfit)}</H3>
       <Paragraph color='grey.600'>Doanh thu</Paragraph>
 
-      <H3 mt={3}>15</H3>
+      <H3 mt={3}>{todayOrderNumber}</H3>
       <Paragraph color='grey.600'>Đơn hàng </Paragraph>
 
       <Box

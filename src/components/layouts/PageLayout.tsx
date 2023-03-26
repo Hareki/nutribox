@@ -4,18 +4,30 @@ import ShopLayout from './ShopLayout';
 
 import { Footer } from 'components/common/layout/footer';
 
-export const getPageLayout = (page: ReactElement) => (
-  <PageLayout>{page}</PageLayout>
-);
+const BasePageLayout: FC<{ children: ReactNode }> = ({ children }) => {
+  return (
+    <ShopLayout showNavbar={false} showTopbar={false}>
+      {children}
+    </ShopLayout>
+  );
+};
 
 type Props = { children: ReactNode };
 const PageLayout: FC<Props> = ({ children }) => {
   return (
-    <ShopLayout showNavbar={false} showTopbar={false}>
+    <BasePageLayout>
       {children}
       <Footer />
-    </ShopLayout>
+    </BasePageLayout>
   );
+};
+
+export const getPageLayout = (page: ReactElement) => {
+  const name = (page.type as any).name;
+  if (name === 'HomePage' || name === 'ProductDetails') {
+    return <BasePageLayout>{page}</BasePageLayout>;
+  }
+  return <PageLayout>{page}</PageLayout>;
 };
 
 export default PageLayout;

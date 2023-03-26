@@ -143,7 +143,7 @@ export const analyticsChartOptions = (
     toolbar: { show: false },
     fontFamily: theme.typography.fontFamily,
   },
-  colors: [theme.palette.info.main, theme.palette.grey[600]],
+  colors: [theme.palette.primary.main, theme.palette.grey[600]],
   dataLabels: { enabled: false },
   grid: { show: true, borderColor: theme.palette.grey[300] },
   states: {

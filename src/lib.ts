@@ -111,21 +111,20 @@ function formatDateTime(date: Date): string {
   return `${formattedTime} - ${formattedDate}`;
 }
 
-function getUtcDate() {
-  const now = new Date();
+export function getUtcDate(date: Date) {
   const utcDate = new Date(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate(),
-    now.getUTCHours(),
-    now.getUTCMinutes(),
-    now.getUTCSeconds(),
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
   );
   return utcDate;
 }
 
 function getLocalTimeInVietnam() {
-  const utcNow = getUtcDate();
+  const utcNow = getUtcDate(new Date());
   const vietnamTimeZoneOffset = 7 * 60 * 60 * 1000; // Vietnam Time Zone offset in milliseconds (UTC+7)
 
   const localTime = new Date(utcNow.getTime() + vietnamTimeZoneOffset);

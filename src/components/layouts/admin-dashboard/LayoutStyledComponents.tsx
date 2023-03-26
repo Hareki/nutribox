@@ -36,10 +36,10 @@ const NavItemButton = styled(ButtonBase)<Active>(({ theme, active }) => ({
   justifyContent: 'flex-start',
   transition: 'all 0.15s ease',
   ...(active && {
-    color: theme.palette.info.main,
+    color: theme.palette.primary.main,
     backgroundColor: alpha(theme.palette.grey[800], 0.6),
     '& .MuiSvgIcon-root .secondary': {
-      color: theme.palette.info.main,
+      color: theme.palette.primary.main,
       opacity: 1,
     },
   }),

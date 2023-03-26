@@ -6,10 +6,12 @@ import {
   getProduct,
   getProductSlugs,
   getRelatedProducts,
+  getStore,
 } from 'api/base/server-side-getters';
 import connectToDB from 'api/database/databaseConnection';
 import { serialize } from 'api/helpers/object.helper';
 import type { IUpeProduct } from 'api/models/Product.model/types';
+import type { IStore } from 'api/models/Store.model/types';
 import SEO from 'components/abstract/SEO';
 import { H2 } from 'components/abstract/Typography';
 import { Footer } from 'components/common/layout/footer';
@@ -18,6 +20,7 @@ import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
 import { extractIdFromSlug } from 'helpers/product.helper';
 import LoginDialog from 'pages-sections/auth/LoginDialog';
+import { StoreId } from 'utils/constants';
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -35,12 +38,13 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
 type ProductDetailsProps = {
   product: IUpeProduct;
   relatedProducts: IUpeProduct[];
+  initialStoreInfo: IStore;
 };
 
 ProductDetails.getLayout = getPageLayout;
 
 function ProductDetails(props: ProductDetailsProps) {
-  const { product, relatedProducts } = props;
+  const { product, relatedProducts, initialStoreInfo } = props;
 
   return (
     <Fragment>
@@ -54,8 +58,8 @@ function ProductDetails(props: ProductDetailsProps) {
 
         <RelatedProductsSection products={relatedProducts} />
       </Container>
-      <Footer />
       <LoginDialog />
+      <Footer initialStoreInfo={initialStoreInfo} />
     </Fragment>
   );
 }
@@ -87,9 +91,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const relatedProducts = await getRelatedProducts(productId, categoryId);
 
+  const initialStoreInfo = await getStore(StoreId);
+
   return {
     props: {
       product: serialize(product),
+      initialStoreInfo: serialize(initialStoreInfo),
       relatedProducts: serialize(relatedProducts),
     },
   };

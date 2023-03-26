@@ -22,7 +22,7 @@ const InnerWrapper = styled(Box)(({ theme }) => ({
 type Props = { children: ReactNode };
 // ======================================================
 
-const VendorDashboardLayout: FC<Props> = ({ children }) => {
+const AdminDashboardLayout: FC<Props> = ({ children }) => {
   const [sidebarCompact, setSidebarCompact] = useState(0);
   const [showMobileSideBar, setShowMobileSideBar] = useState(0);
 
@@ -50,4 +50,4 @@ const VendorDashboardLayout: FC<Props> = ({ children }) => {
   );
 };
 
-export default VendorDashboardLayout;
+export default AdminDashboardLayout;

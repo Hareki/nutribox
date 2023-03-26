@@ -1,6 +1,6 @@
 import type { Types } from 'mongoose';
 
-import type { IStoreHour } from './StoreHour.schema/types';
+import type { IStoreHour, IStoreHourInput } from './StoreHour.schema/types';
 
 import type { IAddress } from 'api/types/schema.type';
 
@@ -10,6 +10,9 @@ export interface IStore extends IAddress {
   storeHours: Types.DocumentArray<IStoreHour>; // IStoreHour
 
   phone: string;
+  email: string;
 }
 
-export interface IStoreInput extends Omit<IStore, '_id'> {}
+export interface IStoreInput extends Omit<IStore, '_id' | 'id' | 'storeHours'> {
+  storeHours: IStoreHourInput[];
+}

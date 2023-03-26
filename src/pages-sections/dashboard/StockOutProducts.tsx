@@ -2,7 +2,7 @@ import { Button, Card } from '@mui/material';
 import type { FC } from 'react';
 import React from 'react';
 
-import DataListTable from './table';
+import DataListTable from './StatisticTable';
 
 import type { IProductWithTotalQuantity } from 'api/models/Product.model/types';
 import { H3 } from 'components/abstract/Typography';
@@ -10,9 +10,9 @@ import { FlexBetween } from 'components/flex-box';
 
 // table column list
 const tableHeading = [
-  { id: 'product', label: 'Sản phẩm', alignRight: false },
-  { id: 'stock', label: 'Danh mục', alignRight: false },
-  { id: 'amount', label: 'Tồn kho', alignCenter: true },
+  { id: 'name', label: 'Sản phẩm', alignRight: false },
+  { id: 'category', label: 'Danh mục', alignRight: false },
+  { id: 'totalQuantity', label: 'Tồn kho', alignCenter: true },
 ];
 
 type StockOutProductsProps = { data: IProductWithTotalQuantity[] };

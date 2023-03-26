@@ -4,8 +4,9 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/databaseConnection';
-import SupplierModel from 'api/models/Supplier.model';
-import type { ISupplierInput } from 'api/models/Supplier.model/types';
+import StoreModel from 'api/models/Store.model';
+import type { IStoreHourInput } from 'api/models/Store.model/StoreHour.schema/types';
+import type { IStoreInput } from 'api/models/Store.model/types';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,
@@ -13,85 +14,58 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 }).get(async (req, res) => {
   await connectToDB();
 
-  const dataArray: ISupplierInput[] = [
+  const dataArray: IStoreHourInput[] = [
     {
-      name: 'Supplier 1',
-      phone: '033-875-8008',
-      email: 'supplier1@gmail.com',
-
-      province: 'TP. Hồ Chí Minh',
-      district: 'Quận 1',
-      ward: 'Phường Tân Định',
-
-      provinceId: 79,
-      districtId: 760,
-      wardId: 26734,
-
-      streetAddress: '12/12 Đường 49',
+      dayOfWeek: 'MONDAY',
+      openTime: new Date('1970-01-01T08:00:00.000Z'),
+      closeTime: new Date('2021-01-01T18:00:00.000Z'),
     },
     {
-      name: 'Supplier 2',
-      phone: '033-831-1008',
-      email: 'supplier2@gmail.com',
-
-      province: 'TP. Hồ Chí Minh',
-      district: 'Quận 1',
-      ward: 'Phường Đa Kao"',
-
-      provinceId: 79,
-      districtId: 760,
-      wardId: 26737,
-
-      streetAddress: '12/12 Đường 49',
+      dayOfWeek: 'TUESDAY',
+      openTime: new Date('1970-01-01T08:00:00.000Z'),
+      closeTime: new Date('2021-01-01T18:00:00.000Z'),
     },
     {
-      name: 'Supplier 3',
-      phone: '033-835-8862',
-      email: 'supplier3@gmail.com',
-
-      province: 'TP. Hồ Chí Minh',
-      district: 'Quận 1',
-      ward: 'Phường Bến Nghé',
-
-      provinceId: 79,
-      districtId: 760,
-      wardId: 26740,
-
-      streetAddress: '12/12 Đường 49',
+      dayOfWeek: 'WEDNESDAY',
+      openTime: new Date('1970-01-01T08:00:00.000Z'),
+      closeTime: new Date('2021-01-01T18:00:00.000Z'),
     },
     {
-      name: 'Supplier 4',
-      phone: '033-865-8008',
-      email: 'supplier4@gmail.com',
-
-      province: 'TP. Hồ Chí Minh',
-      district: 'Quận 1',
-      ward: 'Phường Bến Thành',
-
-      provinceId: 79,
-      districtId: 760,
-      wardId: 26743,
-
-      streetAddress: '12/12 Đường 49',
+      dayOfWeek: 'THURSDAY',
+      openTime: new Date('1970-01-01T08:00:00.000Z'),
+      closeTime: new Date('2021-01-01T18:00:00.000Z'),
     },
     {
-      name: 'Supplier 5',
-      phone: '033-875-1238',
-      email: 'supplier5@gmail.com',
-
-      province: 'TP. Hồ Chí Minh',
-      district: 'Quận 1',
-      ward: 'Phường Nguyễn Thái Bình',
-
-      provinceId: 79,
-      districtId: 760,
-      wardId: 26746,
-
-      streetAddress: '12/12 Đường 49',
+      dayOfWeek: 'FRIDAY',
+      openTime: new Date('1970-01-01T07:00:00.000Z'),
+      closeTime: new Date('2021-01-01T20:00:00.000Z'),
+    },
+    {
+      dayOfWeek: 'SATURDAY',
+      openTime: new Date('1970-01-01T07:00:00.000Z'),
+      closeTime: new Date('2021-01-01T20:00:00.000Z'),
+    },
+    {
+      dayOfWeek: 'SUNDAY',
+      openTime: new Date('1970-01-01T07:00:00.000Z'),
+      closeTime: new Date('2021-01-01T20:00:00.000Z'),
     },
   ];
 
-  await SupplierModel().insertMany(dataArray);
+  const mainData: IStoreInput = {
+    phone: '033-875-8008',
+    email: 'n18dccn192@student.ptithcm.edu.vn',
+    province: 'Thành phố Hồ Chí Minh',
+    provinceId: 79,
+    district: 'Quận Bình Thạnh',
+    districtId: 765,
+    ward: 'Phường 22',
+    wardId: 26956,
+    streetAddress: '208 Nguyễn Hữu Cảnh',
+    storeHours: dataArray,
+  };
+
+  await StoreModel().create(mainData);
 
   res.status(StatusCodes.OK).json({
     status: 'success',

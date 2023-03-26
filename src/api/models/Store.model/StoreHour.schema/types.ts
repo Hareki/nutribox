@@ -10,8 +10,12 @@ export interface IStoreHour {
     | 'FRIDAY'
     | 'SATURDAY'
     | 'SUNDAY';
+  openTime: string;
+  closeTime: string;
+}
+
+export interface IStoreHourInput
+  extends Omit<IStoreHour, '_id' | 'id' | 'openTime' | 'closeTime'> {
   openTime: Date;
   closeTime: Date;
 }
-
-export interface IStoreHourInput extends Omit<IStoreHour, '_id'> {}
