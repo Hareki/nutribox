@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
+import type { FilteredOrder } from '../../../../pages/admin/order';
 import { StyledTableCell, StyledTableRow } from '../StyledComponents';
 
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import OrderStatusChip from 'components/orders/OrderStatusChip';
 import { formatCurrency, formatDateTime } from 'lib';
 
-type OrderRowProps = { order: ICustomerOrder };
+type OrderRowProps = { order: FilteredOrder };
 
 const OrderRow: FC<OrderRowProps> = ({ order }) => {
   const { id, status, total, createdAt, phone } = order;

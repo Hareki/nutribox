@@ -16,8 +16,10 @@ export interface GetOneGeneratorOptions
   extends Omit<GetOneDocsOptions, 'model'> {}
 
 export function getAllGenerator<T>(model: Model<any>) {
-  const getAll = async (options?: GetAllGeneratorOptions): Promise<T[]> => {
-    const allDocs: T[] = await getAllDocs({
+  const getAll = async <T1 extends T = T>(
+    options?: GetAllGeneratorOptions,
+  ): Promise<T[]> => {
+    const allDocs: T1[] = await getAllDocs({
       model,
       ...options,
     });

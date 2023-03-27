@@ -7,7 +7,7 @@ export const LayoutConstant = {
   grocerySidenavWidth: 280,
 };
 
-export const ProfileProductPaginationConstant = {
+export const ProfileInfiniteProductConstant = {
   docsPerPage: 6,
   infiniteDocsPerPage: 9999,
 };
@@ -17,7 +17,7 @@ export const ProfileOrderPaginationConstant = {
   infiniteDocsPerPage: 9999,
 };
 
-export const AdminOrderPaginationConstant = {
+export const AdminPaginationConstant = {
   docsPerPage: 9,
   infiniteDocsPerPage: 9999,
 };

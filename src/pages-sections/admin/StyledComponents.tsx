@@ -12,7 +12,7 @@ import {
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontSize: 14,
   paddingTop: 10,
-  fontWeight: 600,
+  fontWeight: 500,
   paddingBottom: 10,
   color: theme.palette.grey[900],
   borderBottom: `1px solid ${theme.palette.grey[300]}`,

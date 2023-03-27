@@ -1,4 +1,4 @@
-import { ProfileProductPaginationConstant } from './../constants';
+import { ProfileInfiniteProductConstant } from './../constants';
 
 import type { IUpeProduct } from 'api/models/Product.model/types';
 import type {
@@ -27,13 +27,13 @@ const getAllProducts = async (
   let pageNum: number, docsPerPage: number;
   if (!pageNumInput) {
     pageNum = 1;
-    docsPerPage = ProfileProductPaginationConstant.infiniteDocsPerPage;
+    docsPerPage = ProfileInfiniteProductConstant.infiniteDocsPerPage;
   } else {
     pageNum = pageNumInput;
-    docsPerPage = ProfileProductPaginationConstant.docsPerPage;
+    docsPerPage = ProfileInfiniteProductConstant.docsPerPage;
   }
 
-  if (docsPerPage === ProfileProductPaginationConstant.infiniteDocsPerPage)
+  if (docsPerPage === ProfileInfiniteProductConstant.infiniteDocsPerPage)
     console.warn('WARNING: docsPerPage is infiniteDocsPerPage');
 
   const response = await axiosInstance.get('/product/all', {

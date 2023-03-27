@@ -1,6 +1,7 @@
 import type { Types } from 'mongoose';
 
 import type { IExpiration } from '../Expiration.model/types';
+import type { IProductCategory } from '../ProductCategory.model/types';
 
 export interface IProduct {
   // _id: Types.ObjectId;
@@ -25,6 +26,11 @@ export interface IProduct {
   hot: boolean;
   name: string;
 }
+
+export interface IPopulatedCategoryProduct extends Omit<IProduct, 'category'> {
+  category: IProductCategory;
+}
+
 // UPE = Unexpired and Populated Expirations, we usually use this type instead of IProduct
 export interface IUpeProduct extends Omit<IProduct, 'expirations'> {
   expirations: IExpiration[];

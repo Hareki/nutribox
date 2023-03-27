@@ -1,39 +1,51 @@
-import { Delete, Edit, RemoveRedEye } from '@mui/icons-material';
 import { Avatar, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import { useState } from 'react';
 
+import type { FilteredProduct } from '../../../../pages/admin/product';
 import {
   StyledTableRow,
   CategoryWrapper,
   StyledTableCell,
-  StyledIconButton,
 } from '../StyledComponents';
 
 import { Paragraph, Small } from 'components/abstract/Typography';
-import CustomSwitch from 'components/common/input/CustomSwitch';
 import { FlexBox } from 'components/flex-box';
 import { formatCurrency } from 'lib';
 
 // ========================================================================
-type ProductRowProps = { product: any };
+type ProductRowProps = { product: FilteredProduct };
 // ========================================================================
 
 const ProductRow: FC<ProductRowProps> = ({ product }) => {
-  const { category, name, price, image, brand, id, published, slug } = product;
+  const {
+    id,
+    name,
+    category,
+    retailPrice,
+    wholesalePrice,
+    imageUrls,
+    shelfLife,
+  } = product;
 
   const router = useRouter();
-  const [productPulish, setProductPublish] = useState(published);
 
   return (
-    <StyledTableRow tabIndex={-1} role='checkbox'>
+    <StyledTableRow
+      tabIndex={-1}
+      role='checkbox'
+      onClick={() => router.push(`/admin/product/${id}`)}
+    >
       <StyledTableCell align='left'>
         <FlexBox alignItems='center' gap={1.5}>
-          <Avatar src={image} sx={{ borderRadius: '8px' }} />
+          <Avatar
+            variant='square'
+            src={imageUrls[0]}
+            sx={{ objectFit: 'contain' }}
+          />
           <Box>
             <Paragraph>{name}</Paragraph>
-            <Small color='grey.600'>#{id.split('-')[0]}</Small>
+            <Small color='grey.600'>#{id.slice(-6)}</Small>
           </Box>
         </FlexBox>
       </StyledTableCell>
@@ -43,36 +55,15 @@ const ProductRow: FC<ProductRowProps> = ({ product }) => {
       </StyledTableCell>
 
       <StyledTableCell align='left'>
-        <Avatar
-          src={brand}
-          sx={{ width: 55, height: 'auto', borderRadius: 0 }}
-        />
+        {formatCurrency(wholesalePrice)}
       </StyledTableCell>
 
-      <StyledTableCell align='left'>{formatCurrency(price)}</StyledTableCell>
-
       <StyledTableCell align='left'>
-        <CustomSwitch
-          color='info'
-          checked={productPulish}
-          onChange={() => setProductPublish((state) => !state)}
-        />
+        {formatCurrency(retailPrice)}
       </StyledTableCell>
 
       <StyledTableCell align='center'>
-        <StyledIconButton
-          onClick={() => router.push(`/admin/products/${slug}`)}
-        >
-          <Edit />
-        </StyledIconButton>
-
-        <StyledIconButton>
-          <RemoveRedEye />
-        </StyledIconButton>
-
-        <StyledIconButton>
-          <Delete />
-        </StyledIconButton>
+        <StyledTableCell align='left'>{shelfLife}</StyledTableCell>
       </StyledTableCell>
     </StyledTableRow>
   );

@@ -8,12 +8,13 @@ import {
   TableContainer,
 } from '@mui/material';
 import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
 
 import { authOptions } from '../../api/auth/[...nextauth]';
 
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import type { IPopulatedCategoryProduct } from 'api/models/Product.model/types';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
@@ -21,42 +22,46 @@ import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
-import { OrderRow } from 'pages-sections/admin';
-import apiCaller from 'utils/apiCallers/admin/order';
+import { ProductRow } from 'pages-sections/admin';
+import apiCaller from 'utils/apiCallers/admin/product';
 
-OrderList.getLayout = function getLayout(page: ReactElement) {
+ProductList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
 const tableHeading = [
-  { id: 'id', label: 'Đơn hàng #', align: 'left' },
-  { id: 'status', label: 'Trạng thái', align: 'left' },
-  { id: 'createdAt', label: 'Ngày mua', align: 'left' },
-  { id: 'total', label: 'Tổng tiền', align: 'left' },
-  { id: 'phone', label: 'Số điện thoại', align: 'left' },
+  { id: 'name', label: 'Tên sản phẩm', align: 'left' },
+  { id: 'category', label: 'Danh mục', align: 'left' },
+  { id: 'wholesalePrice', label: 'Giá gốc', align: 'left' },
+  { id: 'retailPrice', label: 'Giá bán', align: 'left' },
+  { id: 'shelfLife', label: 'Ngày SD', align: 'left' },
 ];
 
-const mapOrderToRow = (item: ICustomerOrder) => ({
+const mapProductToRow = (item: IPopulatedCategoryProduct) => ({
   id: item.id,
-  status: item.status,
-  createdAt: item.createdAt,
-  total: item.total,
-  phone: item.phone,
+  shelfLife: item.shelfLife,
+  imageUrls: item.imageUrls,
+  name: item.name,
+  category: item.category.name,
+  wholesalePrice: item.wholesalePrice,
+  retailPrice: item.retailPrice,
 });
 
-export type FilteredOrder = ReturnType<typeof mapOrderToRow>;
+export type FilteredProduct = ReturnType<typeof mapProductToRow>;
 
-function OrderList() {
+function ProductList() {
+  const router = useRouter();
+
   const {
     isLoading,
-    paginationData: orders,
+    paginationData: products,
     paginationComponent,
-  } = usePaginationQuery<ICustomerOrder>({
-    baseQueryKey: ['admin/orders'],
-    getPaginationDataFn: (currPageNum) => apiCaller.getOrders(currPageNum),
+  } = usePaginationQuery<IPopulatedCategoryProduct>({
+    baseQueryKey: ['admin/products'],
+    getPaginationDataFn: (currPageNum) => apiCaller.getProducts(currPageNum),
   });
 
-  const filteredOrders = orders?.docs.map(mapOrderToRow);
+  const filteredOrders = products?.docs.map(mapProductToRow);
 
   const {
     order,
@@ -74,12 +79,14 @@ function OrderList() {
 
   return (
     <Box py={4}>
-      <H3 mb={2}>Đơn hàng</H3>
+      <H3 mb={2}>Sản phẩm</H3>
 
       <SearchArea
         handleSearch={() => {}}
-        searchPlaceholder='Tìm theo mã đơn hàng'
-        haveButton={false}
+        searchPlaceholder='Tìm theo tên sản phẩm'
+        haveButton
+        handleBtnClick={() => router.push('/admin/products/create')}
+        buttonText='Thêm sản phẩm'
       />
 
       {isLoading ? (
@@ -106,8 +113,8 @@ function OrderList() {
                 />
 
                 <TableBody>
-                  {filteredList.map((order) => (
-                    <OrderRow order={order} key={order.id} />
+                  {filteredList.map((product) => (
+                    <ProductRow product={product} key={product.id} />
                   ))}
                 </TableBody>
               </Table>
@@ -137,4 +144,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: {} };
 };
 
-export default OrderList;
+export default ProductList;

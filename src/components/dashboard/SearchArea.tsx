@@ -24,7 +24,7 @@ const SearchArea: FC<SearchAreaProps> = (props) => {
 
       {props.haveButton && (
         <Button
-          color='info'
+          color='primary'
           fullWidth={downSM}
           variant='contained'
           startIcon={<Add />}
