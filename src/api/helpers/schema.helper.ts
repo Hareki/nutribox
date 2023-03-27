@@ -102,7 +102,8 @@ export const getDuplicateKeyErrorMessage = (errorObj: DuplicateKeyError) => {
     const fields = Object.keys(errorObj.keyValue);
     const fieldName = fields[0];
     const fieldValue = errorObj.keyValue[fieldName];
-    errorMessage[fieldName] = `${fieldName} ${fieldValue} đã tồn tại!`;
+    // errorMessage[fieldName] = `${fieldName} ${fieldValue} đã tồn tại!`;
+    errorMessage[fieldName] = `${fieldValue} đã tồn tại!`;
   } else {
     errorMessage.unknown = 'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
   }

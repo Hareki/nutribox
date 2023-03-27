@@ -4,6 +4,7 @@ import {
   getAllGenerator,
   getOneGenerator,
   getTotalGenerator,
+  updateOneGenerator,
 } from './generator.controller';
 
 import type {
@@ -26,11 +27,12 @@ interface GetRelatedProductsParams {
 }
 interface GetRelatedProductOptions extends Omit<GetManyDocsOptions, 'model'> {}
 
-export const getAll = getAllGenerator<IProduct>(ProductModel());
-export const getOne = getOneGenerator<IProduct>(ProductModel());
-export const getTotal = getTotalGenerator(ProductModel());
+const getAll = getAllGenerator<IProduct>(ProductModel());
+const getOne = getOneGenerator<IProduct>(ProductModel());
+const updateOne = updateOneGenerator<IProduct>(ProductModel());
+const getTotal = getTotalGenerator(ProductModel());
 
-export const getHotProducts = async (
+const getHotProducts = async (
   options?: GetHotProductsOptions,
 ): Promise<IProduct[]> => {
   const query = ProductModel().find({ hot: true });
@@ -44,7 +46,7 @@ export const getHotProducts = async (
   return hotProducts;
 };
 
-export const getRelatedProducts = async (
+const getRelatedProducts = async (
   { categoryId, productId }: GetRelatedProductsParams,
   { populate, ignoreFields, limit = 100 }: GetRelatedProductOptions,
 ): Promise<IProduct[]> => {
@@ -59,7 +61,7 @@ export const getRelatedProducts = async (
   return hotProducts;
 };
 
-export const getNewProducts = async (
+const getNewProducts = async (
   options?: GetNewProductsOptions,
 ): Promise<IProduct[]> => {
   const query = ProductModel().find().sort({ createdAt: -1 });
@@ -118,7 +120,7 @@ async function consume(
   }
 }
 
-export const consumeProducts = async (
+const consumeProducts = async (
   items: ICustomerOrderItemInput[],
   session: ClientSession,
 ) => {
@@ -131,6 +133,7 @@ export const consumeProducts = async (
 const ProductController = {
   getAll,
   getOne,
+  updateOne,
   getTotal,
   getHotProducts,
   getRelatedProducts,

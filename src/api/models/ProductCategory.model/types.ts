@@ -10,6 +10,9 @@ export interface IProductCategory {
   slug: string;
   name: string;
 }
+
+export interface IProductCategoryDropdown
+  extends Pick<IProductCategory, 'id' | 'name'> {}
 export interface IPopulatedProductCategory
   extends Omit<IProductCategory, 'products' | '_id'> {
   _id?: Types.ObjectId;

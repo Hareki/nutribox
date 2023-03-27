@@ -5,6 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
@@ -125,9 +126,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const isValidId = Types.ObjectId.isValid(context.params.id as string);
+  if (!isValidId) {
+    return {
+      notFound: true,
+    };
+  }
+
   const order = await CustomerOrderController.getOne({
     id: context.params.id as string,
   });
+
+  if (!order) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: { initialOrder: serialize(order) },

@@ -1,204 +1,232 @@
-import { Button, Card, Grid, MenuItem, TextField } from '@mui/material';
-import { Formik } from 'formik';
+import { LoadingButton } from '@mui/lab';
+import { Autocomplete, Button, Card, Grid, TextField } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { useFormik } from 'formik';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { Fragment } from 'react';
 import type * as yup from 'yup';
 import type { Assign, ObjectShape } from 'yup/lib/object';
 
-import { UploadImageBox, StyledClear } from '../StyledComponents';
+import type { UpdateProductInfoRb } from '../../../../pages/api/admin/product/[id]';
 
-import MuiImage from 'components/common/input/MuiImage';
-import DropZone from 'components/DropZone';
-import { FlexBox } from 'components/flex-box';
+import type { IProductCategoryDropdown } from 'api/models/ProductCategory.model/types';
+import CurrencyInput from 'components/common/input/CurrencyInput';
+import apiCaller from 'utils/apiCallers/admin/product';
 
-// ================================================================
+export interface ProductInfoFormValues
+  extends Omit<UpdateProductInfoRb, 'category'> {
+  category: IProductCategoryDropdown;
+}
+
 type ProductFormProps = {
   initialValues: any;
   handleFormSubmit: (values: any) => void;
   validationSchema: yup.ObjectSchema<Assign<ObjectShape, any>>;
+  isLoading: boolean;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
 };
 
-// ================================================================
-
 const ProductForm: FC<ProductFormProps> = (props) => {
-  const { initialValues, validationSchema, handleFormSubmit } = props;
+  const {
+    initialValues,
+    validationSchema,
+    handleFormSubmit,
+    isLoading,
+    isEditing,
+    setIsEditing,
+  } = props;
+  const { data: categories, isLoading: isLoadingCategories } = useQuery({
+    queryKey: ['categories', 'dropdown'],
+    queryFn: () => apiCaller.getDropdown(),
+  });
 
-  const [files, setFiles] = useState([]);
-
-  // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
-  const handleChangeDropZone = (files: File[]) => {
-    files.forEach((file) =>
-      Object.assign(file, { preview: URL.createObjectURL(file) }),
-    );
-    setFiles(files);
-  };
-
-  // HANDLE DELETE UPLOAD IMAGE
-  const handleFileDelete = (file: File) => () => {
-    setFiles((files) => files.filter((item) => item.name !== file.name));
-  };
+  const {
+    resetForm,
+    values,
+    setFieldValue,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+  } = useFormik<ProductInfoFormValues>({
+    initialValues,
+    validationSchema,
+    onSubmit: handleFormSubmit,
+  });
 
   return (
     <Card sx={{ p: 6 }}>
-      <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item sm={6} xs={12}>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid item sm={6} xs={12}>
+            <TextField
+              fullWidth
+              name='name'
+              label='Tên sản phẩm'
+              size='medium'
+              placeholder='Tên sản phẩm'
+              value={values.name}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={!!touched.name && !!errors.name}
+              helperText={(touched.name && errors.name) as string}
+              InputProps={{
+                readOnly: !isEditing,
+              }}
+            />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <Autocomplete
+              readOnly={!isEditing}
+              fullWidth
+              size='medium'
+              sx={{ mb: 2 }}
+              options={categories || []}
+              disabled={isLoadingCategories}
+              value={values.category}
+              getOptionLabel={(value) =>
+                (value as IProductCategoryDropdown).name
+              }
+              onChange={(_, value) => {
+                setFieldValue('category', value);
+              }}
+              renderInput={(params) => (
                 <TextField
-                  fullWidth
-                  name='name'
-                  label='Name'
-                  color='info'
-                  size='medium'
-                  placeholder='Name'
-                  value={values.name}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  error={!!touched.name && !!errors.name}
-                  helperText={(touched.name && errors.name) as string}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  select
-                  fullWidth
-                  color='info'
-                  size='medium'
-                  name='category'
-                  onBlur={handleBlur}
-                  placeholder='Category'
-                  onChange={handleChange}
-                  value={values.category}
-                  label='Select Category'
-                  SelectProps={{ multiple: true }}
+                  label='Danh mục'
+                  placeholder='Chọn danh mục'
                   error={!!touched.category && !!errors.category}
                   helperText={(touched.category && errors.category) as string}
+                  {...params}
+                  size='medium'
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              rows={6}
+              multiline
+              fullWidth
+              size='medium'
+              name='description'
+              label='Mô tả'
+              onBlur={handleBlur}
+              onChange={handleChange}
+              placeholder='Mô tả'
+              value={values.description}
+              error={!!touched.description && !!errors.description}
+              helperText={(touched.description && errors.description) as string}
+              InputProps={{
+                readOnly: !isEditing,
+              }}
+            />
+          </Grid>
+          <Grid item sm={4} xs={12}>
+            <TextField
+              fullWidth
+              name='wholesalePrice'
+              size='medium'
+              onBlur={handleBlur}
+              value={values.wholesalePrice}
+              label='Giá gốc'
+              onChange={handleChange}
+              placeholder='Giá gốc'
+              error={!!touched.wholesalePrice && !!errors.wholesalePrice}
+              helperText={
+                (touched.wholesalePrice && errors.wholesalePrice) as string
+              }
+              InputProps={{
+                readOnly: !isEditing,
+                inputComponent: CurrencyInput as any,
+                inputProps: {
+                  prefix: '₫ ',
+                },
+              }}
+            />
+          </Grid>
+          <Grid item sm={4} xs={12}>
+            <TextField
+              fullWidth
+              size='medium'
+              name='retailPrice'
+              label='Giá bán'
+              onBlur={handleBlur}
+              onChange={handleChange}
+              placeholder='Giá bán'
+              value={values.retailPrice}
+              error={!!touched.retailPrice && !!errors.retailPrice}
+              helperText={(touched.retailPrice && errors.retailPrice) as string}
+              InputProps={{
+                readOnly: !isEditing,
+                inputComponent: CurrencyInput as any,
+                inputProps: {
+                  prefix: '₫ ',
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item sm={4} xs={12}>
+            <TextField
+              fullWidth
+              name='shelfLife'
+              label='Số ngày sử dụng'
+              size='medium'
+              placeholder='Số ngày sử dụng'
+              onBlur={handleBlur}
+              value={values.shelfLife}
+              onChange={handleChange}
+              error={!!touched.shelfLife && !!errors.shelfLife}
+              helperText={(touched.shelfLife && errors.shelfLife) as string}
+              InputProps={{
+                readOnly: !isEditing,
+                inputComponent: CurrencyInput as any,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
+            {isEditing ? (
+              <Fragment>
+                <LoadingButton
+                  loading={isLoading}
+                  variant='contained'
+                  color='primary'
+                  type='submit'
                 >
-                  <MenuItem value='electronics'>Electronics</MenuItem>
-                  <MenuItem value='fashion'>Fashion</MenuItem>
-                </TextField>
-              </Grid>
-
-              <Grid item xs={12}>
-                <DropZone onChange={(files) => handleChangeDropZone(files)} />
-
-                <FlexBox flexDirection='row' mt={2} flexWrap='wrap' gap={1}>
-                  {files.map((file, index) => {
-                    return (
-                      <UploadImageBox key={index}>
-                        <MuiImage src={file.preview} width='100%' />
-                        <StyledClear onClick={handleFileDelete(file)} />
-                      </UploadImageBox>
-                    );
-                  })}
-                </FlexBox>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  rows={6}
-                  multiline
-                  fullWidth
-                  color='info'
-                  size='medium'
-                  name='description'
-                  label='Description'
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  placeholder='Description'
-                  value={values.description}
-                  error={!!touched.description && !!errors.description}
-                  helperText={
-                    (touched.description && errors.description) as string
-                  }
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  name='stock'
-                  color='info'
-                  size='medium'
-                  label='Stock'
-                  placeholder='Stock'
-                  onBlur={handleBlur}
-                  value={values.stock}
-                  onChange={handleChange}
-                  error={!!touched.stock && !!errors.stock}
-                  helperText={(touched.stock && errors.stock) as string}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  name='tags'
-                  label='Tags'
-                  color='info'
-                  size='medium'
-                  placeholder='Tags'
-                  onBlur={handleBlur}
-                  value={values.tags}
-                  onChange={handleChange}
-                  error={!!touched.tags && !!errors.tags}
-                  helperText={(touched.tags && errors.tags) as string}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  name='price'
-                  color='info'
-                  size='medium'
-                  type='number'
-                  onBlur={handleBlur}
-                  value={values.price}
-                  label='Regular Price'
-                  onChange={handleChange}
-                  placeholder='Regular Price'
-                  error={!!touched.price && !!errors.price}
-                  helperText={(touched.price && errors.price) as string}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  color='info'
-                  size='medium'
-                  type='number'
-                  name='sale_price'
-                  label='Sale Price'
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  placeholder='Sale Price'
-                  value={values.sale_price}
-                  error={!!touched.sale_price && !!errors.sale_price}
-                  helperText={
-                    (touched.sale_price && errors.sale_price) as string
-                  }
-                />
-              </Grid>
-
-              <Grid item sm={6} xs={12}>
-                <Button variant='contained' color='info' type='submit'>
-                  Save product
+                  Lưu thay đổi
+                </LoadingButton>
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  type='submit'
+                  onClick={() => {
+                    setIsEditing(false);
+                    resetForm();
+                  }}
+                  sx={{
+                    px: 3,
+                  }}
+                >
+                  Huỷ
                 </Button>
-              </Grid>
-            </Grid>
-          </form>
-        )}
-      </Formik>
+              </Fragment>
+            ) : (
+              <Button
+                variant='contained'
+                color='primary'
+                type='submit'
+                onClick={() => setIsEditing(true)}
+              >
+                Chỉnh sửa
+              </Button>
+            )}
+          </Grid>
+        </Grid>
+      </form>
     </Card>
   );
 };

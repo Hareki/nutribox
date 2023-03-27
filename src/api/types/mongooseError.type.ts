@@ -47,7 +47,11 @@ export interface ValidationError extends mongoose.Error.ValidationError {}
 export function instanceOfDuplicateKeyError(
   object: any,
 ): object is DuplicateKeyError {
-  return 'index' in object && 'code' in object && 'keyPattern' in object;
+  return (
+    'code' in object &&
+    'keyPattern' in object &&
+    (object?.code === 11000 || object?.code === 11001)
+  );
 }
 
 export function instanceOfValidationError(

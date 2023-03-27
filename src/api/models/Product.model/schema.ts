@@ -102,6 +102,7 @@ productSchema.virtual('slug').get(function () {
   return getSlug(this.name, this._id.toString());
 });
 
+// FIXME: Not yet figured out to update category category of a product through middleware
 productSchema.pre('save', preSaveWasNew);
 
 productSchema.post('save', function (doc: Document<IProduct>, next) {
