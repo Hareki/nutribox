@@ -13,6 +13,7 @@ export interface BaseQueryBuilderOptions
 export interface GetManyDocsOptions extends BaseGetOptions {
   skip?: number;
   limit?: number;
+  sort?: Record<string, number>;
 }
 export interface GetOneDocsOptions extends BaseGetOptions {
   id: Types.ObjectId | string;
@@ -48,6 +49,7 @@ export const getAllDocs = async ({
   includeFields,
   skip,
   limit,
+  sort,
 }: GetManyDocsOptions): Promise<any[]> => {
   const query = model.find();
 
@@ -59,6 +61,11 @@ export const getAllDocs = async ({
 
   if (limit) {
     query.limit(limit);
+  }
+
+  if (sort) {
+    // always use sort as an object, like this: {createdAt: -1}
+    query.sort(sort as any);
   }
 
   const docs = await query.exec();

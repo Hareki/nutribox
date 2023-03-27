@@ -5,7 +5,8 @@ export interface JSendSuccessResponse<T> {
 
 export interface JSendFailResponse<T> {
   status: 'fail';
-  data: T;
+  data?: T;
+  message?: string;
 }
 
 export interface JSendErrorResponse {

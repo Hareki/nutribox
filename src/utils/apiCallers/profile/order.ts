@@ -1,7 +1,10 @@
+import type { UpdateOrderStatusRb } from '../../../../pages/api/admin/order/update';
+import type { CancelOrderRequestBody } from '../../../../pages/api/profile/order/cancel';
+
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
-import { OrderPaginationConstant } from 'utils/constants';
+import { ProfileOrderPaginationConstant } from 'utils/constants';
 
 export const getOrders = async (
   accountId: string,
@@ -9,7 +12,7 @@ export const getOrders = async (
 ): Promise<GetAllPaginationResult<ICustomerOrder>> => {
   const response = await axiosInstance.get(`profile/order/${accountId}`, {
     params: {
-      docsPerPage: OrderPaginationConstant.docsPerPage,
+      docsPerPage: ProfileOrderPaginationConstant.docsPerPage,
       page,
     },
   });
@@ -22,9 +25,18 @@ export const getOrder = async (orderId: string): Promise<ICustomerOrder> => {
 };
 
 export const cancelOrder = async (orderId: string): Promise<ICustomerOrder> => {
-  const response = await axiosInstance.put(`profile/order/cancel`, {
+  const requestBody: CancelOrderRequestBody = { id: orderId };
+  const response = await axiosInstance.put(`profile/order/cancel`, requestBody);
+  return response.data.data;
+};
+
+export const updateOrderStatus = async (
+  orderId: string,
+): Promise<ICustomerOrder> => {
+  const requestBody: UpdateOrderStatusRb = {
     id: orderId,
-  });
+  };
+  const response = await axiosInstance.put(`admin/order/update`, requestBody);
   return response.data.data;
 };
 
@@ -32,6 +44,7 @@ const apiCaller = {
   getOrders,
   getOrder,
   cancelOrder,
+  updateOrderStatus,
 };
 
 export default apiCaller;

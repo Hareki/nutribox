@@ -39,6 +39,7 @@ export const grey = {
   300: '#E3E9EF',
   200: '#F3F5F9', // Line Stroke
   100: '#F6F9FC',
+  white: '#F6F9FC',
 };
 
 // export const primary = {
@@ -162,8 +163,9 @@ export const paste = {
 };
 
 export const warning = {
-  // 100: '#FFF8E5',
-  100: '#ffe195',
+  100: '#FFF8E5',
+  // 100: '#ffe195',
+  900: '#FFCD4E',
   main: '#FFCD4E',
   contrastText: '#FFFFFF',
 };

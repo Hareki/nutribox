@@ -1,3 +1,5 @@
+import type { NextApiRequest } from 'next';
+
 interface PaginationInput {
   docsPerPage: string;
   page: string;
@@ -27,4 +29,20 @@ export const getPaginationParams: (
   const limit = docsPerPageNum;
 
   return { skip, limit, nextPageNum, totalPages };
+};
+
+export const processPaginationParams = async (
+  req: NextApiRequest,
+  getTotal: () => Promise<number>,
+) => {
+  const { docsPerPage, page } = req.query;
+  const totalDocs = await getTotal();
+
+  const { skip, limit, nextPageNum, totalPages } = getPaginationParams({
+    docsPerPage: docsPerPage as string,
+    page: page as string,
+    totalDocs,
+  });
+
+  return { skip, limit, nextPageNum, totalPages, totalDocs };
 };

@@ -51,11 +51,11 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
     queryFn: () => apiCaller.getStoreInfo(StoreId),
     initialData: initialStoreInfo ?? null,
   });
-
+  // Set the initialData will prevent isLoading from being true, need to figure out another way to determine if the it is loading or not
   return (
     <footer>
       <Box bgcolor='grey.450'>
-        {isLoading ? (
+        {isLoading || storeInfo === null ? (
           <Skeleton
             variant='rectangular'
             height={400}

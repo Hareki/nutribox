@@ -33,6 +33,7 @@ export const customerOrderSchema = new Schema<ICustomerOrder>(
 
     ...getPhoneSchema('CustomerOrder', false),
 
+    // indicate that the order is paid COD or online
     paid: {
       type: Boolean,
       required: [true, 'CustomerOrder/Paid status is required'],

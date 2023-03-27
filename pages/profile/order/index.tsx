@@ -1,38 +1,39 @@
 import { ShoppingBag } from '@mui/icons-material';
-import { Pagination, Skeleton } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { Skeleton } from '@mui/material';
 import type { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
-import { useState } from 'react';
 import { Fragment } from 'react';
 
 import { authOptions } from '../../api/auth/[...nextauth]';
 
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H5 } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import usePaginationQuery from 'hooks/usePaginationQuery';
 import OrderRow from 'pages-sections/profile/order/OrderRow';
 import apiCaller from 'utils/apiCallers/profile/order';
+
+Order.getLayout = getCustomerDashboardLayout;
 
 interface AddressProps {
   sessionUserId: string;
 }
 
 function Order({ sessionUserId }: AddressProps): ReactElement {
-  const router = useRouter();
-  const initialPageStr = router.query.p as string;
-  const initialPageNum = parseInt(initialPageStr);
-
-  const [currPageNum, setCurrPageNum] = useState(initialPageNum || 1);
-  const { data: orderListPagination, isLoading } = useQuery({
-    queryKey: ['orders', sessionUserId, currPageNum],
-    queryFn: () => apiCaller.getOrders(sessionUserId, currPageNum),
-    keepPreviousData: true,
+  const {
+    isLoading,
+    paginationData: orderListPagination,
+    paginationComponent,
+  } = usePaginationQuery<ICustomerOrder>({
+    baseQueryKey: ['orders', sessionUserId],
+    getPaginationDataFn: (currPageNum, sessionUserId) =>
+      apiCaller.getOrders(sessionUserId, currPageNum),
+    otherArgs: sessionUserId,
   });
 
   return (
@@ -95,12 +96,7 @@ function Order({ sessionUserId }: AddressProps): ReactElement {
           ))}
 
       <FlexBox justifyContent='center' mt={5}>
-        <Pagination
-          count={orderListPagination?.totalPages || 0}
-          color='primary'
-          variant='outlined'
-          onChange={(_, value) => setCurrPageNum(value)}
-        />
+        {paginationComponent}
       </FlexBox>
     </Fragment>
   );
@@ -119,5 +115,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return { props: { sessionUserId: session.user.id } };
 };
-Order.getLayout = getCustomerDashboardLayout;
 export default Order;

@@ -51,7 +51,11 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   // side hover when side bar is compacted
   const COMPACT = sidebarCompact && !onHover ? 1 : 0;
   // handle active current page
-  const activeRoute = (path: string) => (router.pathname === path ? 1 : 0);
+  // FIXME shouldn't be hardcoded the [id] path
+  const activeRoute = (path: string) =>
+    router.pathname.endsWith(`${path}/[id]`) || router.pathname.endsWith(path)
+      ? 1
+      : 0;
 
   // handle navigate to another route and close sidebar drawer in mobile device
   const handleNavigation = (path: string) => {

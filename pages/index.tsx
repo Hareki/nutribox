@@ -38,7 +38,7 @@ import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import api from 'utils/__api__/grocery1-shop';
 import apiCaller from 'utils/apiCallers';
-import { ProductPaginationConstant, StoreId } from 'utils/constants';
+import { ProfileProductPaginationConstant, StoreId } from 'utils/constants';
 
 function getElementHeightIncludingMargin(element: HTMLElement) {
   if (!element) return 0;
@@ -260,7 +260,11 @@ export const getStaticProps: GetStaticProps = async () => {
     },
     // Can NOT access the initial pageParam here, it will be UNDEFINED. Specify the initial pageParam or not, it's always be UNDEFINED
     queryFn: () =>
-      getAllProducts(ProductPaginationConstant.docsPerPage.toString(), '1', []),
+      getAllProducts(
+        ProfileProductPaginationConstant.docsPerPage.toString(),
+        '1',
+        [],
+      ),
   });
 
   return {

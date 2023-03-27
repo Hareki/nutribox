@@ -16,6 +16,7 @@ export interface ICustomerOrder extends IAddress {
 
   createdAt: string;
   phone: string;
+  // indicate that the order is paid COD or online
   paid: boolean;
   note: string;
   profit: number;

@@ -48,6 +48,7 @@ const StyledNavLink = styled<FC<StyledNavLinkProps & NavLinkProps>>(
 
 const Navigations = () => {
   const { pathname } = useRouter();
+  console.log('file: Navigations.tsx:51 - Navigations - pathname:', pathname);
   const { data: session, status } = useSession();
 
   const { data: count } = useQuery({
@@ -64,27 +65,34 @@ const Navigations = () => {
             {item.title}
           </Typography>
 
-          {item.list.map((item) => (
-            <StyledNavLink
-              href={item.href}
-              key={item.title}
-              isCurrentPath={pathname === item.href}
-            >
-              <FlexBox alignItems='center' gap={1}>
-                <item.icon
-                  color='inherit'
-                  fontSize='small'
-                  className='nav-icon'
-                />
-                <span className='nav-text'>{item.title}</span>
-              </FlexBox>
+          {item.list.map((item) => {
+            console.log('item.href: ', item.href);
+            return (
+              <StyledNavLink
+                href={item.href}
+                key={item.title}
+                // FIXME shouldn't be hard coded the [id] path
+                isCurrentPath={
+                  pathname.endsWith(`${item.href}/[id]`) ||
+                  pathname.endsWith(`${item.href}`)
+                }
+              >
+                <FlexBox alignItems='center' gap={1}>
+                  <item.icon
+                    color='inherit'
+                    fontSize='small'
+                    className='nav-icon'
+                  />
+                  <span className='nav-text'>{item.title}</span>
+                </FlexBox>
 
-              <span className='nav-text'>
-                {item.title === 'Địa chỉ' && count?.addressCount}
-                {item.title === 'Đơn hàng' && count?.orderCount}
-              </span>
-            </StyledNavLink>
-          ))}
+                <span className='nav-text'>
+                  {item.title === 'Địa chỉ' && count?.addressCount}
+                  {item.title === 'Đơn hàng' && count?.orderCount}
+                </span>
+              </StyledNavLink>
+            );
+          })}
         </Fragment>
       ))}
     </MainContainer>

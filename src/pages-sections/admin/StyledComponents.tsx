@@ -27,30 +27,39 @@ const CategoryWrapper = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
 }));
 
-const StyledTableRow = styled(TableRow)({
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  cursor: 'pointer',
+  transition: `all 0.2s ${theme.transitions.easing.easeInOut}`,
+  '&:hover': {
+    backgroundColor: theme.palette.grey[200],
+  },
   ':last-child .MuiTableCell-root': { border: 0 },
   '&.Mui-selected': {
     backgroundColor: 'transparent',
     ':hover': { backgroundColor: 'transparent' },
   },
-});
-
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.grey[600],
-  '& .MuiSvgIcon-root': { fontSize: 19 },
-  ':hover': { color: theme.palette.info.main },
 }));
+
+const StyledIconButton = styled(IconButton)<{ is_delete?: boolean }>(
+  ({ theme, is_delete = false }) => ({
+    color: theme.palette.grey[600],
+    '& .MuiSvgIcon-root': { fontSize: 19 },
+    ':hover': {
+      color: is_delete ? theme.palette.error.main : theme.palette.info.main,
+    },
+  }),
+);
 
 type StatusType = {
   status:
-  | 'Accepted'
-  | 'Rejected'
-  | 'Processing'
-  | 'Pending'
-  | 'Delivered'
-  | 'Normal'
-  | 'Urgent'
-  | 'Cancelled';
+    | 'Accepted'
+    | 'Rejected'
+    | 'Processing'
+    | 'Pending'
+    | 'Delivered'
+    | 'Normal'
+    | 'Urgent'
+    | 'Cancelled';
 };
 
 const StatusWrapper = styled(Box)<StatusType>(({ theme, status }) => {

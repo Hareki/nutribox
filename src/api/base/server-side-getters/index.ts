@@ -23,6 +23,7 @@ export const getProduct = async (id: string): Promise<IUpeProduct> => {
   return populatedProduct;
 };
 
+// FIXME: Should be refactored to use processPaginationParams instead
 export const getAllProducts = async (
   docsPerPage: string,
   page: string,

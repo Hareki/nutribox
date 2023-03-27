@@ -1,53 +1,42 @@
-import { Delete, RemoveRedEye } from '@mui/icons-material';
-import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
-import {
-  StatusWrapper,
-  StyledIconButton,
-  StyledTableCell,
-  StyledTableRow,
-} from '../StyledComponents';
+import { StyledTableCell, StyledTableRow } from '../StyledComponents';
 
-import { formatCurrency } from 'lib';
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import OrderStatusChip from 'components/orders/OrderStatusChip';
+import { formatCurrency, formatDateTime } from 'lib';
 
-// ========================================================================
-type OrderRowProps = { order: any };
-// ========================================================================
+type OrderRowProps = { order: ICustomerOrder };
 
 const OrderRow: FC<OrderRowProps> = ({ order }) => {
-  const { amount, id, qty, purchaseDate, billingAddress, status } = order;
+  const { id, status, total, createdAt, phone } = order;
+  console.log('file: OrderRow.tsx:14 - phone:', phone);
 
   const router = useRouter();
 
   return (
-    <StyledTableRow tabIndex={-1} role='checkbox'>
-      <StyledTableCell align='left'>#{id.split('-')[0]}</StyledTableCell>
-      <StyledTableCell align='left'>{qty}</StyledTableCell>
-
-      <StyledTableCell align='left' sx={{ fontWeight: 400 }}>
-        {format(new Date(purchaseDate), 'dd MMM yyyy')}
-      </StyledTableCell>
-
-      <StyledTableCell align='left' sx={{ fontWeight: 400 }}>
-        {billingAddress}
-      </StyledTableCell>
-
-      <StyledTableCell align='left'>{formatCurrency(amount)}</StyledTableCell>
+    <StyledTableRow
+      tabIndex={-1}
+      role='checkbox'
+      onClick={() => router.push(`/admin/order/${id}`)}
+    >
+      <StyledTableCell align='left'>{id.slice(-6)}</StyledTableCell>
 
       <StyledTableCell align='left'>
-        <StatusWrapper status={status}>{status}</StatusWrapper>
+        <OrderStatusChip statusObjId={status} />
       </StyledTableCell>
 
-      <StyledTableCell align='center'>
-        <StyledIconButton onClick={() => router.push(`/admin/orders/${id}`)}>
-          <RemoveRedEye />
-        </StyledIconButton>
+      <StyledTableCell align='left' sx={{ fontWeight: 400 }}>
+        {formatDateTime(new Date(createdAt))}
+      </StyledTableCell>
 
-        <StyledIconButton>
-          <Delete />
-        </StyledIconButton>
+      <StyledTableCell align='left' sx={{ fontWeight: 400 }}>
+        {formatCurrency(total)}
+      </StyledTableCell>
+
+      <StyledTableCell align='left' sx={{ fontWeight: 400 }}>
+        {phone}
       </StyledTableCell>
     </StyledTableRow>
   );

@@ -1,5 +1,4 @@
-import { ShoppingBag } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   useMutation,
   useQueries,
@@ -9,27 +8,34 @@ import {
 import type { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
-import { Fragment, useReducer } from 'react';
+import type { ReactElement } from 'react';
+import { useReducer } from 'react';
 
 import { authOptions } from '../../api/auth/[...nextauth]';
 
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
 import { serialize } from 'api/helpers/object.helper';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
+import { Paragraph, Span } from 'components/abstract/Typography';
+import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import ConfirmDialog from 'components/dialog/confirm-dialog';
 import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
-import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
-import Navigations from 'components/layouts/customer-dashboard/Navigations';
+import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
+import { getNextOrderStatusName } from 'helpers/order.helper';
 import productApiCaller from 'utils/apiCallers/product/[slug]';
 import orderApiCaller from 'utils/apiCallers/profile/order';
+
+AdminOrderDetails.getLayout = function getLayout(page: ReactElement) {
+  return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
+};
 
 type Props = {
   initialOrder: ICustomerOrder;
 };
 
-function ProfileOrderDetails({ initialOrder }: Props) {
+function AdminOrderDetails({ initialOrder }: Props) {
+  const statusId = initialOrder.status.toString();
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -43,13 +49,19 @@ function ProfileOrderDetails({ initialOrder }: Props) {
     open: false,
   });
 
-  const { mutate: cancelOrder, isLoading } = useMutation({
-    mutationFn: () => orderApiCaller.cancelOrder(order.id),
+  const { mutate: updateOrder, isLoading } = useMutation({
+    mutationFn: () => orderApiCaller.updateOrderStatus(order.id),
     onSuccess: () => {
       queryClient.invalidateQueries(['order', initialOrder.id]);
-      enqueueSnackbar('Huỷ đơn hàng thành công', {
+      enqueueSnackbar('Cập nhật trạng thái đơn hàng thành công', {
         variant: 'success',
       });
+    },
+    onError: (err) => {
+      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+        variant: 'error',
+      });
+      console.log(err);
     },
   });
 
@@ -60,30 +72,30 @@ function ProfileOrderDetails({ initialOrder }: Props) {
     })),
   });
 
-  const HEADER_BUTTON = (
-    <Button color='primary' sx={{ bgcolor: 'primary.light', px: 4 }}>
-      Quay lại
-    </Button>
-  );
-
   return (
-    <Fragment>
-      <UserDashboardHeader
-        icon={ShoppingBag}
-        title='Chi tiết đơn hàng'
-        navigation={<Navigations />}
-        button={HEADER_BUTTON}
+    <Box py={4} maxWidth={1200} margin='auto'>
+      <AdminDetailsViewHeader
+        label='Chi tiết đơn hàng'
+        hrefBack='/admin/order'
       />
+
       <OrderDetailsViewer
         order={order}
         productsOfOrders={productsOfOrders}
-        isCancelling={isLoading}
-        cancelOrderCallback={() =>
+        isUpdating={isLoading}
+        updateOrderCallback={() =>
           dispatchConfirm({
             type: 'open_dialog',
             payload: {
-              content: 'Bạn có chắc chắn muốn huỷ đơn hàng này không?',
-              title: 'Huỷ đơn hàng',
+              content: (
+                <Paragraph>
+                  Thăng cấp trạng thái đơn hàng lên{' '}
+                  <Span fontWeight={600}>
+                    {getNextOrderStatusName(statusId)}?
+                  </Span>
+                </Paragraph>
+              ),
+              title: 'Xác nhận',
             },
           })
         }
@@ -94,11 +106,11 @@ function ProfileOrderDetails({ initialOrder }: Props) {
         title={confirmState.title}
         handleCancel={() => dispatchConfirm({ type: 'cancel_dialog' })}
         handleConfirm={() => {
-          cancelOrder();
+          updateOrder();
           dispatchConfirm({ type: 'confirm_dialog' });
         }}
       />
-    </Fragment>
+    </Box>
   );
 }
 
@@ -112,6 +124,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
+
   const order = await CustomerOrderController.getOne({
     id: context.params.id as string,
   });
@@ -120,6 +133,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: { initialOrder: serialize(order) },
   };
 };
-ProfileOrderDetails.getLayout = getCustomerDashboardLayout;
 
-export default ProfileOrderDetails;
+export default AdminOrderDetails;

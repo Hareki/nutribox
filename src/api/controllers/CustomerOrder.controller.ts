@@ -7,15 +7,19 @@ import {
   getOneGenerator,
   updateOneGenerator,
   getTotalGenerator,
+  getAllGenerator,
 } from './generator.controller';
 
 import AccountModel from 'api/models/Account.model';
 import CustomerOrderModel from 'api/models/CustomerOrder.model';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { GetAllDependentPaginationParams } from 'api/types/pagination.type';
+import { getNextOrderStatusId } from 'helpers/order.helper';
 import { OrderStatus } from 'utils/constants';
 
 export const getOne = getOneGenerator<ICustomerOrder>(CustomerOrderModel());
+export const getAll = getAllGenerator<ICustomerOrder>(CustomerOrderModel());
+
 export const getTotal = getTotalGenerator(CustomerOrderModel());
 
 const createOne = createOneGenerator<ICustomerOrder>(CustomerOrderModel());
@@ -64,6 +68,15 @@ const cancelOrder = async (orderId: string): Promise<ICustomerOrder> => {
   return customerOrder.toObject();
 };
 
+const updateOrderStatus = async (orderId: string): Promise<ICustomerOrder> => {
+  const customerOrder = await CustomerOrderModel().findById(orderId).exec();
+  customerOrder.status = new Types.ObjectId(
+    getNextOrderStatusId(customerOrder.status.toString()),
+  );
+  await customerOrder.save();
+  return customerOrder.toObject();
+};
+
 const getOrdersBelongToAccountPaginated = async ({
   id,
   skip,
@@ -90,10 +103,12 @@ const getOrdersBelongToAccountPaginated = async ({
 
 const CustomerOrderController = {
   getOne,
+  getAll,
   getProfit,
   getOrders,
   getOrder,
   cancelOrder,
+  updateOrderStatus,
   createOne,
   updateOne,
   getTotal,

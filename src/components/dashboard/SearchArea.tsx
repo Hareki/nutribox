@@ -6,14 +6,13 @@ import type { FC } from 'react';
 import { FlexBox } from 'components/flex-box';
 import SearchInput from 'components/SearchInput';
 
-// ===============================================================
 type SearchAreaProps = {
-  buttonText: string;
+  buttonText?: string;
   handleSearch: () => void;
   searchPlaceholder: string;
-  handleBtnClick: () => void;
+  handleBtnClick?: () => void;
+  haveButton?: boolean;
 };
-// ===============================================================
 
 const SearchArea: FC<SearchAreaProps> = (props) => {
   const { searchPlaceholder, buttonText, handleBtnClick } = props;
@@ -23,16 +22,18 @@ const SearchArea: FC<SearchAreaProps> = (props) => {
     <FlexBox mb={2} gap={2} justifyContent='space-between' flexWrap='wrap'>
       <SearchInput placeholder={searchPlaceholder} />
 
-      <Button
-        color='info'
-        fullWidth={downSM}
-        variant='contained'
-        startIcon={<Add />}
-        onClick={handleBtnClick}
-        sx={{ minHeight: 44 }}
-      >
-        {buttonText}
-      </Button>
+      {props.haveButton && (
+        <Button
+          color='info'
+          fullWidth={downSM}
+          variant='contained'
+          startIcon={<Add />}
+          onClick={handleBtnClick}
+          sx={{ minHeight: 44 }}
+        >
+          {buttonText}
+        </Button>
+      )}
     </FlexBox>
   );
 };

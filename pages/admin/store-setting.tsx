@@ -8,7 +8,7 @@ import { authOptions } from '../api/auth/[...nextauth]';
 import { getStore } from 'api/base/server-side-getters';
 import { serialize } from 'api/helpers/object.helper';
 import type { IStore } from 'api/models/Store.model/types';
-import { Paragraph } from 'components/abstract/Typography';
+import { H3, Paragraph } from 'components/abstract/Typography';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import ContactInfoForm from 'pages-sections/admin/store-setting/ContactInfoForm';
 import StoreHoursForm from 'pages-sections/admin/store-setting/StoreHoursForm';
@@ -25,6 +25,8 @@ interface StoreSettingProps {
 function StoreSetting({ initialStoreInfo }: StoreSettingProps) {
   return (
     <Box py={4} maxWidth={740} margin='auto'>
+      <H3 mb={2}>Cài đặt</H3>
+
       <Card sx={{ p: 3 }}>
         <Paragraph fontWeight={700} mb={2}>
           Thông tin liên hệ

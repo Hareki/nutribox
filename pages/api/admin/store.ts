@@ -35,9 +35,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IStore>>>({
     await connectToDB();
 
     const requestBody = req.body as UpdateStoreInfoRb;
-    console.log('file: store.ts:38 - .put - requestBody:', requestBody);
     const result = await StoreController.updateOne(requestBody.id, requestBody);
-    console.log('file: store.ts:39 - .put - result:', result);
 
     res.status(StatusCodes.OK).json({
       status: 'success',

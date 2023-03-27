@@ -7,9 +7,9 @@ import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
 import connectToDB from 'api/database/databaseConnection';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { JSendResponse } from 'api/types/response.type';
-import { AllStatusIdArray, CancelIndexThreshHold } from 'utils/constants';
+import { OrderStatus } from 'utils/constants';
 
-export interface CancelOrderRequestBody {
+export interface UpdateOrderStatusRb {
   id: string;
 }
 
@@ -17,34 +17,31 @@ const handler = nc<
   NextApiRequest,
   NextApiResponse<JSendResponse<ICustomerOrder>>
 >({
-  attachParams: true,
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).put(async (req, res) => {
   await connectToDB();
 
-  const { id } = req.body as CancelOrderRequestBody;
+  const requestBody = req.body as UpdateOrderStatusRb;
+  console.log('file: update.ts:26 - requestBody:', requestBody);
+  const id = requestBody.id;
+  console.log('file: update.ts:28 - id:', id);
+  const canUpdate =
+    id !== OrderStatus.Cancelled.id && id !== OrderStatus.Delivered.id;
 
-  const order = await CustomerOrderController.getOrder(id);
-  const statusIndex = AllStatusIdArray.findIndex(
-    (id) => id === order.status.toString(),
-  );
-
-  if (statusIndex > CancelIndexThreshHold) {
+  if (!canUpdate) {
     res.status(StatusCodes.BAD_REQUEST).json({
-      status: 'error',
-      message: 'Order cannot be cancelled',
+      status: 'fail',
+      message: 'Đơn hàng đã huỷ hoặc đã giao, không thể cập nhật trạng thái',
     });
     return;
   }
-
-  const cancelledOrder = await CustomerOrderController.cancelOrder(id);
+  const updatedOrder = await CustomerOrderController.updateOrderStatus(id);
 
   res.status(StatusCodes.OK).json({
     status: 'success',
-    data: cancelledOrder,
+    data: updatedOrder,
   });
-  return;
 });
 
 export default handler;

@@ -1,47 +1,18 @@
 import { East } from '@mui/icons-material';
-import { Box, Chip, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import Link from 'next/link';
 import type { FC } from 'react';
-import { useMemo } from 'react';
 
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H5 } from 'components/abstract/Typography';
 import TableRow from 'components/data-table/TableRow';
-import { getOrderStatusName } from 'helpers/order.helper';
-import { formatCurrency, formatDate } from 'lib';
-import { OrderStatus } from 'utils/constants';
+import OrderStatusChip from 'components/orders/OrderStatusChip';
+import { formatCurrency, formatDateTime } from 'lib';
 
 type OrderRowProps = {
   order: ICustomerOrder;
 };
 const OrderRow: FC<OrderRowProps> = ({ order }) => {
-  const statusId = useMemo(() => {
-    return order.status.toString();
-  }, [order.status]);
-  const statusName = getOrderStatusName(statusId);
-
-  const getColor = () => {
-    switch (statusId) {
-      case OrderStatus.Pending.id:
-        return 'secondary';
-
-      case OrderStatus.Processing.id:
-        return 'warning';
-
-      case OrderStatus.Delivered.id:
-        return 'success';
-
-      case OrderStatus.Cancelled.id:
-        return 'error';
-
-      case OrderStatus.Delivering.id:
-        return 'paste';
-
-      default:
-        return '';
-    }
-  };
-
   return (
     <Link href={`/profile/order/${order.id}`} passHref>
       <TableRow sx={{ my: '1rem', padding: '6px 18px' }}>
@@ -50,20 +21,11 @@ const OrderRow: FC<OrderRowProps> = ({ order }) => {
         </H5>
 
         <Box m={0.75}>
-          <Chip
-            size='small'
-            label={statusName}
-            sx={{
-              p: '0.25rem 0.5rem',
-              fontSize: 12,
-              color: getColor() ? `${getColor()}.900` : 'inherit',
-              backgroundColor: getColor() ? `${getColor()}.100` : 'none',
-            }}
-          />
+          <OrderStatusChip statusObjId={order.status} />
         </Box>
 
         <Typography className='pre' m={0.75} textAlign='left'>
-          {formatDate(order.createdAt)}
+          {formatDateTime(new Date(order.createdAt))}
         </Typography>
 
         <Typography m={0.75} textAlign='left'>
