@@ -80,6 +80,7 @@ const handler = nc<
       session,
     );
 
+    // manually add reference, can't do this in middleware because of transaction
     console.log('3. START ADD CUSTOMER ORDER TO ACCOUNT');
     await AccountController.addCustomerOrder(
       accountId,

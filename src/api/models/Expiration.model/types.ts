@@ -5,6 +5,7 @@ export interface IExpiration {
   id: string;
   product: Types.ObjectId; // IProduct
 
+  importDate: Date;
   expirationDate: Date;
   quantity: number;
 }

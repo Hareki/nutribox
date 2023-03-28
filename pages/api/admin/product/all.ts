@@ -5,8 +5,13 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import ProductController from 'api/controllers/Product.controller';
 import connectToDB from 'api/database/databaseConnection';
+import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import { processPaginationParams } from 'api/helpers/pagination.helpers';
-import type { IPopulatedCategoryProduct } from 'api/models/Product.model/types';
+import type {
+  ICdsProduct,
+  ICdsUpeProduct,
+  IProduct,
+} from 'api/models/Product.model/types';
 import type { IStoreHourWithObjectId } from 'api/models/Store.model/StoreHour.schema/types';
 import type { IStore } from 'api/models/Store.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
@@ -20,9 +25,7 @@ export type UpdateStoreInfoRb = UpdateStoreContactInfoRb | UpdateStoreHoursRb;
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<
-    JSendResponse<GetAllPaginationResult<IPopulatedCategoryProduct>>
-  >
+  NextApiResponse<JSendResponse<GetAllPaginationResult<ICdsUpeProduct>>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -35,16 +38,21 @@ const handler = nc<
   );
 
   const products = (await ProductController.getAll({
-    sort: { createdAt: -1 },
+    sort: { createdAt: -1, _id: 1 },
     skip,
     limit,
-    populate: ['category'],
-  })) as unknown as IPopulatedCategoryProduct[];
+    populate: ['category', 'defaultSupplier'],
+  })) as unknown as ICdsProduct[];
+
+  // bypass the type check as it doesn't matter here and time's running out so can't be bothered to fix it now.
+  const upeCdsProducts = (await populateAscUnexpiredExpiration(
+    products as unknown as IProduct[],
+  )) as unknown as ICdsUpeProduct[];
 
   const result = {
     totalPages,
     totalDocs,
-    docs: products,
+    docs: upeCdsProducts,
   };
 
   res.status(StatusCodes.OK).json({

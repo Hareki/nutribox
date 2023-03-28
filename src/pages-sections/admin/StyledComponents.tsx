@@ -9,17 +9,20 @@ import {
 } from '@mui/material';
 
 // styled components
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  fontSize: 14,
-  paddingTop: 10,
-  fontWeight: 500,
-  paddingBottom: 10,
-  color: theme.palette.grey[900],
-  borderBottom: `1px solid ${theme.palette.grey[300]}`,
-}));
+const StyledTableCell = styled(TableCell)<{ font_weight?: number }>(
+  ({ theme, font_weight }) => ({
+    fontSize: 15,
+    paddingTop: 10,
+    fontWeight: font_weight || 400,
+    paddingBottom: 10,
+    color: theme.palette.grey[900],
+    borderBottom: `1px solid ${theme.palette.grey[300]}`,
+  }),
+);
 
 const CategoryWrapper = styled(Box)(({ theme }) => ({
   fontSize: 13,
+  fontWeight: 500,
   padding: '3px 12px',
   borderRadius: '16px',
   display: 'inline-block',
@@ -27,18 +30,20 @@ const CategoryWrapper = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  cursor: 'pointer',
-  transition: `all 0.2s ${theme.transitions.easing.easeInOut}`,
-  '&:hover': {
-    backgroundColor: theme.palette.grey[200],
-  },
-  ':last-child .MuiTableCell-root': { border: 0 },
-  '&.Mui-selected': {
-    backgroundColor: 'transparent',
-    ':hover': { backgroundColor: 'transparent' },
-  },
-}));
+const StyledTableRow = styled(TableRow)<{ cursor?: string }>(
+  ({ theme, cursor }) => ({
+    cursor: cursor || 'pointer',
+    transition: `all 0.2s ${theme.transitions.easing.easeInOut}`,
+    '&:hover': {
+      backgroundColor: theme.palette.grey[200],
+    },
+    ':last-child .MuiTableCell-root': { border: 0 },
+    '&.Mui-selected': {
+      backgroundColor: 'transparent',
+      ':hover': { backgroundColor: 'transparent' },
+    },
+  }),
+);
 
 const StyledIconButton = styled(IconButton)<{ is_delete?: boolean }>(
   ({ theme, is_delete = false }) => ({

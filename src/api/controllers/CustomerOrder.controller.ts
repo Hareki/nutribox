@@ -45,6 +45,7 @@ const getOrders = async (accountId: string): Promise<ICustomerOrder[]> => {
       options: {
         sort: {
           createdAt: -1,
+          _id: 1,
         },
       },
     })
@@ -89,6 +90,7 @@ const getOrdersBelongToAccountPaginated = async ({
       options: {
         sort: {
           createdAt: -1,
+          _id: 1,
         },
         skip,
         limit,

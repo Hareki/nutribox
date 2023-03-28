@@ -14,12 +14,13 @@ import type { ReactElement } from 'react';
 
 import { authOptions } from '../../api/auth/[...nextauth]';
 
-import type { IPopulatedCategoryProduct } from 'api/models/Product.model/types';
+import type { ICdsUpeProduct } from 'api/models/Product.model/types';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
+import { getMaxUpeQuantity } from 'helpers/product.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { ProductRow } from 'pages-sections/admin';
@@ -34,12 +35,13 @@ const tableHeading = [
   { id: 'category', label: 'Danh mục', align: 'left' },
   { id: 'wholesalePrice', label: 'Giá gốc', align: 'left' },
   { id: 'retailPrice', label: 'Giá bán', align: 'left' },
-  { id: 'shelfLife', label: 'Ngày SD', align: 'left' },
+  { id: 'shelfLife', label: 'Tồn kho', align: 'left' },
 ];
 
-const mapProductToRow = (item: IPopulatedCategoryProduct) => ({
+const mapProductToRow = (item: ICdsUpeProduct) => ({
   id: item.id,
-  shelfLife: item.shelfLife,
+  // shelfLife: item.shelfLife,
+  unexpiredAmount: getMaxUpeQuantity(item.expirations),
   imageUrls: item.imageUrls,
   name: item.name,
   category: item.category.name,
@@ -56,7 +58,7 @@ function ProductList() {
     isLoading,
     paginationData: products,
     paginationComponent,
-  } = usePaginationQuery<IPopulatedCategoryProduct>({
+  } = usePaginationQuery<ICdsUpeProduct>({
     baseQueryKey: ['admin/products'],
     getPaginationDataFn: (currPageNum) => apiCaller.getProducts(currPageNum),
   });

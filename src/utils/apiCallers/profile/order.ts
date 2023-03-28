@@ -7,8 +7,8 @@ import axiosInstance from 'utils/axiosInstance';
 import { ProfileOrderPaginationConstant } from 'utils/constants';
 
 export const getOrders = async (
-  accountId: string,
   page: number,
+  accountId: string,
 ): Promise<GetAllPaginationResult<ICustomerOrder>> => {
   const response = await axiosInstance.get(`profile/order/${accountId}`, {
     params: {

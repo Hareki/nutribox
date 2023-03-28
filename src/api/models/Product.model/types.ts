@@ -2,6 +2,7 @@ import type { Types } from 'mongoose';
 
 import type { IExpiration } from '../Expiration.model/types';
 import type { IProductCategory } from '../ProductCategory.model/types';
+import type { ISupplier } from '../Supplier.model/types';
 
 export interface IProduct {
   // _id: Types.ObjectId;
@@ -25,14 +26,27 @@ export interface IProduct {
   retailPrice: number;
   hot: boolean;
   name: string;
+
+  defaultSupplier: Types.ObjectId;
 }
 
-export interface IPopulatedCategoryProduct extends Omit<IProduct, 'category'> {
-  category: IProductCategory;
+export interface IPopulatedExpirationProduct
+  extends Omit<IProduct, 'expirations'> {
+  expirations: IExpiration[];
 }
 
 // UPE = Unexpired and Populated Expirations, we usually use this type instead of IProduct
 export interface IUpeProduct extends Omit<IProduct, 'expirations'> {
+  expirations: IExpiration[];
+}
+
+// CDS = Populated category and default supplier
+export interface ICdsProduct
+  extends Omit<IProduct, 'category' | 'defaultSupplier'> {
+  category: IProductCategory;
+  defaultSupplier: ISupplier;
+}
+export interface ICdsUpeProduct extends Omit<ICdsProduct, 'expirations'> {
   expirations: IExpiration[];
 }
 

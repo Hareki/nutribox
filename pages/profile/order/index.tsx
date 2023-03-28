@@ -31,8 +31,8 @@ function Order({ sessionUserId }: AddressProps): ReactElement {
     paginationComponent,
   } = usePaginationQuery<ICustomerOrder>({
     baseQueryKey: ['orders', sessionUserId],
-    getPaginationDataFn: (currPageNum, sessionUserId) =>
-      apiCaller.getOrders(sessionUserId, currPageNum),
+    // FIXME confusing custom hook
+    getPaginationDataFn: apiCaller.getOrders,
     otherArgs: sessionUserId,
   });
 

@@ -77,7 +77,7 @@ const getFiveMostRecentOrders = async (): Promise<ICustomerOrder[]> => {
       path: 'account',
       select: 'fullName firstName lastName',
     })
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: -1, _id: 1 })
     .exec();
 
   return orders.slice(0, limit);

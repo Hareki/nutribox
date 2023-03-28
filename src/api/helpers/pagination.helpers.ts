@@ -16,6 +16,10 @@ interface PaginationOutput {
 export const getPaginationParams: (
   input: PaginationInput,
 ) => PaginationOutput = ({ docsPerPage, page, totalDocs }) => {
+  if (totalDocs === 0) {
+    return { skip: 0, limit: 0, nextPageNum: -1, totalPages: 0 };
+  }
+
   const docsPerPageNum = parseInt(docsPerPage) || 9999;
   let pageNum = parseInt(page) || 1;
   const totalPages = Math.ceil(totalDocs / docsPerPageNum);

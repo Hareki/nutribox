@@ -22,7 +22,8 @@ export interface ICustomerOrder extends IAddress {
   profit: number;
   total: number;
 
-  // have to be Date type for the schema, although when serializing to JSON, it will be string
+  // FIXME: have to be Date type for the schema, although when serializing to JSON, it will be string
+  // => Should have separate type for schema and type for JSON
   estimatedDeliveryTime: Date | string;
   estimatedDistance: number;
 

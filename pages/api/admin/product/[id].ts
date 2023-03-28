@@ -9,10 +9,7 @@ import {
 } from 'api/base/next-connect';
 import ProductController from 'api/controllers/Product.controller';
 import connectToDB from 'api/database/databaseConnection';
-import type {
-  IPopulatedCategoryProduct,
-  IProduct,
-} from 'api/models/Product.model/types';
+import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
 import ProductCategoryModel from 'api/models/ProductCategory.model';
 import type { JSendResponse } from 'api/types/response.type';
 
@@ -28,7 +25,7 @@ export interface UpdateProductInfoRb {
 const handler = nc<
   NextApiRequest,
   NextApiResponse<
-    JSendResponse<IProduct | IPopulatedCategoryProduct | Record<string, string>>
+    JSendResponse<IProduct | ICdsUpeProduct | Record<string, string>>
   >
 >({
   onError: onMongooseValidationError,
@@ -41,8 +38,8 @@ const handler = nc<
 
     const product = (await ProductController.getOne({
       id,
-      populate: ['category'],
-    })) as unknown as IPopulatedCategoryProduct;
+      populate: ['category', 'defaultSupplier'],
+    })) as unknown as ICdsUpeProduct;
 
     res.status(StatusCodes.OK).json({
       status: 'success',
@@ -56,36 +53,23 @@ const handler = nc<
     const id = req.query.id as string;
     const requestBody = req.body as UpdateProductInfoRb;
 
-    const originalProduct = await ProductController.getOne({ id });
-    const originalCategoryId = originalProduct.category.toString();
-    const categoryModified = requestBody.category !== originalCategoryId;
+    const origProduct = await ProductController.getOne({ id });
+    const origCategoryId = origProduct.category.toString();
 
     const updatedProduct = await ProductController.updateOne(id, requestBody);
+    const updatedCategoryId = updatedProduct.category.toString();
 
     // FIXME code to change reference array, haven't figured out the way to do it in middleware and time's running out
     // I'll just inline the code here, fix later
-    if (categoryModified) {
-      const originalCategory = await ProductCategoryModel().findById(
-        originalCategoryId,
+    if (origCategoryId !== updatedCategoryId) {
+      await ProductCategoryModel().updateOne(
+        { _id: origCategoryId },
+        { $pull: { products: new Types.ObjectId(id) } },
       );
-
-      const productIndexInOriginalCategory =
-        originalCategory.products.findIndex(
-          (product) => product._id.toString() === originalProduct.id,
-        );
-
-      if (productIndexInOriginalCategory !== -1) {
-        originalCategory.products.splice(productIndexInOriginalCategory, 1);
-      }
-
-      originalCategory.save();
-      // ====
-
-      const newCategory = await ProductCategoryModel().findById(
-        updatedProduct.category,
+      await ProductCategoryModel().updateOne(
+        { _id: updatedCategoryId },
+        { $addToSet: { products: new Types.ObjectId(id) } },
       );
-      newCategory.products.push(new Types.ObjectId(updatedProduct.id));
-      newCategory.save();
     }
 
     res.status(StatusCodes.OK).json({

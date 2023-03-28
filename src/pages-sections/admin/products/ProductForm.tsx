@@ -1,11 +1,10 @@
 import { LoadingButton } from '@mui/lab';
-import { Autocomplete, Button, Card, Grid, TextField } from '@mui/material';
+import { Autocomplete, Button, Grid, TextField } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import type { FC } from 'react';
 import { Fragment } from 'react';
-import type * as yup from 'yup';
-import type { Assign, ObjectShape } from 'yup/lib/object';
+import * as yup from 'yup';
 
 import type { UpdateProductInfoRb } from '../../../../pages/api/admin/product/[id]';
 
@@ -21,7 +20,6 @@ export interface ProductInfoFormValues
 type ProductFormProps = {
   initialValues: any;
   handleFormSubmit: (values: any) => void;
-  validationSchema: yup.ObjectSchema<Assign<ObjectShape, any>>;
   isLoading: boolean;
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
@@ -30,7 +28,6 @@ type ProductFormProps = {
 const ProductForm: FC<ProductFormProps> = (props) => {
   const {
     initialValues,
-    validationSchema,
     handleFormSubmit,
     isLoading,
     isEditing,
@@ -38,7 +35,7 @@ const ProductForm: FC<ProductFormProps> = (props) => {
   } = props;
   const { data: categories, isLoading: isLoadingCategories } = useQuery({
     queryKey: ['categories', 'dropdown'],
-    queryFn: () => apiCaller.getDropdown(),
+    queryFn: () => apiCaller.getCategoryDropdown(),
   });
 
   const {
@@ -57,7 +54,7 @@ const ProductForm: FC<ProductFormProps> = (props) => {
   });
 
   return (
-    <Card sx={{ p: 6 }}>
+    <Fragment>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item sm={6} xs={12}>
@@ -227,8 +224,43 @@ const ProductForm: FC<ProductFormProps> = (props) => {
           </Grid>
         </Grid>
       </form>
-    </Card>
+    </Fragment>
   );
 };
+
+const validationSchema = yup.object().shape({
+  name: yup
+    .string()
+    .required('Vui lòng nhập tên sản phẩm')
+    .max(100, 'Tên sản phẩm không được quá 100 ký tự'),
+  category: yup
+    .object()
+    .typeError('Vui lòng chọn danh mục')
+    .required('Vui lòng chọn danh mục'),
+  description: yup
+    .string()
+    .required('Vui lòng nhập mô tả sản phẩm')
+    .max(500, 'Mô tả sản phẩm không được quá 500 ký tự'),
+  shelfLife: yup
+    .number()
+    .required('Vui lòng số ngày sử dụng')
+    .min(1, 'Số ngày sử dụng phải lớn hơn 0'),
+  wholesalePrice: yup
+    .number()
+    .required('Vui lòng nhập giá gốc')
+    .min(1, 'Giá gốc phải lớn hơn 0'),
+  retailPrice: yup
+    .number()
+    .required('Vui lòng nhập giá bán')
+    .min(1, 'Giá bán phải lớn hơn 0')
+    .test(
+      'retailPrice-greater-than-wholesalePrice',
+      'Giá bán phải lớn hơn giá gốc',
+      function (value) {
+        const { wholesalePrice } = this.parent;
+        return value && value > wholesalePrice;
+      },
+    ),
+});
 
 export default ProductForm;

@@ -106,6 +106,7 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
         />
 
         <CustomTextField
+          // FIXME should modularize those text fields
           mb={1.5}
           fullWidth
           name='phone'
@@ -144,7 +145,7 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
               setFieldValue('birthday', newValue);
             }}
             renderDay={(_, __, pickersDayProps) => (
-              <CustomPickersDay {...pickersDayProps} selectedColor='white' />
+              <CustomPickersDay {...pickersDayProps} selected_color='white' />
             )}
           />
         </LocalizationProvider>

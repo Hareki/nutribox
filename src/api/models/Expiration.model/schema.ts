@@ -1,10 +1,6 @@
-import type { Document } from 'mongoose';
 import { Schema } from 'mongoose';
 
 import type { IExpiration } from './types';
-
-import { handleReferenceChange } from 'api/base/mongoose/reference';
-import { preSaveWasNew } from 'api/helpers/schema.helper';
 
 export const expirationSchema = new Schema<IExpiration>(
   {
@@ -14,13 +10,24 @@ export const expirationSchema = new Schema<IExpiration>(
       required: [true, 'Expiration/Product is required'],
     },
 
+    importDate: {
+      type: Date,
+      required: [true, 'Expiration/ExpirationDate is required'],
+      validate: {
+        validator: function (value: Date) {
+          return value.getTime() < this.expirationDate.getTime();
+        },
+        message: 'Expiration/ExpirationDate should be after ImportDate',
+      },
+    },
+
     expirationDate: {
       type: Date,
       required: [true, 'Expiration/ExpirationDate is required'],
-      min: [
-        new Date(new Date().getTime() + 86400000),
-        'Expiration/ExpirationDate should be at least 1 day from now',
-      ],
+      // min: [
+      //   new Date(new Date().getTime() + 86400000),
+      //   'Expiration/ExpirationDate should be at least 1 day from now',
+      // ],
     },
 
     quantity: {
@@ -32,31 +39,36 @@ export const expirationSchema = new Schema<IExpiration>(
     timestamps: true,
   },
 );
-expirationSchema.pre('save', preSaveWasNew);
+// Can't do this duo to session, need to manually do in the transaction
 
-expirationSchema.post('save', function (doc: Document<IExpiration>, next) {
-  if (!doc.wasNew) next();
+// expirationSchema.pre('save', preSaveWasNew);
 
-  handleReferenceChange({
-    action: 'save',
-    doc,
-    fieldName: 'product',
-    referencedFieldName: 'expirations',
-    referencedModelName: 'Product',
-    next,
-  });
-});
+// expirationSchema.post('save', function (doc: Document<IExpiration>, next) {
+//   if (!doc.wasNew) {
+//     next();
+//     return;
+//   }
 
-expirationSchema.post(
-  'findOneAndDelete',
-  function (doc: Document<IExpiration>, next) {
-    handleReferenceChange({
-      action: 'findOneAndDelete',
-      doc,
-      fieldName: 'product',
-      referencedFieldName: 'expirations',
-      referencedModelName: 'Product',
-      next,
-    });
-  },
-);
+//   handleReferenceChange({
+//     action: 'save',
+//     doc,
+//     fieldName: 'product',
+//     referencedFieldName: 'expirations',
+//     referencedModelName: 'Product',
+//     next,
+//   });
+// });
+
+// expirationSchema.post(
+//   'findOneAndDelete',
+//   function (doc: Document<IExpiration>, next) {
+//     handleReferenceChange({
+//       action: 'findOneAndDelete',
+//       doc,
+//       fieldName: 'product',
+//       referencedFieldName: 'expirations',
+//       referencedModelName: 'Product',
+//       next,
+//     });
+//   },
+// );

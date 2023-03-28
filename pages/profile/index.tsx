@@ -24,6 +24,7 @@ function Profile({ initialAccount }: ProfileProps): ReactElement {
   const { data: account } = useQuery({
     queryKey: ['account'],
     queryFn: () => apiCaller.getAccount(account.id),
+    // FIXME onError bị lặp giữa các useMutation
     onError: (err) => console.log(err),
     initialData: initialAccount,
   });

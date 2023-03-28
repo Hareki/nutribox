@@ -5,7 +5,7 @@ export interface IProductOrder {
   id: string;
   product: Types.ObjectId; // IProduct
   supplier: Types.ObjectId; // ISupplier
-  status: Types.ObjectId; // IOrderStatus
+  importDate: Date | string;
 
   quantity: number;
   unitWholesalePrice: number;
@@ -13,4 +13,4 @@ export interface IProductOrder {
 }
 
 export interface IProductOrderInput
-  extends Omit<IProductOrder, '_id' | 'createdAt'> {}
+  extends Omit<IProductOrder, '_id' | 'createdAt' | 'id'> {}

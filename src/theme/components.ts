@@ -117,6 +117,14 @@ export const components: Components = {
     defaultProps: { color: 'inherit' },
   },
 
+  MuiAutocomplete: {
+    styleOverrides: {
+      popper: {
+        zIndex: 9999999,
+      },
+    },
+  },
+
   // MuiDialogContent: {
   //   styleOverrides: {
   //     root: {

@@ -13,6 +13,8 @@ export interface ISupplier extends IAddress {
   email: string;
 }
 
+export interface ISupplierDropdown extends Pick<ISupplier, 'id' | 'name'> {}
+
 export interface ISupplierInput
   extends Omit<ISupplier, '_id' | 'productOrders' | 'id'> {
   productOrders?: Types.ObjectId[]; // IProductOrder

@@ -92,6 +92,11 @@ export const productSchema = new Schema<IProduct>(
       unique: true,
       trim: true,
     },
+
+    defaultSupplier: {
+      ref: 'Supplier',
+      type: Schema.Types.ObjectId,
+    },
   },
   {
     timestamps: true,
@@ -102,7 +107,7 @@ productSchema.virtual('slug').get(function () {
   return getSlug(this.name, this._id.toString());
 });
 
-// FIXME: Not yet figured out to update category category of a product through middleware
+// FIXME: Not yet figured out to update category category of a product through middleware.
 productSchema.pre('save', preSaveWasNew);
 
 productSchema.post('save', function (doc: Document<IProduct>, next) {

@@ -1,34 +1,37 @@
 import type { UpdateProductInfoRb } from '../../../../pages/api/admin/product/[id]';
+import type { ExpirationOrder } from '../../../../pages/api/admin/product/expiration-order';
+import type { ImportProductRb } from '../../../../pages/api/admin/product/import-product';
 
-import type {
-  IPopulatedCategoryProduct,
-  IProduct,
-} from 'api/models/Product.model/types';
+import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { IProductCategoryDropdown } from 'api/models/ProductCategory.model/types';
+import type { ISupplierDropdown } from 'api/models/Supplier.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
-import { AdminPaginationConstant } from 'utils/constants';
+import {
+  AdminMainTablePaginationConstant,
+  AdminSubTablePaginationConstant,
+} from 'utils/constants';
 
-export const getProducts = async (
+const getProducts = async (
   page: number,
-): Promise<GetAllPaginationResult<IPopulatedCategoryProduct>> => {
+): Promise<GetAllPaginationResult<ICdsUpeProduct>> => {
   const response = await axiosInstance.get(`admin/product/all`, {
     params: {
-      docsPerPage: AdminPaginationConstant.docsPerPage,
+      docsPerPage: AdminMainTablePaginationConstant.docsPerPage,
       page,
     },
   });
   return response.data.data;
 };
 
-export const getProduct = async (
-  productId: string,
-): Promise<IPopulatedCategoryProduct> => {
+const getProduct = async (productId: string): Promise<ICdsUpeProduct> => {
   const response = await axiosInstance.get(`admin/product/${productId}`);
-  return response.data.data;
+  const result = response.data.data;
+  // console.log('file: product.ts:33 - getProduct - result:', result);
+  return result;
 };
 
-export const updateProduct = async (
+const updateProduct = async (
   productId: string,
   requestBody: UpdateProductInfoRb,
 ): Promise<IProduct> => {
@@ -39,15 +42,44 @@ export const updateProduct = async (
   return response.data.data;
 };
 
-export const addProduct = async (productId: string): Promise<IProduct> => {
+const addProduct = async (productId: string): Promise<IProduct> => {
   const response = await axiosInstance.put(`admin/product/update`, {
     id: productId,
   });
   return response.data.data;
 };
 
-export const getDropdown = async (): Promise<IProductCategoryDropdown[]> => {
+const getCategoryDropdown = async (): Promise<IProductCategoryDropdown[]> => {
   const response = await axiosInstance.get(`admin/product/category-dropdown`);
+  return response.data.data;
+};
+
+const getExpirationOrders = async (
+  page: number,
+  productId: string,
+): Promise<GetAllPaginationResult<ExpirationOrder>> => {
+  const response = await axiosInstance.get(`admin/product/expiration-order`, {
+    params: {
+      docsPerPage: AdminSubTablePaginationConstant.docsPerPage,
+      page,
+      productId: productId,
+    },
+  });
+  return response.data.data;
+};
+
+const getSupplierDropdown = async (): Promise<ISupplierDropdown[]> => {
+  const response = await axiosInstance.get(`admin/product/supplier-dropdown`);
+  return response.data.data;
+};
+
+const importProduct = async (
+  requestBody: ImportProductRb,
+): Promise<IProduct> => {
+  const response = await axiosInstance.put(
+    `admin/product/import-product`,
+    requestBody,
+  );
   return response.data.data;
 };
 
@@ -56,7 +88,10 @@ const apiCaller = {
   getProduct,
   updateProduct,
   addProduct,
-  getDropdown,
+  getCategoryDropdown,
+  getExpirationOrders,
+  getSupplierDropdown,
+  importProduct,
 };
 
 export default apiCaller;

@@ -21,9 +21,11 @@ const usePaginationQuery = <T,>({
 
   const [currPageNum, setCurrPageNum] = useState(initialPageNum || 1);
 
-  const { data: paginationData, isLoading } = useQuery<
-    GetAllPaginationResult<T>
-  >({
+  const {
+    data: paginationData,
+    isLoading,
+    isFetching,
+  } = useQuery<GetAllPaginationResult<T>>({
     queryKey: [...baseQueryKey, currPageNum],
     queryFn: () => getPaginationDataFn(currPageNum, otherArgs),
     keepPreviousData: true,

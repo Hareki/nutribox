@@ -17,8 +17,13 @@ export const ProfileOrderPaginationConstant = {
   infiniteDocsPerPage: 9999,
 };
 
-export const AdminPaginationConstant = {
+export const AdminMainTablePaginationConstant = {
   docsPerPage: 9,
+  infiniteDocsPerPage: 9999,
+};
+
+export const AdminSubTablePaginationConstant = {
+  docsPerPage: 4,
   infiniteDocsPerPage: 9999,
 };
 

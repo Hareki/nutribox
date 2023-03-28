@@ -64,7 +64,7 @@ const getRelatedProducts = async (
 const getNewProducts = async (
   options?: GetNewProductsOptions,
 ): Promise<IProduct[]> => {
-  const query = ProductModel().find().sort({ createdAt: -1 });
+  const query = ProductModel().find().sort({ createdAt: -1, _id: 1 });
 
   buildBaseQuery(query, {
     populate: options?.populate,

@@ -1,5 +1,9 @@
+import { createOneGenerator } from './generator.controller';
+
 import ExpirationModel from 'api/models/Expiration.model';
 import type { IExpiration } from 'api/models/Expiration.model/types';
+
+export const createOne = createOneGenerator<IExpiration>(ExpirationModel());
 
 const getExpirationsByProductId = async (
   productId: string,
@@ -18,5 +22,6 @@ const getExpirationsByProductId = async (
 
 const ExpirationController = {
   getExpirationsByProductId,
+  createOne,
 };
 export default ExpirationController;

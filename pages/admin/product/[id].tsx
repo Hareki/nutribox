@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
+import { Box, Card, Divider } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AxiosError } from 'axios';
 import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
@@ -7,22 +8,19 @@ import { getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
-import * as yup from 'yup';
 
 import type { UpdateProductInfoRb } from '../../api/admin/product/[id]';
 import { authOptions } from '../../api/auth/[...nextauth]';
 
 import ProductController from 'api/controllers/Product.controller';
 import { serialize } from 'api/helpers/object.helper';
-import type {
-  IPopulatedCategoryProduct,
-  IProduct,
-} from 'api/models/Product.model/types';
+import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { JSendFailResponse } from 'api/types/response.type';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { getMessageList } from 'helpers/feedback.helper';
 import { ProductForm } from 'pages-sections/admin';
+import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';
 import type { ProductInfoFormValues } from 'pages-sections/admin/products/ProductForm';
 import apiCaller from 'utils/apiCallers/admin/product';
 
@@ -31,7 +29,7 @@ EditProduct.getLayout = function getLayout(page: ReactElement) {
 };
 
 interface EditProductProps {
-  initialProduct: IPopulatedCategoryProduct;
+  initialProduct: ICdsUpeProduct;
 }
 
 export default function EditProduct({ initialProduct }: EditProductProps) {
@@ -41,6 +39,7 @@ export default function EditProduct({ initialProduct }: EditProductProps) {
     queryFn: () => apiCaller.getProduct(initialProduct.id),
     initialData: initialProduct,
   });
+  // console.log('file: [id].tsx:44 - EditProduct - product:', product);
 
   const initialValues: ProductInfoFormValues = {
     name: product.name,
@@ -51,7 +50,7 @@ export default function EditProduct({ initialProduct }: EditProductProps) {
     retailPrice: product.retailPrice,
   };
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingForm, setIsEditingForm] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: updateProduct, isLoading } = useMutation<
     IProduct,
@@ -60,11 +59,10 @@ export default function EditProduct({ initialProduct }: EditProductProps) {
   >({
     mutationFn: (values) => apiCaller.updateProduct(product.id, values),
     onSuccess: () => {
-      setIsEditing(false);
+      setIsEditingForm(false);
       enqueueSnackbar('Cập nhật sản phẩm thành công', { variant: 'success' });
       queryClient.invalidateQueries(['product', product.id]);
     },
-    // FIXME onError bị lặp giữa các useMutation
     onError: (err: AxiosError<JSendFailResponse<any>>) => {
       console.log(err);
       if (err.response.data.data) {
@@ -92,17 +90,23 @@ export default function EditProduct({ initialProduct }: EditProductProps) {
     <Box py={4}>
       <AdminDetailsViewHeader
         hrefBack='/admin/product'
-        label='Thông tin sản phẩm'
+        label='Chi tiết sản phẩm'
       />
 
-      <ProductForm
-        setIsEditing={setIsEditing}
-        isEditing={isEditing}
-        isLoading={isLoading}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        handleFormSubmit={handleFormSubmit}
-      />
+      <Card sx={{ p: 6 }}>
+        {/* <h3>Thông tin sản phẩm</h3> */}
+        <Divider sx={{ mb: 5, borderColor: 'grey.400', mt: 3, mx: 6 }} />
+        <ProductForm
+          setIsEditing={setIsEditingForm}
+          isEditing={isEditingForm}
+          isLoading={isLoading}
+          initialValues={initialValues}
+          handleFormSubmit={handleFormSubmit}
+        />
+      </Card>
+
+      <ProductExpiration product={product} />
+      <ReactQueryDevtools />
     </Box>
   );
 }
@@ -127,8 +131,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const product = (await ProductController.getOne({
     id: context.params.id as string,
-    populate: ['category'],
-  })) as unknown as IPopulatedCategoryProduct;
+    populate: ['category', 'defaultSupplier'],
+  })) as unknown as ICdsUpeProduct;
 
   if (!product) {
     return {
@@ -149,38 +153,3 @@ const newInitialValues: ProductInfoFormValues = {
   wholesalePrice: 0,
   retailPrice: 0,
 };
-
-const validationSchema = yup.object().shape({
-  name: yup
-    .string()
-    .required('Vui lòng nhập tên sản phẩm')
-    .max(100, 'Tên sản phẩm không được quá 100 ký tự'),
-  category: yup
-    .object()
-    .typeError('Vui lòng chọn danh mục')
-    .required('Vui lòng chọn danh mục'),
-  description: yup
-    .string()
-    .required('Vui lòng nhập mô tả sản phẩm')
-    .max(500, 'Mô tả sản phẩm không được quá 500 ký tự'),
-  shelfLife: yup
-    .number()
-    .required('Vui lòng số ngày sử dụng')
-    .min(1, 'Số ngày sử dụng phải lớn hơn 0'),
-  wholesalePrice: yup
-    .number()
-    .required('Vui lòng nhập giá gốc')
-    .min(1, 'Giá gốc phải lớn hơn 0'),
-  retailPrice: yup
-    .number()
-    .required('Vui lòng nhập giá bán')
-    .min(1, 'Giá bán phải lớn hơn 0')
-    .test(
-      'retailPrice-greater-than-wholesalePrice',
-      'Giá bán phải lớn hơn giá gốc',
-      function (value) {
-        const { wholesalePrice } = this.parent;
-        return value && value > wholesalePrice;
-      },
-    ),
-});

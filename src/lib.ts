@@ -79,6 +79,12 @@ function formatCurrency(price: number, fraction = 0) {
   return formatCurrency.format(price);
 }
 
+function formatNumber(num: number) {
+  const formatter = new Intl.NumberFormat('en-US');
+  return formatter.format(num);
+}
+
+// FIXME inconsistent input type, should be date object
 function formatDate(date: string) {
   const realDate = new Date(date);
   const formatter = new Intl.DateTimeFormat('vi-VN', {
@@ -160,10 +166,18 @@ function compareTimes(date1: Date, date2: Date) {
   }
 }
 
+// export function addDays(date: Date, days: number) {
+//   const timestamp = date.getTime(); // Get the current timestamp in milliseconds
+//   const daysInMilliseconds = days * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+//   const newTimestamp = timestamp + daysInMilliseconds; // Add the days in milliseconds to the current timestamp
+//   return new Date(newTimestamp); // Create a new Date object with the updated timestamp
+// }
+
 export {
   renderProductCount,
   calculateDiscount,
   formatCurrency,
+  formatNumber,
   getDateDifference,
   formatDate,
   calculateEndTime,

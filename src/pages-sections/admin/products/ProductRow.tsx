@@ -25,7 +25,8 @@ const ProductRow: FC<ProductRowProps> = ({ product }) => {
     retailPrice,
     wholesalePrice,
     imageUrls,
-    shelfLife,
+    // shelfLife,
+    unexpiredAmount,
   } = product;
 
   const router = useRouter();
@@ -62,9 +63,7 @@ const ProductRow: FC<ProductRowProps> = ({ product }) => {
         {formatCurrency(retailPrice)}
       </StyledTableCell>
 
-      <StyledTableCell align='center'>
-        <StyledTableCell align='left'>{shelfLife}</StyledTableCell>
-      </StyledTableCell>
+      <StyledTableCell align='left'>{unexpiredAmount}</StyledTableCell>
     </StyledTableRow>
   );
 };

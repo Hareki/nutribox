@@ -16,10 +16,9 @@ export const productOrderSchema = new Schema<IProductOrder>(
       required: [true, 'ProductOrder/Supplier is required'],
     },
 
-    status: {
-      ref: 'OrderStatus',
-      type: Schema.Types.ObjectId,
-      required: [true, 'ProductOrder/Status is required'],
+    importDate: {
+      type: Date,
+      required: [true, 'ProductOrder/ImportDate is required'],
     },
 
     quantity: {

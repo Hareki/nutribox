@@ -3,13 +3,13 @@ import type { PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 
 interface CustomPickersDayProps extends PickersDayProps<any> {
-  selectedColor: string;
+  selected_color: string;
 }
 
 const CustomPickersDay = styled(PickersDay)<CustomPickersDayProps>(
-  ({ theme, selectedColor }) => ({
+  ({ theme, selected_color }) => ({
     '&.Mui-selected': {
-      color: selectedColor,
+      color: selected_color,
     },
   }),
 );
