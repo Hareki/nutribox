@@ -19,6 +19,7 @@ import { store as reduxStore } from 'store';
 import MuiTheme from 'theme/MuiTheme';
 import OpenGraphTags from 'utils/OpenGraphTags';
 
+import '../src/styles/global.css';
 import '../src/fonts/SVN-Rubik/index.css';
 import 'nprogress/nprogress.css';
 import 'simplebar/dist/simplebar.min.css';

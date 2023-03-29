@@ -59,7 +59,7 @@ export const populateCartItems = async (
 
   return cartItems;
 };
-
+// FIXME the fixed type is not correct, it can receive various types of products as long as they have expirations as an array of reference ids
 export const populateAscUnexpiredExpiration = async (
   products: IProduct[],
 ): Promise<IUpeProduct[]> => {

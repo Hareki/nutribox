@@ -1,6 +1,5 @@
 import { Box, Card, Divider } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AxiosError } from 'axios';
 import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
@@ -16,10 +15,12 @@ import ProductController from 'api/controllers/Product.controller';
 import { serialize } from 'api/helpers/object.helper';
 import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { JSendFailResponse } from 'api/types/response.type';
+import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { getMessageList } from 'helpers/feedback.helper';
 import { ProductForm } from 'pages-sections/admin';
+import ImageListForm from 'pages-sections/admin/products/ImageListForm';
 import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';
 import type { ProductInfoFormValues } from 'pages-sections/admin/products/ProductForm';
 import apiCaller from 'utils/apiCallers/admin/product';
@@ -94,8 +95,10 @@ export default function EditProduct({ initialProduct }: EditProductProps) {
       />
 
       <Card sx={{ p: 6 }}>
-        {/* <h3>Thông tin sản phẩm</h3> */}
-        <Divider sx={{ mb: 5, borderColor: 'grey.400', mt: 3, mx: 6 }} />
+        <H5 mb={3}>Hình ảnh</H5>
+        <ImageListForm images={product.imageUrls} />
+        <Divider sx={{ mb: 4, borderColor: 'grey.400', mt: 4, mx: 6 }} />
+        <H5 mb={5}>Thông tin</H5>
         <ProductForm
           setIsEditing={setIsEditingForm}
           isEditing={isEditingForm}
@@ -106,7 +109,6 @@ export default function EditProduct({ initialProduct }: EditProductProps) {
       </Card>
 
       <ProductExpiration product={product} />
-      <ReactQueryDevtools />
     </Box>
   );
 }
@@ -129,6 +131,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  // FIXME could move this to client as well to improve load time, but have to implement loading indicator
   const product = (await ProductController.getOne({
     id: context.params.id as string,
     populate: ['category', 'defaultSupplier'],

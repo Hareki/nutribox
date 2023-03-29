@@ -13,6 +13,7 @@ import {
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { addDays } from 'date-fns';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
@@ -140,7 +141,9 @@ const ExpirationOrderModal = ({
                   },
                 }}
                 label='Ngày nhập'
-                maxDate={new Date()}
+                // disableFuture
+                minDate={addDays(new Date(), -3)}
+                maxDate={addDays(new Date(), 3)}
                 value={values.importDate}
                 inputFormat='dd/MM/yyyy'
                 renderInput={(props) => (

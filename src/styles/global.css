@@ -1,0 +1,14 @@
+.pswp__img {
+  object-fit: contain !important;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 500px;
+  background-color: #e5e8eb;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 500px;
+  background-color: #bcc0c4;
+}
