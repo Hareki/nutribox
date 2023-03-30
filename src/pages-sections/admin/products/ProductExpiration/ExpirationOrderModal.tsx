@@ -141,9 +141,8 @@ const ExpirationOrderModal = ({
                   },
                 }}
                 label='Ngày nhập'
-                // disableFuture
+                disableFuture
                 minDate={addDays(new Date(), -3)}
-                maxDate={addDays(new Date(), 3)}
                 value={values.importDate}
                 inputFormat='dd/MM/yyyy'
                 renderInput={(props) => (
