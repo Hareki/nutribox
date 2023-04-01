@@ -1,8 +1,11 @@
 import { Person } from '@mui/icons-material';
 import type { Theme } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { Avatar, Box, Button, Card, Grid, useMediaQuery } from '@mui/material';
 import type { FC } from 'react';
 import { Fragment } from 'react';
+
+import type { OrderStatusCount } from '../../../pages/api/profile/order-status-count';
 
 import type { IAccount } from 'api/models/Account.model/types';
 import SEO from 'components/abstract/SEO';
@@ -11,13 +14,21 @@ import UserDashboardHeader from 'components/common/layout/header/UserDashboardHe
 import TableRow from 'components/data-table/TableRow';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import { translateOrderStatusCountLabel } from 'helpers/order.helper';
 import { formatDate } from 'lib';
 
 type ProfileProps = {
   account: IAccount;
   toggleEditing: () => void;
+  orderStatusCount: OrderStatusCount;
+  isLoadingCount: boolean;
 };
-const ProfileViewer: FC<ProfileProps> = ({ account, toggleEditing }) => {
+const ProfileViewer: FC<ProfileProps> = ({
+  account,
+  toggleEditing,
+  orderStatusCount,
+  isLoadingCount,
+}) => {
   const downMd = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   // SECTION TITLE HEADER LINK
@@ -31,12 +42,13 @@ const ProfileViewer: FC<ProfileProps> = ({ account, toggleEditing }) => {
     </Button>
   );
 
-  const infoList = [
-    { title: '16', subtitle: 'Đơn hàng tất cả' },
-    { title: '02', subtitle: 'Đang chờ xử lý' },
-    { title: '00', subtitle: 'Đang chuẩn bị' },
-    { title: '01', subtitle: 'Đang giao hàng' },
-  ];
+  const dummyOrderStatusCount: OrderStatusCount = {
+    total: 0,
+    pending: 0,
+    processing: 0,
+    delivering: 0,
+    delivered: 0,
+  };
 
   return (
     <Fragment>
@@ -62,7 +74,16 @@ const ProfileViewer: FC<ProfileProps> = ({ account, toggleEditing }) => {
                 alignItems: 'center',
               }}
             >
-              <Avatar src={account.avatarUrl} sx={{ height: 64, width: 64 }} />
+              <Avatar
+                src={account.avatarUrl}
+                sx={{
+                  height: 64,
+                  width: 64,
+                  '& img': {
+                    objectFit: 'contain',
+                  },
+                }}
+              />
 
               <Box ml={1.5} flex='1 1 0'>
                 <FlexBetween flexWrap='wrap'>
@@ -75,28 +96,41 @@ const ProfileViewer: FC<ProfileProps> = ({ account, toggleEditing }) => {
           </Grid>
 
           <Grid item md={7} xs={12}>
-            <Grid container spacing={4}>
-              {infoList.map((item) => (
-                <Grid item lg={3} sm={6} xs={6} key={item.subtitle}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      p: '1rem 1.25rem',
-                      alignItems: 'center',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <H3 color='primary.main' my={0} fontWeight={600}>
-                      {item.title}
-                    </H3>
+            <Grid container spacing={4} height='100%'>
+              {Object.keys(orderStatusCount || dummyOrderStatusCount)
+                .filter((key) => key !== 'total')
+                .map((key) => (
+                  <Grid item lg={3} sm={6} xs={6} key={key}>
+                    {isLoadingCount ? (
+                      <Skeleton
+                        variant='rectangular'
+                        height='98px'
+                        sx={{
+                          borderRadius: '8px',
+                        }}
+                        animation='wave'
+                      />
+                    ) : (
+                      <Card
+                        sx={{
+                          height: '100%',
+                          display: 'flex',
+                          p: '1rem 1.25rem',
+                          alignItems: 'center',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <H3 color='primary.main' my={0} fontWeight={600}>
+                          {orderStatusCount[key] || 0}
+                        </H3>
 
-                    <Small color='grey.600' textAlign='center'>
-                      {item.subtitle}
-                    </Small>
-                  </Card>
-                </Grid>
-              ))}
+                        <Small color='grey.600' textAlign='center'>
+                          {translateOrderStatusCountLabel(key as any)}
+                        </Small>
+                      </Card>
+                    )}
+                  </Grid>
+                ))}
             </Grid>
           </Grid>
         </Grid>

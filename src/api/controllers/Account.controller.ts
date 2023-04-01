@@ -9,6 +9,7 @@ import type {
   UpdateAddressRequestBody,
 } from '../../../pages/api/profile/address/[accountId]';
 import type { SetDefaultAddressRequestBody } from '../../../pages/api/profile/address/default/[accountId]';
+import type { OrderStatusCount } from '../../../pages/api/profile/order-status-count';
 
 import {
   getAllGenerator,
@@ -32,6 +33,7 @@ import type {
 import CustomerOrderModel from 'api/models/CustomerOrder.model';
 import ProductModel from 'api/models/Product.model';
 import type { CartState } from 'hooks/global-states/useCart';
+import { OrderStatus } from 'utils/constants';
 
 const getAll = getAllGenerator<IAccount>(AccountModel());
 const getOne = getOneGenerator<IAccount>(AccountModel());
@@ -258,12 +260,39 @@ const countAddress = async (accountId: string): Promise<number> => {
   return count;
 };
 
-const countOrder = async (accountId: string): Promise<number> => {
-  const count = await CustomerOrderModel()
-    .find({ account: accountId })
-    .countDocuments();
+const countOrder = async (accountId: string): Promise<OrderStatusCount> => {
+  const orders = await CustomerOrderModel().find({ account: accountId });
+  const total = orders.length;
 
-  return count;
+  let pending = 0,
+    processing = 0,
+    delivering = 0,
+    delivered = 0;
+
+  orders.forEach((order) => {
+    switch (order.status.toString()) {
+      case OrderStatus.Pending.id:
+        pending++;
+        break;
+      case OrderStatus.Processing.id:
+        processing++;
+        break;
+      case OrderStatus.Delivering.id:
+        delivering++;
+        break;
+      case OrderStatus.Delivered.id:
+        delivered++;
+        break;
+    }
+  });
+
+  return {
+    total,
+    pending,
+    processing,
+    delivering,
+    delivered,
+  };
 };
 
 const AccountController = {

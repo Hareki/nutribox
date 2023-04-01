@@ -10,7 +10,7 @@ import { Fragment } from 'react';
 import { FlexBox } from 'components/flex-box';
 import type { NavLinkProps } from 'components/nav-link/NavLink';
 import NavLink from 'components/nav-link/NavLink';
-import apiCaller from 'utils/apiCallers/profile/count';
+import apiCaller from 'utils/apiCallers/profile/menu-count';
 
 // custom styled components
 const MainContainer = styled(Card)(({ theme }) => ({

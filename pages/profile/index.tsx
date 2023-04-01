@@ -20,16 +20,28 @@ function Profile({ initialAccount }: ProfileProps): ReactElement {
   const toggleEditing = () => setIsEditing((prev) => !prev);
 
   const { data: account } = useQuery({
-    queryKey: ['account'],
-    queryFn: () => apiCaller.getAccount(account.id),
+    queryKey: ['account', initialAccount.id],
+    queryFn: () => apiCaller.getAccount(initialAccount.id),
     // FIXME onError bị lặp giữa các useMutation
     onError: (err) => console.log(err),
     initialData: initialAccount,
   });
+
+  const { data: orderStatusCount, isLoading: isLoadingCount } = useQuery({
+    queryKey: ['order-status-count', initialAccount.id],
+    queryFn: () => apiCaller.getOrderStatusCount(initialAccount.id),
+    onError: (err) => console.log(err),
+  });
+
   return (
     <>
       {!isEditing ? (
-        <ProfileViewer account={account} toggleEditing={toggleEditing} />
+        <ProfileViewer
+          account={account}
+          toggleEditing={toggleEditing}
+          orderStatusCount={orderStatusCount}
+          isLoadingCount={isLoadingCount}
+        />
       ) : (
         <ProfileEditor account={account} toggleEditing={toggleEditing} />
       )}

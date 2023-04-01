@@ -1,5 +1,39 @@
 import { AllStatusIdArray, OrderStatus } from 'utils/constants';
 
+export function translateOrderStatusCountLabel(
+  orderStatusName:
+    | 'total'
+    | 'pending'
+    | 'processing'
+    | 'delivering'
+    | 'delivered'
+    | 'cancelled',
+) {
+  let name = '';
+  switch (orderStatusName) {
+    case 'total':
+      name = 'tất cả';
+      break;
+    case 'pending':
+      name = OrderStatus.Pending.name;
+      break;
+    case 'processing':
+      name = OrderStatus.Processing.name;
+      break;
+    case 'delivering':
+      name = OrderStatus.Delivering.name;
+      break;
+    case 'delivered':
+      name = OrderStatus.Delivered.name;
+      break;
+    case 'cancelled':
+      name = OrderStatus.Cancelled.name;
+      break;
+  }
+
+  return `Đơn ${name.toLowerCase()}`;
+}
+
 export function getOrderStatusName(orderStatusId: string) {
   for (const status in OrderStatus) {
     if (OrderStatus[status].id === orderStatusId) {

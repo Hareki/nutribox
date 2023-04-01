@@ -7,14 +7,16 @@ import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
 import type { JSendResponse } from 'api/types/response.type';
 
-export interface ProfileCount {
-  addressCount: number;
-  orderCount: number;
+export interface OrderStatusCount {
+  total: number;
+  pending: number;
+  processing: number;
+  delivering: number;
+  delivered: number;
 }
-
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<ProfileCount>>
+  NextApiResponse<JSendResponse<OrderStatusCount>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -23,18 +25,11 @@ const handler = nc<
 
   const accountId = req.query.id as string;
 
-  const addressCountPromise = AccountController.countAddress(accountId);
-  const orderCountPromise = AccountController.countOrder(accountId);
-
-  const resolved = await Promise.all([addressCountPromise, orderCountPromise]);
-  const result = {
-    addressCount: resolved[0],
-    orderCount: resolved[1],
-  };
+  const orderCount = await AccountController.countOrder(accountId);
 
   res.status(StatusCodes.OK).json({
     status: 'success',
-    data: result,
+    data: orderCount,
   });
 });
 

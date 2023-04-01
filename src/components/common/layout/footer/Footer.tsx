@@ -58,7 +58,7 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
         {isLoading || storeInfo === null ? (
           <Skeleton
             variant='rectangular'
-            height={400}
+            height={500}
             width='100%'
             animation='wave'
           />
