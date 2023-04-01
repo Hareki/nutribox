@@ -74,6 +74,11 @@ const updateOrderStatus = async (orderId: string): Promise<ICustomerOrder> => {
   customerOrder.status = new Types.ObjectId(
     getNextOrderStatusId(customerOrder.status.toString()),
   );
+
+  if (customerOrder.status.toString() === OrderStatus.Delivered.id) {
+    customerOrder.deliveredOn = new Date();
+  }
+
   await customerOrder.save();
   return customerOrder.toObject();
 };
@@ -113,6 +118,30 @@ const getOrdersBelongToAccountPaginated = async ({
   return orders;
 };
 
+type ProductIdWithTotalSold = {
+  _id: Types.ObjectId;
+  totalSold: number;
+};
+const getProductIdsSortedByTotalSoldDesc = async (): Promise<
+  ProductIdWithTotalSold[]
+> => {
+  const aggregationResult = await CustomerOrderModel().aggregate([
+    { $unwind: '$items' },
+    {
+      $group: {
+        _id: '$items.product',
+        totalSold: { $sum: '$items.quantity' },
+      },
+    },
+    {
+      $sort: {
+        totalSold: -1,
+      },
+    },
+  ]);
+  return aggregationResult;
+};
+
 const CustomerOrderController = {
   getOne,
   getAll,
@@ -126,5 +155,6 @@ const CustomerOrderController = {
   getTotal,
   getOrdersBelongToAccountPaginated,
   getTotalOrdersBelongToAccount,
+  getProductIdsSortedByTotalSoldDesc,
 };
 export default CustomerOrderController;

@@ -29,7 +29,14 @@ const StyledSwitch = styled(Switch)(({ theme }) => ({
     backgroundColor: theme.palette.grey[600],
   },
   '& .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb': {
-    backgroundColor: theme.palette.info.main,
+    backgroundColor: theme.palette.primary.main,
+  },
+  // .Mui-disabled+.MuiSwitch-track
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    opacity: 0.4,
+  },
+  '& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track': {
+    opacity: 1,
   },
 }));
 

@@ -5,6 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
 import { useSnackbar } from 'notistack';
@@ -34,7 +35,6 @@ type Props = {
 };
 
 function AdminOrderDetails({ initialOrder }: Props) {
-  const statusId = initialOrder.status.toString();
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -44,6 +44,8 @@ function AdminOrderDetails({ initialOrder }: Props) {
     initialData: initialOrder,
   });
 
+  const statusId = order.status.toString();
+
   const [confirmState, dispatchConfirm] = useReducer(confirmDialogReducer, {
     open: false,
   });
@@ -51,7 +53,7 @@ function AdminOrderDetails({ initialOrder }: Props) {
   const { mutate: updateOrder, isLoading } = useMutation({
     mutationFn: () => orderApiCaller.updateOrderStatus(order.id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['order', initialOrder.id]);
+      queryClient.refetchQueries(['order', initialOrder.id]);
       enqueueSnackbar('Cập nhật trạng thái đơn hàng thành công', {
         variant: 'success',
       });
@@ -109,6 +111,7 @@ function AdminOrderDetails({ initialOrder }: Props) {
           dispatchConfirm({ type: 'confirm_dialog' });
         }}
       />
+      <ReactQueryDevtools />
     </Box>
   );
 }

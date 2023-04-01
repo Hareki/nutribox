@@ -20,6 +20,7 @@ export interface UpdateProductInfoRb {
   shelfLife: number;
   wholesalePrice: number;
   retailPrice: number;
+  available: boolean;
 }
 
 const handler = nc<

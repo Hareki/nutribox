@@ -48,6 +48,7 @@ export default function EditProduct({ initialProduct }: EditProductProps) {
     shelfLife: product.shelfLife,
     wholesalePrice: product.wholesalePrice,
     retailPrice: product.retailPrice,
+    available: product.available,
   };
 
   const [isEditingForm, setIsEditingForm] = useState(false);
@@ -149,4 +150,5 @@ const newInitialValues: ProductInfoFormValues = {
   shelfLife: 0,
   wholesalePrice: 0,
   retailPrice: 0,
+  available: true,
 };

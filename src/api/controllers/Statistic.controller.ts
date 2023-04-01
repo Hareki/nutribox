@@ -1,5 +1,7 @@
 import type { StatisticProduct } from '../../../pages/api/admin/dashboard';
 
+import CustomerOrderController from './CustomerOrder.controller';
+
 import {
   getOrderCountAndProfit,
   getOrdersBetweenDates,
@@ -168,20 +170,8 @@ const getMostAndLeastSoldProducts = async (): Promise<{
   mostSoldProducts: StatisticProduct[];
   leastSoldProducts: StatisticProduct[];
 }> => {
-  const aggregationResult = await CustomerOrderModel().aggregate([
-    { $unwind: '$items' },
-    {
-      $group: {
-        _id: '$items.product',
-        totalSold: { $sum: '$items.quantity' },
-      },
-    },
-    {
-      $sort: {
-        totalSold: -1,
-      },
-    },
-  ]);
+  const aggregationResult =
+    await CustomerOrderController.getProductIdsSortedByTotalSoldDesc();
 
   const totalSoldOfAllProducts = aggregationResult.reduce(
     (acc, item) => acc + item.totalSold,

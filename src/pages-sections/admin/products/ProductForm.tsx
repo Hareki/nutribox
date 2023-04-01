@@ -1,5 +1,12 @@
 import { LoadingButton } from '@mui/lab';
-import { Autocomplete, Button, Grid, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Button,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  TextField,
+} from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import type { FC } from 'react';
@@ -10,6 +17,7 @@ import type { UpdateProductInfoRb } from '../../../../pages/api/admin/product/[i
 
 import type { IProductCategoryDropdown } from 'api/models/ProductCategory.model/types';
 import CurrencyInput from 'components/common/input/CurrencyInput';
+import CustomSwitch from 'components/common/input/CustomSwitch';
 import apiCaller from 'utils/apiCallers/admin/product';
 
 export interface ProductInfoFormValues
@@ -57,7 +65,7 @@ const ProductForm: FC<ProductFormProps> = (props) => {
     <Fragment>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          <Grid item sm={6} xs={12}>
+          <Grid item md={5} xs={12}>
             <TextField
               fullWidth
               name='name'
@@ -74,7 +82,7 @@ const ProductForm: FC<ProductFormProps> = (props) => {
               }}
             />
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item md={5} xs={12}>
             <Autocomplete
               readOnly={!isEditing}
               fullWidth
@@ -101,7 +109,29 @@ const ProductForm: FC<ProductFormProps> = (props) => {
               )}
             />
           </Grid>
-
+          <Grid item md={2} xs={12}>
+            <FormGroup>
+              <FormControlLabel
+                sx={{
+                  '& .MuiFormControlLabel-label.Mui-disabled': {
+                    color: 'text.primary',
+                  },
+                }}
+                labelPlacement='top'
+                control={
+                  <CustomSwitch
+                    disabled={!isEditing}
+                    color='primary'
+                    checked={values.available}
+                    onChange={(e) => {
+                      setFieldValue('available', e.target.checked);
+                    }}
+                  />
+                }
+                label='Bày bán'
+              />
+            </FormGroup>
+          </Grid>
           <Grid item xs={12}>
             <TextField
               rows={6}

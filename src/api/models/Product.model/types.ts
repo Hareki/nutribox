@@ -24,7 +24,6 @@ export interface IProduct {
   available: boolean;
   wholesalePrice: number;
   retailPrice: number;
-  hot: boolean;
   name: string;
 
   defaultSupplier: Types.ObjectId;
@@ -55,11 +54,7 @@ export interface IProductWithTotalQuantity extends IProduct {
 }
 
 export interface IProductInput
-  extends Omit<
-    IProduct,
-    '_id' | 'slug' | 'expirations' | 'available' | 'hot' | 'id'
-  > {
+  extends Omit<IProduct, '_id' | 'slug' | 'expirations' | 'available' | 'id'> {
   expirations?: Types.ObjectId[]; // IExpiration
   available?: boolean;
-  hot?: boolean;
 }

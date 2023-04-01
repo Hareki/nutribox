@@ -80,11 +80,6 @@ export const productSchema = new Schema<IProduct>(
       },
     },
 
-    hot: {
-      type: Boolean,
-      default: false,
-    },
-
     name: {
       type: String,
       required: [true, 'Product/Name is required'],

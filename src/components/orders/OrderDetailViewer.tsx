@@ -16,8 +16,7 @@ import {
 } from '@mui/material';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect, useRef, useState } from 'react';
-import { useHover } from 'usehooks-ts';
+import { Fragment, useEffect, useState } from 'react';
 
 import OrderPaymentChip from './OrderPaymentChip';
 
@@ -25,7 +24,7 @@ import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { IProduct } from 'api/models/Product.model/types';
 import { H5, H6, Paragraph, Span } from 'components/abstract/Typography';
 import TableRow from 'components/data-table/TableRow';
-import { FlexBetween, FlexBox, FlexRowCenter } from 'components/flex-box';
+import { FlexBetween, FlexBox } from 'components/flex-box';
 import Delivery from 'components/icons/Delivery';
 import PackageBox from 'components/icons/PackageBox';
 import TruckFilled from 'components/icons/TruckFilled';
@@ -72,8 +71,8 @@ const OrderDetailsViewer = ({
   const { transitions } = useTheme();
   const router = useRouter();
   const isAdmin = router.pathname.startsWith('/admin');
-  const hoverRef = useRef(null);
-  const isHover = useHover(hoverRef);
+
+  const [isHover, setIsHover] = useState(false);
 
   const [statusIndex, setStatusIndex] = useState(getCurrentStatusIndex(order));
   useEffect(() => {
@@ -119,7 +118,11 @@ const OrderDetailsViewer = ({
                 }
                 placement='top'
               >
-                <Box position='relative'>
+                <div
+                  style={{
+                    position: 'relative',
+                  }}
+                >
                   <div>
                     <Avatar
                       sx={{
@@ -150,7 +153,7 @@ const OrderDetailsViewer = ({
                         </Avatar>
                       </Box>
                     )} */}
-                </Box>
+                </div>
               </Tooltip>
 
               {index < iconList.length - 1 && (
@@ -200,19 +203,27 @@ const OrderDetailsViewer = ({
                   )}`
                 }
               >
-                <FlexRowCenter>
+                {/* Use Div instead of Box to avoid errors because of Tooltip component, it still works but throw tons of errors in the console */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
                   <LoadingButton
                     disabled={isCancel || delivered}
                     loading={isUpdating}
                     variant='contained'
                     color='primary'
-                    ref={hoverRef}
+                    onMouseEnter={() => setIsHover(true)}
+                    onMouseLeave={() => setIsHover(false)}
                     onClick={() => updateOrderCallback?.()}
                   >
                     <UpgradeRoundedIcon sx={{ fontSize: '26px' }} />
                     Thăng cấp
                   </LoadingButton>
-                </FlexRowCenter>
+                </div>
               </Tooltip>
             </Grid>
           )}
@@ -274,7 +285,7 @@ const OrderDetailsViewer = ({
               </Typography>
 
               <Typography fontSize={14}>
-                {formatDateTime(order.deliveredOn as Date)}
+                {formatDateTime(new Date(order.deliveredOn))}
               </Typography>
             </FlexBox>
           )}

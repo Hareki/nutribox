@@ -7,6 +7,8 @@ export const LayoutConstant = {
   grocerySidenavWidth: 280,
 };
 
+export const ProductCarouselLimit = 6;
+
 export const ProfileInfiniteProductConstant = {
   docsPerPage: 6,
   infiniteDocsPerPage: 9999,

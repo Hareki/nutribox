@@ -1,5 +1,6 @@
 import type { ClientSession } from 'mongoose';
 
+import CustomerOrderController from './CustomerOrder.controller';
 import {
   getAllGenerator,
   getOneGenerator,
@@ -17,8 +18,8 @@ import type { ICustomerOrderItemInput } from 'api/models/CustomerOrder.model/Cus
 import ExpirationModel from 'api/models/Expiration.model';
 import ProductModel from 'api/models/Product.model';
 import type { IProduct } from 'api/models/Product.model/types';
+import { ProductCarouselLimit } from 'utils/constants';
 
-interface GetHotProductsOptions extends Omit<BaseGetOptions, 'model'> {}
 interface GetNewProductsOptions extends Omit<BaseGetOptions, 'model'> {}
 
 interface GetRelatedProductsParams {
@@ -32,17 +33,19 @@ const getOne = getOneGenerator<IProduct>(ProductModel());
 const updateOne = updateOneGenerator<IProduct>(ProductModel());
 const getTotal = getTotalGenerator(ProductModel());
 
-const getHotProducts = async (
-  options?: GetHotProductsOptions,
-): Promise<IProduct[]> => {
-  const query = ProductModel().find({ hot: true });
+const getHotProducts = async (): Promise<IProduct[]> => {
+  const productsTotalSoldDesc = (
+    await CustomerOrderController.getProductIdsSortedByTotalSoldDesc()
+  ).slice(0, ProductCarouselLimit);
 
-  buildBaseQuery(query, {
-    populate: options?.populate,
-    ignoreFields: options?.ignoreFields,
+  const promises = productsTotalSoldDesc.map(async (product) => {
+    const productDetails = await ProductModel()
+      .findById(product._id)
+      .lean({ virtuals: true });
+    return productDetails;
   });
 
-  const hotProducts = await query.exec();
+  const hotProducts = await Promise.all(promises);
   return hotProducts;
 };
 
@@ -64,7 +67,10 @@ const getRelatedProducts = async (
 const getNewProducts = async (
   options?: GetNewProductsOptions,
 ): Promise<IProduct[]> => {
-  const query = ProductModel().find().sort({ createdAt: -1, _id: 1 });
+  const query = ProductModel()
+    .find()
+    .limit(ProductCarouselLimit)
+    .sort({ createdAt: -1, _id: 1 });
 
   buildBaseQuery(query, {
     populate: options?.populate,

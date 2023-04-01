@@ -52,7 +52,15 @@ export function getNextOrderStatusId(currentId: string) {
 }
 
 export function getNextOrderStatusName(currentId: string) {
+  console.log(
+    'file: order.helper.ts:55 - getNextOrderStatusName - currentId:',
+    currentId,
+  );
   const nextOrderStatusId = getNextOrderStatusId(currentId);
+  console.log(
+    'file: order.helper.ts:56 - getNextOrderStatusName - nextOrderStatusId:',
+    nextOrderStatusId,
+  );
   if (!nextOrderStatusId) return null;
   return getOrderStatusName(nextOrderStatusId);
 }
