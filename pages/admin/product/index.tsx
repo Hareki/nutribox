@@ -11,6 +11,7 @@ import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import type { ICdsUpeProduct } from 'api/models/Product.model/types';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
@@ -18,7 +19,6 @@ import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
 import { getMaxUpeQuantity } from 'helpers/product.helper';
-import { checkContextCredentials } from 'helpers/session.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { ProductRow } from 'pages-sections/admin';

@@ -10,6 +10,7 @@ import { useState } from 'react';
 import type { UpdateProductInfoRb } from '../../api/admin/product/[id]';
 
 import ProductController from 'api/controllers/Product.controller';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { JSendFailResponse } from 'api/types/response.type';
@@ -17,7 +18,6 @@ import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { getMessageList } from 'helpers/feedback.helper';
-import { checkContextCredentials } from 'helpers/session.helper';
 import { ProductForm } from 'pages-sections/admin';
 import ImageListForm from 'pages-sections/admin/products/ImageListForm';
 import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';

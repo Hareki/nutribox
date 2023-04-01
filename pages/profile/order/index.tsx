@@ -4,6 +4,7 @@ import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 import { Fragment } from 'react';
 
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H5 } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
@@ -11,7 +12,6 @@ import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { checkContextCredentials } from 'helpers/session.helper';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import OrderRow from 'pages-sections/profile/order/OrderRow';
 import apiCaller from 'utils/apiCallers/profile/order';

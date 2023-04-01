@@ -3,11 +3,11 @@ import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 
 import { getStore } from 'api/base/server-side-getters';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { IStore } from 'api/models/Store.model/types';
 import { H3, Paragraph } from 'components/abstract/Typography';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
-import { checkContextCredentials } from 'helpers/session.helper';
 import ContactInfoForm from 'pages-sections/admin/store-setting/ContactInfoForm';
 import StoreHoursForm from 'pages-sections/admin/store-setting/StoreHoursForm';
 import { StoreId } from 'utils/constants';

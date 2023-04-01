@@ -10,13 +10,13 @@ import {
 import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
-import { checkContextCredentials } from 'helpers/session.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { OrderRow } from 'pages-sections/admin';

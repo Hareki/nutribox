@@ -216,7 +216,6 @@ function HomePage(props: HomePageProps) {
         </Stack>
       </SideNavContainer>
 
-      {/* MOBILE NAVIGATION WITH SIDE NAVBAR */}
       <MobileNavigationBar>
         <CategoryNavbar navList={categoryNavigation} />
       </MobileNavigationBar>

@@ -11,6 +11,7 @@ import { useSnackbar } from 'notistack';
 import { Fragment, useReducer } from 'react';
 
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
@@ -19,7 +20,6 @@ import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import Navigations from 'components/layouts/customer-dashboard/Navigations';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
-import { checkContextCredentials } from 'helpers/session.helper';
 import productApiCaller from 'utils/apiCallers/product/[slug]';
 import orderApiCaller from 'utils/apiCallers/profile/order';
 

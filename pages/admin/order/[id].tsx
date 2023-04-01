@@ -12,6 +12,7 @@ import type { ReactElement } from 'react';
 import { useReducer } from 'react';
 
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { Paragraph, Span } from 'components/abstract/Typography';
@@ -21,7 +22,6 @@ import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
 import { getNextOrderStatusName } from 'helpers/order.helper';
-import { checkContextCredentials } from 'helpers/session.helper';
 import productApiCaller from 'utils/apiCallers/product/[slug]';
 import orderApiCaller from 'utils/apiCallers/profile/order';
 

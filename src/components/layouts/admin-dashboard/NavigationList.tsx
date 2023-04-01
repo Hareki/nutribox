@@ -16,7 +16,7 @@ export const navigations = [
   {
     name: 'Nhà cung cấp',
     icon: duotone.Seller,
-    path: 'admin/supplier',
+    path: '/admin/supplier',
   },
 
   { name: 'Tài khoản', icon: duotone.Customers, path: '/admin/account' },

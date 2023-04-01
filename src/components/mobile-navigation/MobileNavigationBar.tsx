@@ -1,5 +1,6 @@
 import { Badge, Box } from '@mui/material';
 import type { FC, ReactNode } from 'react';
+import { Fragment } from 'react';
 import { useEffect, useState } from 'react';
 
 import {
@@ -15,6 +16,7 @@ import Home from 'components/icons/Home';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import User2 from 'components/icons/User2';
 import useCart from 'hooks/global-states/useCart';
+import useCartDrawer from 'hooks/global-states/useCartDrawer';
 import useWindowSize from 'hooks/useWindowSize';
 import { LayoutConstant } from 'utils/constants';
 
@@ -31,32 +33,31 @@ type Props = { children?: ReactNode };
 const MobileNavigationBar: FC<Props> = ({ children }) => {
   const width = useWindowSize();
   const { cartState } = useCart();
-  const [open, setOpen] = useState(false);
+  const [childrenDrawerOpen, setChildrenDrawerOpen] = useState(false);
 
   const { mobileNavHeight, topbarHeight } = LayoutConstant;
   const total = mobileNavHeight + topbarHeight;
   const [totalHeight, setTotalHeight] = useState<number>(total);
 
-  const handleDrawerOpen = () => setOpen(true);
-  const handleDrawerClose = () => setOpen(false);
+  const { toggleCartDrawer } = useCartDrawer();
 
   useEffect(() => {
-    const listner = () => {
+    const listener = () => {
       if (window.scrollY > 30) setTotalHeight(mobileNavHeight);
       else setTotalHeight(total);
     };
 
-    window.addEventListener('scroll', listner);
-    return () => window.removeEventListener('scroll', listner);
+    window.addEventListener('scroll', listener);
+    return () => window.removeEventListener('scroll', listener);
   }, [mobileNavHeight, total]);
 
   return width <= 900 ? (
     <Box position='relative' display='flex' flexDirection='column'>
       <StyledDrawer
-        open={open}
+        open={childrenDrawerOpen}
         anchor='left'
         totalheight={totalHeight}
-        onClose={handleDrawerClose}
+        onClose={() => setChildrenDrawerOpen(false)}
       >
         {children}
       </StyledDrawer>
@@ -80,21 +81,26 @@ const MobileNavigationBar: FC<Props> = ({ children }) => {
             );
           } else {
             return (
-              <StyledBox
-                onClick={open ? handleDrawerClose : handleDrawerOpen}
-                key={item.title}
-              >
-                {item.title === 'Cart' && (
-                  <Badge badgeContent={cartState.cart.length} color='primary'>
-                    <item.icon fontSize='small' sx={iconStyle} />
-                  </Badge>
-                )}
+              <Fragment key={item.title}>
+                {item.title === 'Category' && (
+                  <StyledBox
+                    onClick={() => setChildrenDrawerOpen((prev) => !prev)}
+                  >
+                    <item.icon sx={iconStyle} fontSize='small' />
 
-                {item.title !== 'Cart' && (
-                  <item.icon sx={iconStyle} fontSize='small' />
+                    {item.title}
+                  </StyledBox>
                 )}
-                {item.title}
-              </StyledBox>
+                {item.title === 'Cart' && (
+                  <StyledBox onClick={() => toggleCartDrawer()}>
+                    <Badge badgeContent={cartState.cart.length} color='primary'>
+                      <item.icon fontSize='small' sx={iconStyle} />
+                    </Badge>
+
+                    {item.title}
+                  </StyledBox>
+                )}
+              </Fragment>
             );
           }
         })}
@@ -106,7 +112,7 @@ const MobileNavigationBar: FC<Props> = ({ children }) => {
 const list = [
   { title: 'Home', icon: Home, href: '/' },
   { title: 'Category', icon: CategoryOutlined },
-  { title: 'Cart', icon: ShoppingBagOutlined, href: '/cart' },
+  { title: 'Cart', icon: ShoppingBagOutlined },
   { title: 'Account', icon: User2, href: '/profile' },
 ];
 

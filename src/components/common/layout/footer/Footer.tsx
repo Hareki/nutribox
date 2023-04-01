@@ -141,12 +141,7 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
                     </FlexBox>
                   </FlexBox>
 
-                  <FlexBox
-                    mt='auto'
-                    alignItems='center'
-                    color='grey.600'
-                    gap={1}
-                  >
+                  <FlexBox mt={5} alignItems='center' color='grey.600' gap={1}>
                     <CopyrightRounded />
                     <Typography>
                       2023 Bản quyền thuộc Công ty TNHH Nutribox. Tất cả các

@@ -11,8 +11,6 @@ import { useSession } from 'next-auth/react';
 import type { FC, ReactElement } from 'react';
 import { Fragment, useState } from 'react';
 
-import MobileMenu from '../navbar/MobileMenu';
-
 import { Paragraph } from 'components/abstract/Typography';
 import AccountMenu from 'components/AccountMenu';
 import CartDrawer from 'components/cart-drawer/CartDrawer';
@@ -21,7 +19,7 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import Icon from 'components/icons';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
 import useCart from 'hooks/global-states/useCart';
-import useLoginDialog from 'hooks/global-states/useLoginDialog';
+import useCartDrawer from 'hooks/global-states/useCartDrawer';
 import { LayoutConstant } from 'utils/constants';
 
 // styled component
@@ -56,15 +54,16 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const router = useRouter();
   const { cartState } = useCart();
 
-  const { setLoginDialogOpen } = useLoginDialog();
-  const [sidenavOpen, setSidenavOpen] = useState(false);
+  const { cartDrawerState, toggleCartDrawer } = useCartDrawer();
+  // const { setLoginDialogOpen } = useLoginDialog();
+  // const [sidenavOpen, setSidenavOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
 
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
   const downMd = useMediaQuery(theme.breakpoints.down(1150));
 
-  const toggleCartDrawer = () => setSidenavOpen(!sidenavOpen);
+  // const toggleCartDrawer = () => setSidenavOpen(!sidenavOpen);
   const toggleSearchBar = () => setSearchBarOpen(!searchBarOpen);
   const togglePopover = () => {
     console.log('toggle');
@@ -73,7 +72,6 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
 
   const { data: session, status } = useSession();
   // console.log('file: Header.tsx:87 - session:', session);
-  const isAuthenticated = status === 'authenticated';
   const isCheckingOut = router.pathname === '/checkout';
 
   const user = session?.user;
@@ -82,7 +80,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const DialogAndDrawer = (
     <Fragment>
       <Drawer
-        open={sidenavOpen}
+        open={cartDrawerState.isOpen}
         anchor='right'
         onClose={toggleCartDrawer}
         sx={{ zIndex: 9999 }}
@@ -102,9 +100,9 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
         <StyledContainer>
           <FlexBetween width='100%'>
             {/* LEFT CONTENT - NAVIGATION ICON BUTTON */}
-            <Box flex={1}>
+            {/* <Box flex={1}>
               <MobileMenu />
-            </Box>
+            </Box> */}
 
             {/* MIDDLE CONTENT - LOGO */}
             <Link href='/'>
@@ -112,7 +110,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
             </Link>
 
             {/* RIGHT CONTENT - LOGIN, CART, SEARCH BUTTON */}
-            <FlexBox justifyContent='end' flex={1}>
+            <FlexBox justifyContent='end' flex={1} gap={2}>
               <Box component={IconButton} onClick={toggleSearchBar}>
                 <Icon.Search sx={ICON_STYLE} />
               </Box>

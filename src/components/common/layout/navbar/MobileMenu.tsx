@@ -24,8 +24,8 @@ const MobileMenu: FC = () => {
     if (!curr.child) {
       newArr.push({ ...curr, extLink: true });
     } else if (curr.megaMenu || curr.megaMenuWithSub) {
-      const flated = curr.child.flat();
-      newArr.push({ title: curr.title, child: flated });
+      const flatted = curr.child.flat();
+      newArr.push({ title: curr.title, child: flatted });
     } else {
       newArr.push(curr);
     }

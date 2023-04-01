@@ -4,10 +4,10 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 import { getAccount } from 'api/base/server-side-getters';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { IAccount } from 'api/models/Account.model/types';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
-import { checkContextCredentials } from 'helpers/session.helper';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
 import apiCaller from 'utils/apiCallers/profile';

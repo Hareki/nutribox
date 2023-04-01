@@ -5,9 +5,9 @@ import type { GetServerSideProps } from 'next';
 import type { Session } from 'next-auth';
 import type { ReactElement } from 'react';
 
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
-import { checkContextCredentials } from 'helpers/session.helper';
 import { formatCurrency } from 'lib';
 import Analytics from 'pages-sections/dashboard/Analytics';
 import RecentOrders from 'pages-sections/dashboard/RecentOrders';

@@ -5,6 +5,7 @@ import { useState, Fragment } from 'react';
 import type { ReactElement } from 'react';
 
 import { getAccount } from 'api/base/server-side-getters';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IAccount } from 'api/models/Account.model/types';
@@ -12,7 +13,6 @@ import type { IAddress } from 'api/types/schema.type';
 import SEO from 'components/abstract/SEO';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
-import { checkContextCredentials } from 'helpers/session.helper';
 import CartDetails from 'pages-sections/checkout/cart-details';
 import OrderCompleted from 'pages-sections/checkout/order-completed';
 import Payment from 'pages-sections/checkout/payment';
