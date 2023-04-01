@@ -7,7 +7,6 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { GetStaticProps } from 'next';
 import { useSnackbar } from 'notistack';
 import type { FC } from 'react';
 import { useReducer, useState } from 'react';
@@ -20,7 +19,6 @@ import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { getFullAddress } from 'helpers/address.helper';
-import api from 'utils/__api__/address';
 import apiCaller from 'utils/apiCallers/profile/address';
 
 type AddressViewerProps = {
@@ -187,11 +185,6 @@ const AddressViewer: FC<AddressViewerProps> = ({
       />
     </>
   );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-  const addressList = await api.getAddressList();
-  return { props: { addressList } };
 };
 
 export default AddressViewer;

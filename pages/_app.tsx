@@ -23,7 +23,7 @@ import '../src/styles/global.css';
 import '../src/fonts/SVN-Rubik/index.css';
 import 'nprogress/nprogress.css';
 import 'simplebar/dist/simplebar.min.css';
-import '../src/__server__';
+import '../src/mock-server';
 
 type MyAppProps = AppProps & {
   Component: NextPage & {

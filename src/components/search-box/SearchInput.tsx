@@ -5,15 +5,13 @@ import { useEffect, useRef, useState, useTransition } from 'react';
 
 import { SearchOutlinedIcon, SearchResultCard } from './styled';
 
-import api from 'utils/__api__/products';
-
 const SearchInput: FC = () => {
   const parentRef = useRef();
   const [_, startTransition] = useTransition();
   const [resultList, setResultList] = useState<string[]>([]);
 
   const getProducts = async (searchText: string) => {
-    const data = await api.searchProducts(searchText);
+    // const data = await api.searchProducts(searchText);
     // setResultList(data);
   };
 

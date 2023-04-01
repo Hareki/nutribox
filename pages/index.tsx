@@ -36,9 +36,9 @@ import HeroSection from 'pages-sections/home-page/HeroSection';
 import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
 import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
-import api from 'utils/__api__/grocery1-shop';
 import apiCaller from 'utils/apiCallers';
 import { ProfileInfiniteProductConstant, StoreId } from 'utils/constants';
+import api from 'utils/mock-data/home-page';
 
 function getElementHeightIncludingMargin(element: HTMLElement) {
   if (!element) return 0;

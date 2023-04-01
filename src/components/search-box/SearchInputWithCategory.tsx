@@ -3,21 +3,13 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Box, MenuItem, TextField, styled, useTheme } from '@mui/material';
 import TouchRipple from '@mui/material/ButtonBase';
 import Link from 'next/link';
-import type {
-  ChangeEvent,
-  FC } from 'react';
-import {
-  useEffect,
-  useRef,
-  useState,
-  useTransition,
-} from 'react';
+import type { ChangeEvent, FC } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 
 import { SearchOutlinedIcon, SearchResultCard } from './styled';
 
 import CustomMenu from 'components/common/input/CustomMenu';
 import { FlexBox } from 'components/flex-box';
-import api from 'utils/__api__/products';
 
 const DropDownHandler = styled(FlexBox)(({ theme }) => ({
   whiteSpace: 'pre',
@@ -44,8 +36,8 @@ const SearchInputWithCategory: FC = () => {
 
   // FETCH PRODUCTS VIA API
   const getProducts = async (searchText: string, category?: string) => {
-    const data = await api.searchProducts(searchText, category);
-    setResultList(data);
+    // const data = await api.searchProducts(searchText, category);
+    // setResultList(data);
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
