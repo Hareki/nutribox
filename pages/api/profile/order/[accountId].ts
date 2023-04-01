@@ -23,7 +23,7 @@ const handler = nc<
 
   const { skip, limit, totalPages, totalDocs } = await processPaginationParams(
     req,
-    CustomerOrderController.getTotal,
+    CustomerOrderController.getTotalOrdersBelongToAccount.bind(null, accountId),
   );
 
   const orders =

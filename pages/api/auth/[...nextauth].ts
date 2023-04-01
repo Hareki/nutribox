@@ -6,6 +6,10 @@ import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
 
 export const authOptions: AuthOptions = {
+  pages: {
+    signIn: '/login',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -16,7 +20,7 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       if (!token.userId) return session;
 
-      console.time('getSessionUser');
+      // console.time('getSessionUser');
       await connectToDB();
       const sessionUser = await AccountController.getSessionUser(
         token.userId as string,
@@ -25,7 +29,7 @@ export const authOptions: AuthOptions = {
       token.user = sessionUser.user;
       session.user = sessionUser.user;
 
-      console.timeEnd('getSessionUser');
+      // console.timeEnd('getSessionUser');
       return session;
     },
   },

@@ -1,13 +1,9 @@
-import { addDays } from 'date-fns';
 import { StatusCodes } from 'http-status-codes';
-import { Types } from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/databaseConnection';
-import ExpirationModel from 'api/models/Expiration.model';
-import type { IExpirationInput } from 'api/models/Expiration.model/types';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,
@@ -47,33 +43,33 @@ const handler = nc<NextApiRequest, NextApiResponse>({
   // ];
   // await ProductOrderModel().create(dataArray);
 
-  const dataArray: IExpirationInput[] = [
-    {
-      product: new Types.ObjectId('640990a80009112a7a900b94'),
-      quantity: 15,
-      importDate: new Date('2023-03-28T07:24:07.407+00:00'),
-      expirationDate: addDays(new Date('2023-03-28T07:24:07.407+00:00'), 15),
-    },
-    {
-      product: new Types.ObjectId('640990a80009112a7a900b94'),
-      quantity: 15,
-      importDate: new Date('2023-03-28T07:24:07.407+00:00'),
-      expirationDate: addDays(new Date('2023-03-28T07:24:07.407+00:00'), 15),
-    },
-    {
-      product: new Types.ObjectId('640990a80009112a7a900b94'),
-      quantity: 15,
-      importDate: new Date('2023-03-28T07:24:07.407+00:00'),
-      expirationDate: addDays(new Date('2023-03-28T07:24:07.407+00:00'), 15),
-    },
-    {
-      product: new Types.ObjectId('640990a80009112a7a900b94'),
-      quantity: 15,
-      importDate: new Date('2023-03-28T07:24:07.407+00:00'),
-      expirationDate: addDays(new Date('2023-03-28T07:24:07.407+00:00'), 15),
-    },
-  ];
-  await ExpirationModel().create(dataArray);
+  // const dataArray: IExpirationInput[] = [
+  //   {
+  //     product: new Types.ObjectId('640990a80009112a7a900b94'),
+  //     quantity: 15,
+  //     importDate: new Date('2023-03-28T07:24:07.407+00:00'),
+  //     expirationDate: addDays(new Date('2023-03-28T07:24:07.407+00:00'), 15),
+  //   },
+  //   {
+  //     product: new Types.ObjectId('640990a80009112a7a900b94'),
+  //     quantity: 15,
+  //     importDate: new Date('2023-03-28T07:24:07.407+00:00'),
+  //     expirationDate: addDays(new Date('2023-03-28T07:24:07.407+00:00'), 15),
+  //   },
+  //   {
+  //     product: new Types.ObjectId('640990a80009112a7a900b94'),
+  //     quantity: 15,
+  //     importDate: new Date('2023-03-28T07:24:07.407+00:00'),
+  //     expirationDate: addDays(new Date('2023-03-28T07:24:07.407+00:00'), 15),
+  //   },
+  //   {
+  //     product: new Types.ObjectId('640990a80009112a7a900b94'),
+  //     quantity: 15,
+  //     importDate: new Date('2023-03-28T07:24:07.407+00:00'),
+  //     expirationDate: addDays(new Date('2023-03-28T07:24:07.407+00:00'), 15),
+  //   },
+  // ];
+  // await ExpirationModel().create(dataArray);
 
   res.status(StatusCodes.OK).json({
     status: 'success',

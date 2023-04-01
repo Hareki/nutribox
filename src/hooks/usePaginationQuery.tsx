@@ -33,7 +33,7 @@ const usePaginationQuery = <T,>({
 
   const paginationComponent = (
     <Pagination
-      count={paginationData?.totalPages || 0}
+      count={paginationData?.totalPages || 1}
       color='primary'
       variant='outlined'
       onChange={(_, value) => setCurrPageNum(value)}

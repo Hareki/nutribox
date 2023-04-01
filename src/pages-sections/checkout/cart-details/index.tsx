@@ -399,7 +399,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
               />
 
               <LoadingButton
-                disabled={hasOverLimitItem}
+                disabled={hasOverLimitItem || cartList.length === 0}
                 loading={isEstimating}
                 variant='contained'
                 color='primary'

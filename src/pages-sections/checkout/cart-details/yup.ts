@@ -8,7 +8,9 @@ export const getInitialValues = (account: IAccount) => {
   const defaultAddress = account.addresses.find((address) => address.isDefault);
   const transformedAddressValues =
     transformAccountAddressToFormikValue(defaultAddress);
-  delete transformedAddressValues.title;
+  if (transformedAddressValues) {
+    delete transformedAddressValues.title;
+  }
 
   return {
     note: '',

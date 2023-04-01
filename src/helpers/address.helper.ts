@@ -28,6 +28,9 @@ export const transformAddressToFormikValue = (address: IAddress) => {
 export const transformAccountAddressToFormikValue = (
   address: IAccountAddress,
 ) => {
+  if (!address) {
+    return null;
+  }
   const { title, ...otherInfo } = address;
   return {
     title,

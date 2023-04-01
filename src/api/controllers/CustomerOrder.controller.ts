@@ -78,6 +78,16 @@ const updateOrderStatus = async (orderId: string): Promise<ICustomerOrder> => {
   return customerOrder.toObject();
 };
 
+const getTotalOrdersBelongToAccount = async (
+  accountId: string,
+): Promise<number> => {
+  const total = await CustomerOrderModel()
+    .countDocuments({ id: accountId })
+    .exec();
+
+  return total;
+};
+
 const getOrdersBelongToAccountPaginated = async ({
   id,
   skip,
@@ -115,5 +125,6 @@ const CustomerOrderController = {
   updateOne,
   getTotal,
   getOrdersBelongToAccountPaginated,
+  getTotalOrdersBelongToAccount,
 };
 export default CustomerOrderController;

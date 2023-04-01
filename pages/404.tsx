@@ -13,7 +13,7 @@ const Error404: NextPage = () => {
 
   return (
     <FlexRowCenter px={2} minHeight='100vh' flexDirection='column'>
-      <SEO title='Nothing found' />
+      <SEO title='Không tìm thấy trang' />
       <MuiImage
         src='/assets/images/illustrations/404.svg'
         sx={{ display: 'block', maxWidth: 320, width: '100%', mb: 3 }}
