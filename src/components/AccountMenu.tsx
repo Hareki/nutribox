@@ -13,12 +13,13 @@ import {
   styled,
 } from '@mui/material';
 import Link from 'next/link';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import type { FC, MouseEvent } from 'react';
 import React, { useState } from 'react';
 
 import { H6, Small } from 'components/abstract/Typography';
 import useLoginDialog from 'hooks/global-states/useLoginDialog';
+import useSignOutDialog from 'hooks/useSignOutDialog';
 
 const Divider = styled(Box)(({ theme }) => ({
   margin: '0.5rem 0',
@@ -47,6 +48,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
   const userRole = session?.user?.role;
   const userUrl = session?.user?.avatarUrl;
 
+  const { dialog: signOutDialog, dispatchConfirm } = useSignOutDialog();
   const { setLoginDialogOpen } = useLoginDialog();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -166,13 +168,20 @@ const AccountMenu: FC<AccountMenuProps> = () => {
         )}
 
         <Divider />
-        <MenuItem onClick={() => signOut()}>
+        <MenuItem
+          onClick={() =>
+            dispatchConfirm({
+              type: 'open_dialog',
+            })
+          }
+        >
           <ListItemIcon>
             <LogoutOutlinedIcon />
           </ListItemIcon>
           Đăng xuất
         </MenuItem>
       </Menu>
+      {signOutDialog}
     </Box>
   );
 };

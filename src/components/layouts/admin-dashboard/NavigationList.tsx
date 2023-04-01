@@ -1,5 +1,3 @@
-import { signOut } from 'next-auth/react';
-
 import duotone from 'components/icons/duotone';
 
 export const navigations = [
@@ -27,5 +25,5 @@ export const navigations = [
     icon: duotone.SiteSetting,
     path: '/admin/store-setting',
   },
-  { name: 'Đăng xuất', icon: duotone.Session, handleClick: () => signOut() },
+  { name: 'Đăng xuất', icon: duotone.Session, isSignOut: true },
 ];

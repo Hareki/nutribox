@@ -1,3 +1,4 @@
+import { LoadingButton } from '@mui/lab';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,6 +13,7 @@ export interface ConfirmDialogProps {
   content: ReactNode | string;
   handleConfirm: () => void;
   handleCancel: () => void;
+  isLoading?: boolean;
 }
 
 const ConfirmDialog: FC<ConfirmDialogProps> = ({
@@ -20,6 +22,7 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
   handleCancel,
   title,
   content,
+  isLoading = false,
 }) => {
   return (
     <Dialog
@@ -39,9 +42,9 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleConfirm} color='info'>
+        <LoadingButton loading={isLoading} onClick={handleConfirm} color='info'>
           Xác nhận
-        </Button>
+        </LoadingButton>
         <Button onClick={handleCancel} color='info'>
           Huỷ bỏ
         </Button>

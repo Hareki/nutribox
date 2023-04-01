@@ -24,6 +24,7 @@ import SidebarAccordion from './SidebarAccordion';
 
 import { FlexBetween } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
+import useSignOutDialog from 'hooks/useSignOutDialog';
 
 const TOP_HEADER_AREA = 70;
 
@@ -45,6 +46,8 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   } = props;
 
   const router = useRouter();
+  const { dialog: signOutDialog, dispatchConfirm } = useSignOutDialog();
+
   const [onHover, setOnHover] = useState(false);
   const downLg = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
@@ -112,9 +115,13 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
               key={item.name}
               className='navItem'
               active={activeRoute(item.path)}
-              onClick={() =>
-                item.handleClick?.() || handleNavigation(item.path)
-              }
+              onClick={() => {
+                if (item.isSignOut) {
+                  dispatchConfirm({ type: 'open_dialog' });
+                } else {
+                  handleNavigation(item.path);
+                }
+              }}
             >
               {item?.icon ? (
                 <ListIconWrapper>
@@ -132,6 +139,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                 <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
               )}
             </NavItemButton>
+            {item.isSignOut && signOutDialog}
           </Box>
         );
       }

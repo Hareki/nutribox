@@ -5,7 +5,7 @@ export interface ConfirmDialogState
 
 interface OpenDialogAction {
   type: 'open_dialog';
-  payload: Omit<ConfirmDialogProps, 'handleConfirm' | 'handleCancel' | 'open'>;
+  payload?: Omit<ConfirmDialogProps, 'handleConfirm' | 'handleCancel' | 'open'>;
 }
 
 interface CancelDialog {
@@ -30,8 +30,8 @@ export const confirmDialogReducer = (
       return {
         ...state,
         open: true,
-        title: action.payload.title,
-        content: action.payload.content,
+        title: action.payload?.title,
+        content: action.payload?.content,
       };
     case 'cancel_dialog':
       return { ...state, open: false };
