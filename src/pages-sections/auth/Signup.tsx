@@ -18,6 +18,7 @@ import MuiImage from 'components/common/input/MuiImage';
 import PhoneInput from 'components/common/input/PhoneInput';
 import CustomPickersDay from 'components/CustomPickersDay';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
+import { isValidPassword } from 'helpers/password.helper';
 import { phoneRegex } from 'helpers/regex.helper';
 
 interface SignupProps {
@@ -259,7 +260,14 @@ const formSchema = yup.object().shape({
     .date()
     .typeError('Vui lòng nhập định dạng ngày sinh hợp lệ')
     .required('Vui lòng nhập ngày sinh'),
-  password: yup.string().required('Vui lòng nhập mật khẩu'),
+  password: yup
+    .string()
+    .required('Vui lòng nhập mật khẩu')
+    .test(
+      'isValidPassword',
+      'Mật khẩu phải chứa ít nhất 10 ký tự, chứa ít nhất 1 ký tự đặc biệt và số',
+      (value) => isValidPassword(value),
+    ),
   re_password: yup
     .string()
     .oneOf([yup.ref('password'), null], 'Xác nhận mật khẩu không khớp')

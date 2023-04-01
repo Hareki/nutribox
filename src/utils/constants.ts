@@ -36,6 +36,7 @@ export const IKPublicContext = {
 
 export const PREPARATION_TIME = 10; // in minutes
 export const MAX_DELIVERY_RANGE = 10; // in km
+export const MAX_DELIVERY_DURATION = 45; // in minutes
 
 export const OrderStatus = Object.freeze({
   Pending: { id: '641ae36318e353f785a7f695', name: 'Chờ xác nhận' },

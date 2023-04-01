@@ -13,6 +13,7 @@ import type { Step1Data } from '../../../../pages/checkout';
 import {
   checkCurrentFullAddress,
   checkDistance,
+  checkDuration,
   checkTime,
 } from './confirmValidation';
 import SelectAddressDialog from './SelectAddressDialog';
@@ -126,6 +127,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     } = estimated;
 
     if (!checkDistance(dispatchInfo, estimatedDistance)) return;
+    if (!checkDuration(dispatchInfo, estimatedDeliveryTime)) return;
 
     const confirmContent = (
       <Fragment>

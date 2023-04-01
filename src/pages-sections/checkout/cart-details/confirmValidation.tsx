@@ -1,3 +1,5 @@
+import { differenceInMinutes } from 'date-fns';
+
 import type { IStoreHour } from 'api/models/Store.model/StoreHour.schema/types';
 import type { IStore } from 'api/models/Store.model/types';
 import { Paragraph, Span } from 'components/abstract/Typography';
@@ -11,7 +13,7 @@ import {
   getLocalTimeInVietnam,
   getTodaysDayOfWeekAllCaps,
 } from 'lib';
-import { MAX_DELIVERY_RANGE } from 'utils/constants';
+import { MAX_DELIVERY_DURATION, MAX_DELIVERY_RANGE } from 'utils/constants';
 
 export const checkTime = (
   dispatchInfo: (value: InfoDialogAction) => void,
@@ -81,6 +83,33 @@ export const checkDistance = (
             Chúng tôi chỉ giao hàng trong bán kính{' '}
             <Span fontWeight={600}>{MAX_DELIVERY_RANGE} km</Span> tính từ chi
             nhánh gần nhất, vui lòng thử địa chỉ khác.
+          </Paragraph>
+        ),
+        title: 'Đã xảy ra lỗi',
+        variant: 'error',
+      },
+    });
+    return false;
+  }
+  return true;
+};
+
+export const checkDuration = (
+  dispatchInfo: (value: InfoDialogAction) => void,
+  estimatedDeliverTime: Date,
+) => {
+  if (
+    differenceInMinutes(estimatedDeliverTime, new Date()) >
+    MAX_DELIVERY_DURATION
+  ) {
+    dispatchInfo({
+      type: 'open_dialog',
+      payload: {
+        content: (
+          <Paragraph>
+            Do tình trạng giao thông dày đặc, dẫn đến thời gian giao hàng quá
+            lâu (Quá {`${MAX_DELIVERY_DURATION} phút`}) vui lòng thử địa chỉ
+            khác hoặc thử lại sau ít phút, xin cảm ơn!
           </Paragraph>
         ),
         title: 'Đã xảy ra lỗi',
