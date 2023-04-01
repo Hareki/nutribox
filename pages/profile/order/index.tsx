@@ -1,11 +1,8 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { Skeleton } from '@mui/material';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
 import { Fragment } from 'react';
-
-import { authOptions } from '../../api/auth/[...nextauth]';
 
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H5 } from 'components/abstract/Typography';
@@ -14,6 +11,7 @@ import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import { checkContextCredentials } from 'helpers/session.helper';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import OrderRow from 'pages-sections/profile/order/OrderRow';
 import apiCaller from 'utils/apiCallers/profile/order';
@@ -103,15 +101,9 @@ function Order({ sessionUserId }: AddressProps): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult, session } =
+    await checkContextCredentials(context);
+  if (isNotAuthorized) return blockingResult;
 
   return { props: { sessionUserId: session.user.id } };
 };

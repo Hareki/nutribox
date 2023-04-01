@@ -1,11 +1,8 @@
 import { Grid } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import { useState, Fragment } from 'react';
 import type { ReactElement } from 'react';
-
-import { authOptions } from './api/auth/[...nextauth]';
 
 import { getAccount } from 'api/base/server-side-getters';
 import { serialize } from 'api/helpers/object.helper';
@@ -15,6 +12,7 @@ import type { IAddress } from 'api/types/schema.type';
 import SEO from 'components/abstract/SEO';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
+import { checkContextCredentials } from 'helpers/session.helper';
 import CartDetails from 'pages-sections/checkout/cart-details';
 import OrderCompleted from 'pages-sections/checkout/order-completed';
 import Payment from 'pages-sections/checkout/payment';
@@ -91,15 +89,9 @@ function Checkout({ initialAccount }: CheckoutProps): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult, session } =
+    await checkContextCredentials(context);
+  if (isNotAuthorized) return blockingResult;
 
   const initialAccount = await getAccount(session.user.id);
   return { props: { initialAccount: serialize(initialAccount) } };

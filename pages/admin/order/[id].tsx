@@ -7,12 +7,9 @@ import {
 } from '@tanstack/react-query';
 import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 import { useReducer } from 'react';
-
-import { authOptions } from '../../api/auth/[...nextauth]';
 
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
 import { serialize } from 'api/helpers/object.helper';
@@ -24,6 +21,7 @@ import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
 import { getNextOrderStatusName } from 'helpers/order.helper';
+import { checkContextCredentials } from 'helpers/session.helper';
 import productApiCaller from 'utils/apiCallers/product/[slug]';
 import orderApiCaller from 'utils/apiCallers/profile/order';
 
@@ -116,15 +114,10 @@ function AdminOrderDetails({ initialOrder }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
+    context,
+  );
+  if (isNotAuthorized) return blockingResult;
 
   const isValidId = Types.ObjectId.isValid(context.params.id as string);
   if (!isValidId) {

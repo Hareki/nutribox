@@ -3,13 +3,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 import type { UpdateProductInfoRb } from '../../api/admin/product/[id]';
-import { authOptions } from '../../api/auth/[...nextauth]';
 
 import ProductController from 'api/controllers/Product.controller';
 import { serialize } from 'api/helpers/object.helper';
@@ -19,6 +17,7 @@ import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { getMessageList } from 'helpers/feedback.helper';
+import { checkContextCredentials } from 'helpers/session.helper';
 import { ProductForm } from 'pages-sections/admin';
 import ImageListForm from 'pages-sections/admin/products/ImageListForm';
 import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';
@@ -114,15 +113,10 @@ export default function EditProduct({ initialProduct }: EditProductProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
+    context,
+  );
+  if (isNotAuthorized) return blockingResult;
 
   const isValidId = Types.ObjectId.isValid(context.params.id as string);
   if (!isValidId) {

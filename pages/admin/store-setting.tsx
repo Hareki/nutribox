@@ -1,15 +1,13 @@
 import { Box, Card, Divider } from '@mui/material';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
-
-import { authOptions } from '../api/auth/[...nextauth]';
 
 import { getStore } from 'api/base/server-side-getters';
 import { serialize } from 'api/helpers/object.helper';
 import type { IStore } from 'api/models/Store.model/types';
 import { H3, Paragraph } from 'components/abstract/Typography';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
+import { checkContextCredentials } from 'helpers/session.helper';
 import ContactInfoForm from 'pages-sections/admin/store-setting/ContactInfoForm';
 import StoreHoursForm from 'pages-sections/admin/store-setting/StoreHoursForm';
 import { StoreId } from 'utils/constants';
@@ -46,15 +44,10 @@ function StoreSetting({ initialStoreInfo }: StoreSettingProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
+    context,
+  );
+  if (isNotAuthorized) return blockingResult;
 
   const initialStoreInfo = await getStore(StoreId);
   return { props: { initialStoreInfo: serialize(initialStoreInfo) } };

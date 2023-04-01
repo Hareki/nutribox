@@ -7,11 +7,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
 import { Fragment, useReducer } from 'react';
-
-import { authOptions } from '../../api/auth/[...nextauth]';
 
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
 import { serialize } from 'api/helpers/object.helper';
@@ -22,6 +19,7 @@ import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import Navigations from 'components/layouts/customer-dashboard/Navigations';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
+import { checkContextCredentials } from 'helpers/session.helper';
 import productApiCaller from 'utils/apiCallers/product/[slug]';
 import orderApiCaller from 'utils/apiCallers/profile/order';
 
@@ -103,15 +101,10 @@ function ProfileOrderDetails({ initialOrder }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
+    context,
+  );
+  if (isNotAuthorized) return blockingResult;
   const order = await CustomerOrderController.getOne({
     id: context.params.id as string,
   });

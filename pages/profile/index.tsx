@@ -1,15 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
-
-import { authOptions } from '../api/auth/[...nextauth]';
 
 import { getAccount } from 'api/base/server-side-getters';
 import { serialize } from 'api/helpers/object.helper';
 import type { IAccount } from 'api/models/Account.model/types';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
+import { checkContextCredentials } from 'helpers/session.helper';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
 import apiCaller from 'utils/apiCallers/profile';
@@ -40,15 +38,9 @@ function Profile({ initialAccount }: ProfileProps): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult, session } =
+    await checkContextCredentials(context);
+  if (isNotAuthorized) return blockingResult;
 
   const initialAccount = await getAccount(session.user.id);
   return { props: { initialAccount: serialize(initialAccount) } };

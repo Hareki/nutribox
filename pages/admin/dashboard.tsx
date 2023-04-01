@@ -3,13 +3,11 @@ import Skeleton from '@mui/material/Skeleton';
 import { useQuery } from '@tanstack/react-query';
 import type { GetServerSideProps } from 'next';
 import type { Session } from 'next-auth';
-import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
-
-import { authOptions } from '../api/auth/[...nextauth]';
 
 import { serialize } from 'api/helpers/object.helper';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
+import { checkContextCredentials } from 'helpers/session.helper';
 import { formatCurrency } from 'lib';
 import Analytics from 'pages-sections/dashboard/Analytics';
 import RecentOrders from 'pages-sections/dashboard/RecentOrders';
@@ -178,16 +176,9 @@ export default function VendorDashboard(props: DashboardProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult, session } =
+    await checkContextCredentials(context);
+  if (isNotAuthorized) return blockingResult;
 
   return {
     props: { user: serialize(session) },

@@ -8,10 +8,7 @@ import {
   TableContainer,
 } from '@mui/material';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
-
-import { authOptions } from '../../api/auth/[...nextauth]';
 
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H3 } from 'components/abstract/Typography';
@@ -19,6 +16,7 @@ import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
+import { checkContextCredentials } from 'helpers/session.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { OrderRow } from 'pages-sections/admin';
@@ -124,15 +122,10 @@ function OrderList() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
+    context,
+  );
+  if (isNotAuthorized) return blockingResult;
 
   return { props: {} };
 };

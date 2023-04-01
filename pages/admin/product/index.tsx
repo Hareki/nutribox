@@ -9,10 +9,7 @@ import {
 } from '@mui/material';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
-
-import { authOptions } from '../../api/auth/[...nextauth]';
 
 import type { ICdsUpeProduct } from 'api/models/Product.model/types';
 import { H3 } from 'components/abstract/Typography';
@@ -21,6 +18,7 @@ import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
 import { getMaxUpeQuantity } from 'helpers/product.helper';
+import { checkContextCredentials } from 'helpers/session.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { ProductRow } from 'pages-sections/admin';
@@ -133,15 +131,10 @@ function ProductList() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
+    context,
+  );
+  if (isNotAuthorized) return blockingResult;
 
   return { props: {} };
 };

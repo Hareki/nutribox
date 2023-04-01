@@ -1,14 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 
-import { authOptions } from '../api/auth/[...nextauth]';
-
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
+import { checkContextCredentials } from 'helpers/session.helper';
 import AddressEditor from 'pages-sections/profile/address/AddressEditor';
 import AddressViewer from 'pages-sections/profile/address/AddressViewer';
 import apiCaller from 'utils/apiCallers/profile/address';
@@ -52,15 +50,9 @@ function Address({ sessionUserId }: AddressProps): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  const { isNotAuthorized, blockingResult, session } =
+    await checkContextCredentials(context);
+  if (isNotAuthorized) return blockingResult;
 
   return { props: { sessionUserId: session.user.id } };
 };

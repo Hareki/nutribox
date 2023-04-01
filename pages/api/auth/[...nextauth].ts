@@ -16,6 +16,7 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       if (!token.userId) return session;
 
+      console.time('getSessionUser');
       await connectToDB();
       const sessionUser = await AccountController.getSessionUser(
         token.userId as string,
@@ -24,6 +25,7 @@ export const authOptions: AuthOptions = {
       token.user = sessionUser.user;
       session.user = sessionUser.user;
 
+      console.timeEnd('getSessionUser');
       return session;
     },
   },
@@ -47,7 +49,7 @@ export const authOptions: AuthOptions = {
         if (!account) return null;
 
         // INSTRUCTIONS:
-        // Default property is "name, email, image" (id is needed to identify the user, but not included by default)
+        // Default property is "name, email, image" (id is NEEDED to identify the user, but not included by default)
         // The complete user object (All fields returned included) is available at the jwt, signIn callback (user),
         // NOT AVAILABLE AT THE USER OBJECT IN SESSION CALLBACK
 
