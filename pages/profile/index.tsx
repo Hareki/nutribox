@@ -27,20 +27,14 @@ function Profile({ initialAccount }: ProfileProps): ReactElement {
     initialData: initialAccount,
   });
 
-  const { data: orderStatusCount, isLoading: isLoadingCount } = useQuery({
-    queryKey: ['order-status-count', initialAccount.id],
-    queryFn: () => apiCaller.getOrderStatusCount(initialAccount.id),
-    onError: (err) => console.log(err),
-  });
-
   return (
     <>
       {!isEditing ? (
         <ProfileViewer
           account={account}
           toggleEditing={toggleEditing}
-          orderStatusCount={orderStatusCount}
-          isLoadingCount={isLoadingCount}
+          // orderStatusCount={orderStatusCount}
+          // isLoadingCount={isLoadingCount}
         />
       ) : (
         <ProfileEditor account={account} toggleEditing={toggleEditing} />

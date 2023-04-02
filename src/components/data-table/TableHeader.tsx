@@ -4,11 +4,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel,
 } from '@mui/material';
 import type { ChangeEvent, FC } from 'react';
-
-import UpDown from 'components/icons/UpDown';
 
 // styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -63,7 +60,8 @@ const TableHeader: FC<TableHeaderProps> = (props) => {
             align={headCell.align}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
+            {headCell.label}
+            {/* <TableSortLabel
               active={orderBy === headCell.id}
               onClick={() => onRequestSort(headCell.id)}
               direction={orderBy === headCell.id ? order : 'asc'}
@@ -73,7 +71,7 @@ const TableHeader: FC<TableHeaderProps> = (props) => {
               )}
             >
               {headCell.label}
-            </TableSortLabel>
+            </TableSortLabel> */}
           </StyledTableCell>
         ))}
       </TableRow>

@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 
 import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
+import { getAvatarUrl } from 'helpers/account.helper';
 
 export const authOptions: AuthOptions = {
   pages: {
@@ -66,7 +67,7 @@ export const authOptions: AuthOptions = {
           lastName: account.lastName,
           fullName: account.fullName,
           email: account.email,
-          avatarUrl: account.avatarUrl,
+          avatarUrl: getAvatarUrl(account),
           role: account.role,
         };
         return user;

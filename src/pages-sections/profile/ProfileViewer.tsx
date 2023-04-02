@@ -2,6 +2,7 @@ import { Person } from '@mui/icons-material';
 import type { Theme } from '@mui/material';
 import { Skeleton } from '@mui/material';
 import { Avatar, Box, Button, Card, Grid, useMediaQuery } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
@@ -14,29 +15,37 @@ import UserDashboardHeader from 'components/common/layout/header/UserDashboardHe
 import TableRow from 'components/data-table/TableRow';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import { getAvatarUrl } from 'helpers/account.helper';
 import { translateOrderStatusCountLabel } from 'helpers/order.helper';
 import { formatDate } from 'lib';
+import apiCaller from 'utils/apiCallers/profile';
 
 type ProfileProps = {
   account: IAccount;
-  toggleEditing: () => void;
-  orderStatusCount: OrderStatusCount;
-  isLoadingCount: boolean;
+  toggleEditing?: () => void;
+  // orderStatusCount: OrderStatusCount;
+  // isLoadingCount: boolean;
 };
 const ProfileViewer: FC<ProfileProps> = ({
   account,
   toggleEditing,
-  orderStatusCount,
-  isLoadingCount,
+  // orderStatusCount,
+  // isLoadingCount,
 }) => {
   const downMd = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+
+  const { data: orderStatusCount, isLoading: isLoadingCount } = useQuery({
+    queryKey: ['order-status-count', account.id],
+    queryFn: () => apiCaller.getOrderStatusCount(account.id),
+    onError: (err) => console.log(err),
+  });
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
     <Button
       color='primary'
       sx={{ px: 4, bgcolor: 'primary.light' }}
-      onClick={() => toggleEditing()}
+      onClick={() => toggleEditing?.()}
     >
       Sửa thông tin
     </Button>
@@ -55,12 +64,14 @@ const ProfileViewer: FC<ProfileProps> = ({
       <SEO title='Hồ Sơ Của Tôi' />
 
       {/* TITLE HEADER AREA */}
-      <UserDashboardHeader
-        icon={Person}
-        title='Hồ Sơ Của Tôi'
-        button={HEADER_LINK}
-        navigation={<CustomerDashboardNavigation />}
-      />
+      {!!toggleEditing && (
+        <UserDashboardHeader
+          icon={Person}
+          title='Hồ Sơ Của Tôi'
+          button={HEADER_LINK}
+          navigation={<CustomerDashboardNavigation />}
+        />
+      )}
 
       {/* USER PROFILE INFO */}
       <Box mb={4}>
@@ -75,7 +86,7 @@ const ProfileViewer: FC<ProfileProps> = ({
               }}
             >
               <Avatar
-                src={account.avatarUrl}
+                src={getAvatarUrl(account)}
                 sx={{
                   height: 64,
                   width: 64,

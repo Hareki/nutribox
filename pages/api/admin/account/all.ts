@@ -3,16 +3,18 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
+import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
 import { processPaginationParams } from 'api/helpers/pagination.helpers';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<GetAllPaginationResult<ICustomerOrder>>>
+  NextApiResponse<
+    JSendResponse<GetAllPaginationResult<IAccountWithTotalOrders>>
+  >
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -21,19 +23,26 @@ const handler = nc<
 
   const { skip, limit, totalPages, totalDocs } = await processPaginationParams(
     req,
-    CustomerOrderController.getTotal,
+    AccountController.getTotal,
   );
 
-  const orders = await CustomerOrderController.getAll({
+  const accounts = await AccountController.getAll({
     sort: { createdAt: -1, _id: 1 },
     skip,
     limit,
   });
 
+  const promises = accounts.map(async (account) => {
+    const { total } = await AccountController.countOrder(account.id);
+    return { ...account, totalOrders: total };
+  });
+
+  const accountsWithTotalOrders = await Promise.all(promises);
+
   const result = {
     totalPages,
     totalDocs,
-    docs: orders,
+    docs: accountsWithTotalOrders,
   };
 
   res.status(StatusCodes.OK).json({

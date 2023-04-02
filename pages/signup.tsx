@@ -16,6 +16,7 @@ const SignUpPage: NextPage = () => {
   const [state, dispatch] = useReducer(infoDialogReducer, {
     open: false,
   });
+  const [hasError, setHasError] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -26,6 +27,7 @@ const SignUpPage: NextPage = () => {
     setLoading(false);
     if (result.status === 'fail') {
       const messagesObject = result.data;
+      setHasError(true);
       dispatch({
         type: 'open_dialog',
         payload: {
@@ -35,6 +37,7 @@ const SignUpPage: NextPage = () => {
         },
       });
     } else {
+      setHasError(false);
       dispatch({
         type: 'open_dialog',
         payload: {
@@ -59,7 +62,9 @@ const SignUpPage: NextPage = () => {
         open={state.open}
         handleClose={() => {
           dispatch({ type: 'close_dialog' });
-          router.push('/login');
+          if (!hasError) {
+            router.push('//login');
+          }
         }}
         title={state.title}
         content={state.content}

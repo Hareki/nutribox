@@ -8,10 +8,7 @@ import AccountController from 'api/controllers/Account.controller';
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
 import ProductController from 'api/controllers/Product.controller';
 import connectToDB from 'api/database/databaseConnection';
-import type {
-  ICustomerOrderItem,
-  ICustomerOrderItemInputWithoutConsumption,
-} from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/types';
+import type { ICustomerOrderItemInputWithoutConsumption } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/types';
 import type {
   ICustomerOrder,
   ICustomerOrderInput,
@@ -20,7 +17,7 @@ import type { JSendResponse } from 'api/types/response.type';
 import { OrderStatus } from 'utils/constants';
 
 export interface CheckoutItemsRequestBody
-  extends Omit<ICustomerOrderItem, 'id' | 'product'> {
+  extends Omit<ICustomerOrderItemInputWithoutConsumption, 'id' | 'product'> {
   productId: string;
 }
 export interface CheckoutRequestBody

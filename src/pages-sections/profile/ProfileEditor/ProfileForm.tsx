@@ -27,6 +27,7 @@ import { H5 } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
 import PhoneInput from 'components/common/input/PhoneInput';
 import { FlexBox } from 'components/flex-box';
+import { getAvatarUrl } from 'helpers/account.helper';
 import { phoneRegex } from 'helpers/regex.helper';
 import { reloadSession } from 'helpers/session.helper';
 import apiCaller from 'utils/apiCallers/profile';
@@ -122,7 +123,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
           <CircularProgress size={40} />
         ) : (
           <Avatar
-            src={account.avatarUrl}
+            src={getAvatarUrl(account)}
             sx={{ height: 64, width: 64, objectFit: 'contain' }}
           />
         )}

@@ -8,60 +8,60 @@ import {
   TableContainer,
 } from '@mui/material';
 import type { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 
 import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { ICdsUpeProduct } from 'api/models/Product.model/types';
+import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
-import { getMaxUpeQuantity } from 'helpers/product.helper';
+import { getAvatarUrl } from 'helpers/account.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
-import { ProductRow } from 'pages-sections/admin';
-import apiCaller from 'utils/apiCallers/admin/product';
+import AccountRow from 'pages-sections/admin/account/AccountRow';
+import apiCaller from 'utils/apiCallers/admin/account';
 
-ProductList.getLayout = function getLayout(page: ReactElement) {
+AccountList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
 const tableHeading = [
-  { id: 'name', label: 'Tên sản phẩm', align: 'left' },
-  { id: 'category', label: 'Danh mục', align: 'left' },
-  { id: 'wholesalePrice', label: 'Giá gốc', align: 'left' },
-  { id: 'retailPrice', label: 'Giá bán', align: 'left' },
-  { id: 'shelfLife', label: 'Tồn kho', align: 'left' },
+  { id: 'name', label: 'Họ và tên', align: 'left' },
+  { id: 'birthday', label: 'Ngày sinh', align: 'left' },
+  { id: 'phone', label: 'Số điện thoại', align: 'left' },
+  { id: 'email', label: 'Email', align: 'left' },
+  { id: 'totalOrders', label: 'Tổng số đơn', align: 'center' },
 ];
 
-const mapProductToRow = (item: ICdsUpeProduct) => ({
+const mapOrderToRow = (item: IAccountWithTotalOrders) => ({
   id: item.id,
-  // shelfLife: item.shelfLife,
-  unexpiredAmount: getMaxUpeQuantity(item.expirations),
-  imageUrls: item.imageUrls,
-  name: item.name,
-  category: item.category.name,
-  wholesalePrice: item.wholesalePrice,
-  retailPrice: item.retailPrice,
+  lastName: item.lastName,
+  firstName: item.firstName,
+
+  fullName: item.fullName,
+  avatarUrl: getAvatarUrl(item),
+  birthday: item.birthday,
+  phone: item.phone,
+  email: item.email,
+  totalOrders: item.totalOrders,
 });
 
-export type FilteredProduct = ReturnType<typeof mapProductToRow>;
+export type FilteredAccount = ReturnType<typeof mapOrderToRow>;
 
-function ProductList() {
-  const router = useRouter();
-
+function AccountList() {
   const {
     isLoading,
-    paginationData: products,
+    paginationData: accounts,
     paginationComponent,
-  } = usePaginationQuery<ICdsUpeProduct>({
-    baseQueryKey: ['admin/products'],
-    getPaginationDataFn: (currPageNum) => apiCaller.getProducts(currPageNum),
+  } = usePaginationQuery<IAccountWithTotalOrders>({
+    baseQueryKey: ['admin/accounts'],
+    getPaginationDataFn: (currPageNum) => apiCaller.getAccounts(currPageNum),
   });
+  //   console.log('file: index.tsx:56 - AccountList - accounts:', accounts);
 
-  const filteredOrders = products?.docs.map(mapProductToRow);
+  const filteredAccounts = accounts?.docs.map(mapOrderToRow);
 
   const {
     order,
@@ -72,21 +72,21 @@ function ProductList() {
     handleChangePage,
     handleRequestSort,
   } = useMuiTable({
-    listData: filteredOrders,
+    listData: filteredAccounts,
     // defaultSort: 'id',
     // defaultOrder: 'desc',
   });
 
+  console.log('file: index.tsx:73 - AccountList - filteredList:', filteredList);
+
   return (
     <Box py={4}>
-      <H3 mb={2}>Sản phẩm</H3>
+      <H3 mb={2}>Tài khoản</H3>
 
       <SearchArea
         handleSearch={() => {}}
-        searchPlaceholder='Tìm theo tên sản phẩm'
-        haveButton
-        handleBtnClick={() => router.push('/admin/products/create')}
-        buttonText='Thêm sản phẩm'
+        searchPlaceholder='Tìm theo tên tài khoản'
+        haveButton={false}
       />
 
       {isLoading ? (
@@ -113,8 +113,8 @@ function ProductList() {
                 />
 
                 <TableBody>
-                  {filteredList.map((product) => (
-                    <ProductRow product={product} key={product.id} />
+                  {filteredList.map((account) => (
+                    <AccountRow account={account} key={account.id} />
                   ))}
                 </TableBody>
               </Table>
@@ -139,4 +139,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: {} };
 };
 
-export default ProductList;
+export default AccountList;

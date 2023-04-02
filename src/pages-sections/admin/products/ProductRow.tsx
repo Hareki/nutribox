@@ -42,7 +42,11 @@ const ProductRow: FC<ProductRowProps> = ({ product }) => {
           <Avatar
             variant='square'
             src={imageUrls[0]}
-            sx={{ objectFit: 'contain' }}
+            sx={{
+              '& img': {
+                objectFit: 'contain',
+              },
+            }}
           />
           <Box>
             <Paragraph>{name}</Paragraph>

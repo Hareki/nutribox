@@ -24,7 +24,7 @@ const ExpirationOrderRow: FC<ExpirationOrderRowProps> = ({
   return (
     <StyledTableRow cursor='auto' tabIndex={-1}>
       <StyledTableCell align='left' font_weight={400}>
-        {supplierName}
+        <Paragraph>{supplierName}</Paragraph>
       </StyledTableCell>
 
       <StyledTableCell align='left' font_weight={400}>
@@ -38,10 +38,10 @@ const ExpirationOrderRow: FC<ExpirationOrderRowProps> = ({
       </StyledTableCell>
 
       <StyledTableCell align='center' font_weight={400}>
-        {importQuantity}
+        <Paragraph>{importQuantity}</Paragraph>
       </StyledTableCell>
       <StyledTableCell align='center' font_weight={400}>
-        {remainingQuantity}
+        <Paragraph>{remainingQuantity}</Paragraph>
       </StyledTableCell>
     </StyledTableRow>
   );

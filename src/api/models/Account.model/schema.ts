@@ -66,6 +66,19 @@ export const accountSchema = new Schema<IAccount>(
 
     avatarUrl: {
       type: String,
+      get: function (avatarUrl: string) {
+        console.log('file: schema.ts:82 - avatarUrl:', avatarUrl);
+
+        if (avatarUrl) {
+          return avatarUrl;
+        } else {
+          const urlName = encodeURIComponent(
+            `${this.lastName} ${this.firstName}`,
+          );
+
+          return `https://ui-avatars.com/api/?name=${urlName}&background=3bb77e`;
+        }
+      },
     },
 
     ...getEmailSchema('Account'),
@@ -88,12 +101,12 @@ export const accountSchema = new Schema<IAccount>(
   },
 );
 
-accountSchema.pre('save', function (next) {
-  if (!this.avatarUrl) {
-    this.avatarUrl = `https://ui-avatars.com/api/?name=${this.lastName}+${this.firstName}&background=3bb77e`;
-  }
-  next();
-});
+// accountSchema.pre('save', function (next) {
+//   if (!this.avatarUrl) {
+//     this.avatarUrl = `https://ui-avatars.com/api/?name=${this.lastName}+${this.firstName}&background=3bb77e`;
+//   }
+//   next();
+// });
 
 accountSchema.methods.isPasswordMatch = async function (
   candidatePassword: string,

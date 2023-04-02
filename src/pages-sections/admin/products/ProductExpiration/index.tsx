@@ -57,8 +57,8 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
     handleRequestSort,
   } = useMuiTable({
     listData: expirationOrdersPagination?.docs || [],
-    defaultSort: 'id',
-    defaultOrder: 'desc',
+    // defaultSort: 'id',
+    // defaultOrder: 'desc',
   });
   return (
     <Fragment>

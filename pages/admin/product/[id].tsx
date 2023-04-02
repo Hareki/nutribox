@@ -24,7 +24,7 @@ import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';
 import type { ProductInfoFormValues } from 'pages-sections/admin/products/ProductForm';
 import apiCaller from 'utils/apiCallers/admin/product';
 
-EditProduct.getLayout = function getLayout(page: ReactElement) {
+AdminProductDetails.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
@@ -32,7 +32,9 @@ interface EditProductProps {
   initialProduct: ICdsUpeProduct;
 }
 
-export default function EditProduct({ initialProduct }: EditProductProps) {
+export default function AdminProductDetails({
+  initialProduct,
+}: EditProductProps) {
   const queryClient = useQueryClient();
   const { data: product } = useQuery({
     queryKey: ['product', initialProduct.id],

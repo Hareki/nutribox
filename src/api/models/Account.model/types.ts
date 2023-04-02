@@ -31,6 +31,9 @@ export interface IAccount {
   ) => Promise<boolean>;
 }
 
+export interface IAccountWithTotalOrders extends IAccount {
+  totalOrders: number;
+}
 export interface IPopulatedCartItemsAccount
   extends Omit<IAccount, 'cartItems'> {
   cartItems: IPopulatedCartItem[];

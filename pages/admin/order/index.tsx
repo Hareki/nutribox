@@ -66,8 +66,8 @@ function OrderList() {
     handleRequestSort,
   } = useMuiTable({
     listData: filteredOrders,
-    defaultSort: 'id',
-    defaultOrder: 'desc',
+    // defaultSort: 'id',
+    // defaultOrder: 'desc',
   });
 
   return (

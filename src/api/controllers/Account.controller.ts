@@ -16,6 +16,7 @@ import {
   getOneGenerator,
   createOneGenerator,
   updateOneGenerator,
+  getTotalGenerator,
 } from './generator.controller';
 
 import { CustomError, CustomErrorCodes } from 'api/helpers/error.helper';
@@ -32,10 +33,12 @@ import type {
 } from 'api/models/Account.model/types';
 import CustomerOrderModel from 'api/models/CustomerOrder.model';
 import ProductModel from 'api/models/Product.model';
+import { getAvatarUrl } from 'helpers/account.helper';
 import type { CartState } from 'hooks/global-states/useCart';
 import { OrderStatus } from 'utils/constants';
 
 const getAll = getAllGenerator<IAccount>(AccountModel());
+const getTotal = getTotalGenerator(AccountModel());
 const getOne = getOneGenerator<IAccount>(AccountModel());
 
 const createOne = createOneGenerator<IAccount>(AccountModel());
@@ -48,7 +51,7 @@ const getSessionUser = async (
   return {
     user: {
       id: account.id,
-      avatarUrl: account.avatarUrl,
+      avatarUrl: getAvatarUrl(account),
       email: account.email,
       firstName: account.firstName,
       lastName: account.lastName,
@@ -310,6 +313,7 @@ const checkPassword = async (accountId: string, password: string) => {
 
 const AccountController = {
   getAll,
+  getTotal,
   getOne,
   createOne,
   updateOne,
