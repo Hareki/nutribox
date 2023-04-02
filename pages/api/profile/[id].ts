@@ -5,6 +5,7 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
+import { hashPassword } from 'api/helpers/auth.helper';
 import type { IAccount } from 'api/models/Account.model/types';
 import type { JSendResponse } from 'api/types/response.type';
 
@@ -12,7 +13,7 @@ export interface UpdateAccountRequestBody
   extends Partial<
     Pick<
       IAccount,
-      'firstName' | 'lastName' | 'phone' | 'birthday' | 'avatarUrl'
+      'firstName' | 'lastName' | 'phone' | 'birthday' | 'avatarUrl' | 'password'
     >
   > {}
 
@@ -38,7 +39,14 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IAccount>>>({
     await connectToDB();
     const requestBody = req.body as UpdateAccountRequestBody;
 
+    if (requestBody.password) {
+      requestBody.password = await hashPassword(requestBody.password);
+    }
+
     const id = req.query.id as string;
+    console.log('file: [id].ts:47 - .put - id:', id);
+    console.log('file: [id].ts:50 - .put - requestBody:', requestBody);
+
     const updatedAccount = await AccountController.updateOne(id, requestBody);
 
     res.status(StatusCodes.OK).json({

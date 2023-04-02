@@ -25,6 +25,17 @@ interface SignupProps {
   handleFormSubmit: (values: any) => void;
   loading: boolean;
 }
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  birthday: new Date(),
+  password: '',
+  re_password: '',
+};
+
+type FormValues = typeof initialValues;
 
 const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -41,7 +52,7 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
     handleChange,
     handleSubmit,
     setFieldValue,
-  } = useFormik({
+  } = useFormik<FormValues>({
     initialValues,
     onSubmit: handleFormSubmit,
     validationSchema: formSchema,
@@ -68,7 +79,7 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
             label='Họ và tên lót'
             variant='outlined'
             onBlur={handleBlur}
-            value={values.name}
+            value={values.lastName}
             onChange={handleChange}
             placeholder='Nguyễn Văn'
             error={!!touched.lastName && !!errors.lastName}
@@ -82,7 +93,7 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
             label='Tên'
             variant='outlined'
             onBlur={handleBlur}
-            value={values.name}
+            value={values.firstName}
             onChange={handleChange}
             placeholder='A'
             error={!!touched.firstName && !!errors.firstName}
@@ -230,16 +241,6 @@ const Signup: FC<SignupProps> = ({ handleFormSubmit, loading }) => {
   );
 };
 
-const initialValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  birthday: new Date(),
-  password: '',
-  re_password: '',
-};
-
 const formSchema = yup.object().shape({
   firstName: yup.string().required('Vui lòng nhập tên'),
   lastName: yup.string().required('Vui lòng nhập họ'),
@@ -265,7 +266,7 @@ const formSchema = yup.object().shape({
     .required('Vui lòng nhập mật khẩu')
     .test(
       'isValidPassword',
-      'Mật khẩu phải chứa ít nhất 10 ký tự, chứa ít nhất 1 ký tự đặc biệt và số',
+      'Mật khẩu phải chứa ít nhất 10 ký tự, gồm ký tự đặc biệt và số',
       (value) => isValidPassword(value),
     ),
   re_password: yup

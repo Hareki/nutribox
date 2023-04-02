@@ -12,15 +12,12 @@ const getAccount = async (accountId: string): Promise<IAccount> => {
 
 const updateAccount = async (
   accountId: string,
-  { firstName, lastName, birthday, phone, avatarUrl }: UpdateAccountRequestBody,
+  requestBody: UpdateAccountRequestBody,
 ): Promise<IAccount> => {
-  const response = await axiosInstance.put(`/profile/${accountId}`, {
-    firstName,
-    lastName,
-    birthday,
-    phone,
-    avatarUrl,
-  });
+  const response = await axiosInstance.put(
+    `/profile/${accountId}`,
+    requestBody,
+  );
   return response.data.data;
 };
 
@@ -33,10 +30,23 @@ const getOrderStatusCount = async (
   return response.data.data;
 };
 
+const checkOldPassword = async (
+  accountId: string,
+  oldPassword: string,
+): Promise<boolean> => {
+  console.log('file: index.ts:40 - accountId:', accountId);
+  const response = await axiosInstance.post(`/profile/check-password`, {
+    oldPassword,
+    accountId,
+  });
+  return response.data.data;
+};
+
 const apiCaller = {
   getAccount,
   updateAccount,
   getOrderStatusCount,
+  checkOldPassword,
 };
 
 export default apiCaller;

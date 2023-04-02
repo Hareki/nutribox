@@ -295,6 +295,19 @@ const countOrder = async (accountId: string): Promise<OrderStatusCount> => {
   };
 };
 
+const checkPassword = async (accountId: string, password: string) => {
+  const account = await AccountModel().findById(accountId).exec();
+  if (!account) return false;
+
+  const isPasswordMatch = await account.isPasswordMatch(
+    password,
+    account.password,
+  );
+  if (!isPasswordMatch) return false;
+
+  return true;
+};
+
 const AccountController = {
   getAll,
   getOne,
@@ -313,5 +326,6 @@ const AccountController = {
   addCustomerOrder,
   countAddress,
   countOrder,
+  checkPassword,
 };
 export default AccountController;

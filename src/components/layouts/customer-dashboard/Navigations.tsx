@@ -66,7 +66,7 @@ const Navigations = () => {
           </Typography>
 
           {item.list.map((item) => {
-            console.log('item.href: ', item.href);
+            // console.log('item.href: ', item.href);
             return (
               <StyledNavLink
                 href={item.href}
