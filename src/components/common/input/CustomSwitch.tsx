@@ -35,9 +35,10 @@ const StyledSwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
     opacity: 0.4,
   },
-  '& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track': {
-    opacity: 1,
-  },
+  '& .MuiSwitch-switchBase.Mui-disabled:not([class~=Mui-checked]) + .MuiSwitch-track':
+    {
+      opacity: 1,
+    },
 }));
 
 const CustomSwitch: FC<SwitchProps> = (props) => <StyledSwitch {...props} />;

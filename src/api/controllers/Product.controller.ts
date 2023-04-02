@@ -34,9 +34,8 @@ const updateOne = updateOneGenerator<IProduct>(ProductModel());
 const getTotal = getTotalGenerator(ProductModel());
 
 const getHotProducts = async (): Promise<IProduct[]> => {
-  const productsTotalSoldDesc = (
-    await CustomerOrderController.getProductIdsSortedByTotalSoldDesc()
-  ).slice(0, ProductCarouselLimit);
+  const productsTotalSoldDesc =
+    await CustomerOrderController.getProductIdsSortedByTotalSoldDesc();
 
   const promises = productsTotalSoldDesc.map(async (product) => {
     const productDetails = await ProductModel()
@@ -45,7 +44,11 @@ const getHotProducts = async (): Promise<IProduct[]> => {
     return productDetails;
   });
 
-  const hotProducts = await Promise.all(promises);
+  const rawHotProducts = await Promise.all(promises);
+  const hotProducts = rawHotProducts
+    .filter((product) => product.available)
+    .slice(0, ProductCarouselLimit);
+
   return hotProducts;
 };
 
@@ -55,6 +58,7 @@ const getRelatedProducts = async (
 ): Promise<IProduct[]> => {
   const query = ProductModel().find({
     category: categoryId,
+    available: true,
     _id: { $ne: productId },
   });
   query.limit(limit);
@@ -68,7 +72,7 @@ const getNewProducts = async (
   options?: GetNewProductsOptions,
 ): Promise<IProduct[]> => {
   const query = ProductModel()
-    .find()
+    .find({ available: true })
     .limit(ProductCarouselLimit)
     .sort({ createdAt: -1, _id: 1 });
 

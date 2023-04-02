@@ -118,7 +118,7 @@ const PasswordChangeForm = ({
 
   return (
     <Card1>
-      <H5 mb={2}>Đổi mật khẩu</H5>
+      <H5 mb={2}>Mật khẩu</H5>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3} mb={4}>
           <Grid item xs={12} md={6}>

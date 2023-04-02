@@ -41,6 +41,7 @@ export const getAllProducts = async (
     populate,
     skip,
     limit,
+    filter: { available: true },
   });
 
   const populatedProducts = await populateAscUnexpiredExpiration(products);

@@ -71,11 +71,13 @@ const AllProducts: FC<AllProductsProps> = ({
         </Box>
       </FlexBox>
     );
-  const productsJSX = (products ?? []).map((item) => (
-    <Grid key={item.id} item md={4} sm={6} xs={12}>
-      <ProductCard product={item} />
-    </Grid>
-  ));
+  const productsJSX = (products ?? [])
+    .filter((product) => Boolean(product.available))
+    .map((item) => (
+      <Grid key={item.id} item md={4} sm={6} xs={12}>
+        <ProductCard product={item} />
+      </Grid>
+    ));
 
   return (
     <CategorySectionCreator title={title} seeMoreLink='#'>

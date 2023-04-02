@@ -82,7 +82,7 @@ const ProductForm: FC<ProductFormProps> = (props) => {
               }}
             />
           </Grid>
-          <Grid item md={5} xs={12}>
+          <Grid item md={5} xs={9}>
             <Autocomplete
               readOnly={!isEditing}
               fullWidth
@@ -109,8 +109,15 @@ const ProductForm: FC<ProductFormProps> = (props) => {
               )}
             />
           </Grid>
-          <Grid item md={2} xs={12}>
-            <FormGroup>
+          <Grid item xs={3} md={2}>
+            <FormGroup
+              sx={{
+                margin: '0',
+                '& .MuiFormControlLabel-root': {
+                  margin: '0',
+                },
+              }}
+            >
               <FormControlLabel
                 sx={{
                   '& .MuiFormControlLabel-label.Mui-disabled': {

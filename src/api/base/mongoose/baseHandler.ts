@@ -14,6 +14,7 @@ export interface GetManyDocsOptions extends BaseGetOptions {
   skip?: number;
   limit?: number;
   sort?: Record<string, number>;
+  filter?: Record<string, any>;
 }
 export interface GetOneDocsOptions extends BaseGetOptions {
   id: Types.ObjectId | string;
@@ -50,8 +51,9 @@ export const getAllDocs = async ({
   skip,
   limit,
   sort,
+  filter,
 }: GetManyDocsOptions): Promise<any[]> => {
-  const query = model.find();
+  const query = model.find(filter);
 
   buildBaseQuery(query, { populate, ignoreFields, includeFields });
 

@@ -63,14 +63,16 @@ const ProductCarousel: FC<ProductCarouselProps> = ({
           },
         }}
       >
-        {products.map((item) => (
-          <Box pb={2} key={item.id}>
-            <ProductCard
-              product={item}
-              onPreview={() => setDragEnabled((prev) => !prev)}
-            />
-          </Box>
-        ))}
+        {products
+          .filter((product) => Boolean(product.available))
+          .map((item) => (
+            <Box pb={2} key={item.id}>
+              <ProductCard
+                product={item}
+                onPreview={() => setDragEnabled((prev) => !prev)}
+              />
+            </Box>
+          ))}
       </Carousel>
     </CategorySectionCreator>
   );
