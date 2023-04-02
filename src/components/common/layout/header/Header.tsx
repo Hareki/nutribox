@@ -1,4 +1,4 @@
-import { Clear } from '@mui/icons-material';
+import { Clear, Menu } from '@mui/icons-material';
 import { Badge, Box, Drawer, styled } from '@mui/material';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -18,6 +18,8 @@ import Image from 'components/common/input/MuiImage';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Icon from 'components/icons';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
+import Navigations from 'components/layouts/customer-dashboard/Navigations';
+import SideNav from 'components/side-nav/SideNav';
 import useCart from 'hooks/global-states/useCart';
 import useCartDrawer from 'hooks/global-states/useCartDrawer';
 import { LayoutConstant } from 'utils/constants';
@@ -73,6 +75,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const { data: session, status } = useSession();
   // console.log('file: Header.tsx:87 - session:', session);
   const isCheckingOut = router.pathname === '/checkout';
+  const isInProfile = router.pathname.startsWith('/profile');
 
   const user = session?.user;
 
@@ -100,9 +103,14 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
         <StyledContainer>
           <FlexBetween width='100%'>
             {/* LEFT CONTENT - NAVIGATION ICON BUTTON */}
-            {/* <Box flex={1}>
-              <MobileMenu />
-            </Box> */}
+            {isInProfile && (
+              <Box flex={1}>
+                {/* <MobileMenu /> */}
+                <SideNav position='left' handle={<Menu fontSize='small' />}>
+                  <Navigations />
+                </SideNav>
+              </Box>
+            )}
 
             {/* MIDDLE CONTENT - LOGO */}
             <Link href='/'>

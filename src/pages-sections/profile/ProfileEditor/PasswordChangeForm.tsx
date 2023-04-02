@@ -121,7 +121,7 @@ const PasswordChangeForm = ({
       <H5 mb={2}>Đổi mật khẩu</H5>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3} mb={4}>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <TextField
               disabled={!isEditing}
               fullWidth
@@ -146,7 +146,7 @@ const PasswordChangeForm = ({
               }}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <TextField
               disabled={!isEditing}
               fullWidth
@@ -172,7 +172,7 @@ const PasswordChangeForm = ({
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <TextField
               disabled={!isEditing}
               fullWidth

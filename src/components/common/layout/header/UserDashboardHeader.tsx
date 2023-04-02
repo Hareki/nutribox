@@ -1,9 +1,7 @@
-import Menu from '@mui/icons-material/Menu';
 import { Box, styled } from '@mui/material';
 
 import { H2 } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
-import SideNav from 'components/side-nav/SideNav';
 import useWindowSize from 'hooks/useWindowSize';
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -35,7 +33,7 @@ type UserDashboardHeaderProps = {
 const UserDashboardHeader: React.FC<UserDashboardHeaderProps> = ({
   title,
   button,
-  navigation,
+  // navigation,
   ...props
 }) => {
   const width = useWindowSize();
@@ -43,7 +41,7 @@ const UserDashboardHeader: React.FC<UserDashboardHeaderProps> = ({
 
   return (
     <StyledBox>
-      <FlexBox mt={2} className='headerHold'>
+      <FlexBox mt={2} className='headerHold' alignItems='center'>
         <FlexBox alignItems='center'>
           {props.icon && <props.icon color='primary' />}
           <H2 ml={1.5} my='0px' lineHeight='1' whiteSpace='pre'>
@@ -51,16 +49,17 @@ const UserDashboardHeader: React.FC<UserDashboardHeaderProps> = ({
           </H2>
         </FlexBox>
 
-        <Box className='sidenav'>
+        {/* <Box className='sidenav'>
           <SideNav position='left' handle={<Menu fontSize='small' />}>
             {navigation}
           </SideNav>
-        </Box>
+        </Box> */}
 
-        {!isTablet && button}
+        {/* {!isTablet && button} */}
+        {!!button && <Box>{button}</Box>}
       </FlexBox>
 
-      {isTablet && !!button && <Box mt={2}>{button}</Box>}
+      {/* {isTablet && !!button && <Box mt={2}>{button}</Box>} */}
     </StyledBox>
   );
 };
