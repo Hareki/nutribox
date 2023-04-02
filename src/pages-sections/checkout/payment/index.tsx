@@ -38,6 +38,7 @@ const convertDataToRequestBody = (input: ConvertInput): CheckoutRequestBody => {
     accountId: input.data2.accountId,
     paid: input.data2.paid,
   };
+  delete (requestBody as any).cartItems;
 
   return requestBody;
 };

@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
+import { startSession } from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
@@ -38,12 +39,35 @@ const handler = nc<
     return;
   }
 
-  const cancelledOrder = await CustomerOrderController.cancelOrder(id);
+  const session = await startSession();
+  session.startTransaction();
+  try {
+    const cancelledOrder = await CustomerOrderController.cancelOrder(
+      id,
+      session,
+    );
 
-  res.status(StatusCodes.OK).json({
-    status: 'success',
-    data: cancelledOrder,
-  });
+    await session.commitTransaction();
+    await session.endSession();
+
+    res.status(StatusCodes.OK).json({
+      status: 'success',
+      data: cancelledOrder,
+    });
+  } catch (error) {
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
+    await session.endSession();
+    console.log('X. ERROR OCCURRED');
+    console.log(error);
+
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+
   return;
 });
 

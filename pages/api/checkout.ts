@@ -10,7 +10,7 @@ import ProductController from 'api/controllers/Product.controller';
 import connectToDB from 'api/database/databaseConnection';
 import type {
   ICustomerOrderItem,
-  ICustomerOrderItemInput,
+  ICustomerOrderItemInputWithoutConsumption,
 } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/types';
 import type {
   ICustomerOrder,
@@ -40,33 +40,28 @@ const handler = nc<
   onNoMatch: defaultOnNoMatch,
 }).post(async (req, res) => {
   const checkoutRequestBody = req.body as CheckoutRequestBody;
+  console.log(
+    'file: checkout.ts:43 - checkoutRequestBody:',
+    checkoutRequestBody,
+  );
 
   const profit = CustomerOrderController.getProfit(checkoutRequestBody.items);
   const status = new Types.ObjectId(OrderStatus.Pending.id);
   const account = new Types.ObjectId(checkoutRequestBody.accountId);
   delete checkoutRequestBody.accountId;
 
-  const items: ICustomerOrderItemInput[] = checkoutRequestBody.items.map(
-    (item) => {
+  const itemsWithoutConsumption: ICustomerOrderItemInputWithoutConsumption[] =
+    checkoutRequestBody.items.map((item) => {
       return {
         quantity: item.quantity,
         product: new Types.ObjectId(item.productId),
         unitWholesalePrice: item.unitWholesalePrice,
         unitRetailPrice: item.unitRetailPrice,
       };
-    },
-  );
+    });
 
-  const customerOrderInput: ICustomerOrderInput = {
-    ...checkoutRequestBody,
-    profit,
-    status,
-    account,
-    items,
-  };
-  console.log('0. CUSTOMER ORDER INPUT:', customerOrderInput);
-
-  const accountId = customerOrderInput.account.toString();
+  const accountId = account._id.toString();
+  console.log('file: checkout.ts:60 - accountId:', accountId);
   await connectToDB();
   const session = await startSession();
   session.startTransaction();
@@ -74,28 +69,47 @@ const handler = nc<
     console.log('1. START CLEAR CART ITEMS');
     await AccountController.clearCartItems(accountId, session);
 
-    console.log('2. START CREATE CUSTOMER ORDER');
+    console.log('2. START CONSUME PRODUCTS');
+    const consumptionHistories = await ProductController.consumeProducts(
+      itemsWithoutConsumption,
+      session,
+    );
+
+    const customerOrderInput: ICustomerOrderInput = {
+      ...checkoutRequestBody,
+      profit,
+      status,
+      account,
+      items: itemsWithoutConsumption.map((item, index) => ({
+        ...item,
+        consumptionHistory: consumptionHistories[index],
+      })),
+    };
+
+    console.log(
+      'file: checkout.ts:76 - customerOrderInput:',
+      JSON.stringify(customerOrderInput),
+    );
+
+    console.log('3. START CREATE CUSTOMER ORDER');
     const customerOrder = await CustomerOrderController.createOne(
       customerOrderInput,
       session,
     );
 
     // manually add reference, can't do this in middleware because of transaction
-    console.log('3. START ADD CUSTOMER ORDER TO ACCOUNT');
+    console.log('4. START ADD CUSTOMER ORDER TO ACCOUNT');
     await AccountController.addCustomerOrder(
       accountId,
       customerOrder.id,
       session,
     );
 
-    console.log('4. START CONSUME CUSTOMER ORDER');
-    await ProductController.consumeProducts(customerOrderInput.items, session);
-
     console.log('5. ALL DONE, ABOUT TO COMMIT TRANSACTION');
     await session.commitTransaction();
 
     console.log('6. END SESSION');
-    session.endSession();
+    await session.endSession();
 
     console.log('7. SESSION ENDED');
 
@@ -107,7 +121,7 @@ const handler = nc<
     if (session.inTransaction()) {
       await session.abortTransaction();
     }
-    session.endSession();
+    await session.endSession();
     console.log('X. ERROR OCCURRED');
     console.log(error);
 

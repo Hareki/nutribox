@@ -14,7 +14,8 @@ import type {
 } from 'api/base/mongoose/baseHandler';
 import { buildBaseQuery } from 'api/base/mongoose/baseHandler';
 import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
-import type { ICustomerOrderItemInput } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/types';
+import type { IConsumptionHistory } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/ConsumptionHistory.schema/types';
+import type { ICustomerOrderItemInputWithoutConsumption } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/types';
 import ExpirationModel from 'api/models/Expiration.model';
 import ProductModel from 'api/models/Product.model';
 import type { IProduct } from 'api/models/Product.model/types';
@@ -89,13 +90,14 @@ async function consume(
   productId: string,
   quantityToSell: number,
   session: ClientSession,
-): Promise<void> {
+): Promise<IConsumptionHistory[]> {
   const product: IProduct = await ProductModel().findById(productId);
 
   if (!product) {
     throw new Error(`Product ${productId} not found`);
   }
 
+  const consumptionHistory: IConsumptionHistory[] = [];
   const populatedProduct = (await populateAscUnexpiredExpiration([product]))[0];
   const expirations = populatedProduct.expirations;
 
@@ -110,6 +112,10 @@ async function consume(
     if (quantityToSell === 0) {
       break;
     }
+    const consumedQuantity =
+      expiration.quantity >= quantityToSell
+        ? quantityToSell
+        : expiration.quantity;
 
     if (expiration.quantity >= quantityToSell) {
       expiration.quantity -= quantityToSell;
@@ -119,6 +125,14 @@ async function consume(
       expiration.quantity = 0;
     }
     await expiration.save({ session });
+
+    if (consumedQuantity > 0) {
+      consumptionHistory.push({
+        id: expiration._id.toString(),
+        expiration: expiration._id,
+        quantity: consumedQuantity,
+      });
+    }
     console.log(
       `STILL HAVE SESSION AFTER SAVE OF EXPIRATION ID ${expiration._id}: `,
       !!session,
@@ -128,16 +142,21 @@ async function consume(
   if (quantityToSell > 0) {
     throw new Error(`Not enough product ${productId} available`);
   }
+
+  return consumptionHistory;
 }
 
 const consumeProducts = async (
-  items: ICustomerOrderItemInput[],
+  items: ICustomerOrderItemInputWithoutConsumption[],
   session: ClientSession,
-) => {
-  const promises = items.map(async (item) => {
-    await consume(item.product.toString(), item.quantity, session);
+  // First dimension is the product, second dimension is the actual consumption history
+): Promise<IConsumptionHistory[][]> => {
+  const consumptionHistoriesPromises = items.map(async (item) => {
+    return await consume(item.product.toString(), item.quantity, session);
   });
-  await Promise.all(promises);
+
+  const consumptionHistories = await Promise.all(consumptionHistoriesPromises);
+  return consumptionHistories;
 };
 
 const ProductController = {

@@ -72,7 +72,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IProduct>>>({
     await product.save({ session });
 
     await session.commitTransaction();
-    session.endSession();
+    await session.endSession();
 
     res.status(StatusCodes.OK).json({
       status: 'success',
@@ -82,7 +82,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IProduct>>>({
     if (session.inTransaction()) {
       await session.abortTransaction();
     }
-    session.endSession();
+    await session.endSession();
     console.log('X. ERROR OCCURRED');
     console.log(error);
 

@@ -1,5 +1,7 @@
 import { Schema } from 'mongoose';
 
+import { consumptionHistorySchema } from './ConsumptionHistory.schema';
+import type { IConsumptionHistory } from './ConsumptionHistory.schema/types';
 import type { ICustomerOrderItem } from './types';
 
 export const customerOrderItemSchema = new Schema<ICustomerOrderItem>(
@@ -28,6 +30,21 @@ export const customerOrderItemSchema = new Schema<ICustomerOrderItem>(
       type: Number,
       required: [true, 'CustomerOrderItem/UnitRetailPrice is required'],
       min: [1, 'CustomerOrderItem/UnitRetailPrice should be greater than 0'],
+    },
+
+    consumptionHistory: {
+      type: [consumptionHistorySchema],
+      validate: {
+        validator: function (items: IConsumptionHistory[]) {
+          return items.length > 0;
+        },
+        message:
+          'CustomerOrderItem/ConsumptionHistory should have at least 1 item',
+      },
+      required: [
+        true,
+        'CustomerOrderItem/ConsumptionHistory should have at least 1 item',
+      ],
     },
   },
   { collection: 'customerOrderItems' },

@@ -22,7 +22,7 @@ async function transactionWrapper<T>(
     await session.abortTransaction();
     throw error;
   } finally {
-    session.endSession();
+    await session.endSession();
   }
 }
 

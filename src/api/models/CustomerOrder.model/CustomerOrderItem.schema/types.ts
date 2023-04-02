@@ -1,5 +1,7 @@
 import type { Types } from 'mongoose';
 
+import type { IConsumptionHistory } from './ConsumptionHistory.schema/types';
+
 export interface ICustomerOrderItem {
   // _id: Types.ObjectId;
   id: string;
@@ -10,6 +12,8 @@ export interface ICustomerOrderItem {
   quantity: number;
   unitWholesalePrice: number;
   unitRetailPrice: number;
+
+  consumptionHistory: Types.DocumentArray<IConsumptionHistory>;
 }
 
 export interface IPopulatedCustomerOrderItem
@@ -22,5 +26,10 @@ export interface IPopulatedCustomerOrderItem
   unitRetailPrice: number;
 }
 
+export interface ICustomerOrderItemInputWithoutConsumption
+  extends Omit<ICustomerOrderItem, '_id' | 'id' | 'consumptionHistory'> {}
+
 export interface ICustomerOrderItemInput
-  extends Omit<ICustomerOrderItem, '_id' | 'id'> {}
+  extends ICustomerOrderItemInputWithoutConsumption {
+  consumptionHistory: IConsumptionHistory[];
+}

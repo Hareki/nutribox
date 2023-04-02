@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import type { ClientSession } from 'mongoose';
 
 import type { CheckoutItemsRequestBody } from '../../../pages/api/checkout';
 
@@ -12,7 +13,9 @@ import {
 
 import AccountModel from 'api/models/Account.model';
 import CustomerOrderModel from 'api/models/CustomerOrder.model';
+import type { IConsumptionHistory } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/ConsumptionHistory.schema/types';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import ExpirationModel from 'api/models/Expiration.model';
 import type { GetAllDependentPaginationParams } from 'api/types/pagination.type';
 import { getNextOrderStatusId } from 'helpers/order.helper';
 import { OrderStatus } from 'utils/constants';
@@ -62,10 +65,37 @@ const getOrder = async (orderId: string): Promise<ICustomerOrder> => {
   return customerOrder;
 };
 
-const cancelOrder = async (orderId: string): Promise<ICustomerOrder> => {
+const cancelOrder = async (
+  orderId: string,
+  session: ClientSession,
+): Promise<ICustomerOrder> => {
+  // ===================
+  const restoreConsumedProducts = async (
+    consumptionHistory: IConsumptionHistory[],
+    session: ClientSession,
+  ): Promise<void> => {
+    for (const consumption of consumptionHistory) {
+      const expiration = await ExpirationModel()
+        .findById(consumption.expiration)
+        .session(session)
+        .exec();
+      if (expiration) {
+        expiration.quantity += consumption.quantity;
+        await expiration.save({ session });
+      }
+    }
+  };
+  // ===================
+
   const customerOrder = await CustomerOrderModel().findById(orderId).exec();
+
+  const promises = customerOrder.items.map(async (item) => {
+    await restoreConsumedProducts(item.consumptionHistory, session);
+  });
+  await Promise.all(promises);
+
   customerOrder.status = new Types.ObjectId(OrderStatus.Cancelled.id);
-  await customerOrder.save();
+  await customerOrder.save({ session });
   return customerOrder.toObject();
 };
 
