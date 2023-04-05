@@ -8,6 +8,13 @@ export const getFullAddress = (address: IAddress) => {
 };
 
 export const transformAddressToFormikValue = (address: IAddress) => {
+  if (!address)
+    return {
+      province: null,
+      district: null,
+      ward: null,
+      streetAddress: '',
+    };
   const {
     streetAddress,
     ward,

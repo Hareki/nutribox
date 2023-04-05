@@ -144,13 +144,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: { initialProduct: serialize(product) },
   };
 };
-
-const newInitialValues: ProductInfoFormValues = {
-  name: '',
-  category: null,
-  description: '',
-  shelfLife: 0,
-  wholesalePrice: 0,
-  retailPrice: 0,
-  available: true,
-};

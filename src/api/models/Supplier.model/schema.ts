@@ -10,6 +10,7 @@ import {
 
 export const supplierSchema = new Schema<ISupplier>(
   {
+    // Didn't  use
     productOrders: [
       {
         ref: 'ProductOrder',

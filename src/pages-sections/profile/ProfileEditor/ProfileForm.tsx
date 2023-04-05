@@ -189,7 +189,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={INITIAL_VALUES}
-        validationSchema={checkoutSchema}
+        validationSchema={validationSchema}
       >
         {({
           resetForm,
@@ -353,7 +353,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
   );
 };
 
-const checkoutSchema = yup.object().shape({
+const validationSchema = yup.object().shape({
   lastName: yup.string().required('Vui lòng nhập họ và tên lót'),
   firstName: yup.string().required('Vui lòng nhập tên'),
   email: yup

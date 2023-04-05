@@ -26,7 +26,7 @@ function StoreSetting({ initialStoreInfo }: StoreSettingProps) {
       <H3 mb={2}>Cài đặt</H3>
 
       <Card sx={{ p: 3 }}>
-        <Paragraph fontWeight={700} mb={2}>
+        <Paragraph fontWeight={700} mb={3}>
           Thông tin liên hệ
         </Paragraph>
         <ContactInfoForm initialStoreInfo={initialStoreInfo} />

@@ -217,9 +217,6 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     validationSchema: checkoutFormSchema,
   });
 
-  const hasProvince = values.province !== null;
-  const hasDistrict = values.district !== null;
-
   useEffect(() => {
     const address = transformFormikValueToAddress(values);
     setCurrentFullAddress(getFullAddress(address));
@@ -232,7 +229,9 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     isLoadingDistricts,
     wards,
     isLoadingWards,
-  } = useAddressQuery(values, hasProvince, hasDistrict);
+    hasDistrict,
+    hasProvince,
+  } = useAddressQuery(values);
 
   return (
     <Fragment>

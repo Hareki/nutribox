@@ -18,8 +18,8 @@ export const getAccounts = async (
   return response.data.data;
 };
 
-export const getAccount = async (orderId: string): Promise<IAccount> => {
-  const response = await axiosInstance.get(`admin/account/detail/${orderId}`);
+export const getAccount = async (accountId: string): Promise<IAccount> => {
+  const response = await axiosInstance.get(`admin/account/${accountId}`);
   return response.data.data;
 };
 

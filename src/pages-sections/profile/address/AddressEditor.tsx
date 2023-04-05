@@ -1,6 +1,6 @@
 import { Place } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Autocomplete, Box, Button, Grid, TextField } from '@mui/material';
+import { Box, Button, Grid, TextField } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import type { NextPage } from 'next';
@@ -10,12 +10,11 @@ import * as yup from 'yup';
 import type { AddAddressRequestBody } from '../../../../pages/api/profile/address/[accountId]';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import AddressForm from 'components/AddressForm';
 import Card1 from 'components/common/Card1';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
-import { useAddressQuery } from 'hooks/useAddressQuery';
-import type { AddressAPI } from 'utils/apiCallers/profile/address';
 import apiCaller from 'utils/apiCallers/profile/address';
 
 type MutateAddressVariables = {
@@ -112,18 +111,6 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     onSubmit: handleFormSubmit,
   });
 
-  const hasProvince = values.province !== null;
-  const hasDistrict = values.district !== null;
-
-  const {
-    provinces,
-    isLoadingProvince,
-    districts,
-    isLoadingDistricts,
-    wards,
-    isLoadingWards,
-  } = useAddressQuery(values, hasProvince, hasDistrict);
-
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: mutateAddress, isLoading: isMutating } = useMutation<
@@ -184,94 +171,14 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
                 />
               </Grid>
 
-              <Grid item md={6} xs={12}>
-                <Autocomplete
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  options={provinces || []}
-                  disabled={isLoadingProvince}
-                  value={values.province}
-                  getOptionLabel={(option) => (option as AddressAPI).name}
-                  onChange={(_, value) => {
-                    setFieldValue('province', value);
-                    setFieldValue('district', null);
-                    setFieldValue('ward', null);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      label='Tỉnh/Thành phố'
-                      placeholder='Chọn Tỉnh/Thành phố'
-                      error={!!touched.province && !!errors.province}
-                      helperText={
-                        (touched.province && errors.province) as string
-                      }
-                      {...params}
-                    />
-                  )}
-                />
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <Autocomplete
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  options={districts || []}
-                  disabled={!hasProvince || isLoadingDistricts}
-                  value={values.district}
-                  getOptionLabel={(option) => (option as AddressAPI).name}
-                  onChange={(_, value) => {
-                    setFieldValue('district', value);
-                    setFieldValue('ward', null);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      label='Quận/Huyện'
-                      placeholder='Chọn Quận/Huyện'
-                      error={!!touched.district && !!errors.district}
-                      helperText={
-                        (touched.district && errors.district) as string
-                      }
-                      {...params}
-                    />
-                  )}
-                />
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <Autocomplete
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  options={wards || []}
-                  disabled={!hasDistrict || isLoadingWards}
-                  value={values.ward}
-                  getOptionLabel={(option) => (option as AddressAPI).name}
-                  onChange={(_, value) => setFieldValue('ward', value)}
-                  renderInput={(params) => (
-                    <TextField
-                      label='Phường/Xã'
-                      placeholder='Chọn Phường/Xã'
-                      error={!!touched.ward && !!errors.ward}
-                      helperText={(touched.ward && errors.ward) as string}
-                      {...params}
-                    />
-                  )}
-                />
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  name='streetAddress'
-                  label='Số nhà, tên đường'
-                  onBlur={handleBlur}
-                  value={values.streetAddress}
-                  onChange={handleChange}
-                  error={!!touched.streetAddress && !!errors.streetAddress}
-                  helperText={
-                    (touched.streetAddress && errors.streetAddress) as string
-                  }
-                />
-              </Grid>
+              <AddressForm
+                values={values}
+                errors={errors}
+                touched={touched}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                setFieldValue={setFieldValue}
+              />
             </Grid>
           </Box>
 
