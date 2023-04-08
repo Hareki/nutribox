@@ -68,6 +68,8 @@ export const getAllDocs = async ({
   if (sort) {
     // always use sort as an object, like this: {createdAt: -1}
     query.sort(sort as any);
+  } else {
+    query.sort({ createdAt: -1 });
   }
 
   const docs = await query.exec();

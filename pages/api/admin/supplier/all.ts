@@ -25,7 +25,7 @@ const handler = nc<
     CustomerOrderController.getTotal,
   );
 
-  const orders = await SupplierController.getAll({
+  const suppliers = await SupplierController.getAll({
     sort: { createdAt: -1, _id: 1 },
     skip,
     limit,
@@ -34,7 +34,7 @@ const handler = nc<
   const result = {
     totalPages,
     totalDocs,
-    docs: orders,
+    docs: suppliers,
   };
 
   res.status(StatusCodes.OK).json({

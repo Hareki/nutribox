@@ -42,16 +42,16 @@ const useMuiTable = (props: HookProps) => {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(20);
-  const [orderBy, setOrderBy] = useState(defaultSort);
+  // const [orderBy, setOrderBy] = useState(defaultSort);
   const [selected, setSelected] = useState<string[]>([]);
   const [order, setOrder] = useState<Order>(defaultOrder);
 
   // Handle list sorting
-  const handleRequestSort = (property: string) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
+  // const handleRequestSort = (property: string) => {
+  //   const isAsc = orderBy === property && order === 'asc';
+  //   setOrder(isAsc ? 'desc' : 'asc');
+  //   setOrderBy(property);
+  // };
 
   // Handle select whole list
   const handleSelectAllClick = (checked: boolean, defaultSelect: string) => {
@@ -84,22 +84,27 @@ const useMuiTable = (props: HookProps) => {
 
   const handleChangePage = (_, newPage: number) => setPage(newPage - 1);
 
-  const filteredList = stableSort(
-    listData,
-    getComparator(order, orderBy),
-  ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  // const filteredList = stableSort(
+  //   listData,
+  //   getComparator(order, orderBy),
+  // ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+  const filteredList = listData.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage,
+  );
 
   return {
     page,
     order,
-    orderBy,
+    // orderBy,
     selected,
     rowsPerPage,
     filteredList,
 
     handleRowClick,
     handleChangePage,
-    handleRequestSort,
+    // handleRequestSort,
     handleSelectAllClick,
   };
 };

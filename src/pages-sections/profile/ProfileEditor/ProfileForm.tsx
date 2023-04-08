@@ -362,6 +362,7 @@ const validationSchema = yup.object().shape({
     .required('Vui lòng nhập email'),
   phone: yup
     .string()
+    .required('Vui lòng nhập số điện thoại')
     .transform((value, originalValue) => {
       if (originalValue && typeof originalValue === 'string') {
         const result = originalValue.replace(/-/g, '');

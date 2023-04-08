@@ -1,18 +1,16 @@
 import { Box, Card } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
-import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 import { useReducer } from 'react';
 import { useState } from 'react';
 
-import type { UpdateSupplierInfoRb } from '../../api/admin/supplier/[id]';
+import type { CreateSupplierRb } from '../../api/admin/supplier/create';
 
-import SupplierController from 'api/controllers/Supplier.controller';
 import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
 import type { ISupplier } from 'api/models/Supplier.model/types';
 import type { JSendFailResponse } from 'api/types/response.type';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
@@ -28,39 +26,31 @@ AdminSupplierDetails.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
-interface AdminSupplierDetailsProps {
-  initialSupplier: ISupplier;
-}
-// FIXME: should generalize the CRUD logic
-export default function AdminSupplierDetails({
-  initialSupplier,
-}: AdminSupplierDetailsProps) {
-  const queryClient = useQueryClient();
-  const { data: supplier } = useQuery({
-    queryKey: ['supplier', initialSupplier.id],
-    queryFn: () => apiCaller.getSupplier(initialSupplier.id),
-    initialData: initialSupplier,
-  });
-
+export default function AdminSupplierDetails() {
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [infoState, dispatchInfo] = useReducer(infoDialogReducer, {
     open: false,
   });
 
-  const [isEditingForm, setIsEditingForm] = useState(false);
+  const router = useRouter();
+
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate: updateSupplier, isLoading } = useMutation<
+
+  const { mutate: createSupplier, isLoading } = useMutation<
     ISupplier,
-    unknown,
-    UpdateSupplierInfoRb
+    AxiosError<JSendFailResponse<any>>,
+    CreateSupplierRb
   >({
-    mutationFn: (requestBody) =>
-      apiCaller.updateSupplier(supplier.id, requestBody),
+    mutationFn: async (requestBody) => apiCaller.createSupplier(requestBody),
     onSuccess: () => {
-      setIsEditingForm(false);
-      enqueueSnackbar('Cập nhật nhà CC thành công', { variant: 'success' });
-      queryClient.invalidateQueries(['supplier', supplier.id]);
+      enqueueSnackbar('Thêm nhà cung cấp thành công', {
+        variant: 'success',
+      });
+
+      setIsRedirecting(true);
+      router.push('/admin/supplier');
     },
-    onError: (err: AxiosError<JSendFailResponse<any>>) => {
+    onError: (err) => {
       console.log(err);
       if (err.response.data.data) {
         dispatchInfo({
@@ -81,7 +71,7 @@ export default function AdminSupplierDetails({
 
   const handleFormSubmit = (values: SupplierInfoFormValues) => {
     const addressRb = transformFormikValueToAddress(values);
-    const requestBody: UpdateSupplierInfoRb = {
+    const requestBody: CreateSupplierRb = {
       name: values.name,
       phone: values.phone,
       email: values.email,
@@ -90,24 +80,26 @@ export default function AdminSupplierDetails({
 
     console.log(
       'file: [id].tsx:79 - handleFormSubmit - requestBody:',
-      requestBody,
+      JSON.stringify(requestBody),
     );
-    updateSupplier(requestBody);
+    createSupplier(requestBody);
   };
+  console.log(
+    'file: create.tsx:101 - AdminSupplierDetails - isRedirecting:',
+    isRedirecting,
+  );
 
   return (
     <Box py={4}>
       <AdminDetailsViewHeader
         hrefBack='/admin/supplier'
-        label='Chi tiết nhà cung cấp'
+        label='Thêm nhà cung cấp'
       />
 
       <Card sx={{ p: 6 }}>
         <SupplierForm
-          supplier={supplier}
-          setIsEditing={setIsEditingForm}
-          isEditing={isEditingForm}
-          isLoading={isLoading}
+          isEditing
+          isLoading={isLoading || isRedirecting}
           handleFormSubmit={handleFormSubmit}
           infoState={infoState}
           dispatchInfo={dispatchInfo}
@@ -123,24 +115,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
   if (isNotAuthorized) return blockingResult;
 
-  const isValidId = Types.ObjectId.isValid(context.params.id as string);
-  if (!isValidId) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const supplier = await SupplierController.getOne({
-    id: context.params.id as string,
-  });
-
-  if (!supplier) {
-    return {
-      notFound: true,
-    };
-  }
-
   return {
-    props: { initialSupplier: serialize(supplier) },
+    props: {},
   };
 };

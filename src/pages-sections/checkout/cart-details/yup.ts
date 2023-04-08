@@ -24,6 +24,7 @@ export const checkoutFormSchema = yup.object().shape({
   note: yup.string().max(500, 'Lời nhắn không được quá 500 ký tự'),
   phone: yup
     .string()
+    .required('Vui lòng nhập số điện thoại')
     .transform((value, originalValue) => {
       if (originalValue && typeof originalValue === 'string') {
         return originalValue.replace(/-/g, '');

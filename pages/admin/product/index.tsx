@@ -85,7 +85,7 @@ function ProductList() {
         handleSearch={() => {}}
         searchPlaceholder='Tìm theo tên sản phẩm'
         haveButton
-        handleBtnClick={() => router.push('/admin/products/create')}
+        handleBtnClick={() => router.push('/admin/product/create')}
         buttonText='Thêm sản phẩm'
       />
 

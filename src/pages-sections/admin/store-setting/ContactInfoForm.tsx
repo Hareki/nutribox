@@ -140,6 +140,7 @@ export default function ContactInfoForm({
 const validationSchema = yup.object().shape({
   phone: yup
     .string()
+    .required('Vui lòng nhập số điện thoại')
     .transform((value, originalValue) => {
       if (originalValue && typeof originalValue === 'string') {
         return originalValue.replace(/-/g, '');

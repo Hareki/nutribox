@@ -1,18 +1,24 @@
 import { LoadingButton } from '@mui/lab';
 import { Button, Grid, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import type { FC } from 'react';
+import type { Dispatch, FC } from 'react';
 import { Fragment } from 'react';
 import * as yup from 'yup';
 
 import type { ISupplier } from 'api/models/Supplier.model/types';
 import AddressForm from 'components/AddressForm';
+import PhoneInput from 'components/common/input/PhoneInput';
+import InfoDialog from 'components/dialog/info-dialog';
+import type {
+  InfoDialogAction,
+  InfoDialogState,
+} from 'components/dialog/info-dialog/reducer';
 import { transformAddressToFormikValue } from 'helpers/address.helper';
 import { phoneRegex } from 'helpers/regex.helper';
 
 const getInitialValues = (initialSupplier: ISupplier) => {
   return {
-    name: initialSupplier.name || '',
+    name: initialSupplier?.name || '',
     phone: initialSupplier?.phone || '',
     email: initialSupplier?.email || '',
     ...transformAddressToFormikValue(initialSupplier),
@@ -26,11 +32,22 @@ type SupplierFormProps = {
   handleFormSubmit: (values: any) => void;
   isLoading: boolean;
   isEditing: boolean;
-  setIsEditing: (value: boolean) => void;
+  setIsEditing?: (value: boolean) => void;
+  infoState: InfoDialogState;
+  dispatchInfo: Dispatch<InfoDialogAction>;
 };
 
 const SupplierForm: FC<SupplierFormProps> = (props) => {
-  const { handleFormSubmit, isLoading, isEditing, setIsEditing } = props;
+  const {
+    handleFormSubmit,
+    isLoading,
+    isEditing,
+    setIsEditing,
+    infoState,
+    dispatchInfo,
+  } = props;
+
+  const isAdding = !props.supplier;
 
   const {
     resetForm,
@@ -82,6 +99,7 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
               error={!!touched.phone && !!errors.phone}
               helperText={(touched.phone && errors.phone) as string}
               InputProps={{
+                inputComponent: PhoneInput as any,
                 readOnly: !isEditing,
               }}
             />
@@ -125,28 +143,30 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
                   color='primary'
                   type='submit'
                 >
-                  Lưu thay đổi
+                  {isAdding ? 'Thêm nhà CC' : 'Lưu thay đổi'}
                 </LoadingButton>
-                <Button
-                  variant='outlined'
-                  color='primary'
-                  onClick={() => {
-                    setIsEditing(false);
-                    resetForm();
-                  }}
-                  sx={{
-                    px: 3,
-                  }}
-                >
-                  Huỷ
-                </Button>
+                {!isAdding && (
+                  <Button
+                    variant='outlined'
+                    color='primary'
+                    onClick={() => {
+                      setIsEditing?.(false);
+                      resetForm();
+                    }}
+                    sx={{
+                      px: 3,
+                    }}
+                  >
+                    Huỷ
+                  </Button>
+                )}
               </Fragment>
             ) : (
               <Button
                 variant='contained'
                 color='primary'
                 type='submit'
-                onClick={() => setIsEditing(true)}
+                onClick={() => setIsEditing?.(true)}
               >
                 Chỉnh sửa
               </Button>
@@ -154,6 +174,14 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
           </Grid>
         </Grid>
       </form>
+
+      <InfoDialog
+        open={infoState.open}
+        content={infoState.content}
+        title={infoState.title}
+        variant={infoState.variant}
+        handleClose={() => dispatchInfo({ type: 'close_dialog' })}
+      />
     </Fragment>
   );
 };
@@ -166,6 +194,7 @@ const validationSchema = yup.object().shape({
   // FIXME: Generalize phone validation
   phone: yup
     .string()
+    .required('Vui lòng nhập số điện thoại')
     .transform((value, originalValue) => {
       if (originalValue && typeof originalValue === 'string') {
         return originalValue.replace(/-/g, '');

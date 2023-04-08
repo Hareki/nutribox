@@ -1,11 +1,12 @@
 import type { UpdateSupplierInfoRb } from '../../../../pages/api/admin/supplier/[id]';
+import type { CreateSupplierRb } from '../../../../pages/api/admin/supplier/create';
 
 import type { ISupplier } from 'api/models/Supplier.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
 import { AdminMainTablePaginationConstant } from 'utils/constants';
 
-export const getSuppliers = async (
+const getSuppliers = async (
   page: number,
 ): Promise<GetAllPaginationResult<ISupplier>> => {
   const response = await axiosInstance.get(`admin/supplier/all`, {
@@ -17,12 +18,22 @@ export const getSuppliers = async (
   return response.data.data;
 };
 
-export const getSupplier = async (supplierId: string): Promise<ISupplier> => {
+const getSupplier = async (supplierId: string): Promise<ISupplier> => {
   const response = await axiosInstance.get(`admin/supplier/${supplierId}`);
   return response.data.data;
 };
 
-export const updateSupplier = async (
+const createSupplier = async (
+  requestBody: CreateSupplierRb,
+): Promise<ISupplier> => {
+  const response = await axiosInstance.post(
+    `admin/supplier/create`,
+    requestBody,
+  );
+  return response.data.data;
+};
+
+const updateSupplier = async (
   supplierId: string,
   requestBody: UpdateSupplierInfoRb,
 ): Promise<ISupplier> => {
@@ -36,6 +47,7 @@ export const updateSupplier = async (
 const apiCaller = {
   getSuppliers,
   getSupplier,
+  createSupplier,
   updateSupplier,
 };
 

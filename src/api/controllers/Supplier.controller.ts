@@ -1,4 +1,5 @@
 import {
+  createOneGenerator,
   getAllGenerator,
   getOneGenerator,
   getTotalGenerator,
@@ -13,6 +14,7 @@ import type {
 
 const getOne = getOneGenerator<ISupplier>(SupplierModel());
 const getAll = getAllGenerator<ISupplier>(SupplierModel());
+const createOne = createOneGenerator<ISupplier>(SupplierModel());
 const getTotal = getTotalGenerator(SupplierModel());
 
 const updateOne = updateOneGenerator<ISupplier>(SupplierModel());
@@ -34,6 +36,7 @@ const SupplierController = {
   getAll,
   getOne,
   updateOne,
+  createOne,
 };
 
 export default SupplierController;

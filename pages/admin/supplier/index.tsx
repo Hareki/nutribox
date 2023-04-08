@@ -8,6 +8,7 @@ import {
   TableContainer,
 } from '@mui/material';
 import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 
 import { checkContextCredentials } from 'api/helpers/auth.helper';
@@ -43,6 +44,8 @@ const mapOrderToRow = (item: ISupplier) => ({
 export type FilteredSupplier = ReturnType<typeof mapOrderToRow>;
 
 function SupplierList() {
+  const router = useRouter();
+
   const {
     isLoading,
     paginationData: suppliers,
@@ -75,7 +78,9 @@ function SupplierList() {
       <SearchArea
         handleSearch={() => {}}
         searchPlaceholder='Tìm theo tên nhà CC'
-        haveButton={false}
+        haveButton
+        handleBtnClick={() => router.push('/admin/supplier/create')}
+        buttonText='Thêm nhà CC'
       />
 
       {isLoading ? (
