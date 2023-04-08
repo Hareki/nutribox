@@ -14,6 +14,7 @@ export interface ConfirmDialogProps {
   handleConfirm: () => void;
   handleCancel: () => void;
   isLoading?: boolean;
+  color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 }
 
 const ConfirmDialog: FC<ConfirmDialogProps> = ({
@@ -23,6 +24,7 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
   title,
   content,
   isLoading = false,
+  color = 'error',
 }) => {
   return (
     <Dialog
@@ -42,10 +44,14 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
         )}
       </DialogContent>
       <DialogActions>
-        <LoadingButton loading={isLoading} onClick={handleConfirm} color='info'>
+        <LoadingButton
+          loading={isLoading}
+          onClick={handleConfirm}
+          color={color}
+        >
           Xác nhận
         </LoadingButton>
-        <Button onClick={handleCancel} color='info'>
+        <Button disabled={isLoading} onClick={handleCancel} color={color}>
           Huỷ bỏ
         </Button>
       </DialogActions>

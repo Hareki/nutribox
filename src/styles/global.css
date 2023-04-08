@@ -1,4 +1,9 @@
-.pswp__img {
+/* .pswp__img {
+  object-fit: scale-down !important;
+} */
+
+[class*='pswp'] {
+  object-position: top !important;
   object-fit: contain !important;
 }
 

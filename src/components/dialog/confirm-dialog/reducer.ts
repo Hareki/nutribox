@@ -1,7 +1,9 @@
 import type { ConfirmDialogProps } from '.';
 
 export interface ConfirmDialogState
-  extends Partial<Omit<ConfirmDialogProps, 'handleConfirm' | 'handleCancel'>> {}
+  extends Partial<
+    Omit<ConfirmDialogProps, 'handleConfirm' | 'handleCancel' | 'isLoading'>
+  > {}
 
 interface OpenDialogAction {
   type: 'open_dialog';

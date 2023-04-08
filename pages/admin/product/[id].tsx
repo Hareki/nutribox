@@ -98,7 +98,7 @@ export default function AdminProductDetails({
 
       <Card sx={{ p: 6 }}>
         <H5 mb={3}>Hình ảnh</H5>
-        <ImageListForm images={product.imageUrls} />
+        <ImageListForm product={product} />
         <Divider sx={{ mb: 4, borderColor: 'grey.400', mt: 4, mx: 6 }} />
         <H5 mb={5}>Thông tin</H5>
         <ProductForm

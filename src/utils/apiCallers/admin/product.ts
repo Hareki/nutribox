@@ -31,17 +31,6 @@ const getProduct = async (productId: string): Promise<ICdsUpeProduct> => {
   return result;
 };
 
-const updateProduct = async (
-  productId: string,
-  requestBody: UpdateProductInfoRb,
-): Promise<IProduct> => {
-  const response = await axiosInstance.put(
-    `admin/product/${productId}`,
-    requestBody,
-  );
-  return response.data.data;
-};
-
 const addProduct = async (productId: string): Promise<IProduct> => {
   const response = await axiosInstance.put(`admin/product/update`, {
     id: productId,
@@ -68,6 +57,43 @@ const getExpirationOrders = async (
   return response.data.data;
 };
 
+const updateProduct = async (
+  productId: string,
+  requestBody: UpdateProductInfoRb,
+): Promise<IProduct> => {
+  const response = await axiosInstance.put(
+    `admin/product/${productId}?type=updateInfo`,
+    requestBody,
+  );
+  return response.data.data;
+};
+
+const pushImageUrls = async (
+  productId: string,
+  imageUrls: string[],
+): Promise<IProduct> => {
+  const response = await axiosInstance.put(
+    `admin/product/${productId}?type=pushImages`,
+    {
+      imageUrls,
+    },
+  );
+  return response.data.data;
+};
+
+const deleteImageUrl = async (
+  productId: string,
+  imageUrl: string,
+): Promise<IProduct> => {
+  const response = await axiosInstance.put(
+    `admin/product/${productId}?type=deleteImage`,
+    {
+      imageUrl,
+    },
+  );
+  return response.data.data;
+};
+
 const getSupplierDropdown = async (): Promise<ISupplierDropdown[]> => {
   const response = await axiosInstance.get(`admin/product/supplier-dropdown`);
   return response.data.data;
@@ -90,6 +116,8 @@ const apiCaller = {
   addProduct,
   getCategoryDropdown,
   getExpirationOrders,
+  pushImageUrls,
+  deleteImageUrl,
   getSupplierDropdown,
   importProduct,
 };

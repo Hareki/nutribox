@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
   styled,
+  useTheme,
 } from '@mui/material';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -47,6 +48,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
   const userFullName = session?.user?.fullName;
   const userRole = session?.user?.role;
   const userUrl = session?.user?.avatarUrl;
+  const { palette } = useTheme();
 
   const { dialog: signOutDialog, dispatchConfirm } = useSignOutDialog();
   const { setLoginDialogOpen } = useLoginDialog();
@@ -61,6 +63,10 @@ const AccountMenu: FC<AccountMenuProps> = () => {
       return;
     }
     setLoginDialogOpen(true);
+  };
+
+  const iconStyles = {
+    color: palette.grey[700],
   };
   return (
     <Box>
@@ -138,7 +144,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
         <Link href='/profile'>
           <MenuItem>
             <ListItemIcon>
-              <PermIdentityIcon />
+              <PermIdentityIcon sx={iconStyles} />
             </ListItemIcon>
             Tài khoản của tôi
           </MenuItem>
@@ -147,7 +153,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
         <Link href='/profile/order'>
           <MenuItem>
             <ListItemIcon>
-              <DescriptionOutlinedIcon />
+              <DescriptionOutlinedIcon sx={iconStyles} />
             </ListItemIcon>
             Đơn hàng
           </MenuItem>
@@ -159,7 +165,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
             <Link href='/admin/dashboard'>
               <MenuItem>
                 <ListItemIcon>
-                  <ChromeReaderModeOutlinedIcon />
+                  <ChromeReaderModeOutlinedIcon sx={iconStyles} />
                 </ListItemIcon>
                 Bảng điều khiển
               </MenuItem>
@@ -176,7 +182,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
           }
         >
           <ListItemIcon>
-            <LogoutOutlinedIcon />
+            <LogoutOutlinedIcon sx={iconStyles} />
           </ListItemIcon>
           Đăng xuất
         </MenuItem>

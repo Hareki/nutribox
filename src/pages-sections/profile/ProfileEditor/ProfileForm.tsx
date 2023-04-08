@@ -153,6 +153,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
         <Box display='none'>
           <IKUpload
             {...IKPublicContext}
+            accept='image/*'
             inputRef={uploadRef}
             fileName={account.id}
             useUniqueFileName={false}
@@ -179,6 +180,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
               });
             }}
             onSuccess={(response: UploadSuccessResponse) => {
+              setIsUploadingImage(false);
               const newAvatarUrl = `${response.url}?updatedAt=${Date.now()}`;
               updateAvatar({ avatarUrl: newAvatarUrl });
             }}

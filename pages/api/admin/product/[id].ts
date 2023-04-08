@@ -23,6 +23,14 @@ export interface UpdateProductInfoRb {
   available: boolean;
 }
 
+export interface NewProductImageUrlsRb {
+  imageUrls: string[];
+}
+
+export interface DeleteProductImageUrlRb {
+  imageUrl: string;
+}
+
 const handler = nc<
   NextApiRequest,
   NextApiResponse<
@@ -52,31 +60,70 @@ const handler = nc<
     await connectToDB();
 
     const id = req.query.id as string;
-    const requestBody = req.body as UpdateProductInfoRb;
+    const type = req.query.type as string;
 
-    const origProduct = await ProductController.getOne({ id });
-    const origCategoryId = origProduct.category.toString();
+    switch (type) {
+      case 'updateInfo': {
+        const requestBody = req.body as UpdateProductInfoRb;
 
-    const updatedProduct = await ProductController.updateOne(id, requestBody);
-    const updatedCategoryId = updatedProduct.category.toString();
+        const origProduct = await ProductController.getOne({ id });
+        const origCategoryId = origProduct.category.toString();
 
-    // FIXME code to change reference array, haven't figured out the way to do it in middleware and time's running out
-    // I'll just inline the code here, fix later
-    if (origCategoryId !== updatedCategoryId) {
-      await ProductCategoryModel().updateOne(
-        { _id: origCategoryId },
-        { $pull: { products: new Types.ObjectId(id) } },
-      );
-      await ProductCategoryModel().updateOne(
-        { _id: updatedCategoryId },
-        { $addToSet: { products: new Types.ObjectId(id) } },
-      );
+        const updatedProduct = await ProductController.updateOne(
+          id,
+          requestBody,
+        );
+        const updatedCategoryId = updatedProduct.category.toString();
+
+        // FIXME code to change reference array, haven't figured out the way to do it in middleware and time's running out
+        // I'll just inline the code here, fix later
+        if (origCategoryId !== updatedCategoryId) {
+          await ProductCategoryModel().updateOne(
+            { _id: origCategoryId },
+            { $pull: { products: new Types.ObjectId(id) } },
+          );
+          await ProductCategoryModel().updateOne(
+            { _id: updatedCategoryId },
+            { $addToSet: { products: new Types.ObjectId(id) } },
+          );
+        }
+
+        res.status(StatusCodes.OK).json({
+          status: 'success',
+          data: updatedProduct,
+        });
+
+        return;
+      }
+
+      case 'pushImages': {
+        const requestBody = req.body as NewProductImageUrlsRb;
+        const updatedProduct = await ProductController.pushImageUrls(
+          id,
+          requestBody.imageUrls,
+        );
+
+        res.status(StatusCodes.OK).json({
+          status: 'success',
+          data: updatedProduct,
+        });
+        return;
+      }
+
+      case 'deleteImage': {
+        const requestBody = req.body as DeleteProductImageUrlRb;
+        const updatedProduct = await ProductController.deleteImageUrl(
+          id,
+          requestBody.imageUrl,
+        );
+
+        res.status(StatusCodes.OK).json({
+          status: 'success',
+          data: updatedProduct,
+        });
+        return;
+      }
     }
-
-    res.status(StatusCodes.OK).json({
-      status: 'success',
-      data: updatedProduct,
-    });
   });
 
 export default handler;

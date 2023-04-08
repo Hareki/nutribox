@@ -53,10 +53,12 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
 
   // side hover when side bar is compacted
   const COMPACT = sidebarCompact && !onHover ? 1 : 0;
-  // handle active current page
+  // handle active current pag
   // FIXME shouldn't be hardcoded the [id] path
   const activeRoute = (path: string) =>
-    router.pathname.endsWith(`${path}/[id]`) || router.pathname.endsWith(path)
+    router.pathname.endsWith(`${path}/[id]`) ||
+    router.pathname.endsWith(`${path}/create`) ||
+    router.pathname.endsWith(path)
       ? 1
       : 0;
 

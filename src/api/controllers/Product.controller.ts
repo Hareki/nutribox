@@ -13,6 +13,11 @@ import type {
   GetManyDocsOptions,
 } from 'api/base/mongoose/baseHandler';
 import { buildBaseQuery } from 'api/base/mongoose/baseHandler';
+import {
+  deleteFileById,
+  getImageKitInstance,
+  getImageNameFromUrl,
+} from 'api/helpers/imagekit.helper';
 import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import type { IConsumptionHistory } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/ConsumptionHistory.schema/types';
 import type { ICustomerOrderItemInputWithoutConsumption } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/types';
@@ -159,6 +164,55 @@ const consumeProducts = async (
   return consumptionHistories;
 };
 
+const pushImageUrls = async (
+  productId: string,
+  imageUrls: string[],
+): Promise<IProduct> => {
+  const productDoc = await ProductModel().findById(productId);
+  if (!productDoc) {
+    throw new Error(`Product ${productId} not found`);
+  }
+
+  productDoc.imageUrls.push(...imageUrls);
+  await productDoc.save();
+
+  return productDoc.toObject();
+};
+
+const deleteImageUrl = async (
+  productId: string,
+  imageUrl: string,
+): Promise<IProduct> => {
+  const productDoc = await ProductModel().findById(productId);
+  if (!productDoc) {
+    throw new Error(`Product ${productId} not found`);
+  }
+
+  const urlIndex = productDoc.imageUrls.indexOf(imageUrl);
+  if (urlIndex >= 0) {
+    productDoc.imageUrls.splice(urlIndex, 1);
+  }
+  await productDoc.save();
+
+  const imagekit = getImageKitInstance();
+
+  try {
+    const result = await imagekit.listFiles({
+      name: getImageNameFromUrl(imageUrl),
+      limit: 1,
+    });
+
+    if (result.length > 0) {
+      const fileId = result[0].fileId;
+      await deleteFileById(fileId);
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+
+  return productDoc.toObject();
+};
+
 const ProductController = {
   getAll,
   getOne,
@@ -168,5 +222,7 @@ const ProductController = {
   getRelatedProducts,
   getNewProducts,
   consumeProducts,
+  pushImageUrls,
+  deleteImageUrl,
 };
 export default ProductController;
