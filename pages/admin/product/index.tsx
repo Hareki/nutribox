@@ -63,15 +63,7 @@ function ProductList() {
 
   const filteredOrders = products?.docs.map(mapProductToRow);
 
-  const {
-    order,
-    orderBy,
-    selected,
-    rowsPerPage,
-    filteredList,
-    handleChangePage,
-    handleRequestSort,
-  } = useMuiTable({
+  const { selected, filteredList } = useMuiTable({
     listData: filteredOrders,
     // defaultSort: 'id',
     // defaultOrder: 'desc',
@@ -103,13 +95,13 @@ function ProductList() {
             <TableContainer sx={{ minWidth: 900 }}>
               <Table>
                 <TableHeader
-                  order={order}
+                  // order={order}
                   hideSelectBtn
-                  orderBy={orderBy}
+                  // orderBy={orderBy}
                   heading={tableHeading}
                   numSelected={selected.length}
                   rowCount={filteredList.length}
-                  onRequestSort={handleRequestSort}
+                  // onRequestSort={handleRequestSort}
                 />
 
                 <TableBody>

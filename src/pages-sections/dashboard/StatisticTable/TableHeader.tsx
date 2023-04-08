@@ -1,9 +1,6 @@
 import { styled, TableCell, TableHead, TableRow } from '@mui/material';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import type { FC } from 'react';
 import React from 'react';
-
-import UpDown from 'components/icons/UpDown';
 
 // styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -16,14 +13,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // ----------------------------------------------------------------------
 type TableHeaderProps = {
   heading: any[];
-  orderBy: string;
-  order: 'asc' | 'desc';
-  onRequestSort: (id: string) => void;
+  orderBy?: string;
+  order?: 'asc' | 'desc';
+  onRequestSort?: (id: string) => void;
 };
 // ----------------------------------------------------------------------
 
 const TableHeader: FC<TableHeaderProps> = (props) => {
-  const { heading, orderBy, order, onRequestSort } = props;
+  const { heading } = props;
 
   return (
     <TableHead sx={{ backgroundColor: 'grey.200' }}>
@@ -32,19 +29,8 @@ const TableHeader: FC<TableHeaderProps> = (props) => {
           <StyledTableCell
             key={headCell.id}
             align={headCell.alignCenter ? 'center' : 'left'}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              onClick={() => onRequestSort(headCell.id)}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              sx={{ '& .MuiTableSortLabel-icon': { opacity: 1 } }}
-              IconComponent={() => (
-                <UpDown sx={{ fontSize: 14, ml: 1, color: 'grey.600' }} />
-              )}
-            >
-              {headCell.label}
-            </TableSortLabel>
+            {headCell.label}
           </StyledTableCell>
         ))}
       </TableRow>

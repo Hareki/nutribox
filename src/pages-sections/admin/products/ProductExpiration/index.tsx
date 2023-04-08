@@ -47,15 +47,7 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
     otherArgs: product.id,
   });
 
-  const {
-    order,
-    orderBy,
-    selected,
-    rowsPerPage,
-    filteredList,
-    handleChangePage,
-    handleRequestSort,
-  } = useMuiTable({
+  const { selected, filteredList, handleChangePage } = useMuiTable({
     listData: expirationOrdersPagination?.docs || [],
     // defaultSort: 'id',
     // defaultOrder: 'desc',
@@ -77,13 +69,10 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
               <TableContainer sx={{ minWidth: 900 }}>
                 <Table>
                   <TableHeader
-                    order={order}
                     hideSelectBtn
-                    orderBy={orderBy}
                     heading={tableHeading}
                     numSelected={selected.length}
                     rowCount={filteredList.length}
-                    onRequestSort={handleRequestSort}
                   />
 
                   <TableBody>

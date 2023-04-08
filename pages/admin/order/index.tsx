@@ -56,19 +56,12 @@ function OrderList() {
 
   const filteredOrders = orders?.docs.map(mapOrderToRow);
 
-  const {
-    order,
-    orderBy,
-    selected,
-    rowsPerPage,
-    filteredList,
-    handleChangePage,
-    handleRequestSort,
-  } = useMuiTable({
-    listData: filteredOrders,
-    // defaultSort: 'id',
-    // defaultOrder: 'desc',
-  });
+  const { order, selected, rowsPerPage, filteredList, handleChangePage } =
+    useMuiTable({
+      listData: filteredOrders,
+      // defaultSort: 'id',
+      // defaultOrder: 'desc',
+    });
 
   return (
     <Box py={4}>
@@ -96,11 +89,9 @@ function OrderList() {
                 <TableHeader
                   order={order}
                   hideSelectBtn
-                  orderBy={orderBy}
                   heading={tableHeading}
                   numSelected={selected.length}
                   rowCount={filteredList.length}
-                  onRequestSort={handleRequestSort}
                 />
 
                 <TableBody>

@@ -17,24 +17,24 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // ----------------------------------------------------------------------
 type TableHeaderProps = {
   heading: any[];
-  orderBy: string;
+  orderBy?: string;
   rowCount: number;
   numSelected: number;
-  order: 'asc' | 'desc';
+  order?: 'asc' | 'desc';
   hideSelectBtn?: boolean;
-  onRequestSort: (id: string) => void;
+  onRequestSort?: (id: string) => void;
   onSelectAllClick?: (checked: boolean, defaulSelect: string) => void;
 };
 // ----------------------------------------------------------------------
 
 const TableHeader: FC<TableHeaderProps> = (props) => {
   const {
-    order,
+    // order,
     heading,
-    orderBy,
+    // orderBy,
     rowCount,
     numSelected,
-    onRequestSort,
+    // onRequestSort,
     onSelectAllClick = () => {},
     hideSelectBtn = false,
   } = props;
@@ -58,7 +58,7 @@ const TableHeader: FC<TableHeaderProps> = (props) => {
           <StyledTableCell
             key={headCell.id}
             align={headCell.align}
-            sortDirection={orderBy === headCell.id ? order : false}
+            // sortDirection={orderBy === headCell.id ? order : false}
           >
             {headCell.label}
             {/* <TableSortLabel

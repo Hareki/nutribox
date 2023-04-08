@@ -1,3 +1,4 @@
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { LoadingButton } from '@mui/lab';
 import {
   Autocomplete,
@@ -250,6 +251,7 @@ const ProductForm: FC<ProductFormProps> = (props) => {
               </Fragment>
             ) : (
               <Button
+                startIcon={<EditRoundedIcon />}
                 variant='contained'
                 color='primary'
                 type='submit'

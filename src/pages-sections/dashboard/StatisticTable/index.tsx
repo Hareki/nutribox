@@ -40,7 +40,7 @@ const StatisticTable: FC<ListTableProps> = ({
   tableHeading,
   type,
 }) => {
-  const { order, orderBy, filteredList, handleRequestSort } = useMuiTable({
+  const { filteredList } = useMuiTable({
     listData: dataList,
   });
 
@@ -48,12 +48,7 @@ const StatisticTable: FC<ListTableProps> = ({
     <Scrollbar>
       <TableContainer>
         <Table>
-          <TableHeader
-            order={order}
-            orderBy={orderBy}
-            heading={tableHeading}
-            onRequestSort={handleRequestSort}
-          />
+          <TableHeader heading={tableHeading} />
 
           {type === 'RECENT_PURCHASE' && (
             <TableBody>
