@@ -1,5 +1,6 @@
 // TODO: Đây là trang dùng để edit profile
 import { CameraEnhance } from '@mui/icons-material';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { LoadingButton } from '@mui/lab';
 import {
   Avatar,
@@ -32,7 +33,6 @@ import { phoneRegex } from 'helpers/regex.helper';
 import { reloadSession } from 'helpers/session.helper';
 import apiCaller from 'utils/apiCallers/profile';
 import { IKPublicContext } from 'utils/constants';
-
 interface ProfileFormProps {
   account: IAccount;
   toggleEditing: () => void;
@@ -337,6 +337,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
                 </Fragment>
               ) : (
                 <Button
+                  startIcon={<EditRoundedIcon />}
                   variant='contained'
                   color='primary'
                   type='submit'

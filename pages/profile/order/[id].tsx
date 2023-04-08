@@ -59,7 +59,7 @@ function ProfileOrderDetails({ initialOrder }: Props) {
   });
 
   const HEADER_BUTTON = (
-    <Button color='primary' sx={{ bgcolor: 'primary.light', px: 4 }}>
+    <Button color='primary' sx={{ bgcolor: 'primary.light', px: 3 }}>
       Quay lại
     </Button>
   );

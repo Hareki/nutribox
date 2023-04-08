@@ -22,7 +22,7 @@ const AdminDetailsViewHeader = ({
         color='primary'
         sx={{
           backgroundColor: 'primary.light',
-          px: 4,
+          px: 3,
         }}
       >
         Quay lại

@@ -68,7 +68,7 @@ const OrderDetails: FC<Props> = ({ order, setOrderDetails }) => {
   const HEADER_BUTTON = (
     <Button
       color='primary'
-      sx={{ bgcolor: 'primary.light', px: 4 }}
+      sx={{ bgcolor: 'primary.light', px: 3 }}
       onClick={() => setOrderDetails(null)}
     >
       Quay lại

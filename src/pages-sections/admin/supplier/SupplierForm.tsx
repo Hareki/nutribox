@@ -1,3 +1,4 @@
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { LoadingButton } from '@mui/lab';
 import { Button, Grid, TextField } from '@mui/material';
 import { useFormik } from 'formik';
@@ -163,6 +164,7 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
               </Fragment>
             ) : (
               <Button
+                startIcon={<EditRoundedIcon />}
                 variant='contained'
                 color='primary'
                 type='submit'

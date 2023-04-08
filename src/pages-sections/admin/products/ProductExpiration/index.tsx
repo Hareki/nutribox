@@ -1,3 +1,4 @@
+import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import {
   Box,
   Button,
@@ -97,7 +98,16 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
               mr={6}
               onClick={() => setModalOpen(true)}
             >
-              <Button variant='contained' color='primary'>
+              <Button
+                variant='contained'
+                color='primary'
+                startIcon={<ImportExportRoundedIcon />}
+                sx={{
+                  '& .MuiButton-startIcon > svg': {
+                    fontSize: '25px',
+                  },
+                }}
+              >
                 Nhập sản phẩm
               </Button>
             </FlexBox>
