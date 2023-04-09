@@ -1,4 +1,3 @@
-import { Add, Remove } from '@mui/icons-material';
 import type { SxProps, Theme } from '@mui/material';
 import { Box, Button, Grid, useTheme } from '@mui/material';
 import type { FC } from 'react';
@@ -7,29 +6,16 @@ import { useEffect, useState } from 'react';
 import { FlexBox, FlexRowCenter } from '../flex-box';
 
 import type { IUpeProduct } from 'api/models/Product.model/types';
-import { H1, H2, H3, H6 } from 'components/abstract/Typography';
+import { H1, H2, H6 } from 'components/abstract/Typography';
 import LazyImage from 'components/LazyImage';
-import type { CartItemActionType } from 'hooks/global-states/useCart';
-import useCart from 'hooks/global-states/useCart';
-import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
+import { useCartSpinner } from 'hooks/useCartSpinner';
 import { formatCurrency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
-// ================================================================
 type ProductIntroProps = { product: IUpeProduct; sx?: SxProps<Theme> };
-// ================================================================
 
 const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
-  const {
-    id,
-    retailPrice,
-    name,
-    imageUrls,
-    description,
-    category,
-    available,
-    expirations,
-  } = product;
+  const { retailPrice, name, imageUrls, description, category } = product;
 
   const { palette } = useTheme();
   const [categoryName, setCategoryName] = useState('đang tải...');
@@ -44,26 +30,15 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
   }, [category, categoryName]);
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const { cartItem, updateCartAmount } = useCart(id);
-  const { inStock, disableAddToCart } = useQuantityLimitation(
-    expirations,
+
+  const {
+    handleCartAmountChange,
+    quantitySpinner,
+    disableAddToCart,
     cartItem,
-  );
+  } = useCartSpinner(product);
 
   const handleImageClick = (index: number) => () => setSelectedImage(index);
-
-  const handleCartAmountChange =
-    (amount: number, type: CartItemActionType) => () => {
-      if (type === 'add' && disableAddToCart) return;
-      updateCartAmount(
-        {
-          quantity: amount,
-          product,
-        },
-        type,
-      );
-    };
-
   return (
     <Box sx={sx} width='100%'>
       <Grid container spacing={3} justifyContent='space-around'>
@@ -143,41 +118,16 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
               disabled={disableAddToCart}
               color='primary'
               variant='contained'
-              onClick={handleCartAmountChange(1, 'add')}
+              onClick={() => {
+                handleCartAmountChange(1, 'add');
+              }}
               sx={{ mb: 4.5, px: '1.75rem', height: 40 }}
             >
               {disableAddToCart ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
             </Button>
           ) : (
-            <FlexBox alignItems='center' mb={4.5}>
-              <Button
-                size='small'
-                sx={{ p: 1 }}
-                color='primary'
-                variant='outlined'
-                onClick={handleCartAmountChange(
-                  cartItem?.quantity - 1,
-                  'remove',
-                )}
-              >
-                <Remove fontSize='small' />
-              </Button>
-
-              <H3 fontWeight='600' mx={2.5}>
-                {cartItem?.quantity.toString().padStart(2, '0')}
-              </H3>
-
-              <Button
-                disabled={disableAddToCart}
-                size='small'
-                sx={{ p: 1 }}
-                color='primary'
-                variant='outlined'
-                onClick={handleCartAmountChange(cartItem?.quantity + 1, 'add')}
-              >
-                <Add fontSize='small' />
-              </Button>
-            </FlexBox>
+            // legacyQuantityInput
+            quantitySpinner
           )}
         </Grid>
       </Grid>

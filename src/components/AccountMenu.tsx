@@ -6,6 +6,7 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import {
   Avatar,
   Box,
+  CircularProgress,
   IconButton,
   ListItemIcon,
   Menu,
@@ -65,6 +66,8 @@ const AccountMenu: FC<AccountMenuProps> = () => {
     setLoginDialogOpen(true);
   };
 
+  const isLoadingSession = status === 'loading';
+
   const iconStyles = {
     color: palette.grey[700],
   };
@@ -72,15 +75,17 @@ const AccountMenu: FC<AccountMenuProps> = () => {
     <Box>
       <Box bgcolor='grey.200' borderRadius='50%'>
         <IconButton
-          // disabled={!isAuthenticated}
+          disabled={isLoadingSession}
           id='account-menu-button'
-          sx={{ padding: isAuthenticated ? 0 : 1.25 }}
+          // sx={{ padding: isAuthenticated ? 0 : 1.25 }}
+          sx={{ padding: 0 }}
           aria-haspopup='true'
           onClick={handleClick}
           aria-expanded={open ? 'true' : undefined}
           aria-controls={open ? 'account-menu' : undefined}
         >
-          {isAuthenticated ? (
+          {isLoadingSession && <CircularProgress />}
+          {isAuthenticated && (
             <Avatar
               alt={userFullName}
               src={userUrl}
@@ -90,9 +95,9 @@ const AccountMenu: FC<AccountMenuProps> = () => {
                 },
               }}
             />
-          ) : (
-            <PersonOutline />
           )}
+
+          {!isAuthenticated && !isLoadingSession && <PersonOutline />}
         </IconButton>
       </Box>
 

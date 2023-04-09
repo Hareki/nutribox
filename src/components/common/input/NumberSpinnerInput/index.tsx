@@ -14,21 +14,27 @@ interface NumberSpinnerProps {
   steps?: number;
   min?: number;
   max?: number;
-  onValueChange?: (value: number) => void;
+  initialValue: number;
+  value: number;
+  setValue: (value: number) => void;
 }
 const NumberSpinner = forwardRef<HTMLInputElement, NumberSpinnerProps>(
-  ({ steps = 1, min = 1, max = 100, onValueChange }, ref) => {
-    const [internalValue, setInternalValue] = useState(min);
+  ({ steps = 1, min = 0, max = 100, value, setValue, initialValue }, ref) => {
+    const [internalValue, setInternalValue] = useState(initialValue);
     const [mouseDirection, setMouseDirection] = useState<MouseDirection>(null);
 
     useInterval(
       () => handleButtonChange(mouseDirection),
-      mouseDirection ? 100 : null,
+      mouseDirection ? 200 : null,
     );
 
     useEffect(() => {
-      onValueChange(internalValue);
-    }, [internalValue, onValueChange]);
+      setInternalValue(initialValue);
+    }, [initialValue]);
+
+    useEffect(() => {
+      setValue(internalValue);
+    }, [internalValue, setValue]);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
       setInternalValue(() => {
@@ -70,6 +76,7 @@ const NumberSpinner = forwardRef<HTMLInputElement, NumberSpinnerProps>(
     return (
       <StyledNumberSpinner>
         <IconButton
+          color='primary'
           onClick={() => handleButtonChange('down')}
           onMouseDown={() => setMouseDirection('down')}
           onMouseOut={() => setMouseDirection(null)}
@@ -81,12 +88,13 @@ const NumberSpinner = forwardRef<HTMLInputElement, NumberSpinnerProps>(
           ref={ref}
           type='number'
           step={steps}
-          value={internalValue}
+          value={value}
           onChange={handleChange}
           min={min}
           max={max}
         />
         <IconButton
+          color='primary'
           onClick={() => handleButtonChange('up')}
           onMouseDown={() => setMouseDirection('up')}
           onMouseUp={() => setMouseDirection(null)}

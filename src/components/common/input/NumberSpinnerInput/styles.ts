@@ -7,12 +7,16 @@ const StyledNumberSpinner = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   border: '2px solid rgba(0, 0, 0, 0.23)',
+  backgroundColor: 'white',
   borderRadius: '8px',
   overflow: 'hidden',
   transition: 'all 0.2s ease-in-out',
   '&:focus-within': {
     border: `2px solid ${theme.palette.primary.main} !important`,
   },
+  // '& button': {
+  //   backgroundColor: 'white',
+  // },
   '& input': {
     border: 'none',
     outline: 'none',

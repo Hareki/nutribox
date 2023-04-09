@@ -17,7 +17,7 @@ type MutateCartItemType = {
   type: CartItemActionType;
 };
 
-export type CartItemActionType = 'add' | 'remove';
+export type CartItemActionType = 'add' | 'remove' | 'update';
 
 const useCart = (productId?: string) => {
   const queryClient = useQueryClient();
@@ -50,10 +50,15 @@ const useCart = (productId?: string) => {
       });
       queryClient.invalidateQueries(['cart', accountId]);
 
-      if (type === 'remove') {
-        enqueueSnackbar('Đã xoá khỏi giỏ hàng', { variant: 'error' });
-      } else {
-        enqueueSnackbar('Đã thêm vào giỏ hàng', { variant: 'success' });
+      switch (type) {
+        case 'add':
+          enqueueSnackbar('Đã thêm vào giỏ hàng', { variant: 'success' });
+          break;
+        case 'remove':
+          enqueueSnackbar('Đã xoá khỏi giỏ hàng', { variant: 'error' });
+          break;
+        case 'update':
+          enqueueSnackbar('Đã cập nhật giỏ hàng', { variant: 'success' });
       }
     },
   });
@@ -80,7 +85,9 @@ const useCart = (productId?: string) => {
 
   let cartItem: IPopulatedCartItem;
   if (productId) {
-    cartItem = cartState.cart.find((item) => item.product.id === productId);
+    cartItem = cartState.cart.find((item) => {
+      return item.product.id === productId;
+    });
   }
 
   return {

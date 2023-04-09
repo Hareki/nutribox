@@ -94,6 +94,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const initialStoreInfo = await getStore(StoreId);
 
+  if (!product?.available) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       product: serialize(product),

@@ -1,4 +1,4 @@
-import { Add, Close, Remove } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -11,18 +11,14 @@ import {
 } from '@mui/material';
 import type { FC } from 'react';
 import { useState, useEffect } from 'react';
-import { useDebounce } from 'usehooks-ts';
 
 import OutOfStockChip from './OutOfStockChip';
 
 import type { IUpeProduct } from 'api/models/Product.model/types';
-import { H1, H2, H3, Paragraph } from 'components/abstract/Typography';
+import { H1, H2, Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
 import MuiImage from 'components/common/input/MuiImage';
-import { FlexBox } from 'components/flex-box';
-import type { CartItemActionType } from 'hooks/global-states/useCart';
-import useCart from 'hooks/global-states/useCart';
-import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
+import { useCartSpinner } from 'hooks/useCartSpinner';
 import { formatCurrency } from 'lib';
 import axiosInstance from 'utils/axiosInstance';
 
@@ -61,8 +57,6 @@ type ProductViewDialogProps = {
 const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
   const { product, openDialog, handleCloseDialog } = props;
   const [categoryName, setCategoryName] = useState('đang tải...');
-  const [spinnerValue, setSpinnerValue] = useState(1);
-  const debouncedSpinnerValue = useDebounce<number>(spinnerValue, 200);
 
   useEffect(() => {
     if (categoryName === 'đang tải...' && openDialog) {
@@ -72,25 +66,13 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
     }
   }, [openDialog, categoryName, product.category]);
 
-  const { cartItem, updateCartAmount } = useCart(product.id);
-
-  const { inStock, disableAddToCart } = useQuantityLimitation(
-    product.expirations,
+  const {
+    inStock,
+    handleCartAmountChange,
+    quantitySpinner,
+    disableAddToCart,
     cartItem,
-  );
-
-  const handleCartAmountChange = (amount: number, type: CartItemActionType) => {
-    console.log('amount: ', amount);
-    if (type === 'add' && disableAddToCart) return;
-
-    updateCartAmount(
-      {
-        quantity: amount,
-        product,
-      },
-      type,
-    );
-  };
+  } = useCartSpinner(product);
 
   return (
     <Dialog
@@ -128,7 +110,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
               <H2>{product.name}</H2>
 
               <Paragraph py={1} color='grey.500' fontWeight={600} fontSize={13}>
-                DANH MỤC: {categoryName}
+                Danh mục: {categoryName}
               </Paragraph>
 
               <H1 color='primary.main'>
@@ -151,46 +133,7 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
                   Thêm vào giỏ hàng
                 </Button>
               ) : (
-                <FlexBox alignItems='center'>
-                  <Button
-                    size='small'
-                    color='primary'
-                    variant='outlined'
-                    sx={{
-                      p: '.6rem',
-                      width: 45,
-                      height: 45,
-                      borderRadius: '50%',
-                    }}
-                    onClick={() =>
-                      handleCartAmountChange(cartItem?.quantity - 1, 'remove')
-                    }
-                  >
-                    <Remove fontSize='small' />
-                  </Button>
-
-                  <H3 fontWeight='600' mx={2.5}>
-                    {cartItem?.quantity.toString().padStart(2, '0')}
-                  </H3>
-
-                  <Button
-                    disabled={disableAddToCart}
-                    size='small'
-                    color='primary'
-                    variant='outlined'
-                    sx={{
-                      p: '.6rem',
-                      width: 45,
-                      height: 45,
-                      borderRadius: '50%',
-                    }}
-                    onClick={() =>
-                      handleCartAmountChange(cartItem?.quantity + 1, 'add')
-                    }
-                  >
-                    <Add fontSize='small' />
-                  </Button>
-                </FlexBox>
+                quantitySpinner
               )}
             </Grid>
           </Grid>
