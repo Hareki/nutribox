@@ -22,11 +22,11 @@ import type { SupplierInfoFormValues } from 'pages-sections/admin/supplier/Suppl
 import SupplierForm from 'pages-sections/admin/supplier/SupplierForm';
 import apiCaller from 'utils/apiCallers/admin/supplier';
 
-AdminSupplierDetails.getLayout = function getLayout(page: ReactElement) {
+AdminSupplierCreate.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
-export default function AdminSupplierDetails() {
+export default function AdminSupplierCreate() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [infoState, dispatchInfo] = useReducer(infoDialogReducer, {
     open: false,
@@ -84,10 +84,6 @@ export default function AdminSupplierDetails() {
     );
     createSupplier(requestBody);
   };
-  console.log(
-    'file: create.tsx:101 - AdminSupplierDetails - isRedirecting:',
-    isRedirecting,
-  );
 
   return (
     <Box py={4}>

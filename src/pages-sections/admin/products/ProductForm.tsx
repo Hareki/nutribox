@@ -10,15 +10,21 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
-import type { FC } from 'react';
+import type { Dispatch, FC } from 'react';
 import { Fragment } from 'react';
 import * as yup from 'yup';
 
 import type { UpdateProductInfoRb } from '../../../../pages/api/admin/product/[id]';
 
+import type { ICdsUpeProduct } from 'api/models/Product.model/types';
 import type { IProductCategoryDropdown } from 'api/models/ProductCategory.model/types';
 import CurrencyInput from 'components/common/input/CurrencyInput';
 import CustomSwitch from 'components/common/input/CustomSwitch';
+import InfoDialog from 'components/dialog/info-dialog';
+import type {
+  InfoDialogAction,
+  InfoDialogState,
+} from 'components/dialog/info-dialog/reducer';
 import apiCaller from 'utils/apiCallers/admin/product';
 
 export interface ProductInfoFormValues
@@ -26,22 +32,54 @@ export interface ProductInfoFormValues
   category: IProductCategoryDropdown;
 }
 
+const getInitialValues = (product: ICdsUpeProduct) => {
+  if (product) {
+    return {
+      name: product.name,
+      category: product.category,
+      description: product.description,
+      shelfLife: product.shelfLife,
+      wholesalePrice: product.wholesalePrice,
+      retailPrice: product.retailPrice,
+      available: product.available,
+    };
+  }
+  return {
+    name: '',
+    category: null,
+    description: '',
+    shelfLife: null,
+    wholesalePrice: null,
+    retailPrice: null,
+    available: true,
+  };
+};
+
 type ProductFormProps = {
-  initialValues: any;
+  setSubmissionClicked?: (value: boolean) => void;
+  product?: ICdsUpeProduct;
   handleFormSubmit: (values: any) => void;
   isLoading: boolean;
   isEditing: boolean;
-  setIsEditing: (value: boolean) => void;
+  setIsEditing?: (value: boolean) => void;
+  infoState: InfoDialogState;
+  dispatchInfo: Dispatch<InfoDialogAction>;
 };
 
 const ProductForm: FC<ProductFormProps> = (props) => {
   const {
-    initialValues,
+    setSubmissionClicked,
+    product,
     handleFormSubmit,
     isLoading,
     isEditing,
     setIsEditing,
+    infoState,
+    dispatchInfo,
   } = props;
+
+  const isAdding = !product;
+
   const { data: categories, isLoading: isLoadingCategories } = useQuery({
     queryKey: ['categories', 'dropdown'],
     queryFn: () => apiCaller.getCategoryDropdown(),
@@ -57,7 +95,7 @@ const ProductForm: FC<ProductFormProps> = (props) => {
     handleBlur,
     handleSubmit,
   } = useFormik<ProductInfoFormValues>({
-    initialValues,
+    initialValues: getInitialValues(product),
     validationSchema,
     onSubmit: handleFormSubmit,
   });
@@ -231,13 +269,13 @@ const ProductForm: FC<ProductFormProps> = (props) => {
                   variant='contained'
                   color='primary'
                   type='submit'
+                  onClick={() => setSubmissionClicked?.(true)}
                 >
-                  Lưu thay đổi
+                  {isAdding ? 'Thêm sản phẩm' : 'Lưu thay đổi'}
                 </LoadingButton>
                 <Button
                   variant='outlined'
                   color='primary'
-                  type='submit'
                   onClick={() => {
                     setIsEditing(false);
                     resetForm();
@@ -263,6 +301,14 @@ const ProductForm: FC<ProductFormProps> = (props) => {
           </Grid>
         </Grid>
       </form>
+
+      <InfoDialog
+        open={infoState.open}
+        content={infoState.content}
+        title={infoState.title}
+        variant={infoState.variant}
+        handleClose={() => dispatchInfo({ type: 'close_dialog' })}
+      />
     </Fragment>
   );
 };
@@ -282,14 +328,17 @@ const validationSchema = yup.object().shape({
     .max(500, 'Mô tả sản phẩm không được quá 500 ký tự'),
   shelfLife: yup
     .number()
+    .typeError('Vui lòng số ngày sử dụng')
     .required('Vui lòng số ngày sử dụng')
     .min(1, 'Số ngày sử dụng phải lớn hơn 0'),
   wholesalePrice: yup
     .number()
+    .typeError('Vui lòng nhập giá gốc')
     .required('Vui lòng nhập giá gốc')
     .min(1, 'Giá gốc phải lớn hơn 0'),
   retailPrice: yup
     .number()
+    .typeError('Vui lòng nhập giá bán')
     .required('Vui lòng nhập giá bán')
     .min(1, 'Giá bán phải lớn hơn 0')
     .test(

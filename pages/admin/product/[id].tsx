@@ -5,6 +5,7 @@ import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
+import { useReducer } from 'react';
 import { useState } from 'react';
 
 import type { UpdateProductInfoRb } from '../../api/admin/product/[id]';
@@ -16,9 +17,13 @@ import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { JSendFailResponse } from 'api/types/response.type';
 import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
+import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
+import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { getMessageList } from 'helpers/feedback.helper';
+import { handleUpload } from 'helpers/imagekit.helper';
 import { ProductForm } from 'pages-sections/admin';
+import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageListForm';
 import ImageListForm from 'pages-sections/admin/products/ImageListForm';
 import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';
 import type { ProductInfoFormValues } from 'pages-sections/admin/products/ProductForm';
@@ -35,27 +40,28 @@ interface EditProductProps {
 export default function AdminProductDetails({
   initialProduct,
 }: EditProductProps) {
+  const { enqueueSnackbar } = useSnackbar();
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isUploadSuccess, setIsUploadSuccess] = useState(false);
+  const [isUploadError, setIsUploadError] = useState(false);
+  const [isEditingForm, setIsEditingForm] = useState(false);
+  const [infoState, dispatchInfo] = useReducer(infoDialogReducer, {
+    open: false,
+  });
+
+  const [confirmState, dispatchConfirm] = useReducer(confirmDialogReducer, {
+    open: false,
+  });
+
   const queryClient = useQueryClient();
+
   const { data: product } = useQuery({
     queryKey: ['product', initialProduct.id],
     queryFn: () => apiCaller.getProduct(initialProduct.id),
     initialData: initialProduct,
   });
-  // console.log('file: [id].tsx:44 - EditProduct - product:', product);
 
-  const initialValues: ProductInfoFormValues = {
-    name: product.name,
-    category: product.category,
-    description: product.description,
-    shelfLife: product.shelfLife,
-    wholesalePrice: product.wholesalePrice,
-    retailPrice: product.retailPrice,
-    available: product.available,
-  };
-
-  const [isEditingForm, setIsEditingForm] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-  const { mutate: updateProduct, isLoading } = useMutation<
+  const { mutate: updateProductInfo, isLoading } = useMutation<
     IProduct,
     unknown,
     UpdateProductInfoRb
@@ -69,24 +75,92 @@ export default function AdminProductDetails({
     onError: (err: AxiosError<JSendFailResponse<any>>) => {
       console.log(err);
       if (err.response.data.data) {
-        enqueueSnackbar(getMessageList(err.response.data.data), {
-          variant: 'error',
+        dispatchInfo({
+          type: 'open_dialog',
+          payload: {
+            title: 'Có lỗi xảy ra',
+            content: getMessageList(err.response.data.data),
+            variant: 'error',
+          },
         });
         return;
       }
+
       enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
         variant: 'error',
       });
     },
   });
 
-  const handleFormSubmit = (values: ProductInfoFormValues) => {
+  const { mutate: pushProductImageUrls, isLoading: isPushingImageUrls } =
+    useMutation<IProduct, unknown, string[]>({
+      mutationFn: (imageUrls) => apiCaller.pushImageUrls(product.id, imageUrls),
+      onSuccess: () => {
+        enqueueSnackbar('Thêm ảnh sản phẩm thành công', {
+          variant: 'success',
+        });
+        queryClient.refetchQueries(['product', product.id]);
+      },
+      onError: (err) => {
+        console.log(err);
+        enqueueSnackbar('Đã có lỗi xảy ra khi thêm ảnh sản phẩm', {
+          variant: 'error',
+        });
+      },
+    });
+
+  const { mutate: deleteImageUrl, isLoading: isDeletingImageUrl } = useMutation<
+    IProduct,
+    unknown,
+    string
+  >({
+    mutationFn: (imageUrl) => apiCaller.deleteImageUrl(product.id, imageUrl),
+    onSuccess: () => {
+      setIsUploadSuccess(true);
+      setIsUploadError(false);
+
+      enqueueSnackbar('Xoá ảnh đã chọn thành công', {
+        variant: 'success',
+      });
+      queryClient.refetchQueries(['product', product.id]);
+    },
+    onError: (err) => {
+      setIsUploadSuccess(false);
+      setIsUploadError(true);
+
+      console.log(err);
+      enqueueSnackbar('Đã có lỗi xảy ra khi xoá ảnh đã chọn', {
+        variant: 'error',
+      });
+    },
+  });
+
+  const handleInfoFormSubmit = (values: ProductInfoFormValues) => {
     const categoryId = values.category.id;
     const requestBody = {
       ...values,
       category: categoryId,
     };
-    updateProduct(requestBody);
+    updateProductInfo(requestBody);
+  };
+
+  const onUploadStart = () => {
+    setIsUploadingImage(true);
+  };
+
+  const onUploadSuccess = (response: UploadSuccessResponse[]) => {
+    setIsUploadingImage(false);
+
+    const newImageUrls = response.map(
+      (item) => `${item.url}?updatedAt=${Date.now()}`,
+    );
+
+    pushProductImageUrls(newImageUrls);
+  };
+
+  const onUploadError = (err: any) => {
+    console.log(err);
+    setIsUploadingImage(false);
   };
 
   return (
@@ -98,15 +172,30 @@ export default function AdminProductDetails({
 
       <Card sx={{ p: 6 }}>
         <H5 mb={3}>Hình ảnh</H5>
-        <ImageListForm product={product} />
+        <ImageListForm
+          confirmState={confirmState}
+          dispatchConfirm={dispatchConfirm}
+          imageUrls={product.imageUrls}
+          onFilesSelected={handleUpload.bind(null, {
+            onUploadError,
+            onUploadStart,
+            onUploadSuccess,
+            folderName: `products/${product.category.slug}/${product.slug}`,
+          })}
+          onFileDeleted={(url) => deleteImageUrl(url)}
+          isAddingImageUrls={isUploadingImage || isPushingImageUrls}
+          isDeletingImageUrl={isDeletingImageUrl}
+        />
         <Divider sx={{ mb: 4, borderColor: 'grey.400', mt: 4, mx: 6 }} />
         <H5 mb={5}>Thông tin</H5>
         <ProductForm
           setIsEditing={setIsEditingForm}
           isEditing={isEditingForm}
           isLoading={isLoading}
-          initialValues={initialValues}
-          handleFormSubmit={handleFormSubmit}
+          product={product}
+          infoState={infoState}
+          dispatchInfo={dispatchInfo}
+          handleFormSubmit={handleInfoFormSubmit}
         />
       </Card>
 

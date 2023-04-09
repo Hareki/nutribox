@@ -151,6 +151,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
         </Box>
 
         <Box display='none'>
+          {/* Should use the UploadFileInput as well, currently don't change because of stability */}
           <IKUpload
             {...IKPublicContext}
             accept='image/*'

@@ -1,8 +1,13 @@
 import type { UpdateProductInfoRb } from '../../../../pages/api/admin/product/[id]';
+import type { CreateProductRb } from '../../../../pages/api/admin/product/create';
 import type { ExpirationOrder } from '../../../../pages/api/admin/product/expiration-order';
 import type { ImportProductRb } from '../../../../pages/api/admin/product/import-product';
 
-import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
+import type {
+  ICdsUpeProduct,
+  IPopulatedCategoryProduct,
+  IProduct,
+} from 'api/models/Product.model/types';
 import type { IProductCategoryDropdown } from 'api/models/ProductCategory.model/types';
 import type { ISupplierDropdown } from 'api/models/Supplier.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
@@ -57,6 +62,15 @@ const getExpirationOrders = async (
   return response.data.data;
 };
 
+const createProduct = async (
+  requestBody: CreateProductRb,
+): Promise<IPopulatedCategoryProduct> => {
+  const response = await axiosInstance.post(
+    `admin/product/create`,
+    requestBody,
+  );
+  return response.data.data;
+};
 const updateProduct = async (
   productId: string,
   requestBody: UpdateProductInfoRb,
@@ -120,6 +134,7 @@ const apiCaller = {
   deleteImageUrl,
   getSupplierDropdown,
   importProduct,
+  createProduct,
 };
 
 export default apiCaller;

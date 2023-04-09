@@ -11,13 +11,13 @@ export const productSchema = new Schema<IProduct>(
   {
     imageUrls: {
       type: [String],
-      required: [true, 'Product/ImageUrls should have at least 1 image'],
-      validate: {
-        validator: function (imageUrls: string[]) {
-          return imageUrls.length > 0;
-        },
-        message: 'Product/ImageUrls should have at least 1 image',
-      },
+      // required: [true, 'Product/ImageUrls should have at least 1 image'],
+      // validate: {
+      //   validator: function (imageUrls: string[]) {
+      //     return imageUrls.length > 0;
+      //   },
+      //   message: 'Product/ImageUrls should have at least 1 image',
+      // },
     },
 
     category: {

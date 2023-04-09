@@ -2,6 +2,7 @@ import type { ClientSession } from 'mongoose';
 
 import CustomerOrderController from './CustomerOrder.controller';
 import {
+  createOneGenerator,
   getAllGenerator,
   getOneGenerator,
   getTotalGenerator,
@@ -17,6 +18,7 @@ import {
   deleteFileById,
   getImageKitInstance,
   getImageNameFromUrl,
+  getImagePathFromUrl,
 } from 'api/helpers/imagekit.helper';
 import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import type { IConsumptionHistory } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/ConsumptionHistory.schema/types';
@@ -36,6 +38,7 @@ interface GetRelatedProductOptions extends Omit<GetManyDocsOptions, 'model'> {}
 
 const getAll = getAllGenerator<IProduct>(ProductModel());
 const getOne = getOneGenerator<IProduct>(ProductModel());
+const createOne = createOneGenerator<IProduct>(ProductModel());
 const updateOne = updateOneGenerator<IProduct>(ProductModel());
 const getTotal = getTotalGenerator(ProductModel());
 
@@ -199,8 +202,10 @@ const deleteImageUrl = async (
   try {
     const result = await imagekit.listFiles({
       name: getImageNameFromUrl(imageUrl),
+      path: getImagePathFromUrl(imageUrl),
       limit: 1,
     });
+    console.log('file: Product.controller.ts:208 - result:', result);
 
     if (result.length > 0) {
       const fileId = result[0].fileId;
@@ -216,6 +221,7 @@ const deleteImageUrl = async (
 const ProductController = {
   getAll,
   getOne,
+  createOne,
   updateOne,
   getTotal,
   getHotProducts,

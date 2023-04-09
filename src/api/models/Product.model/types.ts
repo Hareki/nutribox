@@ -29,6 +29,10 @@ export interface IProduct {
   defaultSupplier: Types.ObjectId;
 }
 
+export interface IPopulatedCategoryProduct extends Omit<IProduct, 'category'> {
+  category: IProductCategory;
+}
+
 export interface IPopulatedExpirationProduct
   extends Omit<IProduct, 'expirations'> {
   expirations: IExpiration[];
