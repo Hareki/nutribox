@@ -45,12 +45,12 @@ const AccountAddressViewer = ({ accountId }: AccountAddressViewerProps) => {
 
   const {
     order,
-    orderBy,
+    // orderBy,
     selected,
     rowsPerPage,
     filteredList,
     handleChangePage,
-    handleRequestSort,
+    // handleRequestSort,
   } = useMuiTable({
     listData: filterAddress || [],
     // defaultSort: 'id',
@@ -75,11 +75,11 @@ const AccountAddressViewer = ({ accountId }: AccountAddressViewerProps) => {
                   <TableHeader
                     order={order}
                     hideSelectBtn
-                    orderBy={orderBy}
+                    // orderBy={orderBy}
                     heading={tableHeading}
                     numSelected={selected.length}
                     rowCount={filteredList.length}
-                    onRequestSort={handleRequestSort}
+                    // onRequestSort={handleRequestSort}
                   />
 
                   <TableBody>

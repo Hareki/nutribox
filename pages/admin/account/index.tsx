@@ -65,12 +65,12 @@ function AccountList() {
 
   const {
     order,
-    orderBy,
+    // orderBy,
     selected,
     rowsPerPage,
     filteredList,
     handleChangePage,
-    handleRequestSort,
+    // handleRequestSort,
   } = useMuiTable({
     listData: filteredAccounts,
     // defaultSort: 'id',
@@ -105,11 +105,11 @@ function AccountList() {
                 <TableHeader
                   order={order}
                   hideSelectBtn
-                  orderBy={orderBy}
+                  // orderBy={orderBy}
                   heading={tableHeading}
                   numSelected={selected.length}
                   rowCount={filteredList.length}
-                  onRequestSort={handleRequestSort}
+                  // onRequestSort={handleRequestSort}
                 />
 
                 <TableBody>
