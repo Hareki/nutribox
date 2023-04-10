@@ -4,6 +4,7 @@ import ProductCategoryController from 'api/controllers/ProductCategory.controlle
 import StoreController from 'api/controllers/Store.controller';
 import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import { getPaginationParams } from 'api/helpers/pagination.helpers';
+import AccountModel from 'api/models/Account.model';
 import type { IUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 import type { IStore } from 'api/models/Store.model/types';
@@ -105,4 +106,27 @@ export async function getAccount(accountId: string) {
 export const getStore = async (id: string): Promise<IStore> => {
   const result = await StoreController.getOne({ id });
   return result;
+};
+
+export const verifyAccount = async (token: string) => {
+  if (!token) {
+    return false;
+  }
+
+  const user = await AccountModel().findOne({
+    verificationToken: token,
+    verificationTokenExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return false;
+  }
+
+  user.verified = true;
+  user.verificationToken = undefined;
+  user.verificationTokenExpires = undefined;
+
+  await user.save();
+
+  return true;
 };

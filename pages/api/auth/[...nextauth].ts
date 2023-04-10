@@ -69,6 +69,7 @@ export const authOptions: AuthOptions = {
           email: account.email,
           avatarUrl: getAvatarUrl(account),
           role: account.role,
+          verified: account.verified,
         };
         return user;
       },

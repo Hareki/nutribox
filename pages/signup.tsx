@@ -20,13 +20,14 @@ const SignUpPage: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // FIXME no useMutation, kinda messy
   const handleFormSubmit = async (values: SignUpRequestBody) => {
     console.log('file: signup.tsx:30 - handleFormSubmit - values:', values);
     setLoading(true);
-    const result = await apiCaller.signUp(values);
-    setLoading(false);
-    if (result.status === 'fail') {
-      const messagesObject = result.data;
+    const signupResult = await apiCaller.signUp(values);
+    if (signupResult.status !== 'success') {
+      const messagesObject = signupResult.data;
+      setLoading(false);
       setHasError(true);
       dispatch({
         type: 'open_dialog',
@@ -36,18 +37,39 @@ const SignUpPage: NextPage = () => {
           content: getMessageList(messagesObject),
         },
       });
-    } else {
-      setHasError(false);
+
+      return;
+    }
+
+    const verificationResult = await apiCaller.sendVerificationEmail(
+      values.email,
+    );
+    if (verificationResult.status !== 'success') {
+      setLoading(false);
+      setHasError(true);
       dispatch({
         type: 'open_dialog',
         payload: {
-          variant: 'info',
-          title: 'Đăng ký thành công',
+          variant: 'error',
+          title: 'Xác thực thất bại',
           content:
-            'Vui lòng kiểm tra email để kích hoạt tài khoản, bạn sẽ được chuyển hướng về trang đăng nhập sau khi tắt thông báo này',
+            'Đã có lỗi trong quá trình gửi email xác thực, vui lòng liên hệ cửa hàng để được hỗ trợ',
         },
       });
+      return;
     }
+
+    setLoading(false);
+    setHasError(false);
+    dispatch({
+      type: 'open_dialog',
+      payload: {
+        variant: 'info',
+        title: 'Đăng ký thành công',
+        content:
+          'Vui lòng kiểm tra email để kích hoạt tài khoản, bạn sẽ được chuyển hướng về trang chủ sau khi tắt thông báo này',
+      },
+    });
   };
 
   return (
@@ -62,8 +84,9 @@ const SignUpPage: NextPage = () => {
         open={state.open}
         handleClose={() => {
           dispatch({ type: 'close_dialog' });
+          console.log('file: signup.tsx:88 - hasError:', hasError);
           if (!hasError) {
-            router.push('//login');
+            router.push('/');
           }
         }}
         title={state.title}

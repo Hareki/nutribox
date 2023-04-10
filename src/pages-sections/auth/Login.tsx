@@ -41,12 +41,14 @@ interface LoginProps {
   handleFormSubmit: (values: any) => void;
   loading: boolean;
   incorrect: boolean;
+  verified: boolean;
 }
 
 const Login: FC<LoginProps> = ({
   handleFormSubmit,
   loading = false,
   incorrect = false,
+  verified = true,
 }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -134,6 +136,12 @@ const Login: FC<LoginProps> = ({
         </H4>
       )}
 
+      {!verified && (
+        <H4 mt={2} mb={4} textAlign='center' color='error.500'>
+          Email chưa được xác thực, vui lòng kiểm tra lại
+        </H4>
+      )}
+
       {/* <SocialButtons /> */}
 
       <FlexRowCenter mt='1.25rem'>
@@ -176,7 +184,7 @@ const formSchema = yup.object().shape({
   email: yup
     .string()
     .email('Vui lòng nhập email hợp lệ')
-    .required('Vui lòng nhập email hoặc số điện thoại'),
+    .required('Vui lòng nhập email'),
   password: yup.string().required('Vui lòng nhập mật khẩu'),
 });
 

@@ -11,8 +11,13 @@ const LoginDialog = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
   const { loginDialogState, setLoginDialogOpen } = useLoginDialog();
 
-  const { checkingCredentials, handleFormSubmit, signInResponse, incorrect } =
-    useLoginForm();
+  const {
+    checkingCredentials,
+    handleFormSubmit,
+    signInResponse,
+    incorrect,
+    verified,
+  } = useLoginForm();
 
   useEffect(() => {
     // console.log(signInResponse);
@@ -33,6 +38,7 @@ const LoginDialog = () => {
         loading={checkingCredentials}
         handleFormSubmit={handleFormSubmit}
         incorrect={incorrect}
+        verified={verified}
       />
     </Dialog>
   );

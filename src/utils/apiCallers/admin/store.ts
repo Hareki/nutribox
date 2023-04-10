@@ -4,7 +4,7 @@ import type { IStore } from 'api/models/Store.model/types';
 import axiosInstance from 'utils/axiosInstance';
 
 const getStoreInfo = async (id: string): Promise<IStore> => {
-  const response = await axiosInstance.get(`/admin/store`, {
+  const response = await axiosInstance.get('/store', {
     params: {
       id,
     },
@@ -13,7 +13,7 @@ const getStoreInfo = async (id: string): Promise<IStore> => {
 };
 
 const updateStoreInfo = async (body: UpdateStoreInfoRb): Promise<IStore> => {
-  const response = await axiosInstance.put(`/admin/store`, body);
+  const response = await axiosInstance.put('/admin/store', body);
   return response.data.data;
 };
 

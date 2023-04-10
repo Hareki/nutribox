@@ -13,8 +13,13 @@ import Login from 'pages-sections/auth/Login';
 const LoginPage: NextPage = () => {
   const router = useRouter();
 
-  const { checkingCredentials, handleFormSubmit, signInResponse, incorrect } =
-    useLoginForm();
+  const {
+    checkingCredentials,
+    handleFormSubmit,
+    signInResponse,
+    incorrect,
+    verified,
+  } = useLoginForm();
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
@@ -31,6 +36,7 @@ const LoginPage: NextPage = () => {
         loading={checkingCredentials || redirecting}
         handleFormSubmit={handleFormSubmit}
         incorrect={incorrect}
+        verified={verified}
       />
     </FlexRowCenter>
   );

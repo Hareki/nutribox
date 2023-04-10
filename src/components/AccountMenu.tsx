@@ -77,8 +77,8 @@ const AccountMenu: FC<AccountMenuProps> = () => {
         <IconButton
           disabled={isLoadingSession}
           id='account-menu-button'
-          // sx={{ padding: isAuthenticated ? 0 : 1.25 }}
-          sx={{ padding: 0 }}
+          sx={{ padding: isAuthenticated || isLoadingSession ? 0 : 1.25 }}
+          // sx={{ padding: 0 }}
           aria-haspopup='true'
           onClick={handleClick}
           aria-expanded={open ? 'true' : undefined}

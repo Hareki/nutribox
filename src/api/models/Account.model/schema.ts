@@ -67,8 +67,6 @@ export const accountSchema = new Schema<IAccount>(
     avatarUrl: {
       type: String,
       get: function (avatarUrl: string) {
-        console.log('file: schema.ts:82 - avatarUrl:', avatarUrl);
-
         if (avatarUrl) {
           return avatarUrl;
         } else {
@@ -94,6 +92,14 @@ export const accountSchema = new Schema<IAccount>(
     verified: {
       type: Boolean,
       default: false,
+    },
+
+    verificationToken: {
+      type: String,
+    },
+
+    verificationTokenExpires: {
+      type: Date,
     },
   },
   {

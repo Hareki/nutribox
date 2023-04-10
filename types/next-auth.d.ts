@@ -21,12 +21,13 @@ declare module 'next-auth' {
       | 'email'
       | 'avatarUrl'
       | 'role'
+      | 'verified'
     >;
   }
 
   interface User
     extends Pick<
       IAccount,
-      'id' | 'fullName' | 'email' | 'avatarUrl' | 'role'
+      'id' | 'fullName' | 'email' | 'avatarUrl' | 'role' | 'verified'
     > {}
 }

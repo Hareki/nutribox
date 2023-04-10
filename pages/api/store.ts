@@ -3,26 +3,19 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import StoreController from 'api/controllers/Store.controller';
+import { getStore } from 'api/base/server-side-getters';
 import connectToDB from 'api/database/databaseConnection';
-import type { IStoreHourWithObjectId } from 'api/models/Store.model/StoreHour.schema/types';
 import type { IStore } from 'api/models/Store.model/types';
 import type { JSendResponse } from 'api/types/response.type';
-
-export interface UpdateStoreContactInfoRb extends Omit<IStore, 'storeHours'> {}
-export interface UpdateStoreHoursRb extends Pick<IStore, 'id'> {
-  storeHours: IStoreHourWithObjectId[];
-}
-export type UpdateStoreInfoRb = UpdateStoreContactInfoRb | UpdateStoreHoursRb;
 
 const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IStore>>>({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
-}).put(async (req, res) => {
+}).get(async (req, res) => {
   await connectToDB();
 
-  const requestBody = req.body as UpdateStoreInfoRb;
-  const result = await StoreController.updateOne(requestBody.id, requestBody);
+  const id = req.query.id as string;
+  const result = await getStore(id);
 
   res.status(StatusCodes.OK).json({
     status: 'success',

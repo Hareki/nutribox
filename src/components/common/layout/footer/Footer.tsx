@@ -49,6 +49,8 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
   const { data: storeInfo, isLoading } = useQuery({
     queryKey: ['store', StoreId],
     queryFn: () => apiCaller.getStoreInfo(StoreId),
+    // FIXME causing weird error saying
+    // Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["store","641ff62a1af60afc9423cbea"]
     initialData: initialStoreInfo ?? null,
   });
   // Set the initialData will prevent isLoading from being true, need to figure out another way to determine if the it is loading or not
