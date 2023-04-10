@@ -44,11 +44,27 @@ const updateSupplier = async (
   return response.data.data;
 };
 
+const searchSuppliersByName = async (
+  searchQuery: string,
+): Promise<ISupplier[]> => {
+  if (!searchQuery) return [];
+  const response = await axiosInstance.get('admin/supplier/search', {
+    params: {
+      name: searchQuery,
+    },
+  });
+
+  const result = response.data.data;
+  if (!result) return [];
+  return result;
+};
+
 const apiCaller = {
   getSuppliers,
   getSupplier,
   createSupplier,
   updateSupplier,
+  searchSuppliersByName,
 };
 
 export default apiCaller;

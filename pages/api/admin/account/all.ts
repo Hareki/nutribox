@@ -5,6 +5,7 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/databaseConnection';
+import { populateAccountsTotalOrders } from 'api/helpers/model.helper';
 import { processPaginationParams } from 'api/helpers/pagination.helpers';
 import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
@@ -32,12 +33,7 @@ const handler = nc<
     limit,
   });
 
-  const promises = accounts.map(async (account) => {
-    const { total } = await AccountController.countOrder(account.id);
-    return { ...account, totalOrders: total };
-  });
-
-  const accountsWithTotalOrders = await Promise.all(promises);
+  const accountsWithTotalOrders = await populateAccountsTotalOrders(accounts);
 
   const result = {
     totalPages,

@@ -27,10 +27,26 @@ export const updateOrder = async (orderId: string): Promise<ICustomerOrder> => {
   return response.data.data;
 };
 
+const searchOrdersById = async (
+  searchQuery: string,
+): Promise<ICustomerOrder[]> => {
+  if (!searchQuery) return [];
+  const response = await axiosInstance.get('admin/order/search', {
+    params: {
+      id: searchQuery,
+    },
+  });
+
+  const result = response.data.data;
+  if (!result) return [];
+  return result;
+};
+
 const apiCaller = {
   getOrders,
   getOrder,
   updateOrder,
+  searchOrdersById,
 };
 
 export default apiCaller;

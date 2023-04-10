@@ -21,6 +21,7 @@ import Scrollbar from 'components/Scrollbar';
 import { getMaxUpeQuantity } from 'helpers/product.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
+import { useTableSearch } from 'hooks/useTableSearch';
 import { ProductRow } from 'pages-sections/admin';
 import apiCaller from 'utils/apiCallers/admin/product';
 
@@ -61,10 +62,18 @@ function ProductList() {
     getPaginationDataFn: (currPageNum) => apiCaller.getProducts(currPageNum),
   });
 
-  const filteredOrders = products?.docs.map(mapProductToRow);
+  const {
+    handleSearch,
+    filteredList: filteredProducts,
+    searchQuery,
+  } = useTableSearch({
+    mapItemToRow: mapProductToRow,
+    paginationResult: products,
+    queryFn: (context) => apiCaller.searchProductsByName(context.queryKey[2]),
+  });
 
   const { selected, filteredList } = useMuiTable({
-    listData: filteredOrders,
+    listData: filteredProducts,
     // defaultSort: 'id',
     // defaultOrder: 'desc',
   });
@@ -74,7 +83,7 @@ function ProductList() {
       <H3 mb={2}>Sản phẩm</H3>
 
       <SearchArea
-        handleSearch={() => {}}
+        handleSearch={handleSearch}
         searchPlaceholder='Tìm theo tên sản phẩm'
         haveButton
         handleBtnClick={() => router.push('/admin/product/create')}
@@ -113,9 +122,11 @@ function ProductList() {
             </TableContainer>
           </Scrollbar>
 
-          <Stack alignItems='center' my={4}>
-            {paginationComponent}
-          </Stack>
+          {!searchQuery && (
+            <Stack alignItems='center' my={4}>
+              {paginationComponent}
+            </Stack>
+          )}
         </Card>
       )}
     </Box>

@@ -123,6 +123,21 @@ const importProduct = async (
   return response.data.data;
 };
 
+const searchProductsByName = async (
+  searchQuery: string,
+): Promise<ICdsUpeProduct[]> => {
+  if (!searchQuery) return [];
+  const response = await axiosInstance.get('admin/product/search', {
+    params: {
+      name: searchQuery,
+    },
+  });
+
+  const result = response.data.data;
+  if (!result) return [];
+  return result;
+};
+
 const apiCaller = {
   getProducts,
   getProduct,
@@ -135,6 +150,7 @@ const apiCaller = {
   getSupplierDropdown,
   importProduct,
   createProduct,
+  searchProductsByName,
 };
 
 export default apiCaller;

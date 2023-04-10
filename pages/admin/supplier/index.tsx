@@ -20,6 +20,7 @@ import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
+import { useTableSearch } from 'hooks/useTableSearch';
 import SupplierRow from 'pages-sections/admin/supplier/SupplierRow';
 import apiCaller from 'utils/apiCallers/admin/supplier';
 
@@ -34,15 +35,14 @@ const tableHeading = [
   { id: 'email', label: 'Email', align: 'left' },
 ];
 
-const mapOrderToRow = (item: ISupplier) => ({
+const mapSupplierToRow = (item: ISupplier) => ({
   id: item.id,
   name: item.name,
   phone: item.phone,
   email: item.email,
 });
 
-export type FilteredSupplier = ReturnType<typeof mapOrderToRow>;
-
+export type FilteredSupplier = ReturnType<typeof mapSupplierToRow>;
 function SupplierList() {
   const router = useRouter();
 
@@ -55,20 +55,18 @@ function SupplierList() {
     getPaginationDataFn: (currPageNum) => apiCaller.getSuppliers(currPageNum),
   });
 
-  const filteredAccounts = suppliers?.docs.map(mapOrderToRow);
-
   const {
-    order,
-    // orderBy,
-    selected,
-    rowsPerPage,
-    filteredList,
-    handleChangePage,
-    // handleRequestSort,
-  } = useMuiTable({
-    listData: filteredAccounts,
-    // defaultSort: 'id',
-    // defaultOrder: 'desc',
+    handleSearch,
+    filteredList: filteredSupplier,
+    searchQuery,
+  } = useTableSearch({
+    mapItemToRow: mapSupplierToRow,
+    paginationResult: suppliers,
+    queryFn: (context) => apiCaller.searchSuppliersByName(context.queryKey[2]),
+  });
+
+  const { order, selected, filteredList } = useMuiTable({
+    listData: filteredSupplier,
   });
 
   return (
@@ -76,7 +74,7 @@ function SupplierList() {
       <H3 mb={2}>Nhà cung cấp</H3>
 
       <SearchArea
-        handleSearch={() => {}}
+        handleSearch={handleSearch}
         searchPlaceholder='Tìm theo tên nhà CC'
         haveButton
         handleBtnClick={() => router.push('/admin/supplier/create')}
@@ -115,9 +113,11 @@ function SupplierList() {
             </TableContainer>
           </Scrollbar>
 
-          <Stack alignItems='center' my={4}>
-            {paginationComponent}
-          </Stack>
+          {!searchQuery && (
+            <Stack alignItems='center' my={4}>
+              {paginationComponent}
+            </Stack>
+          )}
         </Card>
       )}
     </Box>

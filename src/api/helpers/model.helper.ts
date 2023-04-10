@@ -2,10 +2,12 @@ import type { Document, Model, Types } from 'mongoose';
 
 import { CustomError, CustomErrorCodes } from './error.helper';
 
+import AccountController from 'api/controllers/Account.controller';
 import type {
   ICartItem,
   IPopulatedCartItem,
 } from 'api/models/Account.model/CartItem.schema/types';
+import type { IAccount } from 'api/models/Account.model/types';
 import ExpirationModel from 'api/models/Expiration.model';
 import type { IExpiration } from 'api/models/Expiration.model/types';
 import ProductModel from 'api/models/Product.model';
@@ -91,4 +93,13 @@ export const populateAscUnexpiredExpiration = async (
   const populatedProducts: IUpeProduct[] = await Promise.all(promises);
 
   return populatedProducts;
+};
+
+export const populateAccountsTotalOrders = async (accounts: IAccount[]) => {
+  const promises = accounts.map(async (account) => {
+    const { total } = await AccountController.countOrder(account.id);
+    return { ...account, totalOrders: total };
+  });
+
+  return await Promise.all(promises);
 };

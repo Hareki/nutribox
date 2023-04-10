@@ -20,6 +20,7 @@ import Scrollbar from 'components/Scrollbar';
 import { getAvatarUrl } from 'helpers/account.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
+import { useTableSearch } from 'hooks/useTableSearch';
 import AccountRow from 'pages-sections/admin/account/AccountRow';
 import apiCaller from 'utils/apiCallers/admin/account';
 
@@ -35,7 +36,7 @@ const tableHeading = [
   { id: 'totalOrders', label: 'Tổng số đơn', align: 'center' },
 ];
 
-const mapOrderToRow = (item: IAccountWithTotalOrders) => ({
+const mapAccountToRow = (item: IAccountWithTotalOrders) => ({
   id: item.id,
   lastName: item.lastName,
   firstName: item.firstName,
@@ -48,7 +49,7 @@ const mapOrderToRow = (item: IAccountWithTotalOrders) => ({
   totalOrders: item.totalOrders,
 });
 
-export type FilteredAccount = ReturnType<typeof mapOrderToRow>;
+export type FilteredAccount = ReturnType<typeof mapAccountToRow>;
 
 function AccountList() {
   const {
@@ -59,9 +60,17 @@ function AccountList() {
     baseQueryKey: ['admin/accounts'],
     getPaginationDataFn: (currPageNum) => apiCaller.getAccounts(currPageNum),
   });
-  //   console.log('file: index.tsx:56 - AccountList - accounts:', accounts);
 
-  const filteredAccounts = accounts?.docs.map(mapOrderToRow);
+  const {
+    handleSearch,
+    filteredList: filteredAccounts,
+    searchQuery,
+  } = useTableSearch({
+    mapItemToRow: mapAccountToRow,
+    paginationResult: accounts,
+    queryFn: (context) =>
+      apiCaller.searchAccountsByFullName(context.queryKey[2]),
+  });
 
   const {
     order,
@@ -84,7 +93,7 @@ function AccountList() {
       <H3 mb={2}>Tài khoản</H3>
 
       <SearchArea
-        handleSearch={() => {}}
+        handleSearch={handleSearch}
         searchPlaceholder='Tìm theo tên tài khoản'
         haveButton={false}
       />
@@ -121,9 +130,11 @@ function AccountList() {
             </TableContainer>
           </Scrollbar>
 
-          <Stack alignItems='center' my={4}>
-            {paginationComponent}
-          </Stack>
+          {!searchQuery && (
+            <Stack alignItems='center' my={4}>
+              {paginationComponent}
+            </Stack>
+          )}
         </Card>
       )}
     </Box>

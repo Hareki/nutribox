@@ -23,9 +23,25 @@ export const getAccount = async (accountId: string): Promise<IAccount> => {
   return response.data.data;
 };
 
+const searchAccountsByFullName = async (
+  searchQuery: string,
+): Promise<IAccountWithTotalOrders[]> => {
+  if (!searchQuery) return [];
+  const response = await axiosInstance.get('admin/account/search', {
+    params: {
+      fullName: searchQuery,
+    },
+  });
+
+  const result = response.data.data;
+  if (!result) return [];
+  return result;
+};
+
 const apiCaller = {
   getAccounts,
   getAccount,
+  searchAccountsByFullName,
 };
 
 export default apiCaller;

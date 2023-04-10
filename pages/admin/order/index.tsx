@@ -19,6 +19,7 @@ import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
+import { useTableSearch } from 'hooks/useTableSearch';
 import { OrderRow } from 'pages-sections/admin';
 import apiCaller from 'utils/apiCallers/admin/order';
 
@@ -54,21 +55,28 @@ function OrderList() {
     getPaginationDataFn: (currPageNum) => apiCaller.getOrders(currPageNum),
   });
 
-  const filteredOrders = orders?.docs.map(mapOrderToRow);
+  const {
+    handleSearch,
+    filteredList: filteredOrders,
+    searchQuery,
+  } = useTableSearch({
+    mapItemToRow: mapOrderToRow,
+    paginationResult: orders,
+    queryFn: (context) => apiCaller.searchOrdersById(context.queryKey[2]),
+  });
 
-  const { order, selected, rowsPerPage, filteredList, handleChangePage } =
-    useMuiTable({
-      listData: filteredOrders,
-      // defaultSort: 'id',
-      // defaultOrder: 'desc',
-    });
+  const { order, selected, filteredList } = useMuiTable({
+    listData: filteredOrders,
+    // defaultSort: 'id',
+    // defaultOrder: 'desc',
+  });
 
   return (
     <Box py={4}>
       <H3 mb={2}>Đơn hàng</H3>
 
       <SearchArea
-        handleSearch={() => {}}
+        handleSearch={handleSearch}
         searchPlaceholder='Tìm theo mã đơn hàng'
         haveButton={false}
       />
@@ -103,9 +111,11 @@ function OrderList() {
             </TableContainer>
           </Scrollbar>
 
-          <Stack alignItems='center' my={4}>
-            {paginationComponent}
-          </Stack>
+          {!searchQuery && (
+            <Stack alignItems='center' my={4}>
+              {paginationComponent}
+            </Stack>
+          )}
         </Card>
       )}
     </Box>
