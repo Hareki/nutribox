@@ -8,16 +8,15 @@ import type {
 import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 import axiosInstance from 'utils/axiosInstance';
 
+export const allCategory: IProductCategory = {
+  id: '',
+  name: 'Tất cả',
+  slug: '',
+  products: [],
+};
+
 const getAllCategories = async (): Promise<IProductCategory[]> => {
   const response = await axiosInstance.get('/category/all');
-  const allCategory: IProductCategory = {
-    id: '',
-    name: 'Tất cả',
-    slug: '',
-    products: [],
-  };
-
-  response.data.data.unshift(allCategory);
   return response.data.data;
 };
 

@@ -15,7 +15,7 @@ const LoginDialog = () => {
     useLoginForm();
 
   useEffect(() => {
-    console.log(signInResponse);
+    // console.log(signInResponse);
     if (signInResponse && signInResponse.ok) {
       setLoginDialogOpen(false);
     }

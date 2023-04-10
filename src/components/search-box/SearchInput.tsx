@@ -1,35 +1,35 @@
-import { Box, Button, MenuItem, TextField } from '@mui/material';
+import { Box, Button, ListItemIcon, MenuItem, TextField } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import type { ChangeEvent, FC } from 'react';
-import { useEffect, useRef, useState, useTransition } from 'react';
+import { useRef, useState, useTransition } from 'react';
+import { useDebounce } from 'usehooks-ts';
 
 import { SearchOutlinedIcon, SearchResultCard } from './styled';
 
+import apiCaller from 'utils/apiCallers/product/search';
+
 const SearchInput: FC = () => {
   const parentRef = useRef();
+  const router = useRouter();
   const [_, startTransition] = useTransition();
-  const [resultList, setResultList] = useState<string[]>([]);
+  const savedSearchQueryRef = useRef('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const debounceSearchQuery = useDebounce(searchQuery, 200);
 
-  const getProducts = async (searchText: string) => {
-    // const data = await api.searchProducts(searchText);
-    // setResultList(data);
-  };
+  const { data: searchResult } = useQuery({
+    queryKey: ['product', 'search', debounceSearchQuery],
+    queryFn: (context) => apiCaller.searchProductsByName(context.queryKey[2]),
+    initialData: [],
+  });
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     startTransition(() => {
-      const value = e.target?.value;
-
-      if (!value) setResultList([]);
-      else getProducts(value);
+      const searchQuery = e.target?.value;
+      setSearchQuery(searchQuery);
     });
   };
-
-  const handleDocumentClick = () => setResultList([]);
-
-  useEffect(() => {
-    window.addEventListener('click', handleDocumentClick);
-    return () => window.removeEventListener('click', null);
-  }, []);
 
   return (
     <Box
@@ -40,6 +40,13 @@ const SearchInput: FC = () => {
       {...{ ref: parentRef }}
     >
       <TextField
+        onBlur={() => {
+          savedSearchQueryRef.current = searchQuery;
+          setSearchQuery('');
+        }}
+        onFocus={() => {
+          setSearchQuery(savedSearchQueryRef.current);
+        }}
         fullWidth
         variant='outlined'
         placeholder='Tìm sản phẩm...'
@@ -60,6 +67,22 @@ const SearchInput: FC = () => {
               color='primary'
               disableElevation
               variant='contained'
+              onClick={() => {
+                router.push(
+                  {
+                    pathname: '/',
+                    query: {
+                      productName: savedSearchQueryRef.current || searchQuery,
+                      // used to reset the overrideSearchResult state, time's running out so this is the best I can do
+                      requestedAt: new Date().getTime(),
+                    },
+                  },
+                  undefined,
+                  {
+                    scroll: false,
+                  },
+                );
+              }}
               sx={{
                 px: '3rem',
                 height: '100%',
@@ -73,16 +96,30 @@ const SearchInput: FC = () => {
         }}
       />
 
-      {resultList.length > 0 && (
+      {searchResult.length > 0 && (
         <SearchResultCard elevation={2}>
-          {resultList.map((item) => (
+          {searchResult.map((item) => (
             <Link
-              href={`/product/search/${item}`}
-              key={item}
+              href={`/product/${item.slug}`}
+              key={item.id}
               passHref
               legacyBehavior
             >
-              <MenuItem key={item}>{item}</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setSearchQuery('');
+                }}
+                key={item.id}
+              >
+                <ListItemIcon
+                  sx={{
+                    mr: 1,
+                  }}
+                >
+                  <img src={item.imageUrls[0]} alt={item.name} width={40} />
+                </ListItemIcon>
+                {item.name}
+              </MenuItem>
             </Link>
           ))}
         </SearchResultCard>

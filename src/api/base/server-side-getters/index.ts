@@ -8,9 +8,11 @@ import type { IUpeProduct, IProduct } from 'api/models/Product.model/types';
 import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 import type { IStore } from 'api/models/Store.model/types';
 import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
+import { allCategory } from 'utils/apiCallers';
 
 export async function getAllCategories() {
   const result: IProductCategory[] = await ProductCategoryController.getAll();
+  result.unshift(allCategory);
   return result;
 }
 

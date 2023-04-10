@@ -7,6 +7,7 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import type { GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState, useMemo, Fragment } from 'react';
 
 import {
@@ -37,6 +38,7 @@ import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
 import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
 import apiCaller from 'utils/apiCallers';
+import searchApiCaller from 'utils/apiCallers/product/search';
 import { ProfileInfiniteProductConstant, StoreId } from 'utils/constants';
 import api from 'utils/mock-data/home-page';
 
@@ -69,6 +71,32 @@ function HomePage(props: HomePageProps) {
   const [filterProducts, setFilterProducts] = useState<IUpeProduct[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sideNavBottomOffset, setSideNavBottomOffset] = useState('0px');
+  const router = useRouter();
+
+  const [overrideSearchResult, setOverrideSearchResult] = useState(false);
+  const { query } = router;
+
+  const searchQuery = query?.productName as string;
+
+  const { data: searchResult, isLoading: isSearching } = useQuery({
+    queryKey: ['product', 'search', searchQuery],
+    queryFn: (context) =>
+      searchApiCaller.searchProductsByName(context.queryKey[2]),
+    initialData: [],
+    enabled: !!searchQuery,
+  });
+
+  useEffect(() => {
+    console.log(router.asPath);
+    setOverrideSearchResult(false);
+  }, [router.asPath]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      setSelectedCategoryId(null);
+      setSelectedCategoryName('Tất cả');
+    }
+  }, [searchQuery]);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -153,10 +181,15 @@ function HomePage(props: HomePageProps) {
     setFilterProducts(category?.data?.products);
   }, [selectedCategoryId, results]);
 
-  const handleSelectCategory = (categoryId: string, categoryName: string) => {
-    setSelectedCategoryId(categoryId);
-    setSelectedCategoryName(categoryName);
-  };
+  // FIXME Kinda buggy, but it works
+  const handleSelectCategory = useCallback(
+    (categoryId: string, categoryName: string) => {
+      setOverrideSearchResult(true);
+      setSelectedCategoryId(categoryId);
+      setSelectedCategoryName(categoryName);
+    },
+    [],
+  );
 
   const SideNav = useCallback(
     () => (
@@ -165,7 +198,7 @@ function HomePage(props: HomePageProps) {
         handleSelect={handleSelectCategory}
       />
     ),
-    [categoryNavigation],
+    [categoryNavigation, handleSelectCategory],
   );
 
   return (
@@ -181,13 +214,23 @@ function HomePage(props: HomePageProps) {
       >
         <Stack id='main-content' spacing={6} mt={2} mb={6}>
           <div id='products-section'>
-            {selectedCategoryId ? (
+            {!!searchQuery && !overrideSearchResult && (
+              <AllProducts
+                isLoading={isSearching}
+                products={searchResult}
+                title={`Kết quả tìm kiếm cho "${searchQuery}"`}
+              />
+            )}
+
+            {selectedCategoryId && (!searchQuery || overrideSearchResult) && (
               <AllProducts
                 isLoading={isLoading}
                 products={filterProducts}
                 title={selectedCategoryName}
               />
-            ) : (
+            )}
+
+            {!selectedCategoryId && (!searchQuery || overrideSearchResult) && (
               <>
                 <ProductCarousel
                   title='Các sản phẩm mới'
