@@ -4,11 +4,6 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/databaseConnection';
-import {
-  getImageKitInstance,
-  getImageNameFromUrl,
-  getImagePathFromUrl,
-} from 'api/helpers/imagekit.helper';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,
@@ -76,40 +71,40 @@ const handler = nc<NextApiRequest, NextApiResponse>({
   // ];
   // await ExpirationModel().create(dataArray);
 
-  const imagekit = getImageKitInstance();
+  // const imagekit = getImageKitInstance();
 
-  try {
-    const result = await imagekit.listFiles({
-      name: getImageNameFromUrl(
-        'https://ik.imagekit.io/NutriboxCDN/products/rau-cu/ca-chua-bi-hop-300g/1.jpg',
-      ),
-      path: getImagePathFromUrl(
-        'https://ik.imagekit.io/NutriboxCDN/products/rau-cu/ca-chua-bi-hop-300g/1.jpg',
-      ),
-      limit: 1,
-    });
-    // console.log('file: Product.controller.ts:208 - result:', result);
+  // try {
+  //   const result = await imagekit.listFiles({
+  //     name: getImageNameFromUrl(
+  //       'https://ik.imagekit.io/NutriboxCDN/products/rau-cu/ca-chua-bi-hop-300g/1.jpg',
+  //     ),
+  //     path: getImagePathFromUrl(
+  //       'https://ik.imagekit.io/NutriboxCDN/products/rau-cu/ca-chua-bi-hop-300g/1.jpg',
+  //     ),
+  //     limit: 1,
+  //   });
+  //   // console.log('file: Product.controller.ts:208 - result:', result);
 
-    console.log('HELLO??');
-    console.log(
-      getImageNameFromUrl(
-        'https://ik.imagekit.io/NutriboxCDN/products/rau-cu/ca-chua-bi-hop-300g/1.jpg',
-      ),
-    );
+  //   console.log('HELLO??');
+  //   console.log(
+  //     getImageNameFromUrl(
+  //       'https://ik.imagekit.io/NutriboxCDN/products/rau-cu/ca-chua-bi-hop-300g/1.jpg',
+  //     ),
+  //   );
 
-    // if (result.length > 0) {
-    //   const fileId = result[0].fileId;
-    //   await deleteFileById(fileId);
-    // }
-    res.status(StatusCodes.OK).json({
-      status: 'success',
-      data: result,
-    });
+  //   // if (result.length > 0) {
+  //   //   const fileId = result[0].fileId;
+  //   //   await deleteFileById(fileId);
+  //   // }
+  //   res.status(StatusCodes.OK).json({
+  //     status: 'success',
+  //     data: result,
+  //   });
 
-    return;
-  } catch (error) {
-    console.log('Error:', error);
-  }
+  //   return;
+  // } catch (error) {
+  //   console.log('Error:', error);
+  // }
 
   res.status(StatusCodes.OK).json({
     status: 'success',

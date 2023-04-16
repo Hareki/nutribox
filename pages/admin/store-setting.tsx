@@ -2,7 +2,7 @@ import { Box, Card, Divider } from '@mui/material';
 import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 
-import { getStore } from 'api/base/server-side-getters';
+import { getStore } from 'api/base/server-side-modules';
 import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { IStore } from 'api/models/Store.model/types';

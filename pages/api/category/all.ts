@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import { getAllCategories } from 'api/base/server-side-getters';
+import { getAllCategories } from 'api/base/server-side-modules';
 import connectToDB from 'api/database/databaseConnection';
 import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 import type { JSendResponse } from 'api/types/response.type';

@@ -81,6 +81,7 @@ const ImageListForm = ({
                           cursor: 'pointer',
                           width: '100%',
                           maxWidth: '300px',
+                          minWidth: '200px',
                         }}
                         ref={ref as React.MutableRefObject<HTMLImageElement>}
                         onClick={open}

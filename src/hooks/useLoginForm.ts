@@ -2,7 +2,7 @@ import type { SignInResponse } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
-import apiCaller from 'utils/apiCallers/signup';
+import apiCaller from 'utils/apiCallers/mail';
 
 export interface LoginRequestBody {
   email: string;
@@ -33,6 +33,10 @@ export const useLoginForm = () => {
     }
 
     const result = await signIn('credentials', { redirect: false, ...values });
+    console.log(
+      'file: useLoginForm.ts:36 - handleFormSubmit - result:',
+      result,
+    );
     setSignInResponse(result);
     setCheckingCredentials(false);
     if (result && !result.ok) {

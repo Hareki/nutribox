@@ -4,7 +4,7 @@ import type { GetServerSideProps } from 'next';
 import { useState, Fragment } from 'react';
 import type { ReactElement } from 'react';
 
-import { getAccount } from 'api/base/server-side-getters';
+import { getAccount } from 'api/base/server-side-modules';
 import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';

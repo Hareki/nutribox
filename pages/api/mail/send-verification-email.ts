@@ -11,10 +11,10 @@ import type { JSendResponse } from 'api/types/response.type';
 const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<string>>>({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
-}).get(async (req, res) => {
+}).post(async (req, res) => {
   await connectToDB();
 
-  await sendVerificationEmail(req.query.email as string);
+  await sendVerificationEmail(req.body.email as string);
 
   res.status(StatusCodes.OK).json({
     status: 'success',

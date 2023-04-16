@@ -7,7 +7,7 @@ import {
   getProductSlugs,
   getRelatedProducts,
   getStore,
-} from 'api/base/server-side-getters';
+} from 'api/base/server-side-modules';
 import connectToDB from 'api/database/databaseConnection';
 import { serialize } from 'api/helpers/object.helper';
 import type { IUpeProduct } from 'api/models/Product.model/types';

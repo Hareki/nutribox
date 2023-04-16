@@ -29,8 +29,32 @@ export async function sendVerificationEmail(email: string) {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: user.email,
-    subject: 'Account Verification',
-    text: `Please click the following link to verify your account: ${process.env.NEXT_PUBLIC_DOMAIN_URL}/mail/verify?token=${token}`,
+    subject: 'Nutribox - Xác thực tài khoản',
+    text: `Vui hãy nhấp vào đường dẫn này để xác thực tài khoản của bạn: ${process.env.NEXT_PUBLIC_DOMAIN_URL}/mail/verify?token=${token}. Nếu bạn không yêu cầu xác thực mật khẩu, vui lòng bỏ qua email này.`,
+  };
+
+  return transporter.sendMail(mailOptions);
+}
+
+export async function sendResetPasswordEmail(email: string) {
+  const user = await AccountModel().findOne({ email });
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const token = crypto.randomBytes(20).toString('hex');
+  const expires = Date.now() + 3600000; // Token expires in 1 hour
+
+  user.forgotPasswordToken = token;
+  user.forgotPasswordExpires = new Date(expires);
+
+  await user.save();
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: user.email,
+    subject: 'Nutribox - Khôi phục mật khẩu',
+    text: `Vui lòng nhấp vào đường dẫn này để khôi phục mật khẩu: ${process.env.NEXT_PUBLIC_DOMAIN_URL}/mail/reset-password?token=${token}. Nếu bạn không yêu cầu khôi phục mật khẩu, vui lòng bỏ qua email này.`,
   };
 
   return transporter.sendMail(mailOptions);

@@ -10,6 +10,7 @@ import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
 import { getMessageList } from 'helpers/feedback.helper';
 import Signup from 'pages-sections/auth/Signup';
+import mailApiCaller from 'utils/apiCallers/mail';
 import apiCaller from 'utils/apiCallers/signup';
 
 const SignUpPage: NextPage = () => {
@@ -41,7 +42,7 @@ const SignUpPage: NextPage = () => {
       return;
     }
 
-    const verificationResult = await apiCaller.sendVerificationEmail(
+    const verificationResult = await mailApiCaller.sendVerificationEmail(
       values.email,
     );
     if (verificationResult.status !== 'success') {

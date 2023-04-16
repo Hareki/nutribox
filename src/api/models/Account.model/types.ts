@@ -27,6 +27,9 @@ export interface IAccount {
   verificationToken: string;
   verificationTokenExpires: Date;
 
+  forgotPasswordToken: string;
+  forgotPasswordExpires: Date;
+
   fullName: string;
   isPasswordMatch: (
     candidatePassword: string,

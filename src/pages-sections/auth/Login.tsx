@@ -163,7 +163,7 @@ const Login: FC<LoginProps> = ({
         mt='1.25rem'
       >
         Quên mật khẩu?
-        <Link href='/reset-password' passHref legacyBehavior>
+        <Link href='/mail/request-reset-password' passHref legacyBehavior>
           <a>
             <H6 ml={1} borderBottom='1px solid' borderColor='grey.900'>
               Khôi phục

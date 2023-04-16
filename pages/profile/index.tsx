@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 
-import { getAccount } from 'api/base/server-side-getters';
+import { getAccount } from 'api/base/server-side-modules';
 import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { IAccount } from 'api/models/Account.model/types';

@@ -101,6 +101,14 @@ export const accountSchema = new Schema<IAccount>(
     verificationTokenExpires: {
       type: Date,
     },
+
+    forgotPasswordToken: {
+      type: String,
+    },
+
+    forgotPasswordExpires: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
