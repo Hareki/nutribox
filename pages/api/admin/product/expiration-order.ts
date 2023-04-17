@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import { processPaginationParams } from 'api/helpers/pagination.helpers';
 import ExpirationModel from 'api/models/Expiration.model';
 import ProductOrderModel from 'api/models/ProductOrder.model';

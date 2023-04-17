@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import { populateAccountsTotalOrders } from 'api/helpers/model.helper';
 import AccountModel from 'api/models/Account.model';
 import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';

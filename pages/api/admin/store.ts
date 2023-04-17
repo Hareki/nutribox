@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import StoreController from 'api/controllers/Store.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { IStoreHourWithObjectId } from 'api/models/Store.model/StoreHour.schema/types';
 import type { IStore } from 'api/models/Store.model/types';
 import type { JSendResponse } from 'api/types/response.type';

@@ -5,7 +5,7 @@ import nc from 'next-connect';
 
 import { defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import { hashPassword } from 'api/helpers/auth.helper';
 import {
   getDuplicateKeyErrorMessage,
@@ -29,10 +29,10 @@ export interface SignUpRequestBody
   > {}
 
 export const onSignUpError: ErrorHandler<
-NextApiRequest,
-NextApiResponse<
-JSendFailResponse<Record<string, string>> | JSendErrorResponse
->
+  NextApiRequest,
+  NextApiResponse<
+    JSendFailResponse<Record<string, string>> | JSendErrorResponse
+  >
 > = (err: any, _req, res) => {
   let response: Record<string, string>;
   console.log(JSON.stringify(err));
@@ -58,12 +58,12 @@ JSendFailResponse<Record<string, string>> | JSendErrorResponse
 };
 
 const handler = nc<
-NextApiRequest,
-NextApiResponse<
-| JSendSuccessResponse<IAccount>
-| JSendFailResponse<Record<string, string>>
-| JSendErrorResponse
->
+  NextApiRequest,
+  NextApiResponse<
+    | JSendSuccessResponse<IAccount>
+    | JSendFailResponse<Record<string, string>>
+    | JSendErrorResponse
+  >
 >({
   attachParams: true,
   onError: onSignUpError,

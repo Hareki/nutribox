@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,

@@ -7,7 +7,7 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import ExpirationController from 'api/controllers/Expiration.controller';
 import ProductOrderController from 'api/controllers/ProductOrder.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import ProductModel from 'api/models/Product.model';
 import type { IProduct } from 'api/models/Product.model/types';
 import type { JSendResponse } from 'api/types/response.type';

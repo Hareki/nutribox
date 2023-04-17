@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 
 import { verifyAccount } from 'api/base/server-side-modules';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import SEO from 'components/abstract/SEO';
 import { H1, Paragraph } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';

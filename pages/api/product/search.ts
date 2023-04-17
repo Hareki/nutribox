@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import ProductController from 'api/controllers/Product.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
 import type { IUpeProduct } from 'api/models/Product.model/types';
 import type { JSendResponse } from 'api/types/response.type';

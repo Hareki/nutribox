@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import SupplierController from 'api/controllers/Supplier.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { ISupplier } from 'api/models/Supplier.model/types';
 import type { JSendResponse } from 'api/types/response.type';
 import { AdminMainTablePaginationConstant } from 'utils/constants';

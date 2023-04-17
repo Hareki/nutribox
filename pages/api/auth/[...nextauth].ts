@@ -3,7 +3,7 @@ import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import AccountController from 'api/controllers/Account.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import { getAvatarUrl } from 'helpers/account.helper';
 
 export const authOptions: AuthOptions = {

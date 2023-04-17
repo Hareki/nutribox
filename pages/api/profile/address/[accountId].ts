@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import type { JSendResponse } from 'api/types/response.type';
 

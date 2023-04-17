@@ -5,7 +5,7 @@ import nc from 'next-connect';
 import { sendResetPasswordEmail } from '../../../mailer';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<string>>>({

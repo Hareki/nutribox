@@ -5,7 +5,7 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
 import SupplierController from 'api/controllers/Supplier.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import { processPaginationParams } from 'api/helpers/pagination.helpers';
 import type { ISupplier } from 'api/models/Supplier.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';

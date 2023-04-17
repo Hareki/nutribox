@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import CategoryController from 'api/controllers/ProductCategory.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { IProductCategoryDropdown } from 'api/models/ProductCategory.model/types';
 import type { IStoreHourWithObjectId } from 'api/models/Store.model/StoreHour.schema/types';
 import type { IStore } from 'api/models/Store.model/types';

@@ -8,7 +8,7 @@ import {
   onMongooseValidationError,
 } from 'api/base/next-connect';
 import ProductController from 'api/controllers/Product.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
 import ProductCategoryModel from 'api/models/ProductCategory.model';
 import type { JSendResponse } from 'api/types/response.type';

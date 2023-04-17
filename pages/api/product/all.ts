@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { getAllProducts } from 'api/base/server-side-modules';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { IUpeProduct } from 'api/models/Product.model/types';
 import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';

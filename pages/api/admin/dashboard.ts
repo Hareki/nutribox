@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import StatisticController from 'api/controllers/Statistic.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type {
   IProduct,

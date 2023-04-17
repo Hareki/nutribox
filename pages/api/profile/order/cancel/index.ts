@@ -5,7 +5,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { JSendResponse } from 'api/types/response.type';
 import { AllStatusIdArray, CancelIndexThreshHold } from 'utils/constants';

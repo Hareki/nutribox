@@ -8,7 +8,7 @@ import {
   getRelatedProducts,
   getStore,
 } from 'api/base/server-side-modules';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import { serialize } from 'api/helpers/object.helper';
 import type { IUpeProduct } from 'api/models/Product.model/types';
 import type { IStore } from 'api/models/Store.model/types';

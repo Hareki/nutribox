@@ -7,7 +7,7 @@ import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
 import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
 import ProductController from 'api/controllers/Product.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import type { ICustomerOrderItemInputWithoutConsumption } from 'api/models/CustomerOrder.model/CustomerOrderItem.schema/types';
 import type {
   ICustomerOrder,

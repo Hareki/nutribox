@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import AccountController from 'api/controllers/Account.controller';
-import connectToDB from 'api/database/databaseConnection';
+import connectToDB from 'api/database/mongoose/databaseConnection';
 import { populateAccountsTotalOrders } from 'api/helpers/model.helper';
 import { processPaginationParams } from 'api/helpers/pagination.helpers';
 import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
