@@ -57,6 +57,7 @@
     "merge": "^2.1.1",
     "mongoose": "^6.10.2",
     "mongoose-lean-virtuals": "^0.9.1",
+    "mssql": "^9.1.1",
     "next": "^13.2.4",
     "next-auth": "^4.20.1",
     "next-connect": "^0.13.0",
@@ -89,6 +90,7 @@
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",
     "@types/bcryptjs": "^2.4.2",
+    "@types/mssql": "^8.1.2",
     "@types/node": "^18.11.9",
     "@types/nodemailer": "^6.4.7",
     "@types/nprogress": "^0.2.0",

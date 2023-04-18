@@ -57,6 +57,7 @@ const getSessionUser = async (
       lastName: account.lastName,
       fullName: account.fullName,
       role: account.role,
+      verified: account.verified,
     },
   };
 };

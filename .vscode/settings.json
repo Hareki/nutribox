@@ -16,6 +16,7 @@
     "isfixed",
     "linestyle",
     "middlewares",
+    "Millis",
     "navigations",
     "NEXTAUTH",
     "notistack",
