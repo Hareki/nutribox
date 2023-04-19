@@ -6,7 +6,6 @@ import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/mongoose/databaseConnection';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
-import { removeAccents } from 'api/helpers/slug.helper';
 import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
 import type {
   IJsonUpeProduct,
@@ -24,13 +23,13 @@ const handler = nc<
   await connectToDB();
 
   const { name } = req.query;
-  const searchName = removeAccents(name as string);
+  // const searchName = removeAccents(name as string);
 
   const result = await executeUsp<IJsonUpeProduct[]>(
     'usp_FetchUpeProductsByKeyword',
     [
       { name: 'Limit', type: sql.Int, value: 10 },
-      { name: 'Keyword', type: sql.VarChar, value: searchName },
+      { name: 'Keyword', type: sql.NVarChar, value: name },
     ],
   );
 

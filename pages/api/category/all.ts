@@ -3,9 +3,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import { getAllCategories } from 'api/base/server-side-modules';
+import { getAllCategories } from 'api/base/server-side-modules/mssql-modules';
 import connectToDB from 'api/database/mongoose/databaseConnection';
-import type { IProductCategory } from 'api/models/ProductCategory.model/types';
+import type { IProductCategory } from 'api/mssql/pojos/product_category.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<

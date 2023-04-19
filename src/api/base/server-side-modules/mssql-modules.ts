@@ -7,6 +7,7 @@ import type {
   IJsonUpeProduct,
   IUpeProduct,
 } from 'api/mssql/pojos/product.pojo';
+import type { IProductCategory } from 'api/mssql/pojos/product_category.pojo';
 import { virtuals } from 'api/mssql/virtuals';
 import type {
   GetInfinitePaginationResult,
@@ -109,4 +110,11 @@ export async function getProductSlugs() {
     virtuals.getSlug(product.name),
   );
   return slugs;
+}
+
+export async function getAllCategories() {
+  const queryResult = await executeUsp<IProductCategory[]>(
+    'usp_FetchAllProductCategories',
+  );
+  return queryResult.data;
 }
