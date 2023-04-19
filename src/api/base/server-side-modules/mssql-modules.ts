@@ -20,7 +20,7 @@ export const getAllProducts = async (
   page: string,
 ): Promise<GetInfinitePaginationResult<IUpeProductWithImages>> => {
   const queryResult = await executeUsp<
-    IJsonUpeProductWithImages[],
+    IJsonUpeProductWithImages,
     UspInfinitePaginationOutput
   >('usp_FetchUpeProductsByPage', [
     { name: 'PageSize', type: sql.Int, value: docsPerPage },
@@ -44,7 +44,7 @@ export const getAllProducts = async (
 export const getProduct = async (
   id: string,
 ): Promise<IUpeProductWithImages> => {
-  const queryResult = await executeUsp<IJsonUpeProductWithImages[], null>(
+  const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
     'usp_FetchUpeProductById',
     [{ name: 'Id', type: sql.UniqueIdentifier, value: id }],
   );
@@ -52,13 +52,14 @@ export const getProduct = async (
   const upeProduct: IUpeProductWithImages = {
     ...queryResult.data[0],
     product_orders: JSON.parse(queryResult.data[0].product_orders),
+    image_urls: JSON.parse(queryResult.data[0].image_urls),
   };
 
   return upeProduct;
 };
 
 export const getHotProducts = async (): Promise<IUpeProductWithImages[]> => {
-  const queryResult = await executeUsp<IJsonUpeProductWithImages[], null>(
+  const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
     'usp_FetchHotUpeProducts',
     [{ name: 'Limit', type: sql.Int, value: ProductCarouselLimit }],
   );
@@ -70,7 +71,7 @@ export const getHotProducts = async (): Promise<IUpeProductWithImages[]> => {
 };
 
 export const getNewProducts = async (): Promise<IUpeProductWithImages[]> => {
-  const queryResult = await executeUsp<IJsonUpeProductWithImages[], null>(
+  const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
     'usp_FetchNewUpeProducts',
     [{ name: 'Limit', type: sql.Int, value: ProductCarouselLimit }],
   );
@@ -85,7 +86,7 @@ export async function getRelatedProducts(
   productId: string,
   categoryId: string,
 ): Promise<IUpeProductWithImages[]> {
-  const queryResult = await executeUsp<IJsonUpeProductWithImages[], null>(
+  const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
     'usp_FetchRelatedUpeProducts',
     [
       { name: 'Limit', type: sql.Int, value: RelatedProductsLimit },
@@ -109,7 +110,7 @@ export async function getRelatedProducts(
 }
 
 export async function getProductSlugs() {
-  const queryResult = await executeUsp<{ name: string }[]>(
+  const queryResult = await executeUsp<{ name: string }>(
     'usp_FetchAllProductNames',
   );
   const slugs = queryResult.data.map((product) =>
@@ -119,7 +120,7 @@ export async function getProductSlugs() {
 }
 
 export async function getAllCategories() {
-  const queryResult = await executeUsp<IProductCategory[]>(
+  const queryResult = await executeUsp<IProductCategory>(
     'usp_FetchAllProductCategories',
   );
   return queryResult.data;

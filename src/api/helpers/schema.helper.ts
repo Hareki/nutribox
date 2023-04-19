@@ -132,3 +132,19 @@ export function preSaveWasNew(next: CallbackWithoutResultAndOptionalError) {
   this.wasNew = this.isNew;
   next();
 }
+
+export const getDuplicateValueMessageSQL = (errMessage: string) => {
+  const errorMessage: Record<string, string> = {};
+  const pattern = /\(([^)]+)\)/;
+
+  const result = errMessage.match(pattern);
+  const duplicatedValue = result ? result[1] : '';
+
+  if (duplicatedValue) {
+    errorMessage['duplicatedValueMessage'] = `${duplicatedValue} đã tồn tại!`;
+  } else {
+    errorMessage.unknown = 'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
+  }
+
+  return errorMessage;
+};

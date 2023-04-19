@@ -54,7 +54,7 @@ const handler = nc<
   .get(async (req, res) => {
     const accountId = req.query.accountId as string;
 
-    const queryResult = await executeUsp<IJsonPopulatedCartItem[]>( //
+    const queryResult = await executeUsp<IJsonPopulatedCartItem>( //
       'usp_FetchPopulatedCartItemsByAccountId',
       [
         {

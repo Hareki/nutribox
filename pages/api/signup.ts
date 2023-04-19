@@ -4,29 +4,34 @@ import type { ErrorHandler } from 'next-connect';
 import nc from 'next-connect';
 
 import { defaultOnNoMatch } from 'api/base/next-connect';
-import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/mongoose/databaseConnection';
+import { sql } from 'api/database/mssql.config';
 import { hashPassword } from 'api/helpers/auth.helper';
-import {
-  getDuplicateKeyErrorMessage,
-  getValidationErrorMessages,
-} from 'api/helpers/schema.helper';
-import type { IAccount } from 'api/models/Account.model/types';
-import {
-  instanceOfDuplicateKeyError,
-  instanceOfValidationError,
-} from 'api/types/mongooseError.type';
+import { executeUsp } from 'api/helpers/mssql.helper';
+import { getDuplicateValueMessageSQL } from 'api/helpers/schema.helper';
+import type { IAccount } from 'api/mssql/pojos/account.pojo';
+import { isDuplicateKey } from 'api/types/mongooseError.type';
 import type {
   JSendErrorResponse,
   JSendFailResponse,
   JSendSuccessResponse,
 } from 'api/types/response.type';
+import { Role } from 'utils/constants';
 
-export interface SignUpRequestBody
-  extends Pick<
-    IAccount,
-    'firstName' | 'lastName' | 'email' | 'phone' | 'password' | 'birthday'
-  > {}
+// export interface SignUpRequestBody
+//   extends Pick<
+//     IAccount,
+//     'firstName' | 'lastName' | 'email' | 'phone' | 'password' | 'birthday'
+//   > {}
+
+export interface SignUpRequestBody {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+  birthday: Date;
+}
 
 export const onSignUpError: ErrorHandler<
   NextApiRequest,
@@ -35,13 +40,15 @@ export const onSignUpError: ErrorHandler<
   >
 > = (err: any, _req, res) => {
   let response: Record<string, string>;
-  console.log(JSON.stringify(err));
+  // console.log(JSON.stringify(err));
+  console.log(err);
 
-  if (instanceOfDuplicateKeyError(err)) {
-    response = getDuplicateKeyErrorMessage(err);
-  } else if (instanceOfValidationError(err)) {
-    response = getValidationErrorMessages(err);
+  if (isDuplicateKey(err)) {
+    response = getDuplicateValueMessageSQL(err.message);
   }
+  // else if (instanceOfValidationError(err)) {
+  //   response = getValidationErrorMessages(err);
+  // }
 
   if (response) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
@@ -72,13 +79,57 @@ const handler = nc<
   await connectToDB();
   const requestBody = req.body as SignUpRequestBody;
   const hashedPassword = await hashPassword(requestBody.password);
-  const data = { role: 'CUSTOMER', ...requestBody, password: hashedPassword };
 
-  const newAccount = await AccountController.createOne(data);
+  const data = {
+    role: Role.Customer.id,
+    ...requestBody,
+    password: hashedPassword,
+  };
+
+  // const newAccount = await AccountController.createOne(data);
+
+  const queryResult = await executeUsp<IAccount>('usp_CreateAccount', [
+    {
+      name: 'RoleId',
+      type: sql.UniqueIdentifier,
+      value: data.role,
+    },
+    {
+      name: 'FirstName',
+      type: sql.NVarChar,
+      value: data.firstName,
+    },
+    {
+      name: 'LastName',
+      type: sql.NVarChar,
+      value: data.lastName,
+    },
+    {
+      name: 'Email',
+      type: sql.NVarChar,
+      value: data.email,
+    },
+    {
+      name: 'Phone',
+
+      type: sql.NVarChar,
+      value: data.phone,
+    },
+    {
+      name: 'Password',
+      type: sql.NVarChar,
+      value: data.password,
+    },
+    {
+      name: 'Birthday',
+      type: sql.DateTime2,
+      value: data.birthday,
+    },
+  ]);
 
   res.status(StatusCodes.OK).json({
     status: 'success',
-    data: newAccount,
+    data: queryResult.data[0],
   });
 });
 

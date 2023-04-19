@@ -41,6 +41,7 @@ export const PREPARATION_TIME = 10; // in minutes
 export const MAX_DELIVERY_RANGE = 10; // in km
 export const MAX_DELIVERY_DURATION = 45; // in minutes
 
+// deprecated (mongoDB)
 export const OrderStatus = Object.freeze({
   Pending: { id: '641ae36318e353f785a7f695', name: 'Chờ xác nhận' },
   Processing: { id: '641ae39318e353f785a7f696', name: 'Đang xử lý' },
@@ -48,6 +49,11 @@ export const OrderStatus = Object.freeze({
   Delivered: { id: '641ae3cd18e353f785a7f699', name: 'Giao thành công' },
   Cancelled: { id: '641ae3c218e353f785a7f698', name: 'Đã hủy đơn' },
 });
+
+export const Role = {
+  Admin: { id: '24B905F5-37CD-46D3-B8EE-05C85477BC54', name: 'ADMIN' },
+  Customer: { id: '4AE9CDC7-FE33-4486-81BE-D8916F1402C9', name: 'CUSTOMER' },
+} as const;
 
 export const AllStatusIdArray = Object.freeze([
   OrderStatus.Pending.id, // 0

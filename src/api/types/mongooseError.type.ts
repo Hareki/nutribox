@@ -59,3 +59,11 @@ export function instanceOfValidationError(
 ): object is ValidationError {
   return 'errors' in object && 'name' in object && 'message' in object;
 }
+
+// MSSQL
+export function isDuplicateKey(error: any): boolean {
+  return (
+    error?.message.includes('Violation of PRIMARY KEY constraint') ||
+    error?.message.includes('Violation of UNIQUE KEY constraint')
+  );
+}

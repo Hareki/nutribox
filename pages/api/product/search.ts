@@ -25,7 +25,7 @@ const handler = nc<
   const { name } = req.query;
   // const searchName = removeAccents(name as string);
 
-  const result = await executeUsp<IJsonUpeProductWithImages[]>(
+  const result = await executeUsp<IJsonUpeProductWithImages>(
     'usp_FetchUpeProductsByKeyword',
     [
       { name: 'Limit', type: sql.Int, value: 10 },

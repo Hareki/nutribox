@@ -1,5 +1,5 @@
 import type { IAddress } from './abstract/address.pojo';
-import type { IStoreHourInput } from './store_hour.pojo';
+import type { IStoreHour, IStoreHourInput } from './store_hour.pojo';
 
 export interface IStore extends IAddress {
   id: string;
@@ -9,6 +9,14 @@ export interface IStore extends IAddress {
   email: string;
 }
 
+export interface IStoreWithJsonStoreHours extends IStore {
+  store_hours: string;
+}
+
+export interface IStoreWithStoreHours extends IStore {
+  store_hours: IStoreHour[];
+}
+
 export interface IStoreInput extends Omit<IStore, 'id' | 'store_hours'> {
-  storeHours: IStoreHourInput[];
+  store_hours: IStoreHourInput[];
 }

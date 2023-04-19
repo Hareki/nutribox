@@ -27,7 +27,7 @@ export async function executeUsp<T1 = unknown, T2 = unknown>(
 
     const result = await request.execute(procedure);
     return {
-      data: result.recordset as T1,
+      data: result.recordset as T1[],
       output: result.output as T2,
     };
   } catch (error) {
