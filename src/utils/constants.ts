@@ -8,6 +8,7 @@ export const LayoutConstant = {
 };
 
 export const ProductCarouselLimit = 6;
+export const RelatedProductsLimit = 4;
 
 export const ProfileInfiniteProductConstant = {
   docsPerPage: 6,

@@ -3,9 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import { getProduct } from 'api/base/server-side-modules';
-import connectToDB from 'api/database/mongoose/databaseConnection';
-import type { IUpeProduct } from 'api/models/Product.model/types';
+import { getProduct } from 'api/base/server-side-modules/mssql-modules';
+import type { IUpeProduct } from 'api/mssql/pojos/product.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IUpeProduct>>>(
@@ -15,7 +14,6 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IUpeProduct>>>(
     onNoMatch: defaultOnNoMatch,
   },
 ).get(async (req, res) => {
-  await connectToDB();
   const id = req.query.id as string;
 
   const product = await getProduct(id);

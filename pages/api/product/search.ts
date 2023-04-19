@@ -3,10 +3,15 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import ProductController from 'api/controllers/Product.controller';
 import connectToDB from 'api/database/mongoose/databaseConnection';
-import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
-import type { IUpeProduct } from 'api/models/Product.model/types';
+import { sql } from 'api/database/mssql.config';
+import { executeUsp } from 'api/helpers/mssql.helper';
+import { removeAccents } from 'api/helpers/slug.helper';
+import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
+import type {
+  IJsonUpeProduct,
+  IUpeProduct,
+} from 'api/mssql/pojos/product.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
@@ -19,20 +24,21 @@ const handler = nc<
   await connectToDB();
 
   const { name } = req.query;
+  const searchName = removeAccents(name as string);
 
-  const products = await ProductController.getAll({
-    filter: {
-      name: { $regex: name as string, $options: 'i' },
-      available: true,
-    },
-    limit: 10,
-  });
+  const result = await executeUsp<IJsonUpeProduct[]>(
+    'usp_FetchUpeProductsByKeyword',
+    [
+      { name: 'Limit', type: sql.Int, value: 10 },
+      { name: 'Keyword', type: sql.VarChar, value: searchName },
+    ],
+  );
 
-  const populatedProducts = await populateAscUnexpiredExpiration(products);
+  const upeProducts = result.data.map(mapJsonUpeToUpe);
 
   res.status(StatusCodes.OK).json({
     status: 'success',
-    data: populatedProducts,
+    data: upeProducts,
   });
 });
 

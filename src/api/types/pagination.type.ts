@@ -19,3 +19,15 @@ export interface GetAllDependentPaginationParams
   extends GetAllPaginationParams {
   id: string;
 }
+
+// ============
+
+export interface UspPaginationOutput {
+  TotalRecords: number;
+  TotalPages: number;
+}
+
+export interface UspInfinitePaginationOutput {
+  TotalRecords: number;
+  NextPageNumber: number;
+}

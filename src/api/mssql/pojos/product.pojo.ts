@@ -33,6 +33,10 @@ export interface IUpeProduct extends Omit<IProduct, 'product_orders'> {
   product_orders: IProductOrder[];
 }
 
+export interface IJsonUpeProduct extends Omit<IUpeProduct, 'product_orders'> {
+  product_orders: string;
+}
+
 // CDS = Populated category and default supplier
 export interface ICdsProduct
   extends Omit<IProduct, 'category_id' | 'default_supplier_id'> {

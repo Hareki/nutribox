@@ -23,4 +23,4 @@ const poolPromise = new sql.ConnectionPool(mssqlConfig).connect();
 // })
 // .catch((err) => console.log('Database Connection Failed! Bad Config:', err));
 
-export default poolPromise;
+export { poolPromise, sql };

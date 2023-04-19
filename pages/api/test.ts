@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import poolPromise from 'api/database/mssql.config';
+import { poolPromise } from 'api/database/mssql.config';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: defaultOnError,

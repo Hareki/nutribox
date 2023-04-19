@@ -10,6 +10,7 @@ import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 import type { IStore } from 'api/models/Store.model/types';
 import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 import { allCategory } from 'utils/apiCallers';
+import { RelatedProductsLimit } from 'utils/constants';
 
 export async function getAllCategories() {
   const result: IProductCategory[] = await ProductCategoryController.getAll();
@@ -78,7 +79,7 @@ export async function getRelatedProducts(
 ): Promise<IUpeProduct[]> {
   const products: IProduct[] = await ProductController.getRelatedProducts(
     { productId: productId, categoryId: categoryId },
-    { limit: 4 },
+    { limit: RelatedProductsLimit },
   );
 
   const populatedProducts = await populateAscUnexpiredExpiration(products);
