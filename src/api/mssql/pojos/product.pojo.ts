@@ -6,11 +6,8 @@ export interface IProduct {
   id: string;
   category_id: string;
   default_supplier_id: string;
-  // product_orders: string[]; // expirations
 
   name: string;
-  image_urls: string[];
-
   description: string;
   shelf_life: number;
   available: boolean;
@@ -23,18 +20,17 @@ export interface IPopulatedCategoryProduct
   category_id: IProductCategory;
 }
 
-export interface IPopulatedExpirationProduct
+// UPE = Unexpired and Populated Expirations, we usually use this type instead of IProduct
+export interface IUpeProductWithImages
   extends Omit<IProduct, 'product_orders'> {
   product_orders: IProductOrder[];
+  image_urls: { image_url: string }[];
 }
 
-// UPE = Unexpired and Populated Expirations, we usually use this type instead of IProduct
-export interface IUpeProduct extends Omit<IProduct, 'product_orders'> {
-  product_orders: IProductOrder[];
-}
-
-export interface IJsonUpeProduct extends Omit<IUpeProduct, 'product_orders'> {
+export interface IJsonUpeProductWithImages
+  extends Omit<IUpeProductWithImages, 'product_orders' | 'image_urls'> {
   product_orders: string;
+  image_urls: string;
 }
 
 // CDS = Populated category and default supplier

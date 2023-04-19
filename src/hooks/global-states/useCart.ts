@@ -8,9 +8,11 @@ import useLoginDialog from './useLoginDialog';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
+import type { IPopulatedCartItem as IPopulatedCartItem2 } from 'api/mssql/pojos/cart_item.pojo';
 import apiCaller from 'utils/apiCallers/global/cart';
 
 export type CartState = { cart: IPopulatedCartItem[] };
+export type CartState2 = { cart: IPopulatedCartItem2[] };
 
 type MutateCartItemType = {
   cart: CartItemRequestBody;
@@ -45,10 +47,11 @@ const useCart = (productId?: string) => {
         quantity: cart.quantity,
       }),
     onSuccess: (account, { type }) => {
-      queryClient.setQueryData(['cart', accountId], {
-        cart: account.cartItems,
-      });
-      queryClient.invalidateQueries(['cart', accountId]);
+      // queryClient.setQueryData(['cart', accountId], {
+      //   cart: account.cartItems,
+      // });
+      // queryClient.invalidateQueries(['cart', accountId]);
+      queryClient.refetchQueries(['cart', accountId]);
 
       switch (type) {
         case 'add':

@@ -4,12 +4,12 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { getAllProducts } from 'api/base/server-side-modules/mssql-modules';
-import type { IUpeProduct } from 'api/mssql/pojos/product.pojo';
+import type { IUpeProductWithImages } from 'api/mssql/pojos/product.pojo';
 import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';
 
 export type InfiniteUpePaginationResult =
-  GetInfinitePaginationResult<IUpeProduct>;
+  GetInfinitePaginationResult<IUpeProductWithImages>;
 
 const handler = nc<
   NextApiRequest,

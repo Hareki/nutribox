@@ -8,14 +8,14 @@ import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
 import type {
-  IJsonUpeProduct,
-  IUpeProduct,
+  IJsonUpeProductWithImages,
+  IUpeProductWithImages,
 } from 'api/mssql/pojos/product.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IUpeProduct[]>>
+  NextApiResponse<JSendResponse<IUpeProductWithImages[]>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -25,7 +25,7 @@ const handler = nc<
   const { name } = req.query;
   // const searchName = removeAccents(name as string);
 
-  const result = await executeUsp<IJsonUpeProduct[]>(
+  const result = await executeUsp<IJsonUpeProductWithImages[]>(
     'usp_FetchUpeProductsByKeyword',
     [
       { name: 'Limit', type: sql.Int, value: 10 },

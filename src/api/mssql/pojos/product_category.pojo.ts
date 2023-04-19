@@ -1,4 +1,4 @@
-import type { IProduct, IUpeProduct } from './product.pojo';
+import type { IProduct, IUpeProductWithImages } from './product.pojo';
 
 export interface IProductCategory {
   id: string;
@@ -19,7 +19,7 @@ export interface IPopulatedProductCategory
 export interface IPopulatedUpeProductCategory
   extends Omit<IProductCategory, 'products' | 'id'> {
   id?: string;
-  products: IUpeProduct[];
+  products: IUpeProductWithImages[];
 }
 
 export interface IProductCategoryInput

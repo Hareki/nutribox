@@ -4,16 +4,17 @@ import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { getProduct } from 'api/base/server-side-modules/mssql-modules';
-import type { IUpeProduct } from 'api/mssql/pojos/product.pojo';
+import type { IUpeProductWithImages } from 'api/mssql/pojos/product.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
-const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IUpeProduct>>>(
-  {
-    attachParams: true,
-    onError: defaultOnError,
-    onNoMatch: defaultOnNoMatch,
-  },
-).get(async (req, res) => {
+const handler = nc<
+  NextApiRequest,
+  NextApiResponse<JSendResponse<IUpeProductWithImages>>
+>({
+  attachParams: true,
+  onError: defaultOnError,
+  onNoMatch: defaultOnNoMatch,
+}).get(async (req, res) => {
   const id = req.query.id as string;
 
   const product = await getProduct(id);

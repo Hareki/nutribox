@@ -33,11 +33,6 @@ export interface IPopulatedCategoryProduct extends Omit<IProduct, 'category'> {
   category: IProductCategory;
 }
 
-export interface IPopulatedExpirationProduct
-  extends Omit<IProduct, 'expirations'> {
-  expirations: IExpiration[];
-}
-
 // UPE = Unexpired and Populated Expirations, we usually use this type instead of IProduct
 export interface IUpeProduct extends Omit<IProduct, 'expirations'> {
   expirations: IExpiration[];
