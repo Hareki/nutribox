@@ -223,3 +223,23 @@ export async function getCustomerOrderWithJsonItems(
 
   return queryResult2.data[0];
 }
+
+export const verifyAccount = async (token: string) => {
+  const FoundAccount = (
+    await executeUsp<unknown, { FoundAccount: boolean }>('usp_VerifyAccount', [
+      {
+        name: 'Token',
+        type: sql.NVarChar,
+        value: token,
+      },
+      {
+        name: 'FoundAccount',
+        type: sql.Bit,
+        value: 1,
+        isOutput: true,
+      },
+    ])
+  ).output.FoundAccount;
+
+  return FoundAccount;
+};
