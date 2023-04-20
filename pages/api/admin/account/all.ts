@@ -3,11 +3,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import AccountController from 'api/controllers/Account.controller';
-import connectToDB from 'api/database/mongoose/databaseConnection';
-import { populateAccountsTotalOrders } from 'api/helpers/model.helper';
-import { processPaginationParams } from 'api/helpers/pagination.helpers';
-import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
+// import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
+import type { PaginationOutput } from 'api/helpers/mssql.helper';
+import {
+  executeUsp,
+  extractPaginationOutputFromReq,
+  getPaginationParamArray,
+} from 'api/helpers/mssql.helper';
+import type { IAccountWithTotalOrders } from 'api/mssql/pojos/account.pojo';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';
 
@@ -20,24 +23,44 @@ const handler = nc<
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
-  await connectToDB();
+  // await connectToDB();
 
-  const { skip, limit, totalPages, totalDocs } = await processPaginationParams(
-    req,
-    AccountController.getTotal,
+  const { pageSize, pageNumber } = extractPaginationOutputFromReq(req);
+
+  // const { skip, limit, totalPages, totalDocs } = await processPaginationParams(
+  //   req,
+  //   AccountController.getTotal,
+  // );
+
+  // const accounts = await AccountController.getAll({
+  //   sort: { createdAt: -1, _id: 1 },
+  //   skip,
+  //   limit,
+  // });
+
+  // const accountsWithTotalOrders = await populateAccountsTotalOrders(accounts);
+
+  // const result = {
+  //   totalPages,
+  //   totalDocs,
+  //   docs: accountsWithTotalOrders,
+  // };
+
+  const queryResult = await executeUsp<
+    IAccountWithTotalOrders,
+    PaginationOutput
+  >(
+    'usp_FetchAccountsWithTotalOrdersByPage',
+    getPaginationParamArray({
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+    }),
   );
 
-  const accounts = await AccountController.getAll({
-    sort: { createdAt: -1, _id: 1 },
-    skip,
-    limit,
-  });
-
-  const accountsWithTotalOrders = await populateAccountsTotalOrders(accounts);
-
+  const accountsWithTotalOrders = queryResult.data;
   const result = {
-    totalPages,
-    totalDocs,
+    totalPages: queryResult.output.TotalPages,
+    totalDocs: queryResult.output.TotalRecords,
     docs: accountsWithTotalOrders,
   };
 

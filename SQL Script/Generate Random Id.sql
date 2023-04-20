@@ -1,0 +1,1 @@
+SELECT NEWID() as id1, NEWID() as id2;

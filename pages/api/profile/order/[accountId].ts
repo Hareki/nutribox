@@ -19,7 +19,7 @@ const handler = nc<
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
   const accountId = req.query.accountId as string;
-  const { docsPerPage = 999, page = 1 } = req.query;
+  const { docsPerPage = '999', page = '1' } = req.query;
 
   const queryResult = await executeUsp<
     ICustomerOrder,
@@ -33,12 +33,12 @@ const handler = nc<
     {
       name: 'PageSize',
       type: sql.Int,
-      value: docsPerPage,
+      value: parseInt(docsPerPage as string),
     },
     {
       name: 'PageNumber',
       type: sql.Int,
-      value: page,
+      value: parseInt(page as string),
     },
     {
       name: 'TotalRecords',

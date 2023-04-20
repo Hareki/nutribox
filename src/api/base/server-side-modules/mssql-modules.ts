@@ -28,8 +28,8 @@ export const getAllProducts = async (
     IJsonUpeProductWithImages,
     UspInfinitePaginationOutput
   >('usp_FetchUpeProductsByPage', [
-    { name: 'PageSize', type: sql.Int, value: docsPerPage },
-    { name: 'PageNumber', type: sql.Int, value: page },
+    { name: 'PageSize', type: sql.Int, value: parseInt(docsPerPage) },
+    { name: 'PageNumber', type: sql.Int, value: parseInt(page) },
     { name: 'TotalRecords', type: sql.Int, value: null, isOutput: true },
     { name: 'NextPageNumber', type: sql.Int, value: null, isOutput: true },
   ]);
