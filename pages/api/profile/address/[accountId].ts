@@ -3,13 +3,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import AccountController from 'api/controllers/Account.controller';
-import connectToDB from 'api/database/mongoose/databaseConnection';
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+// import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import { sql } from 'api/database/mssql.config';
+import { executeUsp } from 'api/helpers/mssql.helper';
+import type { IAccountAddress as IAccountAddressPojo } from 'api/mssql/pojos/account_address.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface AddAddressRequestBody
-  extends Omit<IAccountAddress, '_id' | 'id'> {}
+  extends Omit<IAccountAddressPojo, '_id' | 'id'> {}
 
 export interface UpdateAddressRequestBody extends AddAddressRequestBody {
   id: string;
@@ -19,33 +20,83 @@ export interface DeleteAddressQueryParams {
   addressId: string;
 }
 
+const convertRequestBodyToParamArray = (requestBody: AddAddressRequestBody) => {
+  return [
+    {
+      name: 'ProvinceCode',
+      type: sql.Int,
+      value: requestBody.provinceId,
+    },
+    {
+      name: 'DistrictCode',
+      type: sql.Int,
+      value: requestBody.districtId,
+    },
+    {
+      name: 'WardCode',
+      type: sql.Int,
+      value: requestBody.wardId,
+    },
+    {
+      name: 'StreetAddress',
+      type: sql.NVarChar,
+      value: requestBody.streetAddress,
+    },
+    {
+      name: 'Title',
+      type: sql.NVarChar,
+      value: requestBody.title,
+    },
+    {
+      name: 'IsDefault',
+      type: sql.Bit,
+      value: requestBody.is_default ? 1 : 0,
+    },
+  ];
+};
+
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IAccountAddress[]>>
+  NextApiResponse<JSendResponse<IAccountAddressPojo[]>>
 >({
   attachParams: true,
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 })
   .get(async (req, res) => {
-    await connectToDB();
+    const accountId = req.query.accountId as string;
+    const queryResult = await executeUsp<IAccountAddressPojo>(
+      'usp_FetchAccountAddressesById',
+      [
+        {
+          name: 'AccountId',
+          type: sql.UniqueIdentifier,
+          value: accountId,
+        },
+      ],
+    );
 
-    const id = req.query.accountId as string;
-    const accountAddress = await AccountController.getAddresses(id);
+    const accountAddresses = queryResult.data;
 
     res.status(StatusCodes.OK).json({
       status: 'success',
-      data: accountAddress,
+      data: accountAddresses,
     });
   })
   .post(async (req, res) => {
-    await connectToDB();
     const requestBody = req.body as AddAddressRequestBody;
-    const id = req.query.accountId as string;
-    const updatedAddresses = await AccountController.addAddress(
-      id,
-      requestBody,
-    );
+    const accountId = req.query.accountId as string;
+
+    const updatedAddresses = (
+      await executeUsp<IAccountAddressPojo>('usp_CreateAccountAddress', [
+        {
+          name: 'AccountId',
+          type: sql.UniqueIdentifier,
+          value: accountId,
+        },
+        ...convertRequestBodyToParamArray(requestBody),
+      ])
+    ).data;
 
     res.status(StatusCodes.OK).json({
       status: 'success',
@@ -53,13 +104,24 @@ const handler = nc<
     });
   })
   .put(async (req, res) => {
-    await connectToDB();
     const requestBody = req.body as UpdateAddressRequestBody;
-    const id = req.query.accountId as string;
-    const updatedAddresses = await AccountController.updateAddress(
-      id,
-      requestBody,
-    );
+    const accountId = req.query.accountId as string;
+    const addressId = requestBody.id;
+    const updatedAddresses = (
+      await executeUsp<IAccountAddressPojo>('usp_UpdateAccountAddress', [
+        {
+          name: 'AccountId',
+          type: sql.UniqueIdentifier,
+          value: accountId,
+        },
+        {
+          name: 'Id',
+          type: sql.UniqueIdentifier,
+          value: addressId,
+        },
+        ...convertRequestBodyToParamArray(requestBody),
+      ])
+    ).data;
 
     res.status(StatusCodes.OK).json({
       status: 'success',
@@ -67,12 +129,23 @@ const handler = nc<
     });
   })
   .delete(async (req, res) => {
-    await connectToDB();
-    const { addressId } = req.query;
-    const id = req.query.accountId as string;
-    const updatedAddresses = await AccountController.deleteAddress(id, {
-      addressId: addressId as string,
-    });
+    const accountId = req.query.accountId as string;
+    const addressId = req.query.addressId as string;
+
+    const updatedAddresses = (
+      await executeUsp<IAccountAddressPojo>('usp_DeleteAccountAddress', [
+        {
+          name: 'AccountId',
+          type: sql.UniqueIdentifier,
+          value: accountId,
+        },
+        {
+          name: 'Id',
+          type: sql.UniqueIdentifier,
+          value: addressId,
+        },
+      ])
+    ).data;
 
     res.status(StatusCodes.OK).json({
       status: 'success',

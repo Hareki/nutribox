@@ -3,9 +3,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/mongoose/databaseConnection';
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import { sql } from 'api/database/mssql.config';
+import { executeUsp } from 'api/helpers/mssql.helper';
+// import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import type { IAccountAddress as IAccountAddressPojo } from 'api/mssql/pojos/account_address.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface SetDefaultAddressRequestBody {
@@ -14,17 +16,30 @@ export interface SetDefaultAddressRequestBody {
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IAccountAddress[]>>
+  NextApiResponse<JSendResponse<IAccountAddressPojo[]>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).put(async (req, res) => {
   await connectToDB();
   const requestBody = req.body as SetDefaultAddressRequestBody;
-  const id = req.query.accountId as string;
-  const updatedAddresses = await AccountController.setDefaultAddress(id, {
-    id: requestBody.id,
-  });
+  const accountId = req.query.accountId as string;
+  const accountAddressId = requestBody.id;
+
+  const updatedAddresses = (
+    await executeUsp<IAccountAddressPojo>('usp_UpdateDefaultAccountAddress', [
+      {
+        name: 'AccountId',
+        type: sql.UniqueIdentifier,
+        value: accountId,
+      },
+      {
+        name: 'Id',
+        type: sql.UniqueIdentifier,
+        value: accountAddressId,
+      },
+    ])
+  ).data;
 
   res.status(StatusCodes.OK).json({
     status: 'success',

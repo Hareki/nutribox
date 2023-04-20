@@ -39,7 +39,7 @@ export const processPaginationParams = async (
   req: NextApiRequest,
   getTotal: () => Promise<number>,
 ) => {
-  const { docsPerPage, page } = req.query;
+  const { docsPerPage = 9999, page = 1 } = req.query;
   const totalDocs = await getTotal();
 
   const { skip, limit, nextPageNum, totalPages } = getPaginationParams({

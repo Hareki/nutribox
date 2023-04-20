@@ -1,5 +1,8 @@
 import type { IAddress } from './abstract/address.pojo';
-import type { ICustomerOrderItemInput } from './customer_order_item.pojo';
+import type {
+  ICustomerOrderItem,
+  ICustomerOrderItemInput,
+} from './customer_order_item.pojo';
 
 export interface ICustomerOrder extends IAddress {
   id: string;
@@ -19,6 +22,14 @@ export interface ICustomerOrder extends IAddress {
   estimated_distance: number;
 
   delivered_on?: Date | string;
+}
+
+export interface ICustomerOrderWithJsonItems extends ICustomerOrder {
+  items: string;
+}
+
+export interface ICustomerOrderWithItems extends ICustomerOrder {
+  items: ICustomerOrderItem;
 }
 
 export interface ICustomerOrderInput

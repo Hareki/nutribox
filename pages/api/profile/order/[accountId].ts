@@ -3,10 +3,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
-import connectToDB from 'api/database/mongoose/databaseConnection';
-import { processPaginationParams } from 'api/helpers/pagination.helpers';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import { sql } from 'api/database/mssql.config';
+import { executeUsp } from 'api/helpers/mssql.helper';
+// import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import type { ICustomerOrder } from 'api/mssql/pojos/customer_order.pojo';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';
 
@@ -18,25 +18,56 @@ const handler = nc<
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
-  await connectToDB();
   const accountId = req.query.accountId as string;
+  const { docsPerPage = 999, page = 1 } = req.query;
 
-  const { skip, limit, totalPages, totalDocs } = await processPaginationParams(
-    req,
-    CustomerOrderController.getTotalOrdersBelongToAccount.bind(null, accountId),
-  );
+  const queryResult = await executeUsp<
+    ICustomerOrder,
+    { TotalRecords: number; TotalPages: number }
+  >('usp_FetchCustomerOrdersByPageAndAccountId', [
+    {
+      name: 'AccountId',
+      type: sql.UniqueIdentifier,
+      value: accountId,
+    },
+    {
+      name: 'PageSize',
+      type: sql.Int,
+      value: docsPerPage,
+    },
+    {
+      name: 'PageNumber',
+      type: sql.Int,
+      value: page,
+    },
+    {
+      name: 'TotalRecords',
+      type: sql.Int,
+      value: null,
+      isOutput: true,
+    },
+    {
+      name: 'TotalPages',
+      type: sql.Int,
+      value: null,
+      isOutput: true,
+    },
+    {
+      name: 'NextPageNumber',
+      type: sql.Int,
+      value: null,
+      isOutput: true,
+    },
+  ]);
 
-  const orders =
-    await CustomerOrderController.getOrdersBelongToAccountPaginated({
-      id: accountId,
-      skip,
-      limit,
-    });
+  const customerOrders = queryResult.data;
+  const totalDocs = queryResult.output.TotalRecords;
+  const totalPages = queryResult.output.TotalPages;
 
-  const result = {
-    totalPages,
+  const result: GetAllPaginationResult<ICustomerOrder> = {
+    docs: customerOrders,
     totalDocs,
-    docs: orders,
+    totalPages,
   };
 
   res.status(StatusCodes.OK).json({

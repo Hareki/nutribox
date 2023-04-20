@@ -3,8 +3,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import AccountController from 'api/controllers/Account.controller';
-import connectToDB from 'api/database/mongoose/databaseConnection';
+import {
+  countAddress,
+  countOrder,
+} from 'api/base/server-side-modules/mssql-modules';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface ProfileMenuCount {
@@ -19,12 +21,10 @@ const handler = nc<
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
-  await connectToDB();
-
   const accountId = req.query.id as string;
 
-  const addressCountPromise = AccountController.countAddress(accountId);
-  const orderCountPromise = AccountController.countOrder(accountId);
+  const orderCountPromise = countOrder(accountId);
+  const addressCountPromise = countAddress(accountId);
 
   const resolved = await Promise.all([addressCountPromise, orderCountPromise]);
   const result = {

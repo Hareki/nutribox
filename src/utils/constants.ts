@@ -41,13 +41,21 @@ export const PREPARATION_TIME = 10; // in minutes
 export const MAX_DELIVERY_RANGE = 10; // in km
 export const MAX_DELIVERY_DURATION = 45; // in minutes
 
-// deprecated (mongoDB)
 export const OrderStatus = Object.freeze({
-  Pending: { id: '641ae36318e353f785a7f695', name: 'Chờ xác nhận' },
-  Processing: { id: '641ae39318e353f785a7f696', name: 'Đang xử lý' },
-  Delivering: { id: '641ae3b318e353f785a7f697', name: 'Đang giao hàng' },
-  Delivered: { id: '641ae3cd18e353f785a7f699', name: 'Giao thành công' },
-  Cancelled: { id: '641ae3c218e353f785a7f698', name: 'Đã hủy đơn' },
+  Pending: { id: '57379784-B3F7-4717-9155-25ED93EEF78D', name: 'Chờ xác nhận' },
+  Processing: {
+    id: 'F2E5678D-19E0-4BE0-BB0D-FDC20E0989D4',
+    name: 'Đang xử lý',
+  },
+  Delivering: {
+    id: '741AB523-D545-4C8A-97C8-0231802CF0F3',
+    name: 'Đang giao hàng',
+  },
+  Delivered: {
+    id: '83B6EFB9-2A3E-464A-B31A-866F3A0D9274',
+    name: 'Giao thành công',
+  },
+  Cancelled: { id: 'AD8B7716-CB32-4D4B-98B2-3EA4367B9CD5', name: 'Đã hủy đơn' },
 });
 
 export const Role = {

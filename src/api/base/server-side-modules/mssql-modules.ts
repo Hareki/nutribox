@@ -1,8 +1,13 @@
 import type { InfiniteUpePaginationResult } from '../../../../pages/api/product/all';
+import type {
+  OrderStatusCount,
+  OrderStatusCountSQLOutput,
+} from '../../../../pages/api/profile/order-status-count';
 
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
+import type { ICustomerOrderWithJsonItems } from 'api/mssql/pojos/customer_order.pojo';
 import type {
   IJsonUpeProductWithImages,
   IUpeProductWithImages,
@@ -124,4 +129,97 @@ export async function getAllCategories() {
     'usp_FetchAllProductCategories',
   );
   return queryResult.data;
+}
+
+export async function countOrder(accountId: string) {
+  const queryResult = await executeUsp<unknown, OrderStatusCountSQLOutput>(
+    'usp_FetchOrderStatusCountByAccountId',
+    [
+      {
+        name: 'AccountId',
+        type: sql.UniqueIdentifier,
+        value: accountId,
+      },
+      {
+        name: 'Total',
+        type: sql.Int,
+        value: null,
+        isOutput: true,
+      },
+      {
+        name: 'Pending',
+        type: sql.Int,
+        value: null,
+        isOutput: true,
+      },
+      {
+        name: 'Processing',
+        type: sql.Int,
+        value: null,
+        isOutput: true,
+      },
+      {
+        name: 'Delivering',
+        type: sql.Int,
+        value: null,
+        isOutput: true,
+      },
+      {
+        name: 'Delivered',
+        type: sql.Int,
+        value: null,
+        isOutput: true,
+      },
+    ],
+  );
+
+  const orderCount: OrderStatusCount = {
+    total: queryResult.output.Total,
+    pending: queryResult.output.Pending,
+    processing: queryResult.output.Processing,
+    delivering: queryResult.output.Delivering,
+    delivered: queryResult.output.Delivered,
+  };
+
+  return orderCount;
+}
+
+export async function countAddress(accountId: string) {
+  const queryResult = await executeUsp<unknown, { Count: number }>(
+    'usp_FetchAddressCountByAccountId',
+    [
+      {
+        name: 'AccountId',
+        type: sql.UniqueIdentifier,
+        value: accountId,
+      },
+      {
+        name: 'Count',
+        type: sql.Int,
+        value: null,
+        isOutput: true,
+      },
+    ],
+  );
+
+  const addressCount = queryResult.output.Count;
+
+  return addressCount;
+}
+
+export async function getCustomerOrderWithJsonItems(
+  orderId: string,
+): Promise<ICustomerOrderWithJsonItems> {
+  const queryResult2 = await executeUsp<ICustomerOrderWithJsonItems>(
+    'usp_FetchCustomerOrderDetailById',
+    [
+      {
+        name: 'CustomerOrderId',
+        type: sql.UniqueIdentifier,
+        value: orderId,
+      },
+    ],
+  );
+
+  return queryResult2.data[0];
 }

@@ -3,10 +3,13 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import AccountController from 'api/controllers/Account.controller';
 import connectToDB from 'api/database/mongoose/databaseConnection';
+import { sql } from 'api/database/mssql.config';
 import { hashPassword } from 'api/helpers/auth.helper';
+// import type { IAccount } from 'api/models/Account.model/types';
+import { executeUsp } from 'api/helpers/mssql.helper';
 import type { IAccount } from 'api/models/Account.model/types';
+import type { IAccount as IAccountPojo } from 'api/mssql/pojos/account.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface UpdateAccountRequestBody
@@ -17,18 +20,26 @@ export interface UpdateAccountRequestBody
     >
   > {}
 
-const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IAccount>>>({
+const handler = nc<
+  NextApiRequest,
+  NextApiResponse<JSendResponse<IAccountPojo>>
+>({
   attachParams: true,
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 })
   .get(async (req, res) => {
-    await connectToDB();
-
     const id = req.query.id as string;
-    const account = await AccountController.getOne({
-      id,
-    });
+
+    const account = (
+      await executeUsp<IAccountPojo>('usp_FetchAccountById', [
+        {
+          name: 'Id',
+          type: sql.UniqueIdentifier,
+          value: id,
+        },
+      ])
+    ).data[0];
 
     res.status(StatusCodes.OK).json({
       status: 'success',
@@ -44,10 +55,48 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IAccount>>>({
     }
 
     const id = req.query.id as string;
-    console.log('file: [id].ts:47 - .put - id:', id);
-    console.log('file: [id].ts:50 - .put - requestBody:', requestBody);
 
-    const updatedAccount = await AccountController.updateOne(id, requestBody);
+    // const updatedAccount = await AccountController.updateOne(id, requestBody);
+
+    const updatedAccount = (
+      await executeUsp<IAccountPojo>('usp_UpdateAccount', [
+        {
+          name: 'AccountId',
+          type: sql.UniqueIdentifier,
+          value: id,
+        },
+        {
+          name: 'FirstName',
+          type: sql.NVarChar,
+          value: requestBody.firstName,
+        },
+        {
+          name: 'LastName',
+          type: sql.NVarChar,
+          value: requestBody.lastName,
+        },
+        {
+          name: 'Phone',
+          type: sql.NVarChar,
+          value: requestBody.phone,
+        },
+        {
+          name: 'Birthday',
+          type: sql.DateTime2,
+          value: requestBody.birthday,
+        },
+        {
+          name: 'AvatarUrl',
+          type: sql.NVarChar,
+          value: requestBody.avatarUrl,
+        },
+        {
+          name: 'Password',
+          type: sql.NVarChar,
+          value: requestBody.password,
+        },
+      ])
+    ).data[0];
 
     res.status(StatusCodes.OK).json({
       status: 'success',

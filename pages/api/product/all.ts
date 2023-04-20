@@ -18,7 +18,7 @@ const handler = nc<
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
-  const { docsPerPage, page } = req.query;
+  const { docsPerPage = 9999, page = 1 } = req.query;
 
   const result = await getAllProducts(docsPerPage as string, page as string);
 
