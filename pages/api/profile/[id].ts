@@ -59,7 +59,7 @@ const handler = nc<
     // const updatedAccount = await AccountController.updateOne(id, requestBody);
 
     const updatedAccount = (
-      await executeUsp<IAccountPojo>('usp_UpdateAccount', [
+      await executeUsp<IAccountPojo>('usp_Account_UpdateOne', [
         {
           name: 'AccountId',
           type: sql.UniqueIdentifier,

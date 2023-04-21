@@ -24,7 +24,7 @@ const handler = nc<
   const id = req.query.id as string;
 
   const queryResult = await executeUsp<IStoreWithJsonStoreHours>(
-    'usp_FetchStoreWithStoreHoursById',
+    'usp_Store_FetchWithStoreHoursById',
     [
       {
         name: 'StoreId',

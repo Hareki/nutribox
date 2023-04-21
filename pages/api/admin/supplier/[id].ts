@@ -33,7 +33,7 @@ const handler = nc<
     // });
 
     const supplier = (
-      await executeUsp<ISupplierPojo>('usp_FetchSupplierById', [
+      await executeUsp<ISupplierPojo>('usp_Supplier_FetchById', [
         {
           name: 'SupplierId',
           type: sql.UniqueIdentifier,
@@ -57,7 +57,7 @@ const handler = nc<
     // const updatedSupplier = await SupplierController.updateOne(supplierId, requestBody);
 
     const updatedSupplier = (
-      await executeUsp<ISupplierPojo>('usp_UpdateSupplier', [
+      await executeUsp<ISupplierPojo>('usp_Supplier_UpdateOne', [
         {
           name: 'SupplierId',
           type: sql.UniqueIdentifier,

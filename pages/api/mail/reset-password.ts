@@ -27,7 +27,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<string>>>({
   console.log('newPassword after:', requestBody.newPassword);
   console.log('---------------');
 
-  await executeUsp('usp_ResetPassword', [
+  await executeUsp('usp_Account_ResetPassword', [
     {
       name: 'Token',
       type: sql.VarChar,

@@ -16,7 +16,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<boolean>>>({
   const email = req.body.email as string;
 
   const account = (
-    await executeUsp<IAccountPojo>('usp_FetchAccountByEmail', [
+    await executeUsp<IAccountPojo>('usp_Account_FetchByEmail', [
       {
         name: 'Email',
         type: sql.NVarChar,

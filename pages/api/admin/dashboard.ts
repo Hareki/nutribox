@@ -74,39 +74,42 @@ const handler = nc<
 }).get(async (req, res) => {
   const profitAndOrderNumber = (
     await executeUsp<ProfitAndOrderNumberFields>(
-      'usp_FetchProfitAndOrderNumber',
+      'usp_Statistics_FetchProfitAndOrderNumber',
     )
   ).data[0];
 
   const mostSoldProductsTable = (
     await executeUsp<MostAndLeastSoldProductsFields>(
-      'usp_FetchMostSoldProducts',
+      'usp_Statistics_FetchMostSoldProducts',
     )
   ).data;
 
   const leastSoldProductsTable = (
     await executeUsp<MostAndLeastSoldProductsFields>(
-      'usp_FetchLeastSoldProducts',
+      'usp_Statistics_FetchLeastSoldProducts',
     )
   ).data;
 
   const monthlyProfitsTable = (
-    await executeUsp<MonthlyProfitsFields>('usp_FetchMonthlyProfit')
+    await executeUsp<MonthlyProfitsFields>('usp_Statistics_FetchMonthlyProfits')
   ).data;
 
   const fiveMostRecentOrdersTable = (
-    await executeUsp<ICustomerOrderPojo>('usp_FetchMostRecentOrders', [
-      {
-        name: 'Limit',
-        type: sql.Int,
-        value: 5,
-      },
-    ])
+    await executeUsp<ICustomerOrderPojo>(
+      'usp_Statistics_FetchMostRecentOrders',
+      [
+        {
+          name: 'Limit',
+          type: sql.Int,
+          value: 5,
+        },
+      ],
+    )
   ).data;
 
   const fiveAlmostOutOfStockProductsTable = (
     await executeUsp<IProductWithTotalQuantityPojo>(
-      'usp_FetchLeastInStockProducts',
+      'usp_Statistics_FetchLeastInStockProducts',
       [
         {
           name: 'Limit',

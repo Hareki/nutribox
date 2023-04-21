@@ -47,7 +47,7 @@ const handler = nc<
   .get(async (req, res) => {
     const accountId = req.query.accountId as string;
     const queryResult = await executeUsp<IAccountAddressPojo>(
-      'usp_FetchAccountAddressesById',
+      'usp_Accounts_FetchAddressesById',
       [
         {
           name: 'AccountId',
@@ -69,7 +69,7 @@ const handler = nc<
     const accountId = req.query.accountId as string;
 
     const updatedAddresses = (
-      await executeUsp<IAccountAddressPojo>('usp_CreateAccountAddress', [
+      await executeUsp<IAccountAddressPojo>('usp_AccountAddress_CreateOne', [
         {
           name: 'AccountId',
           type: sql.UniqueIdentifier,
@@ -89,7 +89,7 @@ const handler = nc<
     const accountId = req.query.accountId as string;
     const addressId = requestBody.id;
     const updatedAddresses = (
-      await executeUsp<IAccountAddressPojo>('usp_UpdateAccountAddress', [
+      await executeUsp<IAccountAddressPojo>('usp_AccountAddress_UpdateOne', [
         {
           name: 'AccountId',
           type: sql.UniqueIdentifier,
@@ -114,7 +114,7 @@ const handler = nc<
     const addressId = req.query.addressId as string;
 
     const updatedAddresses = (
-      await executeUsp<IAccountAddressPojo>('usp_DeleteAccountAddress', [
+      await executeUsp<IAccountAddressPojo>('usp_AccountAddress_DeleteOne', [
         {
           name: 'AccountId',
           type: sql.UniqueIdentifier,

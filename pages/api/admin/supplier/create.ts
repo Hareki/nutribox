@@ -39,7 +39,7 @@ const handler = nc<
   // const supplier = await SupplierController.createOne(requestBody);
 
   const newSupplier = (
-    await executeUsp<ISupplierPojo>('usp_CreateSupplier', [
+    await executeUsp<ISupplierPojo>('usp_Supplier_CreateOne', [
       {
         name: 'Name',
         type: sql.NVarChar,

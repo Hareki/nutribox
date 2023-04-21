@@ -101,7 +101,7 @@ const handler = nc<
 
   // FIXME: WARNING: this ICustomerOrder is not from POJO, this is a FALSE type
   const queryResult2 = await executeUsp<ICustomerOrder>(
-    'usp_FetchCustomerOrderById',
+    'usp_CustomerOrder_FetchById',
     [
       {
         type: sql.UniqueIdentifier,

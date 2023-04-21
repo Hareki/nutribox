@@ -27,18 +27,21 @@ const handler = nc<
   const accountAddressId = requestBody.id;
 
   const updatedAddresses = (
-    await executeUsp<IAccountAddressPojo>('usp_UpdateDefaultAccountAddress', [
-      {
-        name: 'AccountId',
-        type: sql.UniqueIdentifier,
-        value: accountId,
-      },
-      {
-        name: 'Id',
-        type: sql.UniqueIdentifier,
-        value: accountAddressId,
-      },
-    ])
+    await executeUsp<IAccountAddressPojo>(
+      'usp_AccountAddresses_UpdateDefault',
+      [
+        {
+          name: 'AccountId',
+          type: sql.UniqueIdentifier,
+          value: accountId,
+        },
+        {
+          name: 'Id',
+          type: sql.UniqueIdentifier,
+          value: accountAddressId,
+        },
+      ],
+    )
   ).data;
 
   res.status(StatusCodes.OK).json({

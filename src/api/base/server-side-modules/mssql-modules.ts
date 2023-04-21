@@ -27,7 +27,7 @@ export const getAllProducts = async (
   const queryResult = await executeUsp<
     IJsonUpeProductWithImages,
     UspInfinitePaginationOutput
-  >('usp_FetchUpeProductsByPage', [
+  >('usp_Products_FetchWithProductOrdersByPage', [
     { name: 'PageSize', type: sql.Int, value: parseInt(docsPerPage) },
     { name: 'PageNumber', type: sql.Int, value: parseInt(page) },
     { name: 'TotalRecords', type: sql.Int, value: null, isOutput: true },
@@ -50,7 +50,7 @@ export const getProduct = async (
   id: string,
 ): Promise<IUpeProductWithImages> => {
   const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
-    'usp_FetchUpeProductById',
+    'usp_Product_FetchWithProductOrdersById',
     [{ name: 'Id', type: sql.UniqueIdentifier, value: id }],
   );
 
@@ -65,7 +65,7 @@ export const getProduct = async (
 
 export const getHotProducts = async (): Promise<IUpeProductWithImages[]> => {
   const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
-    'usp_FetchHotUpeProducts',
+    'usp_Products_FetchHotWithProductOrders',
     [{ name: 'Limit', type: sql.Int, value: ProductCarouselLimit }],
   );
 
@@ -77,7 +77,7 @@ export const getHotProducts = async (): Promise<IUpeProductWithImages[]> => {
 
 export const getNewProducts = async (): Promise<IUpeProductWithImages[]> => {
   const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
-    'usp_FetchNewUpeProducts',
+    'usp_Products_FetchNewWithProductOrders',
     [{ name: 'Limit', type: sql.Int, value: ProductCarouselLimit }],
   );
 
@@ -92,7 +92,7 @@ export async function getRelatedProducts(
   categoryId: string,
 ): Promise<IUpeProductWithImages[]> {
   const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
-    'usp_FetchRelatedUpeProducts',
+    'usp_Products_FetchRelatedWithProductOrders',
     [
       { name: 'Limit', type: sql.Int, value: RelatedProductsLimit },
       {
@@ -116,7 +116,7 @@ export async function getRelatedProducts(
 
 export async function getProductSlugs() {
   const queryResult = await executeUsp<{ name: string }>(
-    'usp_FetchAllProductNames',
+    'usp_Products_FetchAllNames',
   );
   const slugs = queryResult.data.map((product) =>
     virtuals.getSlug(product.name),
@@ -126,14 +126,14 @@ export async function getProductSlugs() {
 
 export async function getAllCategories() {
   const queryResult = await executeUsp<IProductCategory>(
-    'usp_FetchAllProductCategories',
+    'usp_ProductCategories_FetchAll',
   );
   return queryResult.data;
 }
 
 export async function countOrder(accountId: string) {
   const queryResult = await executeUsp<unknown, OrderStatusCountSQLOutput>(
-    'usp_FetchOrderStatusCountByAccountId',
+    'usp_Statistics_FetchOrderStatusCountByAccountId',
     [
       {
         name: 'AccountId',
@@ -186,7 +186,7 @@ export async function countOrder(accountId: string) {
 
 export async function countAddress(accountId: string) {
   const queryResult = await executeUsp<unknown, { Count: number }>(
-    'usp_FetchAddressCountByAccountId',
+    'usp_Statistics_FetchAddressCountByAccountId',
     [
       {
         name: 'AccountId',
@@ -211,7 +211,7 @@ export async function getCustomerOrderWithJsonItems(
   orderId: string,
 ): Promise<ICustomerOrderWithJsonItems> {
   const queryResult2 = await executeUsp<ICustomerOrderWithJsonItems>(
-    'usp_FetchCustomerOrderDetailById',
+    'usp_CustomerOrder_FetchWithItemsById',
     [
       {
         name: 'CustomerOrderId',
@@ -226,19 +226,22 @@ export async function getCustomerOrderWithJsonItems(
 
 export const verifyAccount = async (token: string) => {
   const FoundAccount = (
-    await executeUsp<unknown, { FoundAccount: boolean }>('usp_VerifyAccount', [
-      {
-        name: 'Token',
-        type: sql.NVarChar,
-        value: token,
-      },
-      {
-        name: 'FoundAccount',
-        type: sql.Bit,
-        value: 1,
-        isOutput: true,
-      },
-    ])
+    await executeUsp<unknown, { FoundAccount: boolean }>(
+      'usp_Account_VerifyOne',
+      [
+        {
+          name: 'Token',
+          type: sql.NVarChar,
+          value: token,
+        },
+        {
+          name: 'FoundAccount',
+          type: sql.Bit,
+          value: 1,
+          isOutput: true,
+        },
+      ],
+    )
   ).output.FoundAccount;
 
   return FoundAccount;

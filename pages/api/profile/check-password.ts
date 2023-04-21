@@ -21,7 +21,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<boolean>>>({
   // console.log(req.url);
 
   const queryResult = await executeUsp<unknown, { Password: string }>(
-    'usp_FetchPasswordByAccountId',
+    'usp_Account_FetchPasswordById',
     [
       {
         name: 'AccountId',

@@ -25,7 +25,7 @@ const handler = nc<
   const { pageSize, pageNumber } = extractPaginationOutputFromReq(req);
 
   const result = await fetchAdminPaginationData<ICustomerOrderPojo>({
-    procedureName: 'usp_FetchCustomerOrdersByPage',
+    procedureName: 'usp_CustomerOrders_FetchByPage',
     pageNumber,
     pageSize,
   });

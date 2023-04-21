@@ -22,7 +22,7 @@ const handler = nc<
   const { pageSize, pageNumber } = extractPaginationOutputFromReq(req);
 
   const result = await fetchAdminPaginationData<IAccountWithTotalOrdersPojo>({
-    procedureName: 'usp_FetchAccountsWithTotalOrdersByPage',
+    procedureName: 'usp_Accounts_FetchWithTotalOrdersByPage',
     pageNumber,
     pageSize,
   });

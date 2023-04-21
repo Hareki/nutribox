@@ -27,7 +27,7 @@ export async function sendVerificationEmail(email: string) {
 
   // await user.save();
 
-  await executeUsp('usp_CreateVerificationToken', [
+  await executeUsp('usp_VerificationToken_CreateOne', [
     {
       name: 'AccountEmail',
       type: sql.NVarChar,
@@ -64,7 +64,7 @@ export async function sendResetPasswordEmail(email: string) {
 
   // await user.save();
 
-  await executeUsp('usp_CreateForgotPasswordToken', [
+  await executeUsp('usp_ForgotPasswordToken_CreateOne', [
     {
       name: 'AccountEmail',
       type: sql.NVarChar,

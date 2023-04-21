@@ -29,7 +29,7 @@ const handler = nc<
 
   try {
     const updatedOrder = (
-      await executeUsp<ICustomerOrderPojo>('usp_UpdateCustomerOrderStatus', [
+      await executeUsp<ICustomerOrderPojo>('usp_CustomerOrder_UpdateStatus', [
         {
           name: 'CustomerOrderId',
           type: sql.UniqueIdentifier,

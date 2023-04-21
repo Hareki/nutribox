@@ -19,7 +19,7 @@ const handler = nc<
 
   const orders = await fetchAdminSearchData<ICustomerOrderPojo>({
     keyword: id as string,
-    procedureName: 'usp_FetchCustomerOrdersByIdKeyword',
+    procedureName: 'usp_CustomerOrders_FetchByIdKeyword',
   });
 
   res.status(StatusCodes.OK).json({

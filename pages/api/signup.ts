@@ -88,7 +88,7 @@ const handler = nc<
 
   // const newAccount = await AccountController.createOne(data);
 
-  const queryResult = await executeUsp<IAccount>('usp_CreateAccount', [
+  const queryResult = await executeUsp<IAccount>('usp_Account_CreateOne', [
     {
       name: 'RoleId',
       type: sql.UniqueIdentifier,

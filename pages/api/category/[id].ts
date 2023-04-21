@@ -23,7 +23,7 @@ const handler = nc<
   const queryResult = await executeUsp<
     IJsonUpeProductWithImages[],
     { CategoryName: string }
-  >('usp_FetchUpeProductsByCategoryId', [
+  >('usp_Products_FetchWithProductOrdersByCategoryId', [
     {
       name: 'CategoryId',
       type: sql.UniqueIdentifier,

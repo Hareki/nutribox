@@ -22,7 +22,7 @@ const handler = nc<
 
   const suppliers = await fetchAdminSearchData<ISupplierPojo>({
     keyword: name as string,
-    procedureName: 'usp_FetchSuppliersByNameKeyword',
+    procedureName: 'usp_Suppliers_FetchByNameKeyword',
   });
 
   res.status(StatusCodes.OK).json({

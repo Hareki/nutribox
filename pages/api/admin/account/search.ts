@@ -20,7 +20,7 @@ const handler = nc<
   const accountsWithTotalOrders =
     await fetchAdminSearchData<IAccountWithTotalOrdersPojo>({
       keyword: fullName as string,
-      procedureName: 'usp_FetchAccountsWithTotalOrdersByFullNameKeyword',
+      procedureName: 'usp_Accounts_FetchWithTotalOrdersByFullNameKeyword',
     });
 
   res.status(StatusCodes.OK).json({

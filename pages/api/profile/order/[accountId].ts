@@ -24,7 +24,7 @@ const handler = nc<
   const queryResult = await executeUsp<
     ICustomerOrder,
     { TotalRecords: number; TotalPages: number }
-  >('usp_FetchCustomerOrdersByPageAndAccountId', [
+  >('usp_CustomerOrders_FetchByPageAndAccountId', [
     {
       name: 'AccountId',
       type: sql.UniqueIdentifier,

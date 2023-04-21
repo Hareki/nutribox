@@ -55,7 +55,7 @@ const handler = nc<
     const accountId = req.query.accountId as string;
 
     const queryResult = await executeUsp<IJsonPopulatedCartItem>( //
-      'usp_FetchPopulatedCartItemsByAccountId',
+      'usp_CartItems_FetchPopulatedByAccountId',
       [
         {
           name: 'AccountId',
@@ -81,7 +81,7 @@ const handler = nc<
     const requestBody = req.body as CartItemRequestBody;
     const accountId = req.query.accountId as string;
 
-    await executeUsp('usp_UpdateCartItems', [
+    await executeUsp('usp_CartItem_CreateUpdateDeleteOne', [
       {
         name: 'AccountId',
         type: sql.UniqueIdentifier,

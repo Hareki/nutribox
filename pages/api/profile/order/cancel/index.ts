@@ -28,13 +28,16 @@ const handler = nc<
 
   try {
     const cancelledOrderWithJsonItems = (
-      await executeUsp<ICustomerOrderWithJsonItems>('usp_CancelOrder', [
-        {
-          name: 'CustomerOrderId',
-          type: sql.UniqueIdentifier,
-          value: id,
-        },
-      ])
+      await executeUsp<ICustomerOrderWithJsonItems>(
+        'usp_CustomerOrder_CancelOne',
+        [
+          {
+            name: 'CustomerOrderId',
+            type: sql.UniqueIdentifier,
+            value: id,
+          },
+        ],
+      )
     ).data[0];
 
     const cancelledOrderWithItems: ICustomerOrderWithItems = {
