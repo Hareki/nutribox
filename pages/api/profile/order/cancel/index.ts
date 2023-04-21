@@ -3,13 +3,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import { getCustomerOrderWithJsonItems } from 'api/base/server-side-modules/mssql-modules';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 // import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import type { ICustomerOrderWithItems } from 'api/mssql/pojos/customer_order.pojo';
+import type {
+  ICustomerOrderWithItems,
+  ICustomerOrderWithJsonItems,
+} from 'api/mssql/pojos/customer_order.pojo';
 import type { JSendResponse } from 'api/types/response.type';
-import { AllStatusIdArray, CancelIndexThreshHold } from 'utils/constants';
 
 export interface CancelOrderRequestBody {
   id: string;
@@ -25,39 +26,34 @@ const handler = nc<
 }).put(async (req, res) => {
   const { id } = req.body as CancelOrderRequestBody;
 
-  const orderWithJsonItems = await getCustomerOrderWithJsonItems(id);
+  try {
+    const cancelledOrderWithJsonItems = (
+      await executeUsp<ICustomerOrderWithJsonItems>('usp_CancelOrder', [
+        {
+          name: 'CustomerOrderId',
+          type: sql.UniqueIdentifier,
+          value: id,
+        },
+      ])
+    ).data[0];
 
-  const statusIndex = AllStatusIdArray.findIndex(
-    (id) => id === orderWithJsonItems.status_id,
-  );
+    const cancelledOrderWithItems: ICustomerOrderWithItems = {
+      ...cancelledOrderWithJsonItems,
+      items: JSON.parse(cancelledOrderWithJsonItems.items),
+    };
 
-  if (statusIndex > CancelIndexThreshHold) {
+    res.status(StatusCodes.OK).json({
+      status: 'success',
+      data: cancelledOrderWithItems,
+    });
+  } catch (err) {
+    console.log(err);
     res.status(StatusCodes.BAD_REQUEST).json({
       status: 'error',
       message: 'Order cannot be cancelled',
     });
     return;
   }
-
-  await executeUsp('usp_CancelOrder', [
-    {
-      name: 'CustomerOrderId',
-      type: sql.UniqueIdentifier,
-      value: id,
-    },
-  ]);
-
-  const cancelledOrderWithJsonItems = await getCustomerOrderWithJsonItems(id);
-
-  const cancelledOrderWithItems: ICustomerOrderWithItems = {
-    ...cancelledOrderWithJsonItems,
-    items: JSON.parse(cancelledOrderWithJsonItems.items),
-  };
-
-  res.status(StatusCodes.OK).json({
-    status: 'success',
-    data: cancelledOrderWithItems,
-  });
 });
 
 export default handler;

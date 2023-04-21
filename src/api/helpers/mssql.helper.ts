@@ -2,6 +2,7 @@ import type { NextApiRequest } from 'next';
 
 import { sql } from 'api/database/mssql.config';
 import { poolPromise } from 'api/database/mssql.config';
+import { AdminMainTablePaginationConstant } from 'utils/constants';
 
 type procedureParam = {
   name: string;
@@ -90,4 +91,59 @@ export const extractPaginationOutputFromReq = (req: NextApiRequest) => {
   const pageNumber = parseInt(page as string, 10);
 
   return { pageSize, pageNumber };
+};
+
+type FetchAdminPaginationData = {
+  procedureName: string;
+  pageNumber: number;
+  pageSize: number;
+};
+
+export const fetchAdminPaginationData = async <T>({
+  procedureName,
+  pageNumber,
+  pageSize,
+}: FetchAdminPaginationData) => {
+  const queryResult = await executeUsp<T, PaginationOutput>(
+    procedureName,
+    getPaginationParamArray({
+      pageNumber,
+      pageSize,
+    }),
+  );
+
+  const data = queryResult.data;
+  const result = {
+    totalPages: queryResult.output.TotalPages,
+    totalDocs: queryResult.output.TotalRecords,
+    docs: data,
+  };
+
+  return result;
+};
+
+type FetchAdminSearchData = {
+  procedureName: string;
+  keyword: string;
+};
+export const fetchAdminSearchData = async <T>({
+  procedureName,
+  keyword,
+}: FetchAdminSearchData) => {
+  const result = (
+    await executeUsp<T>(procedureName, [
+      {
+        name: 'Keyword',
+        type: sql.NVarChar,
+        value: keyword,
+      },
+      {
+        name: 'Limit',
+        type: sql.Int,
+        value: AdminMainTablePaginationConstant.docsPerPage,
+      },
+    ])
+  ).data;
+
+  return result;
 };
