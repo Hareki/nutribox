@@ -104,3 +104,52 @@ CREATE VIEW vw_AccountsWithTotalOrdersAndFullName AS
 	LEFT JOIN customer_orders AS co
 	ON a.id = co.account_id
 	GROUP BY a.id, a.role_id, a.first_name, a.last_name, a.avatar_url, a.phone, a.email, a.verified, a.password, a.birthday, a.created_at;
+
+
+CREATE VIEW vw_ProductsWithTotalSold
+AS
+  SELECT
+    p.*,
+    SUM(coi.quantity) AS total_sold
+  FROM
+    customer_order_items coi
+  JOIN customer_orders co ON coi.customer_order_id = co.id
+  JOIN products p ON coi.product_id = p.id
+  WHERE
+    co.status_id = '83B6EFB9-2A3E-464A-B31A-866F3A0D9274'
+  GROUP BY
+    p.id,
+    p.category_id,
+    p.default_supplier_id,
+    p.name,
+    p.available,
+    p.import_price,
+    p.retail_price,
+    p.shelf_life,
+    p.description,
+    p.created_at;
+GO
+
+CREATE VIEW vw_ProductsWithUnexpiredRemainingInStock
+AS
+SELECT
+  p.*,
+  SUM(CASE WHEN po.expiration_date > GETDATE() THEN po.remaining_quantity ELSE 0 END) AS total_unexpired_remaining_stock
+FROM
+  products p
+  INNER JOIN product_orders po ON p.id = po.product_id
+WHERE
+  po.expiration_date > GETDATE()
+GROUP BY
+  p.id,
+  p.category_id,
+  p.default_supplier_id,
+  p.name,
+  p.available,
+  p.import_price,
+  p.retail_price,
+  p.shelf_life,
+  p.description,
+  p.created_at;
+GO
+

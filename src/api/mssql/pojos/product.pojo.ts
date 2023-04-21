@@ -44,7 +44,7 @@ export interface ICdsUpeProduct extends Omit<ICdsProduct, 'product_orders'> {
 }
 
 export interface IProductWithTotalQuantity extends IProduct {
-  total_quantity: number;
+  total_unexpired_remaining_stock: number;
 }
 
 export interface IProductInput

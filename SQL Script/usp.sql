@@ -1,4 +1,4 @@
-USE nutribox
+﻿USE nutribox
 GO
 
 CREATE PROCEDURE usp_FetchUpeProductsByPage @PageSize INT,
@@ -24,7 +24,6 @@ BEGIN
 END;
 GO
 
--------------------
 CREATE PROCEDURE usp_FetchUpeProductById @Id UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -34,7 +33,6 @@ BEGIN
 END;
 GO
 
--------------------
 CREATE PROCEDURE usp_FetchHotUpeProducts @Limit INT
 AS
 BEGIN
@@ -627,13 +625,27 @@ GO
 CREATE PROCEDURE usp_CancelOrder @CustomerOrderId UNIQUEIDENTIFIER
 AS
 BEGIN
+	DECLARE @CancelledId uniqueidentifier = 'AD8B7716-CB32-4D4B-98B2-3EA4367B9CD5';
+	DECLARE @PendingId uniqueidentifier = '57379784-B3F7-4717-9155-25ED93EEF78D';
+	DECLARE @CurrentStatusId uniqueidentifier;
+
 	SET XACT_ABORT ON;
+
+	-- Get the current status_id of the customer order
+	SELECT @CurrentStatusId = status_id FROM customer_orders WHERE id = @CustomerOrderId;
+
+	-- If the current status_id is not 'Pending', raise an error and exit
+	IF @CurrentStatusId <> @PendingId
+	BEGIN
+		RAISERROR('Cannot cancel the order. The order is not in Pending status.', 16, 1);
+		RETURN;
+	END
 
 	BEGIN TRANSACTION;
 
 	-- 1. Set the status_id field of the customer_orders record to 'Cancelled' status
 	UPDATE customer_orders
-	SET status_id = 'AD8B7716-CB32-4D4B-98B2-3EA4367B9CD5'
+	SET status_id = @CancelledId
 	WHERE id = @CustomerOrderId;
 
 	-- 2. Revert the remaining_quantity in product_orders based on export_history records
@@ -680,8 +692,13 @@ BEGIN
 	DEALLOCATE exportHistoryCursor;
 
 	COMMIT TRANSACTION;
+
+	SELECT *
+	FROM vw_CustomerOrdersWithItems
+	WHERE id = @CustomerOrderId
 END;
 GO
+
 
 CREATE PROCEDURE usp_FetchAccountAddressesById @AccountId UNIQUEIDENTIFIER
 AS
@@ -1053,6 +1070,21 @@ BEGIN
 END;
 GO
 
+
+
+CREATE PROCEDURE usp_FetchAccountsWithTotalOrdersByFullNameKeyword
+	@Keyword NVARCHAR(200),
+	@Limit INT
+AS
+BEGIN
+
+	SELECT Top (@Limit) *
+	FROM vw_AccountsWithTotalOrdersAndFullName
+	WHERE full_name LIKE N'%' + @Keyword + N'%'
+	ORDER BY created_at DESC 
+END;
+GO
+
 CREATE PROCEDURE usp_FetchAccountsWithTotalOrdersByPage
 	@PageSize INT,
 	@PageNumber INT,
@@ -1073,7 +1105,7 @@ BEGIN
 			ELSE NULL
 			END;
 
-	-- Modified query to use vw_AccountsWithTotalOrders view
+
 	SELECT *
 	FROM vw_AccountsWithTotalOrdersAndFullName
 	ORDER BY created_at DESC
@@ -1082,16 +1114,385 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE usp_FetchAccountsWithTotalOrdersByFullNameKeyword
+CREATE PROCEDURE usp_FetchCustomerOrdersByPage
+	@PageSize INT,
+	@PageNumber INT,
+	@TotalRecords INT OUTPUT,
+	@TotalPages INT OUTPUT,
+	@NextPageNumber INT OUTPUT
+AS
+BEGIN
+
+	SELECT @TotalRecords = COUNT(*)
+	FROM customer_orders
+
+	SET @TotalPages = CEILING(CAST(@TotalRecords AS FLOAT) / @PageSize);
+
+	SET @NextPageNumber = CASE 
+			WHEN @PageNumber < @TotalPages
+				THEN @PageNumber + 1
+			ELSE NULL
+			END;
+
+
+	SELECT *
+	FROM customer_orders
+	ORDER BY created_at DESC
+	OFFSET (@PageNumber - 1) * @PageSize ROWS
+	FETCH NEXT @PageSize ROWS ONLY;
+END;
+GO
+
+CREATE PROCEDURE usp_FetchCustomerOrdersByIdKeyword
 	@Keyword NVARCHAR(200),
 	@Limit INT
 AS
 BEGIN
-	-- Use the vw_AccountsWithTotalOrdersAndFullName view to fetch accounts with full_name partially matching the @Keyword, case insensitive
+
 	SELECT Top (@Limit) *
-	FROM vw_AccountsWithTotalOrdersAndFullName
-	WHERE full_name LIKE N'%' + @Keyword + N'%'
+	FROM customer_orders
+	WHERE id LIKE N'%' + @Keyword + N'%'
 	ORDER BY created_at DESC 
 END;
 GO
 
+CREATE PROCEDURE usp_UpdateCustomerOrderStatus
+	@CustomerOrderId uniqueidentifier
+AS
+BEGIN
+	DECLARE @PendingId uniqueidentifier = '57379784-B3F7-4717-9155-25ED93EEF78D';
+	DECLARE @ProcessingId uniqueidentifier = 'F2E5678D-19E0-4BE0-BB0D-FDC20E0989D4';
+	DECLARE @DeliveringId uniqueidentifier = '741AB523-D545-4C8A-97C8-0231802CF0F3';
+	DECLARE @DeliveredId uniqueidentifier = '83B6EFB9-2A3E-464A-B31A-866F3A0D9274';
+	DECLARE @CancelledId uniqueidentifier = 'AD8B7716-CB32-4D4B-98B2-3EA4367B9CD5';
+
+	DECLARE @CurrentStatusId uniqueidentifier;
+	DECLARE @NextStatusId uniqueidentifier;
+
+	-- Get the current status_id of the customer order
+	SELECT @CurrentStatusId = status_id FROM customer_orders WHERE id = @CustomerOrderId;
+
+	-- Determine the next status_id based on the current status_id
+	SET @NextStatusId = (
+		CASE 
+			WHEN @CurrentStatusId = @PendingId THEN @ProcessingId
+			WHEN @CurrentStatusId = @ProcessingId THEN @DeliveringId
+			WHEN @CurrentStatusId = @DeliveringId THEN @DeliveredId
+			ELSE NULL
+		END
+	);
+
+	-- If the next status_id is NULL or the current status_id is either 'Giao thành công' or 'Đã huỷ đơn', raise an error
+	IF (@NextStatusId IS NULL) OR (@CurrentStatusId IN (@DeliveredId, @CancelledId))
+	BEGIN
+		RAISERROR('Cannot update the order status. The order is either completed or cancelled.', 16, 1);
+		RETURN;
+	END
+
+	-- Update the customer order's status_id to the next status_id
+	UPDATE customer_orders
+	SET status_id = @NextStatusId
+	WHERE id = @CustomerOrderId;
+
+	SELECT * 
+	FROM customer_orders
+	WHERE id = @CustomerOrderId; 
+END;
+GO
+
+CREATE PROCEDURE usp_FetchSupplierById
+	@SupplierId uniqueidentifier
+AS
+BEGIN
+
+	SELECT *
+	FROM suppliers
+	WHERE id = @SupplierId
+	ORDER BY created_at DESC 
+END;
+GO
+
+CREATE PROCEDURE usp_UpdateSupplier
+	@SupplierId UNIQUEIDENTIFIER,
+	@Name NVARCHAR(100) = NULL,
+	@Phone NVARCHAR(50) = NULL,
+	@Email NVARCHAR(100) = NULL,
+	@ProvinceCode INT = NULL,
+	@DistrictCode INT = NULL,
+	@WardCode INT = NULL,
+	@StreetAddress NVARCHAR(500) = NULL
+AS
+BEGIN
+	UPDATE suppliers
+	SET name = COALESCE(@Name, name),
+	phone = COALESCE(@Phone, phone),
+	email = COALESCE(@Email, email),
+	province_code = COALESCE(@ProvinceCode, province_code),
+	district_code = COALESCE(@DistrictCode, district_code),
+	ward_code = COALESCE(@WardCode, ward_code),
+	street_address = COALESCE(@StreetAddress, street_address)	
+	WHERE id = @SupplierId;
+
+	SELECT *
+	FROM suppliers
+	WHERE id = @SupplierId;
+END;
+GO
+
+CREATE PROCEDURE usp_FetchSuppliersByPage
+	@PageSize INT,
+	@PageNumber INT,
+	@TotalRecords INT OUTPUT,
+	@TotalPages INT OUTPUT,
+	@NextPageNumber INT OUTPUT
+AS
+BEGIN
+
+	SELECT @TotalRecords = COUNT(*)
+	FROM suppliers
+
+	SET @TotalPages = CEILING(CAST(@TotalRecords AS FLOAT) / @PageSize);
+
+	SET @NextPageNumber = CASE 
+			WHEN @PageNumber < @TotalPages
+				THEN @PageNumber + 1
+			ELSE NULL
+			END;
+
+
+	SELECT *
+	FROM suppliers
+	ORDER BY created_at DESC
+	OFFSET (@PageNumber - 1) * @PageSize ROWS
+	FETCH NEXT @PageSize ROWS ONLY;
+END;
+GO
+
+CREATE PROCEDURE usp_CreateSupplier
+	@Name NVARCHAR(100) = NULL,
+	@Phone NVARCHAR(50) = NULL,
+	@Email NVARCHAR(100) = NULL,
+	@ProvinceCode INT = NULL,
+	@DistrictCode INT = NULL,
+	@WardCode INT = NULL,
+	@StreetAddress NVARCHAR(500) = NULL
+AS
+BEGIN
+	DECLARE @NewSupplierId UNIQUEIDENTIFIER = NEWID();
+
+
+	INSERT INTO suppliers(
+		id,
+		name,
+		phone,
+		email,
+		province_code,
+		district_code,
+		ward_code,
+		street_address
+		)
+	VALUES (
+		@NewSupplierId,
+		@Name,
+		@Phone,
+		@Email,
+		@ProvinceCode,
+		@DistrictCode,
+		@WardCode,
+		@StreetAddress
+		);
+
+	-- Select the inserted account
+	SELECT *
+	FROM suppliers
+	WHERE id = @NewSupplierId;
+END;
+GO
+
+CREATE PROCEDURE usp_FetchSuppliersByNameKeyword
+	@Keyword NVARCHAR(200),
+	@Limit INT
+AS
+BEGIN
+
+	SELECT Top (@Limit) *
+	FROM suppliers
+	WHERE name LIKE N'%' + @Keyword + N'%'
+	ORDER BY created_at DESC 
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_FetchProfitAndOrderNumber
+AS
+BEGIN
+  DECLARE @DeliveredStatusId uniqueidentifier = '83B6EFB9-2A3E-464A-B31A-866F3A0D9274';
+  
+  WITH TodayStats AS (
+    SELECT
+      SUM(CASE WHEN co.status_id = @DeliveredStatusId THEN co.profit ELSE 0 END) AS today_profit,
+      COUNT(*) AS today_order_number
+    FROM
+      customer_orders co
+    WHERE
+      CAST(co.created_at AS DATE) = CAST(GETDATE() AS DATE)
+  ),
+  PrevMonthStats AS (
+    SELECT
+      SUM(CASE WHEN co.status_id = @DeliveredStatusId THEN co.profit ELSE 0 END) AS prev_month_profit,
+      COUNT(*) AS prev_month_order_number
+    FROM
+      customer_orders co
+    WHERE
+      YEAR(co.created_at) = YEAR(DATEADD(MONTH, -1, GETDATE()))
+      AND MONTH(co.created_at) = MONTH(DATEADD(MONTH, -1, GETDATE()))
+  ),
+  ThisMonthStats AS (
+    SELECT
+      SUM(CASE WHEN co.status_id = @DeliveredStatusId THEN co.profit ELSE 0 END) AS this_month_profit,
+      COUNT(*) AS this_month_order_number
+    FROM
+      customer_orders co
+    WHERE
+      YEAR(co.created_at) = YEAR(GETDATE())
+      AND MONTH(co.created_at) = MONTH(GETDATE())
+  )
+  SELECT
+    COALESCE(ts.today_profit, 0) AS today_profit,
+    COALESCE(ts.today_order_number, 0) AS today_order_number,
+    COALESCE(pms.prev_month_profit, 0) AS prev_month_profit,
+    COALESCE(pms.prev_month_order_number, 0) AS prev_month_order_number,
+    COALESCE(tms.this_month_profit, 0) AS this_month_profit,
+    COALESCE(tms.this_month_order_number, 0) AS this_month_order_number
+  FROM
+    TodayStats ts
+    CROSS JOIN PrevMonthStats pms
+    CROSS JOIN ThisMonthStats tms;
+END;
+GO
+
+
+CREATE OR ALTER PROCEDURE usp_FetchMostSoldProducts
+AS
+BEGIN
+  DECLARE @TotalSoldOfAllProducts INT = (SELECT SUM(total_sold) FROM vw_ProductsWithTotalSold);
+
+  SELECT
+    (SELECT * FROM products WHERE id = p.id FOR JSON PATH,
+				WITHOUT_ARRAY_WRAPPER) AS product,
+    total_sold,
+    @TotalSoldOfAllProducts AS total_sold_of_all_products
+  FROM
+    vw_ProductsWithTotalSold p
+  WHERE
+    total_sold = (SELECT MAX(total_sold) FROM vw_ProductsWithTotalSold);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_FetchLeastSoldProducts
+AS
+BEGIN
+  DECLARE @TotalSoldOfAllProducts INT = (SELECT SUM(total_sold) FROM vw_ProductsWithTotalSold);
+
+  SELECT
+    (SELECT * FROM products WHERE id = p.id FOR JSON PATH,
+				WITHOUT_ARRAY_WRAPPER) AS product,
+    total_sold,
+    @TotalSoldOfAllProducts AS total_sold_of_all_products
+  FROM
+    vw_ProductsWithTotalSold p
+  WHERE
+    total_sold = (SELECT MIN(total_sold) FROM vw_ProductsWithTotalSold);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_FetchMonthlyProfit
+AS
+BEGIN
+  WITH CurrentYearMonths AS (
+    SELECT
+      n.Number AS month
+    FROM
+      (VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12)) n(Number)
+  ),
+  MonthlyProfits AS (
+    SELECT
+      MONTH(co.created_at) AS month,
+      SUM(co.profit) AS profit
+    FROM
+      customer_orders co
+    WHERE
+      co.status_id = '83B6EFB9-2A3E-464A-B31A-866F3A0D9274'
+      AND YEAR(co.created_at) = YEAR(GETDATE())
+    GROUP BY
+      MONTH(co.created_at)
+  )
+  SELECT
+    cym.month,
+    COALESCE(mp.profit, 0) AS profit
+  FROM
+    CurrentYearMonths cym
+    LEFT JOIN MonthlyProfits mp ON cym.month = mp.month
+  ORDER BY
+    cym.month;
+END;
+GO
+
+
+CREATE PROCEDURE usp_FetchMostRecentOrders
+  @Limit INT
+AS
+BEGIN
+  SELECT TOP (@Limit) *
+  FROM customer_orders
+  ORDER BY created_at DESC;
+END;
+GO
+
+CREATE PROCEDURE usp_FetchLeastInStockProducts
+  @Limit INT
+AS
+BEGIN
+  SELECT TOP (@Limit) *
+  FROM vw_ProductsWithUnexpiredRemainingInStock
+  ORDER BY total_unexpired_remaining_stock ASC;
+END;
+GO
+
+CREATE PROCEDURE usp_UpdateStoreContactInfo
+	@StoreId UNIQUEIDENTIFIER,
+	@Phone NVARCHAR(100) = NULL,
+	@Email NVARCHAR(100) = NULL,
+    @ProvinceCode INT = NULL,
+	@DistrictCode INT = NULL,
+	@WardCode INT = NULL,
+	@StreetAddress NVARCHAR(500) = NULL
+AS
+BEGIN
+	UPDATE stores
+	SET phone = COALESCE(@Phone, phone),
+	email = COALESCE(@Email, phone),
+	province_code = COALESCE(@ProvinceCode, phone),
+	district_code = COALESCE(@DistrictCode, phone),
+	ward_code = COALESCE(@WardCode, phone),
+	street_address = COALESCE(@StreetAddress, phone)
+		
+	WHERE id = @StoreId;
+
+	SELECT *
+	FROM stores
+	WHERE id = @StoreId;
+END;
+GO
+
+CREATE PROCEDURE usp_UpdateStoreHours
+  @StoreHoursRecords StoreHoursRecordsType READONLY
+AS
+BEGIN
+  UPDATE sh
+  SET
+    sh.open_time = r.open_time,
+    sh.close_time = r.close_time
+  FROM
+    store_hours sh
+    INNER JOIN @StoreHoursRecords r ON sh.id = r.id;
+END;
