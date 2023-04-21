@@ -85,6 +85,36 @@ export function getPaginationParamArray({
   ];
 }
 
+type RequestBodyAddress = {
+  provinceId: number;
+  districtId: number;
+  wardId: number;
+  streetAddress: string;
+};
+
+export const getAddressParamArray = (requestBody: RequestBodyAddress) => [
+  {
+    name: 'ProvinceCode',
+    type: sql.Int,
+    value: requestBody.provinceId,
+  },
+  {
+    name: 'DistrictCode',
+    type: sql.Int,
+    value: requestBody.districtId,
+  },
+  {
+    name: 'WardCode',
+    type: sql.Int,
+    value: requestBody.wardId,
+  },
+  {
+    name: 'StreetAddress',
+    type: sql.NVarChar,
+    value: requestBody.streetAddress,
+  },
+];
+
 export const extractPaginationOutputFromReq = (req: NextApiRequest) => {
   const { docsPerPage = '9999', page = '1' } = req.query;
   const pageSize = parseInt(docsPerPage as string, 10);

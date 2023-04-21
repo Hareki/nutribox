@@ -5,7 +5,7 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 // import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import { sql } from 'api/database/mssql.config';
-import { executeUsp } from 'api/helpers/mssql.helper';
+import { executeUsp, getAddressParamArray } from 'api/helpers/mssql.helper';
 import type { IAccountAddress as IAccountAddressPojo } from 'api/mssql/pojos/account_address.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
@@ -22,26 +22,7 @@ export interface DeleteAddressQueryParams {
 
 const convertRequestBodyToParamArray = (requestBody: AddAddressRequestBody) => {
   return [
-    {
-      name: 'ProvinceCode',
-      type: sql.Int,
-      value: requestBody.provinceId,
-    },
-    {
-      name: 'DistrictCode',
-      type: sql.Int,
-      value: requestBody.districtId,
-    },
-    {
-      name: 'WardCode',
-      type: sql.Int,
-      value: requestBody.wardId,
-    },
-    {
-      name: 'StreetAddress',
-      type: sql.NVarChar,
-      value: requestBody.streetAddress,
-    },
+    ...getAddressParamArray(requestBody),
     {
       name: 'Title',
       type: sql.NVarChar,

@@ -6,9 +6,12 @@ import {
   defaultOnNoMatch,
   onMongooseValidationError,
 } from 'api/base/next-connect';
-import SupplierController from 'api/controllers/Supplier.controller';
 import connectToDB from 'api/database/mongoose/databaseConnection';
+// import type { ISupplier } from 'api/models/Supplier.model/types';
+import { sql } from 'api/database/mssql.config';
+import { executeUsp, getAddressParamArray } from 'api/helpers/mssql.helper';
 import type { ISupplier } from 'api/models/Supplier.model/types';
+import type { ISupplier as ISupplierPojo } from 'api/mssql/pojos/supplier.pojo';
 import type {
   JSendErrorResponse,
   JSendFailResponse,
@@ -21,7 +24,7 @@ export interface CreateSupplierRb
 const handler = nc<
   NextApiRequest,
   NextApiResponse<
-    | JSendSuccessResponse<ISupplier>
+    | JSendSuccessResponse<ISupplierPojo>
     | JSendFailResponse<Record<string, string>>
     | JSendErrorResponse
   >
@@ -33,11 +36,32 @@ const handler = nc<
 
   const requestBody = req.body as CreateSupplierRb;
 
-  const supplier = await SupplierController.createOne(requestBody);
+  // const supplier = await SupplierController.createOne(requestBody);
+
+  const newSupplier = (
+    await executeUsp<ISupplierPojo>('usp_CreateSupplier', [
+      {
+        name: 'Name',
+        type: sql.NVarChar,
+        value: requestBody.name,
+      },
+      {
+        name: 'Phone',
+        type: sql.NVarChar,
+        value: requestBody.phone,
+      },
+      {
+        name: 'Email',
+        type: sql.NVarChar,
+        value: requestBody.email,
+      },
+      ...getAddressParamArray(requestBody),
+    ])
+  ).data[0];
 
   res.status(StatusCodes.OK).json({
     status: 'success',
-    data: supplier,
+    data: newSupplier,
   });
 });
 

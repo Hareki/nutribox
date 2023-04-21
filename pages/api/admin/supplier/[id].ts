@@ -6,29 +6,41 @@ import {
   defaultOnNoMatch,
   onMongooseValidationError,
 } from 'api/base/next-connect';
-import SupplierController from 'api/controllers/Supplier.controller';
-import connectToDB from 'api/database/mongoose/databaseConnection';
+import { sql } from 'api/database/mssql.config';
+import { executeUsp, getAddressParamArray } from 'api/helpers/mssql.helper';
+// import type { ISupplierInput } from 'api/models/Supplier.model/types';
+// import type { ISupplier } from 'api/models/Supplier.model/types';
 import type { ISupplierInput } from 'api/models/Supplier.model/types';
-import type { ISupplier } from 'api/models/Supplier.model/types';
+import type { ISupplier as ISupplierPojo } from 'api/mssql/pojos/supplier.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface UpdateSupplierInfoRb extends ISupplierInput {}
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<ISupplier | Record<string, string>>>
+  NextApiResponse<JSendResponse<ISupplierPojo | Record<string, string>>>
 >({
   onError: onMongooseValidationError,
   onNoMatch: defaultOnNoMatch,
 })
   .get(async (req, res) => {
-    await connectToDB();
+    // await connectToDB();
 
-    const id = req.query.id as string;
+    const supplierId = req.query.id as string;
 
-    const supplier = await SupplierController.getOne({
-      id,
-    });
+    // const supplier = await SupplierController.getOne({
+    //   id: supplierId,
+    // });
+
+    const supplier = (
+      await executeUsp<ISupplierPojo>('usp_FetchSupplierById', [
+        {
+          name: 'SupplierId',
+          type: sql.UniqueIdentifier,
+          value: supplierId,
+        },
+      ])
+    ).data[0];
 
     res.status(StatusCodes.OK).json({
       status: 'success',
@@ -37,11 +49,38 @@ const handler = nc<
   })
 
   .put(async (req, res) => {
-    await connectToDB();
+    // await connectToDB();
 
-    const id = req.query.id as string;
+    const supplierId = req.query.id as string;
     const requestBody = req.body as UpdateSupplierInfoRb;
-    const updatedSupplier = await SupplierController.updateOne(id, requestBody);
+
+    // const updatedSupplier = await SupplierController.updateOne(supplierId, requestBody);
+
+    const updatedSupplier = (
+      await executeUsp<ISupplierPojo>('usp_UpdateSupplier', [
+        {
+          name: 'SupplierId',
+          type: sql.UniqueIdentifier,
+          value: supplierId,
+        },
+        {
+          name: 'Name',
+          type: sql.NVarChar,
+          value: requestBody.name,
+        },
+        {
+          name: 'Phone',
+          type: sql.NVarChar,
+          value: requestBody.phone,
+        },
+        {
+          name: 'Email',
+          type: sql.NVarChar,
+          value: requestBody.email,
+        },
+        ...getAddressParamArray(requestBody),
+      ])
+    ).data[0];
 
     res.status(StatusCodes.OK).json({
       status: 'success',

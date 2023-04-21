@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import connectToDB from 'api/database/mongoose/databaseConnection';
 import { fetchAdminSearchData } from 'api/helpers/mssql.helper';
 // import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
 import type { IAccountWithTotalOrders as IAccountWithTotalOrdersPojo } from 'api/mssql/pojos/account.pojo';
@@ -16,8 +15,6 @@ const handler = nc<
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
-  await connectToDB();
-
   const { fullName } = req.query;
 
   const accountsWithTotalOrders =
