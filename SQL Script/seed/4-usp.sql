@@ -17,7 +17,7 @@ BEGIN
         SET @NextPageNumber = -1;
 
     SELECT *
-    FROM vw_ProductsWithProductsOrdersAndImages p
+    FROM vw_ProductsWithUnexpiredOrdersAndImages p
     WHERE p.available = 1
     ORDER BY p.created_at DESC OFFSET (@PageNumber - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY;
 END;
@@ -27,7 +27,7 @@ CREATE OR ALTER PROCEDURE usp_Product_FetchWithProductOrdersById @Id UNIQUEIDENT
 AS
 BEGIN
     SELECT *
-    FROM vw_ProductsWithProductsOrdersAndImages p
+    FROM vw_ProductsWithUnexpiredOrdersAndImages p
     WHERE p.id = @Id
 END;
 GO
@@ -38,7 +38,7 @@ BEGIN
     WITH ProductSales
     AS (SELECT up.*,
                COALESCE(SUM(coi.quantity), 0) AS TotalQuantitySold
-        FROM vw_ProductsWithProductsOrdersAndImages up
+        FROM vw_ProductsWithUnexpiredOrdersAndImages up
             LEFT JOIN customer_order_items coi
                 ON up.id = coi.product_id
         GROUP BY up.id,
@@ -66,7 +66,7 @@ AS
 BEGIN
     SELECT TOP (@Limit)
         up.*
-    FROM vw_ProductsWithProductsOrdersAndImages up
+    FROM vw_ProductsWithUnexpiredOrdersAndImages up
     WHERE up.available = 1
     ORDER BY up.created_at DESC;
 END;
@@ -80,7 +80,7 @@ AS
 BEGIN
     SELECT TOP (@Limit)
         up.*
-    FROM vw_ProductsWithProductsOrdersAndImages up
+    FROM vw_ProductsWithUnexpiredOrdersAndImages up
     WHERE up.category_id = @CategoryId
           AND up.available = 1
           AND up.id <> @ProductId
@@ -95,7 +95,7 @@ AS
 BEGIN
     SELECT TOP (@Limit)
         up.*
-    FROM vw_ProductsWithProductsOrdersAndImages up
+    FROM vw_ProductsWithUnexpiredOrdersAndImages up
     WHERE up.name COLLATE Latin1_General_100_CI_AI_SC_UTF8 LIKE N'%' + @Keyword + N'%'
           AND up.available = 1
     ORDER BY up.created_at DESC;
@@ -130,9 +130,9 @@ BEGIN
     FROM product_categories
     WHERE id = @CategoryId;
 
-    -- Fetch products from vw_ProductsWithProductsOrdersAndImages
+    -- Fetch products from vw_ProductsWithUnexpiredOrdersAndImages
     SELECT up.*
-    FROM vw_ProductsWithProductsOrdersAndImages up
+    FROM vw_ProductsWithUnexpiredOrdersAndImages up
     WHERE up.category_id = @CategoryId
           AND up.available = 1
     ORDER BY up.created_at DESC;
@@ -148,7 +148,7 @@ BEGIN
            ci.created_at,
            (
                SELECT up.*
-               FROM vw_ProductsWithProductsOrdersAndImages up
+               FROM vw_ProductsWithUnexpiredOrdersAndImages up
                WHERE ci.product_id = up.id
                FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
            ) AS product_id
