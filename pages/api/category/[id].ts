@@ -21,7 +21,7 @@ const handler = nc<
   const id = req.query.id as string;
 
   const queryResult = await executeUsp<
-    IJsonUpeProductWithImages[],
+    IJsonUpeProductWithImages,
     { CategoryName: string }
   >('usp_Products_FetchWithProductOrdersByCategoryId', [
     {
