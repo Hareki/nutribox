@@ -61,9 +61,13 @@ export function instanceOfValidationError(
 }
 
 // MSSQL
-export function isDuplicateKey(error: any): boolean {
+export function isDuplicationErrorSQL(error: any): boolean {
   return (
     error?.message.includes('Violation of PRIMARY KEY constraint') ||
     error?.message.includes('Violation of UNIQUE KEY constraint')
   );
+}
+
+export function isValidationErrorSQL(error: any): boolean {
+  return error?.message.includes('conflicted with the CHECK constraint');
 }

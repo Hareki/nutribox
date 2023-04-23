@@ -6,13 +6,17 @@ import type {
 
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
-import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
+import { parsePoIJsonUpeProductWithImages } from 'api/helpers/typeConverter.helper';
 import type { PoICustomerOrderWithJsonItems } from 'api/mssql/pojos/customer_order.pojo';
 import type {
   PoIJsonUpeProductWithImages,
   PoIUpeProductWithImages,
 } from 'api/mssql/pojos/product.pojo';
-import type { IProductCategory } from 'api/mssql/pojos/product_category.pojo';
+import type { PoIProductCategory } from 'api/mssql/pojos/product_category.pojo';
+import type {
+  PoIStoreWithJsonStoreHours,
+  PoIStoreWithStoreHours,
+} from 'api/mssql/pojos/store.pojo';
 import { virtuals } from 'api/mssql/virtuals';
 import type {
   GetInfinitePaginationResult,
@@ -34,8 +38,9 @@ export const getAllProducts = async (
     { name: 'NextPageNumber', type: sql.Int, value: null, isOutput: true },
   ]);
 
-  const upeProducts: PoIUpeProductWithImages[] =
-    queryResult.data.map(mapJsonUpeToUpe);
+  const upeProducts: PoIUpeProductWithImages[] = queryResult.data.map(
+    parsePoIJsonUpeProductWithImages,
+  );
 
   const result: InfiniteUpePaginationResult = {
     nextPageNum: queryResult.output.NextPageNumber,
@@ -69,8 +74,9 @@ export const getHotProducts = async (): Promise<PoIUpeProductWithImages[]> => {
     [{ name: 'Limit', type: sql.Int, value: ProductCarouselLimit }],
   );
 
-  const upeProducts: PoIUpeProductWithImages[] =
-    queryResult.data.map(mapJsonUpeToUpe);
+  const upeProducts: PoIUpeProductWithImages[] = queryResult.data.map(
+    parsePoIJsonUpeProductWithImages,
+  );
 
   return upeProducts;
 };
@@ -81,8 +87,9 @@ export const getNewProducts = async (): Promise<PoIUpeProductWithImages[]> => {
     [{ name: 'Limit', type: sql.Int, value: ProductCarouselLimit }],
   );
 
-  const upeProducts: PoIUpeProductWithImages[] =
-    queryResult.data.map(mapJsonUpeToUpe);
+  const upeProducts: PoIUpeProductWithImages[] = queryResult.data.map(
+    parsePoIJsonUpeProductWithImages,
+  );
 
   return upeProducts;
 };
@@ -108,8 +115,9 @@ export async function getRelatedProducts(
     ],
   );
 
-  const upeProducts: PoIUpeProductWithImages[] =
-    queryResult.data.map(mapJsonUpeToUpe);
+  const upeProducts: PoIUpeProductWithImages[] = queryResult.data.map(
+    parsePoIJsonUpeProductWithImages,
+  );
 
   return upeProducts;
 }
@@ -125,7 +133,7 @@ export async function getProductSlugs() {
 }
 
 export async function getAllCategories() {
-  const queryResult = await executeUsp<IProductCategory>(
+  const queryResult = await executeUsp<PoIProductCategory>(
     'usp_ProductCategories_FetchAll',
   );
   return queryResult.data;
@@ -245,4 +253,24 @@ export const verifyAccount = async (token: string) => {
   ).output.FoundAccount;
 
   return FoundAccount;
+};
+
+// added after the incident
+export const getStore = async (id: string): Promise<PoIStoreWithStoreHours> => {
+  const queryResult = await executeUsp<PoIStoreWithJsonStoreHours>(
+    'usp_Store_FetchWithStoreHoursById',
+    [
+      {
+        name: 'StoreId',
+        type: sql.UniqueIdentifier,
+        value: id,
+      },
+    ],
+  );
+
+  const result: PoIStoreWithStoreHours = {
+    ...queryResult.data[0],
+    store_hours: JSON.parse(queryResult.data[0].store_hours),
+  };
+  return result;
 };

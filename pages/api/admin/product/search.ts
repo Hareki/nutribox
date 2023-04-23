@@ -3,20 +3,18 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import ProductController from 'api/controllers/Product.controller';
 import connectToDB from 'api/database/mongoose/databaseConnection';
-import { populateAscUnexpiredExpiration } from 'api/helpers/model.helper';
+import { fetchAdminSearchData } from 'api/helpers/mssql.helper';
+import { parsePoIJsonCdsUpeProductWithImages } from 'api/helpers/typeConverter.helper';
 import type {
-  ICdsProduct,
-  ICdsUpeProduct,
-  IProduct,
-} from 'api/models/Product.model/types';
+  PoICdsUpeProductWithImages,
+  PoIJsonCdsUpeProductWithImages,
+} from 'api/mssql/pojos/product.pojo';
 import type { JSendResponse } from 'api/types/response.type';
-import { AdminMainTablePaginationConstant } from 'utils/constants';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<ICdsUpeProduct[]>>
+  NextApiResponse<JSendResponse<PoICdsUpeProductWithImages[]>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -25,22 +23,19 @@ const handler = nc<
 
   const { name } = req.query;
 
-  const products = (await ProductController.getAll({
-    filter: {
-      name: { $regex: name as string, $options: 'i' },
-    },
-    sort: { createdAt: -1, _id: 1 },
-    limit: AdminMainTablePaginationConstant.docsPerPage,
-    populate: ['category', 'defaultSupplier'],
-  })) as unknown as ICdsProduct[];
+  const jsonProducts =
+    await fetchAdminSearchData<PoIJsonCdsUpeProductWithImages>({
+      keyword: name as string,
+      procedureName: 'usp_Accounts_FetchWithTotalOrdersByFullNameKeyword',
+    });
 
-  const upeCdsProducts = (await populateAscUnexpiredExpiration(
-    products as unknown as IProduct[],
-  )) as unknown as ICdsUpeProduct[];
+  const productsResult: PoICdsUpeProductWithImages[] = jsonProducts.map(
+    parsePoIJsonCdsUpeProductWithImages,
+  );
 
   res.status(StatusCodes.OK).json({
     status: 'success',
-    data: upeCdsProducts,
+    data: productsResult,
   });
 });
 

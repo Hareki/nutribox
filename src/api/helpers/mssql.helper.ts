@@ -4,7 +4,7 @@ import { sql } from 'api/database/mssql.config';
 import { poolPromise } from 'api/database/mssql.config';
 import { AdminMainTablePaginationConstant } from 'utils/constants';
 
-type procedureParam = {
+type ProcedureParam = {
   name: string;
   type: sql.ISqlTypeFactoryWithNoParams;
   value: any;
@@ -13,7 +13,7 @@ type procedureParam = {
 
 export async function executeUsp<T1 = unknown, T2 = unknown>(
   procedure: string,
-  params: procedureParam[] = [],
+  params: ProcedureParam[] = [],
 ) {
   try {
     const pool = await poolPromise;
@@ -85,6 +85,55 @@ export function getPaginationParamArray({
   ];
 }
 
+type GetProductInputArray = {
+  category: string;
+  name: string;
+  available: boolean;
+  wholesalePrice: number;
+  retailPrice: number;
+  shelfLife: number;
+  description: string;
+};
+export function getProductInputArray(requestBody: GetProductInputArray) {
+  return [
+    {
+      name: 'CategoryId',
+      type: sql.UniqueIdentifier,
+      value: requestBody.category,
+    },
+    {
+      name: 'Name',
+      type: sql.NVarChar,
+      value: requestBody.name,
+    },
+    {
+      name: 'Available',
+      type: sql.Bit,
+      value: requestBody.available ? 1 : 0,
+    },
+    {
+      name: 'ImportPrice',
+      type: sql.Int,
+      value: requestBody.wholesalePrice,
+    },
+    {
+      name: 'RetailPrice',
+      type: sql.Int,
+      value: requestBody.retailPrice,
+    },
+    {
+      name: 'ShelfLife',
+      type: sql.Int,
+      value: requestBody.shelfLife,
+    },
+    {
+      name: 'Description',
+      type: sql.NVarChar,
+      value: requestBody.description,
+    },
+  ];
+}
+
 type RequestBodyAddress = {
   provinceId: number;
   districtId: number;
@@ -129,18 +178,17 @@ type FetchAdminPaginationData = {
   pageSize: number;
 };
 
-export const fetchAdminPaginationData = async <T>({
-  procedureName,
-  pageNumber,
-  pageSize,
-}: FetchAdminPaginationData) => {
-  const queryResult = await executeUsp<T, PaginationOutput>(
-    procedureName,
-    getPaginationParamArray({
+export const fetchAdminPaginationData = async <T>(
+  { procedureName, pageNumber, pageSize }: FetchAdminPaginationData,
+  additionalParams: ProcedureParam[] = [],
+) => {
+  const queryResult = await executeUsp<T, PaginationOutput>(procedureName, [
+    ...additionalParams,
+    ...getPaginationParamArray({
       pageNumber,
       pageSize,
     }),
-  );
+  ]);
 
   const data = queryResult.data;
   const result = {

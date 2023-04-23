@@ -29,7 +29,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<PoIAccount>>>({
     const id = req.query.id as string;
 
     const account = (
-      await executeUsp<PoIAccount>('usp_FetchAccountById', [
+      await executeUsp<PoIAccount>('usp_Account_FetchById', [
         {
           name: 'Id',
           type: sql.UniqueIdentifier,

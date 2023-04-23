@@ -1,24 +1,16 @@
 import { StatusCodes } from 'http-status-codes';
-import { Types } from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import connectToDB from 'api/database/mongoose/databaseConnection';
-import { processPaginationParams } from 'api/helpers/pagination.helpers';
-import ExpirationModel from 'api/models/Expiration.model';
-import ProductOrderModel from 'api/models/ProductOrder.model';
-import type { IStoreHourWithObjectId } from 'api/models/Store.model/StoreHour.schema/types';
-import type { IStore } from 'api/models/Store.model/types';
-import type { ISupplier } from 'api/models/Supplier.model/types';
+import { sql } from 'api/database/mssql.config';
+import {
+  extractPaginationOutputFromReq,
+  fetchAdminPaginationData,
+} from 'api/helpers/mssql.helper';
+import type { PoiProductOrderWithSupplierName } from 'api/mssql/pojos/product_order.pojo';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';
-
-export interface UpdateStoreContactInfoRb extends Omit<IStore, 'storeHours'> {}
-export interface UpdateStoreHoursRb extends Pick<IStore, 'id'> {
-  storeHours: IStoreHourWithObjectId[];
-}
-export type UpdateStoreInfoRb = UpdateStoreContactInfoRb | UpdateStoreHoursRb;
 
 export interface ExpirationOrder {
   supplierName: string;
@@ -27,8 +19,7 @@ export interface ExpirationOrder {
   importQuantity: number;
   remainingQuantity: number;
 }
-// FIXME currently no controller calling, directly manipulate models instead => no reusability
-// just for the sake of time
+
 const handler = nc<
   NextApiRequest,
   NextApiResponse<JSendResponse<GetAllPaginationResult<ExpirationOrder>>>
@@ -36,61 +27,36 @@ const handler = nc<
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).get(async (req, res) => {
-  await connectToDB();
+  const productId = req.query.productId as string;
 
-  const productId = new Types.ObjectId(req.query.productId as string);
-  // const productId = new Types.ObjectId('640990a80009112a7a900b94');
+  const { pageSize, pageNumber } = extractPaginationOutputFromReq(req);
 
-  const getTotalExpirationOrders = async () => {
-    const result = await ProductOrderModel()
-      .find({ product: productId })
-      .countDocuments();
-    return result;
-  };
-
-  const { skip, limit, totalPages, totalDocs } = await processPaginationParams(
-    req,
-    getTotalExpirationOrders,
-  );
-
-  const productOrders = await ProductOrderModel()
-    .find({ product: productId })
-    .populate([
+  const queryResult =
+    await fetchAdminPaginationData<PoiProductOrderWithSupplierName>(
       {
-        path: 'supplier',
-        select: ['name'],
+        procedureName: 'usp_ProductOrders_FetchByPageAndProductId',
+        pageNumber,
+        pageSize,
       },
-    ])
-    .sort({ importDate: -1, _id: 1 })
-    .skip(skip)
-    .limit(limit)
-    .exec();
-
-  const expirations = await ExpirationModel()
-    .find({ product: productId })
-    .sort({ importDate: -1, _id: 1 })
-    .skip(skip)
-    .limit(limit)
-    .exec();
-
-  const expirationOrders = productOrders.map((productOrder, index) => {
-    const { supplier, importDate, quantity: orderQuantity } = productOrder;
-
-    const { quantity: expirationQuantity, expirationDate } = expirations[index];
-
-    return {
-      supplierName: (supplier as unknown as ISupplier).name,
-      importDate: new Date(importDate),
-      expirationDate,
-      importQuantity: orderQuantity,
-      remainingQuantity: expirationQuantity,
-    };
-  });
+      [
+        {
+          name: 'ProductId',
+          type: sql.UniqueIdentifier,
+          value: productId,
+        },
+      ],
+    );
 
   const result = {
-    docs: expirationOrders,
-    totalDocs,
-    totalPages,
+    totalDocs: queryResult.totalDocs,
+    totalPages: queryResult.totalPages,
+    docs: queryResult.docs.map((doc) => ({
+      supplierName: doc.supplier_name,
+      importDate: doc.import_date,
+      expirationDate: doc.expiration_date,
+      importQuantity: doc.import_quantity,
+      remainingQuantity: doc.remaining_quantity,
+    })),
   };
 
   res.status(StatusCodes.OK).json({

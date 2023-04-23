@@ -1,16 +1,18 @@
 import { StatusCodes } from 'http-status-codes';
-import { Types } from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import {
-  defaultOnNoMatch,
-  onMongooseValidationError,
-} from 'api/base/next-connect';
-import ProductController from 'api/controllers/Product.controller';
-import connectToDB from 'api/database/mongoose/databaseConnection';
-import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
-import ProductCategoryModel from 'api/models/ProductCategory.model';
+import { defaultOnNoMatch, onValidationError } from 'api/base/next-connect';
+import { getProduct } from 'api/base/server-side-modules/mssql-modules';
+import { sql } from 'api/database/mssql.config';
+import { executeUsp, getProductInputArray } from 'api/helpers/mssql.helper';
+import { parsePoIJsonCdsUpeProductWithImages } from 'api/helpers/typeConverter.helper';
+import type {
+  PoICdsUpeProductWithImages,
+  PoIJsonCdsUpeProductWithImages,
+  PoIProduct,
+  PoIUpeProductWithImages,
+} from 'api/mssql/pojos/product.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface UpdateProductInfoRb {
@@ -34,31 +36,39 @@ export interface DeleteProductImageUrlRb {
 const handler = nc<
   NextApiRequest,
   NextApiResponse<
-    JSendResponse<IProduct | ICdsUpeProduct | Record<string, string>>
+    JSendResponse<
+      | PoIUpeProductWithImages
+      | PoICdsUpeProductWithImages
+      | Record<string, string>
+    >
   >
 >({
-  onError: onMongooseValidationError,
+  onError: onValidationError,
   onNoMatch: defaultOnNoMatch,
 })
   .get(async (req, res) => {
-    await connectToDB();
+    const jsonProduct = (
+      await executeUsp<PoIJsonCdsUpeProductWithImages>(
+        'usp_Product_FetchCdsUpeWithImagesById',
+        [
+          {
+            name: 'ProductId',
+            type: sql.UniqueIdentifier,
+            value: req.query.id,
+          },
+        ],
+      )
+    ).data[0];
 
-    const id = req.query.id as string;
-
-    const product = (await ProductController.getOne({
-      id,
-      populate: ['category', 'defaultSupplier'],
-    })) as unknown as ICdsUpeProduct;
+    const parsedProduct = parsePoIJsonCdsUpeProductWithImages(jsonProduct);
 
     res.status(StatusCodes.OK).json({
       status: 'success',
-      data: product,
+      data: parsedProduct,
     });
   })
 
   .put(async (req, res) => {
-    await connectToDB();
-
     const id = req.query.id as string;
     const type = req.query.type as string;
 
@@ -66,27 +76,16 @@ const handler = nc<
       case 'updateInfo': {
         const requestBody = req.body as UpdateProductInfoRb;
 
-        const origProduct = await ProductController.getOne({ id });
-        const origCategoryId = origProduct.category.toString();
+        await executeUsp<PoIProduct>('usp_Product_UpdateOne', [
+          {
+            name: 'ProductId',
+            type: sql.UniqueIdentifier,
+            value: id,
+          },
+          ...getProductInputArray(requestBody),
+        ]);
 
-        const updatedProduct = await ProductController.updateOne(
-          id,
-          requestBody,
-        );
-        const updatedCategoryId = updatedProduct.category.toString();
-
-        // FIXME code to change reference array, haven't figured out the way to do it in middleware and time's running out
-        // I'll just inline the code here, fix later
-        if (origCategoryId !== updatedCategoryId) {
-          await ProductCategoryModel().updateOne(
-            { _id: origCategoryId },
-            { $pull: { products: new Types.ObjectId(id) } },
-          );
-          await ProductCategoryModel().updateOne(
-            { _id: updatedCategoryId },
-            { $addToSet: { products: new Types.ObjectId(id) } },
-          );
-        }
+        const updatedProduct = await getProduct(id);
 
         res.status(StatusCodes.OK).json({
           status: 'success',
@@ -98,10 +97,25 @@ const handler = nc<
 
       case 'pushImages': {
         const requestBody = req.body as NewProductImageUrlsRb;
-        const updatedProduct = await ProductController.pushImageUrls(
-          id,
-          requestBody.imageUrls,
+        const pushImagePromises = requestBody.imageUrls.map(
+          async (imageUrl) =>
+            await executeUsp('usp_ProductImage_CreateOne', [
+              {
+                name: 'ProductId',
+                type: sql.UniqueIdentifier,
+                value: id,
+              },
+              {
+                name: 'ImageUrl',
+                type: sql.NVarChar,
+                value: imageUrl,
+              },
+            ]),
         );
+
+        await Promise.all(pushImagePromises);
+
+        const updatedProduct = await getProduct(id);
 
         res.status(StatusCodes.OK).json({
           status: 'success',
@@ -112,11 +126,21 @@ const handler = nc<
 
       case 'deleteImage': {
         const requestBody = req.body as DeleteProductImageUrlRb;
-        const updatedProduct = await ProductController.deleteImageUrl(
-          id,
-          requestBody.imageUrl,
-        );
 
+        await executeUsp('usp_ProductImage_DeleteOne', [
+          {
+            name: 'ProductId',
+            type: sql.UniqueIdentifier,
+            value: id,
+          },
+          {
+            name: 'ImageUrl',
+            type: sql.NVarChar,
+            value: requestBody.imageUrl,
+          },
+        ]);
+
+        const updatedProduct = await getProduct(id);
         res.status(StatusCodes.OK).json({
           status: 'success',
           data: updatedProduct,

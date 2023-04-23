@@ -5,14 +5,14 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
-import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
+import { parsePoIJsonUpeProductWithImages } from 'api/helpers/typeConverter.helper';
 import type { PoIJsonUpeProductWithImages } from 'api/mssql/pojos/product.pojo';
-import type { IPopulatedUpeProductCategory } from 'api/mssql/pojos/product_category.pojo';
+import type { PoIPopulatedUpeProductCategory } from 'api/mssql/pojos/product_category.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IPopulatedUpeProductCategory>>
+  NextApiResponse<JSendResponse<PoIPopulatedUpeProductCategory>>
 >({
   attachParams: true,
   onError: defaultOnError,
@@ -37,8 +37,8 @@ const handler = nc<
     },
   ]);
 
-  const upeProducts = queryResult.data.map(mapJsonUpeToUpe);
-  const result: IPopulatedUpeProductCategory = {
+  const upeProducts = queryResult.data.map(parsePoIJsonUpeProductWithImages);
+  const result: PoIPopulatedUpeProductCategory = {
     id,
     name: queryResult.output.CategoryName,
     products: upeProducts,

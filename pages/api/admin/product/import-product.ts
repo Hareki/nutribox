@@ -1,15 +1,13 @@
-import { addDays } from 'date-fns';
 import { StatusCodes } from 'http-status-codes';
-import { startSession, Types } from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-import ExpirationController from 'api/controllers/Expiration.controller';
-import ProductOrderController from 'api/controllers/ProductOrder.controller';
+import { getProduct } from 'api/base/server-side-modules/mssql-modules';
 import connectToDB from 'api/database/mongoose/databaseConnection';
-import ProductModel from 'api/models/Product.model';
-import type { IProduct } from 'api/models/Product.model/types';
+import { sql } from 'api/database/mssql.config';
+import { executeUsp } from 'api/helpers/mssql.helper';
+import type { PoIUpeProductWithImages } from 'api/mssql/pojos/product.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface ImportProductRb {
@@ -20,77 +18,51 @@ export interface ImportProductRb {
   unitWholesalePrice: number;
 }
 
-const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<IProduct>>>({
+const handler = nc<
+  NextApiRequest,
+  NextApiResponse<JSendResponse<PoIUpeProductWithImages>>
+>({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
 }).put(async (req, res) => {
   await connectToDB();
 
   const requestBody = req.body as ImportProductRb;
-
-  const productId = new Types.ObjectId(requestBody.productId);
-  const supplierId = new Types.ObjectId(requestBody.supplierId);
   const importDate = new Date(requestBody.importDate);
 
-  const product = await ProductModel().findById(productId).exec();
+  await executeUsp('usp_ProductOrder_ImportProduct', [
+    {
+      name: 'ProductId',
+      type: sql.UniqueIdentifier,
+      value: requestBody.productId,
+    },
+    {
+      name: 'SupplierId',
+      type: sql.UniqueIdentifier,
+      value: requestBody.supplierId,
+    },
+    {
+      name: 'Quantity',
+      type: sql.Int,
+      value: requestBody.quantity,
+    },
+    {
+      name: 'ImportDate',
+      type: sql.DateTime,
+      value: importDate,
+    },
+    {
+      name: 'UnitImportPrice',
+      type: sql.Int,
+      value: requestBody.unitWholesalePrice,
+    },
+  ]);
 
-  const productOrderInput = {
-    product: productId,
-    supplier: supplierId,
-    importDate: importDate,
-    quantity: requestBody.quantity,
-    unitWholesalePrice: requestBody.unitWholesalePrice,
-  };
-  console.log(
-    'file: import-product.ts:44 - productOrderInput:',
-    productOrderInput,
-  );
-
-  const expirationInput = {
-    product: new Types.ObjectId(requestBody.productId),
-    importDate: importDate,
-    expirationDate: addDays(importDate, product.shelfLife),
-    quantity: requestBody.quantity,
-  };
-  console.log('file: import-product.ts:52 - expirationInput:', expirationInput);
-
-  // FIXME generalize transaction handling (start session, start transaction, try/catch, abort/commit transaction, end session)
-  const session = await startSession();
-  session.startTransaction();
-
-  try {
-    await ProductOrderController.createOne(productOrderInput, session);
-    const expiration = await ExpirationController.createOne(
-      expirationInput,
-      session,
-    );
-
-    product.defaultSupplier = supplierId;
-
-    // manually add reference, can't do this in middleware because of transaction
-    product.expirations.push(new Types.ObjectId(expiration.id));
-    await product.save({ session });
-
-    await session.commitTransaction();
-    await session.endSession();
-
-    res.status(StatusCodes.OK).json({
-      status: 'success',
-      data: product.toObject(),
-    });
-  } catch (error) {
-    if (session.inTransaction()) {
-      await session.abortTransaction();
-    }
-    await session.endSession();
-    console.log('X. ERROR OCCURRED');
-    console.log(error);
-
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      status: 'error',
-      message: error.message,
-    });
-  }
+  const product = await getProduct(requestBody.productId);
+  res.status(StatusCodes.OK).json({
+    status: 'success',
+    data: product,
+  });
 });
 
 export default handler;

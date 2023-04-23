@@ -2,16 +2,14 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import {
-  defaultOnNoMatch,
-  onMongooseValidationError,
-} from 'api/base/next-connect';
-import ProductController from 'api/controllers/Product.controller';
-import connectToDB from 'api/database/mongoose/databaseConnection';
+import { defaultOnNoMatch, onValidationError } from 'api/base/next-connect';
+import { executeUsp, getProductInputArray } from 'api/helpers/mssql.helper';
+import { parsePoIJsonPopulatedCategoryProduct } from 'api/helpers/typeConverter.helper';
+import type { IProduct } from 'api/models/Product.model/types';
 import type {
-  IPopulatedCategoryProduct,
-  IProduct,
-} from 'api/models/Product.model/types';
+  PoIJsonPopulatedCategoryProduct,
+  PoIPopulatedCategoryProduct,
+} from 'api/mssql/pojos/product.pojo';
 import type {
   JSendErrorResponse,
   JSendFailResponse,
@@ -29,23 +27,24 @@ export interface CreateProductRb
 const handler = nc<
   NextApiRequest,
   NextApiResponse<
-    | JSendSuccessResponse<IPopulatedCategoryProduct>
+    | JSendSuccessResponse<PoIPopulatedCategoryProduct>
     | JSendFailResponse<Record<string, string>>
     | JSendErrorResponse
   >
 >({
-  onError: onMongooseValidationError,
+  onError: onValidationError,
   onNoMatch: defaultOnNoMatch,
 }).post(async (req, res) => {
-  await connectToDB();
-
   const requestBody = req.body as CreateProductRb;
 
-  const product = await ProductController.createOne(requestBody);
-  const populatedProduct = (await ProductController.getOne({
-    id: product.id,
-    populate: ['category'],
-  })) as unknown as IPopulatedCategoryProduct;
+  const jsonPopulatedProduct = (
+    await executeUsp<PoIJsonPopulatedCategoryProduct>('usp_Product_CreateOne', [
+      ...getProductInputArray(requestBody),
+    ])
+  ).data[0];
+
+  const populatedProduct =
+    parsePoIJsonPopulatedCategoryProduct(jsonPopulatedProduct);
 
   res.status(StatusCodes.OK).json({
     status: 'success',

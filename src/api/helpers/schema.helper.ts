@@ -133,7 +133,7 @@ export function preSaveWasNew(next: CallbackWithoutResultAndOptionalError) {
   next();
 }
 
-export const getDuplicateValueMessageSQL = (errMessage: string) => {
+export const getDuplicationErrorMessageSQL = (errMessage: string) => {
   const errorMessage: Record<string, string> = {};
   const pattern = /\(([^)]+)\)/;
 
@@ -141,7 +141,25 @@ export const getDuplicateValueMessageSQL = (errMessage: string) => {
   const duplicatedValue = result ? result[1] : '';
 
   if (duplicatedValue) {
-    errorMessage['duplicatedValueMessage'] = `${duplicatedValue} đã tồn tại!`;
+    errorMessage['duplicationErrorMessage'] = `${duplicatedValue} đã tồn tại!`;
+  } else {
+    errorMessage.unknown = 'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
+  }
+
+  return errorMessage;
+};
+
+export const getValidationErrorMessageSQL = (errMessage: string) => {
+  const errorMessage: Record<string, string> = {};
+  const pattern = /column '(\w+)'/;
+
+  const result = errMessage.match(pattern);
+  const validationValue = result ? result[1] : '';
+
+  if (validationValue) {
+    errorMessage[
+      'validationErrorMessage'
+    ] = `Vui lòng kiểm tra lại ${validationValue}`;
   } else {
     errorMessage.unknown = 'Đã xảy ra lỗi không xác định, vui lòng thử lại sau';
   }

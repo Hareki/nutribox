@@ -3,12 +3,12 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type { ErrorHandler, NoMatchHandler } from 'next-connect';
 
 import {
-  getDuplicateKeyErrorMessage,
-  getValidationErrorMessages,
+  getDuplicationErrorMessageSQL,
+  getValidationErrorMessageSQL,
 } from 'api/helpers/schema.helper';
 import {
-  instanceOfDuplicateKeyError,
-  instanceOfValidationError,
+  isDuplicationErrorSQL,
+  isValidationErrorSQL,
 } from 'api/types/mongooseError.type';
 import type {
   JSendErrorResponse,
@@ -48,7 +48,7 @@ export const defaultOnNoMatch: NoMatchHandler<
     .end(`${req.method} ${req.url} not found at Default No Match Handler`);
 };
 
-export const onMongooseValidationError: ErrorHandler<
+export const onValidationError: ErrorHandler<
   NextApiRequest,
   NextApiResponse<
     JSendFailResponse<Record<string, string>> | JSendErrorResponse
@@ -57,10 +57,10 @@ export const onMongooseValidationError: ErrorHandler<
   let response: Record<string, string>;
   console.log(JSON.stringify(err));
 
-  if (instanceOfDuplicateKeyError(err)) {
-    response = getDuplicateKeyErrorMessage(err);
-  } else if (instanceOfValidationError(err)) {
-    response = getValidationErrorMessages(err);
+  if (isDuplicationErrorSQL(err)) {
+    response = getDuplicationErrorMessageSQL(err.message);
+  } else if (isValidationErrorSQL(err)) {
+    response = getValidationErrorMessageSQL(err.message);
   }
 
   if (response) {

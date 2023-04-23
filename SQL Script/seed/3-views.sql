@@ -22,6 +22,7 @@ FROM products p
                    FROM product_orders po
                    WHERE po.product_id = p.id
                          AND po.expiration_date > GETDATE()
+				   ORDER BY created_at DESC
                    FOR JSON PATH
                ) AS product_orders
         FROM products p
@@ -34,6 +35,7 @@ FROM products p
                    SELECT pi.image_url
                    FROM product_images pi
                    WHERE pi.product_id = p.id
+				   ORDER BY created_at DESC
                    FOR JSON PATH
                ) AS image_urls
         FROM products p
@@ -150,3 +152,25 @@ GROUP BY p.id,
 GO
 
 --- new ----
+
+CREATE VIEW vw_CdsUpeProductsWithImages
+AS
+SELECT p.*,
+       (
+         SELECT pc.*
+         FROM product_categories pc
+         WHERE pc.id = p.category_id
+         FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+       ) AS category,
+       (
+         SELECT s.*
+         FROM suppliers s
+         WHERE s.id = p.default_supplier_id
+         FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+       ) AS default_supplier,
+       upe.image_urls,
+       upe.product_orders
+FROM products p
+INNER JOIN vw_ProductsWithUnexpiredOrdersAndImages upe
+ON p.id = upe.id;
+GO

@@ -2,10 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import {
-  defaultOnNoMatch,
-  onMongooseValidationError,
-} from 'api/base/next-connect';
+import { defaultOnNoMatch, onValidationError } from 'api/base/next-connect';
 import connectToDB from 'api/database/mongoose/databaseConnection';
 // import type { ISupplier } from 'api/models/Supplier.model/types';
 import { sql } from 'api/database/mssql.config';
@@ -29,7 +26,7 @@ const handler = nc<
     | JSendErrorResponse
   >
 >({
-  onError: onMongooseValidationError,
+  onError: onValidationError,
   onNoMatch: defaultOnNoMatch,
 }).post(async (req, res) => {
   await connectToDB();

@@ -533,7 +533,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE usp_FetchAccountById @Id UNIQUEIDENTIFIER
+CREATE OR ALTER PROCEDURE usp_Account_FetchById @Id UNIQUEIDENTIFIER
 AS
 BEGIN
     SELECT *
@@ -588,7 +588,7 @@ BEGIN
                               WHEN @PageNumber < @TotalPages THEN
                                   @PageNumber + 1
                               ELSE
-                                  NULL
+                                  -1
                           END;
 
     -- Fetch the orders by page and account ID using OFFSET and FETCH NEXT
@@ -1079,7 +1079,7 @@ BEGIN
                               WHEN @PageNumber < @TotalPages THEN
                                   @PageNumber + 1
                               ELSE
-                                  NULL
+                                  -1
                           END;
 
     SELECT *
@@ -1104,7 +1104,7 @@ BEGIN
                               WHEN @PageNumber < @TotalPages THEN
                                   @PageNumber + 1
                               ELSE
-                                  NULL
+                                  -1
                           END;
 
     SELECT *
@@ -1228,7 +1228,7 @@ BEGIN
                               WHEN @PageNumber < @TotalPages THEN
                                   @PageNumber + 1
                               ELSE
-                                  NULL
+                                  -1
                           END;
 
     SELECT *
@@ -1470,16 +1470,238 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE usp_Store_UpdateStoreHours @StoreHoursRecords StoreHoursRecordsType READONLY
+-- rewrite this in report! (name changed as well)
+CREATE OR ALTER PROCEDURE usp_StoreHour_UpdateOne
+	@StoreId uniqueidentifier,
+	@StoreHourId uniqueidentifier,
+	@OpenTime time,
+	@CloseTime time
 AS
 BEGIN
-    UPDATE sh
-    SET sh.open_time = r.open_time,
-        sh.close_time = r.close_time
-    FROM store_hours sh
-        INNER JOIN @StoreHoursRecords r
-            ON sh.id = r.id;
+    UPDATE store_hours
+	SET open_time = @OpenTime,
+	close_time = @CloseTime
+	WHERE store_id = @StoreId AND id = @StoreHourId
 END;
-
+GO
 --- new ----
+
+CREATE OR ALTER PROCEDURE usp_Product_FetchCdsUpeWithImagesById
+  @ProductId uniqueidentifier
+AS
+BEGIN
+  SELECT *
+  FROM vw_CdsUpeProductsWithImages
+  WHERE id = @ProductId;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_Products_FetchCdsUpeWithImagesByPage
+    @PageSize INT,
+    @PageNumber INT,
+    @TotalRecords INT OUTPUT,
+	@TotalPages INT OUTPUT,
+    @NextPageNumber INT OUTPUT
+AS
+BEGIN
+    SELECT @TotalRecords = COUNT(*)
+    FROM vw_CdsUpeProductsWithImages;
+
+    IF @TotalRecords > @PageSize * @PageNumber
+        SET @NextPageNumber = @PageNumber + 1;
+    ELSE
+        SET @NextPageNumber = -1;
+
+    SET @TotalPages = CEILING(CAST(@TotalRecords AS FLOAT) / @PageSize);
+
+    SELECT *
+    FROM vw_CdsUpeProductsWithImages p
+    ORDER BY p.created_at DESC OFFSET (@PageNumber - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_Products_FetchUpeCdsByNameKeyword
+    @Limit INT,
+    @Keyword NVARCHAR(255)
+AS
+BEGIN
+    SELECT TOP (@Limit)
+        cup.*
+    FROM vw_CdsUpeProductsWithImages cup
+    WHERE cup.name COLLATE Latin1_General_100_CI_AI_SC_UTF8 LIKE N'%' + @Keyword + N'%'
+    ORDER BY cup.created_at DESC;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_Suppliers_FetchDropDown
+AS
+BEGIN
+    SELECT id, name
+	FROM suppliers
+    ORDER BY created_at DESC;
+END;
+GO
+
+
+CREATE OR ALTER PROCEDURE usp_Product_UpdateOne
+    @ProductId UNIQUEIDENTIFIER,
+    @CategoryId UNIQUEIDENTIFIER = NULL,
+	@Name NVARCHAR(100) = NULL,
+	@Available BIT = NULL,
+	@ImportPrice INT = NULL,
+	@RetailPrice INT = NULL,
+	@ShelfLife INT = NULL,
+	@Description NVARCHAR(500) = NULL
+AS
+BEGIN
+    UPDATE products
+    SET category_id = COALESCE(@CategoryId, category_id),
+	name = COALESCE(@Name, name),
+	available = COALESCE(@Available, available),
+	import_price = COALESCE(@ImportPrice, import_price),
+	retail_price = COALESCE(@RetailPrice, retail_price),
+	shelf_life = COALESCE(@ShelfLife, shelf_life),
+	description = COALESCE(@Description, description)
+   
+    WHERE id = @ProductId;
+
+    SELECT *
+    FROM products
+    WHERE id = @ProductId;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_ProductImage_CreateOne
+    @ProductId UNIQUEIDENTIFIER,
+	@ImageUrl NVARCHAR(500)
+AS
+BEGIN
+    INSERT INTO product_images (product_id, image_url)
+    VALUES (@ProductId, @ImageUrl);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_ProductImage_DeleteOne
+    @ProductId UNIQUEIDENTIFIER,
+    @ImageUrl NVARCHAR(500)
+AS
+BEGIN
+    WITH FirstImageToDelete AS (
+        SELECT TOP (1) *
+        FROM product_images
+        WHERE product_id = @ProductId AND image_url = @ImageUrl
+        ORDER BY created_at
+    )
+    DELETE FROM FirstImageToDelete;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_Product_CreateOne
+    @Name NVARCHAR(100),
+    @CategoryId UNIQUEIDENTIFIER,
+    @Available BIT,
+    @ImportPrice INT,
+    @RetailPrice INT,
+    @ShelfLife INT,
+    @Description NVARCHAR(500)
+AS
+BEGIN
+    DECLARE @NewProductId UNIQUEIDENTIFIER = NEWID();
+
+    INSERT INTO products (id, name, category_id, available, import_price, retail_price, shelf_life, description)
+    VALUES (@NewProductId, @Name, @CategoryId, @Available, @ImportPrice, @RetailPrice, @ShelfLife, @Description);
+
+    SELECT p.*, 
+           (
+             SELECT pc.*
+             FROM product_categories pc
+             WHERE pc.id = p.category_id
+             FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+           ) AS category
+    FROM products p
+    WHERE id = @NewProductId;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_ProductOrders_FetchByPageAndProductId
+    @ProductId UNIQUEIDENTIFIER,
+    @PageSize INT,
+    @PageNumber INT,
+    @TotalRecords INT OUTPUT,
+    @TotalPages INT OUTPUT,
+    @NextPageNumber INT OUTPUT
+AS
+BEGIN
+    -- Calculate the total number of records
+    SELECT @TotalRecords = COUNT(*)
+    FROM product_orders
+    WHERE product_id = @ProductId;
+
+    -- Calculate the total number of pages
+    SET @TotalPages = CEILING(CAST(@TotalRecords AS FLOAT) / @PageSize);
+    -- Calculate the next page number
+    SET @NextPageNumber = CASE
+                              WHEN @PageNumber < @TotalPages THEN
+                                  @PageNumber + 1
+                              ELSE
+                                  -1
+                          END;
+
+    -- Fetch the orders by page and product ID using OFFSET and FETCH NEXT
+    SELECT po.*,
+           s.name AS supplier_name
+    FROM product_orders po
+    INNER JOIN suppliers s ON po.supplier_id = s.id
+    WHERE po.product_id = @ProductId
+    ORDER BY po.created_at DESC OFFSET (@PageNumber - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE usp_ProductOrder_ImportProduct
+    @ProductId UNIQUEIDENTIFIER,
+    @SupplierId UNIQUEIDENTIFIER,
+    @Quantity INT,
+    @ImportDate DATETIME2,
+    @UnitImportPrice INT
+AS
+BEGIN
+    SET XACT_ABORT ON;
+
+    BEGIN TRANSACTION;
+
+    -- 1. Set the default_supplier_id of the product with @ProductId value to @SupplierId
+    UPDATE products
+    SET default_supplier_id = @SupplierId
+    WHERE id = @ProductId;
+
+    -- 2. Insert new record into product_orders
+    DECLARE @ShelfLife INT;
+
+    SELECT @ShelfLife = shelf_life
+    FROM products
+    WHERE id = @ProductId;
+
+    INSERT INTO product_orders (
+        product_id,
+        supplier_id,
+        import_quantity,
+        remaining_quantity,
+        import_date,
+        expiration_date,
+        unit_import_price
+    )
+    VALUES (
+        @ProductId,
+        @SupplierId,
+        @Quantity,
+        @Quantity,
+        @ImportDate,
+        DATEADD(DAY, @ShelfLife, @ImportDate),
+        @UnitImportPrice
+    );
+
+    -- Commit the transaction
+    COMMIT TRANSACTION;
+END;
+GO
 

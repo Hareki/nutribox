@@ -6,7 +6,7 @@ import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/mongoose/databaseConnection';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
-import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
+import { parsePoIJsonUpeProductWithImages } from 'api/helpers/typeConverter.helper';
 import type {
   PoIJsonUpeProductWithImages,
   PoIUpeProductWithImages,
@@ -33,7 +33,7 @@ const handler = nc<
     ],
   );
 
-  const upeProducts = result.data.map(mapJsonUpeToUpe);
+  const upeProducts = result.data.map(parsePoIJsonUpeProductWithImages);
 
   res.status(StatusCodes.OK).json({
     status: 'success',

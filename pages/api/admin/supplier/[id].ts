@@ -2,10 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import {
-  defaultOnNoMatch,
-  onMongooseValidationError,
-} from 'api/base/next-connect';
+import { defaultOnNoMatch, onValidationError } from 'api/base/next-connect';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp, getAddressParamArray } from 'api/helpers/mssql.helper';
 // import type { ISupplierInput } from 'api/models/Supplier.model/types';
@@ -20,7 +17,7 @@ const handler = nc<
   NextApiRequest,
   NextApiResponse<JSendResponse<PoISupplier | Record<string, string>>>
 >({
-  onError: onMongooseValidationError,
+  onError: onValidationError,
   onNoMatch: defaultOnNoMatch,
 })
   .get(async (req, res) => {

@@ -12,5 +12,9 @@ export interface PoIProductOrder {
   created_at: Date | string;
 }
 
+export interface PoiProductOrderWithSupplierName extends PoIProductOrder {
+  supplier_name: string;
+}
+
 export interface PoIProductOrderInput
   extends Omit<PoIProductOrder, 'id' | 'created_at'> {}

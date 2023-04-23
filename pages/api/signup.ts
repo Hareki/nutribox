@@ -8,9 +8,9 @@ import connectToDB from 'api/database/mongoose/databaseConnection';
 import { sql } from 'api/database/mssql.config';
 import { hashPassword } from 'api/helpers/auth.helper';
 import { executeUsp } from 'api/helpers/mssql.helper';
-import { getDuplicateValueMessageSQL } from 'api/helpers/schema.helper';
+import { getDuplicationErrorMessageSQL } from 'api/helpers/schema.helper';
 import type { PoIAccount } from 'api/mssql/pojos/account.pojo';
-import { isDuplicateKey } from 'api/types/mongooseError.type';
+import { isDuplicationErrorSQL } from 'api/types/mongooseError.type';
 import type {
   JSendErrorResponse,
   JSendFailResponse,
@@ -43,8 +43,8 @@ export const onSignUpError: ErrorHandler<
   // console.log(JSON.stringify(err));
   console.log(err);
 
-  if (isDuplicateKey(err)) {
-    response = getDuplicateValueMessageSQL(err.message);
+  if (isDuplicationErrorSQL(err)) {
+    response = getDuplicationErrorMessageSQL(err.message);
   }
   // else if (instanceOfValidationError(err)) {
   //   response = getValidationErrorMessages(err);
