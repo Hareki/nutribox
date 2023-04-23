@@ -7,8 +7,8 @@ import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 // import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type {
-  ICustomerOrderWithItems,
-  ICustomerOrderWithJsonItems,
+  PoICustomerOrderWithItems,
+  PoICustomerOrderWithJsonItems,
 } from 'api/mssql/pojos/customer_order.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
@@ -18,7 +18,7 @@ export interface CancelOrderRequestBody {
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<ICustomerOrderWithItems>>
+  NextApiResponse<JSendResponse<PoICustomerOrderWithItems>>
 >({
   attachParams: true,
   onError: defaultOnError,
@@ -28,7 +28,7 @@ const handler = nc<
 
   try {
     const cancelledOrderWithJsonItems = (
-      await executeUsp<ICustomerOrderWithJsonItems>(
+      await executeUsp<PoICustomerOrderWithJsonItems>(
         'usp_CustomerOrder_CancelOne',
         [
           {
@@ -40,7 +40,7 @@ const handler = nc<
       )
     ).data[0];
 
-    const cancelledOrderWithItems: ICustomerOrderWithItems = {
+    const cancelledOrderWithItems: PoICustomerOrderWithItems = {
       ...cancelledOrderWithJsonItems,
       items: JSON.parse(cancelledOrderWithJsonItems.items),
     };

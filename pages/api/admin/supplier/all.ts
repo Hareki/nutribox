@@ -9,13 +9,13 @@ import {
   extractPaginationOutputFromReq,
   fetchAdminPaginationData,
 } from 'api/helpers/mssql.helper';
-import type { ISupplier as ISupplierPojo } from 'api/mssql/pojos/supplier.pojo';
+import type { PoISupplier } from 'api/mssql/pojos/supplier.pojo';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<GetAllPaginationResult<ISupplierPojo>>>
+  NextApiResponse<JSendResponse<GetAllPaginationResult<PoISupplier>>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -24,7 +24,7 @@ const handler = nc<
 
   const { pageSize, pageNumber } = extractPaginationOutputFromReq(req);
 
-  const result = await fetchAdminPaginationData<ISupplierPojo>({
+  const result = await fetchAdminPaginationData<PoISupplier>({
     procedureName: 'usp_Suppliers_FetchByPage',
     pageNumber,
     pageSize,

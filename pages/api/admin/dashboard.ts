@@ -11,10 +11,10 @@ import type {
   IProduct as IProductModel,
   IProductWithTotalQuantity,
 } from 'api/models/Product.model/types';
-import type { ICustomerOrder as ICustomerOrderPojo } from 'api/mssql/pojos/customer_order.pojo';
+import type { PoICustomerOrder } from 'api/mssql/pojos/customer_order.pojo';
 import type {
-  IProduct as IProductPojo,
-  IProductWithTotalQuantity as IProductWithTotalQuantityPojo,
+  PoIProduct,
+  PoIProductWithTotalQuantity,
 } from 'api/mssql/pojos/product.pojo';
 import { virtuals } from 'api/mssql/virtuals';
 import type { JSendResponse } from 'api/types/response.type';
@@ -95,20 +95,17 @@ const handler = nc<
   ).data;
 
   const fiveMostRecentOrdersTable = (
-    await executeUsp<ICustomerOrderPojo>(
-      'usp_Statistics_FetchMostRecentOrders',
-      [
-        {
-          name: 'Limit',
-          type: sql.Int,
-          value: 5,
-        },
-      ],
-    )
+    await executeUsp<PoICustomerOrder>('usp_Statistics_FetchMostRecentOrders', [
+      {
+        name: 'Limit',
+        type: sql.Int,
+        value: 5,
+      },
+    ])
   ).data;
 
   const fiveAlmostOutOfStockProductsTable = (
-    await executeUsp<IProductWithTotalQuantityPojo>(
+    await executeUsp<PoIProductWithTotalQuantity>(
       'usp_Statistics_FetchLeastInStockProducts',
       [
         {
@@ -130,7 +127,7 @@ const handler = nc<
 
   const mostSoldProducts: StatisticProduct[] = mostSoldProductsTable.map(
     (row) => {
-      const productSnake: IProductPojo = JSON.parse(row.product);
+      const productSnake: PoIProduct = JSON.parse(row.product);
       console.log('file: dashboard.ts:131 - row.product:', row.product);
       return {
         // TODO Implement a function to map IProductPOJO to IProductModel
@@ -156,7 +153,7 @@ const handler = nc<
 
   const leastSoldProducts: StatisticProduct[] = leastSoldProductsTable.map(
     (row) => {
-      const productSnake: IProductPojo = JSON.parse(row.product);
+      const productSnake: PoIProduct = JSON.parse(row.product);
       return {
         // TODO Implement a function to map IProductPOJO to IProductModel
         product: {

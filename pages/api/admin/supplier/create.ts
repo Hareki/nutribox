@@ -11,7 +11,7 @@ import connectToDB from 'api/database/mongoose/databaseConnection';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp, getAddressParamArray } from 'api/helpers/mssql.helper';
 import type { ISupplier } from 'api/models/Supplier.model/types';
-import type { ISupplier as ISupplierPojo } from 'api/mssql/pojos/supplier.pojo';
+import type { PoISupplier } from 'api/mssql/pojos/supplier.pojo';
 import type {
   JSendErrorResponse,
   JSendFailResponse,
@@ -24,7 +24,7 @@ export interface CreateSupplierRb
 const handler = nc<
   NextApiRequest,
   NextApiResponse<
-    | JSendSuccessResponse<ISupplierPojo>
+    | JSendSuccessResponse<PoISupplier>
     | JSendFailResponse<Record<string, string>>
     | JSendErrorResponse
   >
@@ -39,7 +39,7 @@ const handler = nc<
   // const supplier = await SupplierController.createOne(requestBody);
 
   const newSupplier = (
-    await executeUsp<ISupplierPojo>('usp_Supplier_CreateOne', [
+    await executeUsp<PoISupplier>('usp_Supplier_CreateOne', [
       {
         name: 'Name',
         type: sql.NVarChar,

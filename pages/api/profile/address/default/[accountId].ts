@@ -7,7 +7,7 @@ import connectToDB from 'api/database/mongoose/databaseConnection';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 // import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
-import type { IAccountAddress as IAccountAddressPojo } from 'api/mssql/pojos/account_address.pojo';
+import type { PoIAccountAddress } from 'api/mssql/pojos/account_address.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface SetDefaultAddressRequestBody {
@@ -16,7 +16,7 @@ export interface SetDefaultAddressRequestBody {
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IAccountAddressPojo[]>>
+  NextApiResponse<JSendResponse<PoIAccountAddress[]>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -27,21 +27,18 @@ const handler = nc<
   const accountAddressId = requestBody.id;
 
   const updatedAddresses = (
-    await executeUsp<IAccountAddressPojo>(
-      'usp_AccountAddresses_UpdateDefault',
-      [
-        {
-          name: 'AccountId',
-          type: sql.UniqueIdentifier,
-          value: accountId,
-        },
-        {
-          name: 'Id',
-          type: sql.UniqueIdentifier,
-          value: accountAddressId,
-        },
-      ],
-    )
+    await executeUsp<PoIAccountAddress>('usp_AccountAddresses_UpdateDefault', [
+      {
+        name: 'AccountId',
+        type: sql.UniqueIdentifier,
+        value: accountId,
+      },
+      {
+        name: 'Id',
+        type: sql.UniqueIdentifier,
+        value: accountAddressId,
+      },
+    ])
   ).data;
 
   res.status(StatusCodes.OK).json({

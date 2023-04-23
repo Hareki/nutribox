@@ -6,12 +6,12 @@ import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import connectToDB from 'api/database/mongoose/databaseConnection';
 // import type { ISupplier } from 'api/models/Supplier.model/types';
 import { fetchAdminSearchData } from 'api/helpers/mssql.helper';
-import type { ISupplier as ISupplierPojo } from 'api/mssql/pojos/supplier.pojo';
+import type { PoISupplier } from 'api/mssql/pojos/supplier.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<ISupplierPojo[]>>
+  NextApiResponse<JSendResponse<PoISupplier[]>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -20,7 +20,7 @@ const handler = nc<
 
   const { name } = req.query;
 
-  const suppliers = await fetchAdminSearchData<ISupplierPojo>({
+  const suppliers = await fetchAdminSearchData<PoISupplier>({
     keyword: name as string,
     procedureName: 'usp_Suppliers_FetchByNameKeyword',
   });

@@ -1,4 +1,4 @@
-export interface IForgotPasswordToken {
+export interface PoIForgotPasswordToken {
   id: string;
   account_id: string;
   created_at: Date;
@@ -6,5 +6,8 @@ export interface IForgotPasswordToken {
   expiration_date: Date;
 }
 
-export interface IForgotPasswordTokenInput
-  extends Omit<IForgotPasswordToken, 'id' | 'created_at' | 'expiration_date'> {}
+export interface PoIForgotPasswordTokenInput
+  extends Omit<
+    PoIForgotPasswordToken,
+    'id' | 'created_at' | 'expiration_date'
+  > {}

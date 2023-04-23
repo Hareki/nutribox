@@ -9,7 +9,7 @@ import { hashPassword } from 'api/helpers/auth.helper';
 // import type { IAccount } from 'api/models/Account.model/types';
 import { executeUsp } from 'api/helpers/mssql.helper';
 import type { IAccount } from 'api/models/Account.model/types';
-import type { IAccount as IAccountPojo } from 'api/mssql/pojos/account.pojo';
+import type { PoIAccount } from 'api/mssql/pojos/account.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface UpdateAccountRequestBody
@@ -20,10 +20,7 @@ export interface UpdateAccountRequestBody
     >
   > {}
 
-const handler = nc<
-  NextApiRequest,
-  NextApiResponse<JSendResponse<IAccountPojo>>
->({
+const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<PoIAccount>>>({
   attachParams: true,
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -32,7 +29,7 @@ const handler = nc<
     const id = req.query.id as string;
 
     const account = (
-      await executeUsp<IAccountPojo>('usp_FetchAccountById', [
+      await executeUsp<PoIAccount>('usp_FetchAccountById', [
         {
           name: 'Id',
           type: sql.UniqueIdentifier,
@@ -59,7 +56,7 @@ const handler = nc<
     // const updatedAccount = await AccountController.updateOne(id, requestBody);
 
     const updatedAccount = (
-      await executeUsp<IAccountPojo>('usp_Account_UpdateOne', [
+      await executeUsp<PoIAccount>('usp_Account_UpdateOne', [
         {
           name: 'AccountId',
           type: sql.UniqueIdentifier,

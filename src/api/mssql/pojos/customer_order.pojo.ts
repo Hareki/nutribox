@@ -1,12 +1,11 @@
-import type { IAddress } from './abstract/address.pojo';
+import type { PoIAddress } from './abstract/address.pojo';
 import type {
-  ICustomerOrderItem,
+  PoICustomerOrderItem,
   ICustomerOrderItemInput,
 } from './customer_order_item.pojo';
 
-export interface ICustomerOrder extends IAddress {
+export interface PoICustomerOrder extends PoIAddress {
   id: string;
-  //   items: string[]; // ICustomerOrderItem
   account_id: string;
   status_id: string;
 
@@ -24,15 +23,15 @@ export interface ICustomerOrder extends IAddress {
   delivered_on?: Date | string;
 }
 
-export interface ICustomerOrderWithJsonItems extends ICustomerOrder {
+export interface PoICustomerOrderWithJsonItems extends PoICustomerOrder {
   items: string;
 }
 
-export interface ICustomerOrderWithItems extends ICustomerOrder {
-  items: ICustomerOrderItem;
+export interface PoICustomerOrderWithItems extends PoICustomerOrder {
+  items: PoICustomerOrderItem;
 }
 
-export interface ICustomerOrderInput
-  extends Omit<ICustomerOrder, 'id' | 'created_at' | 'items'> {
+export interface PoICustomerOrderInput
+  extends Omit<PoICustomerOrder, 'id' | 'created_at' | 'items'> {
   items: ICustomerOrderItemInput[];
 }

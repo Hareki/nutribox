@@ -1,6 +1,6 @@
-import type { IAddress } from 'api/types/schema.type';
+import type { PoIAddress } from './abstract/address.pojo';
 
-export interface IAccountAddress extends IAddress {
+export interface PoIAccountAddress extends PoIAddress {
   id: string;
   account_id: string;
   title: string;
@@ -8,4 +8,4 @@ export interface IAccountAddress extends IAddress {
 }
 
 export interface IAccountAddressInput
-  extends Omit<IAccountAddress, '_id' | 'account_id'> {}
+  extends Omit<PoIAccountAddress, '_id' | 'account_id'> {}

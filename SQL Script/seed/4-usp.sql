@@ -1480,3 +1480,6 @@ BEGIN
         INNER JOIN @StoreHoursRecords r
             ON sh.id = r.id;
 END;
+
+--- new ----
+

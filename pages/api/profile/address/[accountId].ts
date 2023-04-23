@@ -3,14 +3,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
-// import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp, getAddressParamArray } from 'api/helpers/mssql.helper';
-import type { IAccountAddress as IAccountAddressPojo } from 'api/mssql/pojos/account_address.pojo';
+import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import type { PoIAccountAddress } from 'api/mssql/pojos/account_address.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface AddAddressRequestBody
-  extends Omit<IAccountAddressPojo, '_id' | 'id'> {}
+  extends Omit<IAccountAddress, '_id' | 'id'> {}
 
 export interface UpdateAddressRequestBody extends AddAddressRequestBody {
   id: string;
@@ -31,14 +31,14 @@ const convertRequestBodyToParamArray = (requestBody: AddAddressRequestBody) => {
     {
       name: 'IsDefault',
       type: sql.Bit,
-      value: requestBody.is_default ? 1 : 0,
+      value: requestBody.isDefault ? 1 : 0,
     },
   ];
 };
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IAccountAddressPojo[]>>
+  NextApiResponse<JSendResponse<PoIAccountAddress[]>>
 >({
   attachParams: true,
   onError: defaultOnError,
@@ -46,7 +46,7 @@ const handler = nc<
 })
   .get(async (req, res) => {
     const accountId = req.query.accountId as string;
-    const queryResult = await executeUsp<IAccountAddressPojo>(
+    const queryResult = await executeUsp<PoIAccountAddress>(
       'usp_Accounts_FetchAddressesById',
       [
         {
@@ -69,7 +69,7 @@ const handler = nc<
     const accountId = req.query.accountId as string;
 
     const updatedAddresses = (
-      await executeUsp<IAccountAddressPojo>('usp_AccountAddress_CreateOne', [
+      await executeUsp<PoIAccountAddress>('usp_AccountAddress_CreateOne', [
         {
           name: 'AccountId',
           type: sql.UniqueIdentifier,
@@ -89,7 +89,7 @@ const handler = nc<
     const accountId = req.query.accountId as string;
     const addressId = requestBody.id;
     const updatedAddresses = (
-      await executeUsp<IAccountAddressPojo>('usp_AccountAddress_UpdateOne', [
+      await executeUsp<PoIAccountAddress>('usp_AccountAddress_UpdateOne', [
         {
           name: 'AccountId',
           type: sql.UniqueIdentifier,
@@ -114,7 +114,7 @@ const handler = nc<
     const addressId = req.query.addressId as string;
 
     const updatedAddresses = (
-      await executeUsp<IAccountAddressPojo>('usp_AccountAddress_DeleteOne', [
+      await executeUsp<PoIAccountAddress>('usp_AccountAddress_DeleteOne', [
         {
           name: 'AccountId',
           type: sql.UniqueIdentifier,

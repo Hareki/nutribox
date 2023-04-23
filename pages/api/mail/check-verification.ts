@@ -5,7 +5,7 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
-import type { IAccount as IAccountPojo } from 'api/mssql/pojos/account.pojo';
+import type { PoIAccount } from 'api/mssql/pojos/account.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<boolean>>>({
@@ -16,7 +16,7 @@ const handler = nc<NextApiRequest, NextApiResponse<JSendResponse<boolean>>>({
   const email = req.body.email as string;
 
   const account = (
-    await executeUsp<IAccountPojo>('usp_Account_FetchByEmail', [
+    await executeUsp<PoIAccount>('usp_Account_FetchByEmail', [
       {
         name: 'Email',
         type: sql.NVarChar,

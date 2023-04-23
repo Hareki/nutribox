@@ -6,7 +6,7 @@ import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
-import type { IJsonUpeProductWithImages } from 'api/mssql/pojos/product.pojo';
+import type { PoIJsonUpeProductWithImages } from 'api/mssql/pojos/product.pojo';
 import type { IPopulatedUpeProductCategory } from 'api/mssql/pojos/product_category.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
@@ -21,7 +21,7 @@ const handler = nc<
   const id = req.query.id as string;
 
   const queryResult = await executeUsp<
-    IJsonUpeProductWithImages,
+    PoIJsonUpeProductWithImages,
     { CategoryName: string }
   >('usp_Products_FetchWithProductOrdersByCategoryId', [
     {

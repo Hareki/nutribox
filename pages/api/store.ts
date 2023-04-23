@@ -7,14 +7,14 @@ import connectToDB from 'api/database/mongoose/databaseConnection';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 import type {
-  IStoreWithJsonStoreHours,
-  IStoreWithStoreHours,
+  PoIStoreWithJsonStoreHours,
+  PoIStoreWithStoreHours,
 } from 'api/mssql/pojos/store.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IStoreWithStoreHours>>
+  NextApiResponse<JSendResponse<PoIStoreWithStoreHours>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -23,7 +23,7 @@ const handler = nc<
 
   const id = req.query.id as string;
 
-  const queryResult = await executeUsp<IStoreWithJsonStoreHours>(
+  const queryResult = await executeUsp<PoIStoreWithJsonStoreHours>(
     'usp_Store_FetchWithStoreHoursById',
     [
       {
@@ -34,7 +34,7 @@ const handler = nc<
     ],
   );
 
-  const result: IStoreWithStoreHours = {
+  const result: PoIStoreWithStoreHours = {
     ...queryResult.data[0],
     store_hours: JSON.parse(queryResult.data[0].store_hours),
   };

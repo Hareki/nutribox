@@ -7,10 +7,10 @@ import type {
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 import { mapJsonUpeToUpe } from 'api/helpers/typeConverter.helper';
-import type { ICustomerOrderWithJsonItems } from 'api/mssql/pojos/customer_order.pojo';
+import type { PoICustomerOrderWithJsonItems } from 'api/mssql/pojos/customer_order.pojo';
 import type {
-  IJsonUpeProductWithImages,
-  IUpeProductWithImages,
+  PoIJsonUpeProductWithImages,
+  PoIUpeProductWithImages,
 } from 'api/mssql/pojos/product.pojo';
 import type { IProductCategory } from 'api/mssql/pojos/product_category.pojo';
 import { virtuals } from 'api/mssql/virtuals';
@@ -23,9 +23,9 @@ import { ProductCarouselLimit, RelatedProductsLimit } from 'utils/constants';
 export const getAllProducts = async (
   docsPerPage: string,
   page: string,
-): Promise<GetInfinitePaginationResult<IUpeProductWithImages>> => {
+): Promise<GetInfinitePaginationResult<PoIUpeProductWithImages>> => {
   const queryResult = await executeUsp<
-    IJsonUpeProductWithImages,
+    PoIJsonUpeProductWithImages,
     UspInfinitePaginationOutput
   >('usp_Products_FetchWithProductOrdersByPage', [
     { name: 'PageSize', type: sql.Int, value: parseInt(docsPerPage) },
@@ -34,7 +34,7 @@ export const getAllProducts = async (
     { name: 'NextPageNumber', type: sql.Int, value: null, isOutput: true },
   ]);
 
-  const upeProducts: IUpeProductWithImages[] =
+  const upeProducts: PoIUpeProductWithImages[] =
     queryResult.data.map(mapJsonUpeToUpe);
 
   const result: InfiniteUpePaginationResult = {
@@ -48,13 +48,13 @@ export const getAllProducts = async (
 
 export const getProduct = async (
   id: string,
-): Promise<IUpeProductWithImages> => {
-  const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
+): Promise<PoIUpeProductWithImages> => {
+  const queryResult = await executeUsp<PoIJsonUpeProductWithImages, null>(
     'usp_Product_FetchWithProductOrdersById',
     [{ name: 'Id', type: sql.UniqueIdentifier, value: id }],
   );
 
-  const upeProduct: IUpeProductWithImages = {
+  const upeProduct: PoIUpeProductWithImages = {
     ...queryResult.data[0],
     product_orders: JSON.parse(queryResult.data[0].product_orders),
     image_urls: JSON.parse(queryResult.data[0].image_urls),
@@ -63,25 +63,25 @@ export const getProduct = async (
   return upeProduct;
 };
 
-export const getHotProducts = async (): Promise<IUpeProductWithImages[]> => {
-  const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
+export const getHotProducts = async (): Promise<PoIUpeProductWithImages[]> => {
+  const queryResult = await executeUsp<PoIJsonUpeProductWithImages, null>(
     'usp_Products_FetchHotWithProductOrders',
     [{ name: 'Limit', type: sql.Int, value: ProductCarouselLimit }],
   );
 
-  const upeProducts: IUpeProductWithImages[] =
+  const upeProducts: PoIUpeProductWithImages[] =
     queryResult.data.map(mapJsonUpeToUpe);
 
   return upeProducts;
 };
 
-export const getNewProducts = async (): Promise<IUpeProductWithImages[]> => {
-  const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
+export const getNewProducts = async (): Promise<PoIUpeProductWithImages[]> => {
+  const queryResult = await executeUsp<PoIJsonUpeProductWithImages, null>(
     'usp_Products_FetchNewWithProductOrders',
     [{ name: 'Limit', type: sql.Int, value: ProductCarouselLimit }],
   );
 
-  const upeProducts: IUpeProductWithImages[] =
+  const upeProducts: PoIUpeProductWithImages[] =
     queryResult.data.map(mapJsonUpeToUpe);
 
   return upeProducts;
@@ -90,8 +90,8 @@ export const getNewProducts = async (): Promise<IUpeProductWithImages[]> => {
 export async function getRelatedProducts(
   productId: string,
   categoryId: string,
-): Promise<IUpeProductWithImages[]> {
-  const queryResult = await executeUsp<IJsonUpeProductWithImages, null>(
+): Promise<PoIUpeProductWithImages[]> {
+  const queryResult = await executeUsp<PoIJsonUpeProductWithImages, null>(
     'usp_Products_FetchRelatedWithProductOrders',
     [
       { name: 'Limit', type: sql.Int, value: RelatedProductsLimit },
@@ -108,7 +108,7 @@ export async function getRelatedProducts(
     ],
   );
 
-  const upeProducts: IUpeProductWithImages[] =
+  const upeProducts: PoIUpeProductWithImages[] =
     queryResult.data.map(mapJsonUpeToUpe);
 
   return upeProducts;
@@ -209,8 +209,8 @@ export async function countAddress(accountId: string) {
 
 export async function getCustomerOrderWithJsonItems(
   orderId: string,
-): Promise<ICustomerOrderWithJsonItems> {
-  const queryResult2 = await executeUsp<ICustomerOrderWithJsonItems>(
+): Promise<PoICustomerOrderWithJsonItems> {
+  const queryResult2 = await executeUsp<PoICustomerOrderWithJsonItems>(
     'usp_CustomerOrder_FetchWithItemsById',
     [
       {

@@ -1,22 +1,16 @@
-import type { IAddress } from './abstract/address.pojo';
-import type { IStoreHour, IStoreHourInput } from './store_hour.pojo';
+import type { PoIAddress } from './abstract/address.pojo';
+import type { IStoreHour } from './store_hour.pojo';
 
-export interface IStore extends IAddress {
+export interface PoIStore extends PoIAddress {
   id: string;
-  //   store_hours: string[];
-
   phone: string;
   email: string;
 }
 
-export interface IStoreWithJsonStoreHours extends IStore {
+export interface PoIStoreWithJsonStoreHours extends PoIStore {
   store_hours: string;
 }
 
-export interface IStoreWithStoreHours extends IStore {
+export interface PoIStoreWithStoreHours extends PoIStore {
   store_hours: IStoreHour[];
-}
-
-export interface IStoreInput extends Omit<IStore, 'id' | 'store_hours'> {
-  store_hours: IStoreHourInput[];
 }

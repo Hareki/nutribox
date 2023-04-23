@@ -8,7 +8,7 @@ import useLoginDialog from './useLoginDialog';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
-import type { IPopulatedCartItem as IPopulatedCartItem2 } from 'api/mssql/pojos/cart_item.pojo';
+import type { PoIPopulatedCartItem as IPopulatedCartItem2 } from 'api/mssql/pojos/cart_item.pojo';
 import apiCaller from 'utils/apiCallers/global/cart';
 
 export type CartState = { cart: IPopulatedCartItem[] };

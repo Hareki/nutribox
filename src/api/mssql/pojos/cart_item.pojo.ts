@@ -1,23 +1,17 @@
-import type { IUpeProductWithImages } from './product.pojo';
+import type { PoIUpeProductWithImages } from './product.pojo';
 
-export interface ICartItem {
+export interface PoICartItem {
   id: string;
   account_id: string;
   product_id: string;
   quantity: number;
 }
 
-export interface IJsonPopulatedCartItem
-  extends Omit<ICartItem, 'id' | 'product_id' | 'account_id'> {
+export interface PoIJsonPopulatedCartItem extends Omit<PoICartItem, 'id'> {
   id?: string;
-  product_id: string;
-  quantity: number;
+  product: string;
 }
-export interface IPopulatedCartItem
-  extends Omit<ICartItem, 'id' | 'product_id' | 'account_id'> {
+export interface PoIPopulatedCartItem extends Omit<PoICartItem, 'id'> {
   id?: string;
-  product_id: IUpeProductWithImages;
-  quantity: number;
+  product: PoIUpeProductWithImages;
 }
-
-export interface ICartItemInput extends Omit<ICartItem, 'id'> {}

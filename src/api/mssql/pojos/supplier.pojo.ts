@@ -1,15 +1,12 @@
-import type { IAddress } from './abstract/address.pojo';
+import type { PoIAddress } from './abstract/address.pojo';
 
-export interface ISupplier extends IAddress {
+export interface PoISupplier extends PoIAddress {
   id: string;
-  //   product_orders: string[];
-
   name: string;
   phone: string;
   email: string;
 }
 
-export interface ISupplierDropdown extends Pick<ISupplier, 'id' | 'name'> {}
+export interface PoISupplierDropdown extends Pick<PoISupplier, 'id' | 'name'> {}
 
-export interface ISupplierInput
-  extends Omit<ISupplier, 'product_orders' | 'id'> {}
+export interface PoISupplierInput extends Omit<PoISupplier, 'id'> {}

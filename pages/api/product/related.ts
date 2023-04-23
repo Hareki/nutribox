@@ -5,12 +5,12 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { getRelatedProducts } from 'api/base/server-side-modules/mssql-modules';
 import connectToDB from 'api/database/mongoose/databaseConnection';
-import type { IUpeProductWithImages } from 'api/mssql/pojos/product.pojo';
+import type { PoIUpeProductWithImages } from 'api/mssql/pojos/product.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IUpeProductWithImages[]>>
+  NextApiResponse<JSendResponse<PoIUpeProductWithImages[]>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,

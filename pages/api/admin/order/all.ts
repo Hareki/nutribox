@@ -9,13 +9,13 @@ import {
   fetchAdminPaginationData,
 } from 'api/helpers/mssql.helper';
 // import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import type { ICustomerOrder as ICustomerOrderPojo } from 'api/mssql/pojos/customer_order.pojo';
+import type { PoICustomerOrder } from 'api/mssql/pojos/customer_order.pojo';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<GetAllPaginationResult<ICustomerOrderPojo>>>
+  NextApiResponse<JSendResponse<GetAllPaginationResult<PoICustomerOrder>>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -24,7 +24,7 @@ const handler = nc<
 
   const { pageSize, pageNumber } = extractPaginationOutputFromReq(req);
 
-  const result = await fetchAdminPaginationData<ICustomerOrderPojo>({
+  const result = await fetchAdminPaginationData<PoICustomerOrder>({
     procedureName: 'usp_CustomerOrders_FetchByPage',
     pageNumber,
     pageSize,

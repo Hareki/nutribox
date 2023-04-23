@@ -6,13 +6,13 @@ import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 // import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import type { ICustomerOrder } from 'api/mssql/pojos/customer_order.pojo';
+import type { PoICustomerOrder } from 'api/mssql/pojos/customer_order.pojo';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<GetAllPaginationResult<ICustomerOrder>>>
+  NextApiResponse<JSendResponse<GetAllPaginationResult<PoICustomerOrder>>>
 >({
   attachParams: true,
   onError: defaultOnError,
@@ -22,7 +22,7 @@ const handler = nc<
   const { docsPerPage = '999', page = '1' } = req.query;
 
   const queryResult = await executeUsp<
-    ICustomerOrder,
+    PoICustomerOrder,
     { TotalRecords: number; TotalPages: number }
   >('usp_CustomerOrders_FetchByPageAndAccountId', [
     {
@@ -64,7 +64,7 @@ const handler = nc<
   const totalDocs = queryResult.output.TotalRecords;
   const totalPages = queryResult.output.TotalPages;
 
-  const result: GetAllPaginationResult<ICustomerOrder> = {
+  const result: GetAllPaginationResult<PoICustomerOrder> = {
     docs: customerOrders,
     totalDocs,
     totalPages,

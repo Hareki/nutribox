@@ -1,4 +1,4 @@
-import type { IProductOrder } from './product_order.pojo';
+import type { PoIProductOrder } from './product_order.pojo';
 
 export interface IExportHistory {
   id: string;
@@ -10,7 +10,7 @@ export interface IExportHistory {
 
 export interface IPopulatedExportHistory
   extends Omit<IExportHistory, 'product_order_id'> {
-  product_order_id: IProductOrder;
+  product_order_id: PoIProductOrder;
 }
 
 export interface IExportHistoryInput extends Omit<IExportHistory, 'id'> {}

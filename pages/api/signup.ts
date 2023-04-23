@@ -9,7 +9,7 @@ import { sql } from 'api/database/mssql.config';
 import { hashPassword } from 'api/helpers/auth.helper';
 import { executeUsp } from 'api/helpers/mssql.helper';
 import { getDuplicateValueMessageSQL } from 'api/helpers/schema.helper';
-import type { IAccount } from 'api/mssql/pojos/account.pojo';
+import type { PoIAccount } from 'api/mssql/pojos/account.pojo';
 import { isDuplicateKey } from 'api/types/mongooseError.type';
 import type {
   JSendErrorResponse,
@@ -67,7 +67,7 @@ export const onSignUpError: ErrorHandler<
 const handler = nc<
   NextApiRequest,
   NextApiResponse<
-    | JSendSuccessResponse<IAccount>
+    | JSendSuccessResponse<PoIAccount>
     | JSendFailResponse<Record<string, string>>
     | JSendErrorResponse
   >
@@ -88,7 +88,7 @@ const handler = nc<
 
   // const newAccount = await AccountController.createOne(data);
 
-  const queryResult = await executeUsp<IAccount>('usp_Account_CreateOne', [
+  const queryResult = await executeUsp<PoIAccount>('usp_Account_CreateOne', [
     {
       name: 'RoleId',
       type: sql.UniqueIdentifier,

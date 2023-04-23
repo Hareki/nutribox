@@ -5,7 +5,7 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
-import type { IJsonPopulatedCartItem } from 'api/mssql/pojos/cart_item.pojo';
+import type { PoIJsonPopulatedCartItem } from 'api/mssql/pojos/cart_item.pojo';
 import type {
   JSendErrorResponse,
   JSendFailResponse,
@@ -54,7 +54,7 @@ const handler = nc<
   .get(async (req, res) => {
     const accountId = req.query.accountId as string;
 
-    const queryResult = await executeUsp<IJsonPopulatedCartItem>( //
+    const queryResult = await executeUsp<PoIJsonPopulatedCartItem>( //
       'usp_CartItems_FetchPopulatedByAccountId',
       [
         {

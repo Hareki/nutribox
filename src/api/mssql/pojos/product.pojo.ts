@@ -1,8 +1,11 @@
 import type { IProductCategory } from './product_category.pojo';
-import type { IProductOrder } from './product_order.pojo';
-import type { ISupplier } from './supplier.pojo';
+import type { PoIProductOrder } from './product_order.pojo';
+import type { PoISupplier } from './supplier.pojo';
 
-export interface IProduct {
+// UPE = Unexpired and Populated Expirations, we usually use this type instead of IProduct
+// CDS = Populated category and default supplier
+
+export interface PoIProduct {
   id: string;
   category_id: string;
   default_supplier_id: string;
@@ -15,40 +18,33 @@ export interface IProduct {
   retail_price: number;
 }
 
-export interface IPopulatedCategoryProduct
-  extends Omit<IProduct, 'category_id'> {
-  category_id: IProductCategory;
+export interface PoIPopulatedCategoryProduct extends PoIProduct {
+  category: IProductCategory;
 }
 
-// UPE = Unexpired and Populated Expirations, we usually use this type instead of IProduct
-export interface IUpeProductWithImages
-  extends Omit<IProduct, 'product_orders'> {
-  product_orders: IProductOrder[];
+export interface PoIUpeProductWithImages extends PoIProduct {
+  product_orders: PoIProductOrder[];
   image_urls: { image_url: string }[];
 }
 
-export interface IJsonUpeProductWithImages
-  extends Omit<IUpeProductWithImages, 'product_orders' | 'image_urls'> {
+export interface PoIJsonUpeProductWithImages extends PoIProduct {
   product_orders: string;
   image_urls: string;
 }
 
-// CDS = Populated category and default supplier
-export interface ICdsProduct
-  extends Omit<IProduct, 'category_id' | 'default_supplier_id'> {
-  category_id: IProductCategory;
-  default_supplier_id: ISupplier;
+export interface PoICdsProduct extends PoIProduct {
+  category: IProductCategory;
+  default_supplier: PoISupplier;
 }
-export interface ICdsUpeProduct extends Omit<ICdsProduct, 'product_orders'> {
-  product_orders: IProductOrder[];
+export interface PoICdsUpeProduct extends PoICdsProduct {
+  product_orders: PoIProductOrder[];
 }
 
-export interface IProductWithTotalQuantity extends IProduct {
+export interface PoIProductWithTotalQuantity extends PoIProduct {
   total_unexpired_remaining_stock: number;
 }
 
-export interface IProductInput
-  extends Omit<IProduct, 'id' | 'product_orders' | 'available'> {
+export interface PoIProductInput extends Omit<PoIProduct, 'id' | 'available'> {
   product_orders: string[];
   available?: boolean;
 }

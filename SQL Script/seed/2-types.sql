@@ -9,3 +9,5 @@ CREATE TYPE StoreHoursRecordsType AS TABLE
     open_time time NOT NULL,
     close_time time NOT NULL
 );
+
+--- new ----

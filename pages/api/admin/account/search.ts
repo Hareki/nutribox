@@ -5,12 +5,12 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 import { fetchAdminSearchData } from 'api/helpers/mssql.helper';
 // import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
-import type { IAccountWithTotalOrders as IAccountWithTotalOrdersPojo } from 'api/mssql/pojos/account.pojo';
+import type { PoIAccountWithTotalOrders } from 'api/mssql/pojos/account.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<IAccountWithTotalOrdersPojo[]>>
+  NextApiResponse<JSendResponse<PoIAccountWithTotalOrders[]>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -18,7 +18,7 @@ const handler = nc<
   const { fullName } = req.query;
 
   const accountsWithTotalOrders =
-    await fetchAdminSearchData<IAccountWithTotalOrdersPojo>({
+    await fetchAdminSearchData<PoIAccountWithTotalOrders>({
       keyword: fullName as string,
       procedureName: 'usp_Accounts_FetchWithTotalOrdersByFullNameKeyword',
     });

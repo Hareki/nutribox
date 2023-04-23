@@ -1,6 +1,6 @@
-export interface IOrderStatus {
+export interface PoIOrderStatus {
   id: string;
   name: string;
 }
 
-export interface IOrderStatusInput extends Omit<IOrderStatus, 'id'> {}
+export interface PoIOrderStatusInput extends Omit<PoIOrderStatus, 'id'> {}

@@ -1,4 +1,4 @@
-export interface IProductOrder {
+export interface PoIProductOrder {
   id: string;
   product_id: string;
   supplier_id: string;
@@ -12,5 +12,5 @@ export interface IProductOrder {
   created_at: Date | string;
 }
 
-export interface IProductOrderInput
-  extends Omit<IProductOrder, 'id' | 'created_at'> {}
+export interface PoIProductOrderInput
+  extends Omit<PoIProductOrder, 'id' | 'created_at'> {}

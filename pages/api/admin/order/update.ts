@@ -7,7 +7,7 @@ import connectToDB from 'api/database/mongoose/databaseConnection';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 // import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import type { ICustomerOrder as ICustomerOrderPojo } from 'api/mssql/pojos/customer_order.pojo';
+import type { PoICustomerOrder } from 'api/mssql/pojos/customer_order.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface UpdateOrderStatusRb {
@@ -17,7 +17,7 @@ export interface UpdateOrderStatusRb {
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<ICustomerOrderPojo>>
+  NextApiResponse<JSendResponse<PoICustomerOrder>>
 >({
   onError: defaultOnError,
   onNoMatch: defaultOnNoMatch,
@@ -29,7 +29,7 @@ const handler = nc<
 
   try {
     const updatedOrder = (
-      await executeUsp<ICustomerOrderPojo>('usp_CustomerOrder_UpdateStatus', [
+      await executeUsp<PoICustomerOrder>('usp_CustomerOrder_UpdateStatus', [
         {
           name: 'CustomerOrderId',
           type: sql.UniqueIdentifier,

@@ -5,12 +5,12 @@ import nc from 'next-connect';
 import { defaultOnError, defaultOnNoMatch } from 'api/base/next-connect';
 // import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { getCustomerOrderWithJsonItems } from 'api/base/server-side-modules/mssql-modules';
-import type { ICustomerOrderWithItems } from 'api/mssql/pojos/customer_order.pojo';
+import type { PoICustomerOrderWithItems } from 'api/mssql/pojos/customer_order.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<ICustomerOrderWithItems>>
+  NextApiResponse<JSendResponse<PoICustomerOrderWithItems>>
 >({
   attachParams: true,
   onError: defaultOnError,
@@ -20,7 +20,7 @@ const handler = nc<
 
   const orderWithJsonItems = await getCustomerOrderWithJsonItems(orderId);
 
-  const customerOrderWithItems: ICustomerOrderWithItems = {
+  const customerOrderWithItems: PoICustomerOrderWithItems = {
     ...orderWithJsonItems,
     items: JSON.parse(orderWithJsonItems.items),
   };

@@ -1,6 +1,6 @@
 import type { IExportHistory } from './export_history.pojo';
 
-export interface ICustomerOrderItem {
+export interface PoICustomerOrderItem {
   id: string;
   customer_order_id: string;
   product_id: string;
@@ -8,14 +8,20 @@ export interface ICustomerOrderItem {
   quantity: number;
   unit_import_price: number;
   unit_retail_price: number;
-  export_history: string[];
   created_at: Date | string;
 }
 
-export interface ICustomerOrderItemInputWithoutConsumption
-  extends Omit<ICustomerOrderItem, 'id' | 'export_history'> {}
+export interface PoICustomerOrderItemWithJsonExportHistory
+  extends PoICustomerOrderItem {
+  export_history: string;
+}
+
+export interface PoICustomerOrderItemWithExportHistory
+  extends PoICustomerOrderItem {
+  export_history: IExportHistory[];
+}
 
 export interface ICustomerOrderItemInput
-  extends ICustomerOrderItemInputWithoutConsumption {
+  extends Omit<PoICustomerOrderItem, 'id' | 'created_at'> {
   export_history: IExportHistory[];
 }

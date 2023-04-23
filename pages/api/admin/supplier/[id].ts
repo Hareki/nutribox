@@ -11,14 +11,14 @@ import { executeUsp, getAddressParamArray } from 'api/helpers/mssql.helper';
 // import type { ISupplierInput } from 'api/models/Supplier.model/types';
 // import type { ISupplier } from 'api/models/Supplier.model/types';
 import type { ISupplierInput } from 'api/models/Supplier.model/types';
-import type { ISupplier as ISupplierPojo } from 'api/mssql/pojos/supplier.pojo';
+import type { PoISupplier } from 'api/mssql/pojos/supplier.pojo';
 import type { JSendResponse } from 'api/types/response.type';
 
 export interface UpdateSupplierInfoRb extends ISupplierInput {}
 
 const handler = nc<
   NextApiRequest,
-  NextApiResponse<JSendResponse<ISupplierPojo | Record<string, string>>>
+  NextApiResponse<JSendResponse<PoISupplier | Record<string, string>>>
 >({
   onError: onMongooseValidationError,
   onNoMatch: defaultOnNoMatch,
@@ -33,7 +33,7 @@ const handler = nc<
     // });
 
     const supplier = (
-      await executeUsp<ISupplierPojo>('usp_Supplier_FetchById', [
+      await executeUsp<PoISupplier>('usp_Supplier_FetchById', [
         {
           name: 'SupplierId',
           type: sql.UniqueIdentifier,
@@ -57,7 +57,7 @@ const handler = nc<
     // const updatedSupplier = await SupplierController.updateOne(supplierId, requestBody);
 
     const updatedSupplier = (
-      await executeUsp<ISupplierPojo>('usp_Supplier_UpdateOne', [
+      await executeUsp<PoISupplier>('usp_Supplier_UpdateOne', [
         {
           name: 'SupplierId',
           type: sql.UniqueIdentifier,
