@@ -37,20 +37,10 @@ AS
 BEGIN
     WITH ProductSales
     AS (SELECT up.*,
-               COALESCE(SUM(coi.quantity), 0) AS TotalQuantitySold
+               COALESCE(vw.total_sold, 0) AS TotalQuantitySold
         FROM vw_ProductsWithUnexpiredOrdersAndImages up
-            LEFT JOIN customer_order_items coi
-                ON up.id = coi.product_id
-        GROUP BY up.id,
-                 up.name,
-                 up.category_id,
-                 up.import_price,
-                 up.retail_price,
-                 up.available,
-                 up.description,
-                 up.created_at,
-                 up.image_urls,
-                 up.product_orders
+        LEFT JOIN vw_ProductsWithTotalSold vw
+            ON up.id = vw.id
        )
     SELECT TOP (@Limit)
         ps.*
@@ -60,6 +50,7 @@ BEGIN
              ps.created_at DESC;
 END;
 GO
+
 
 CREATE OR ALTER PROCEDURE usp_Products_FetchNewWithProductOrders @Limit INT
 AS
@@ -1705,3 +1696,13 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE usp_Account_FetchWithRoleNameById
+    @Id UNIQUEIDENTIFIER
+AS
+BEGIN
+    SELECT a.*, r.name AS role_name
+    FROM accounts a
+    INNER JOIN roles r ON a.role_id = r.id
+    WHERE a.id = @Id;
+END;
+GO

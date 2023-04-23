@@ -1,3 +1,5 @@
+import type { Session } from 'next-auth';
+
 import type { InfiniteUpePaginationResult } from '../../../../pages/api/product/all';
 import type {
   OrderStatusCount,
@@ -7,6 +9,7 @@ import type {
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
 import { parsePoIJsonUpeProductWithImages } from 'api/helpers/typeConverter.helper';
+import type { PoIAccountWithRoleName } from 'api/mssql/pojos/account.pojo';
 import type { PoICustomerOrderWithJsonItems } from 'api/mssql/pojos/customer_order.pojo';
 import type {
   PoIJsonUpeProductWithImages,
@@ -22,6 +25,7 @@ import type {
   GetInfinitePaginationResult,
   UspInfinitePaginationOutput,
 } from 'api/types/pagination.type';
+import { getAvatarUrl } from 'helpers/account.helper';
 import { ProductCarouselLimit, RelatedProductsLimit } from 'utils/constants';
 
 export const getAllProducts = async (
@@ -273,4 +277,40 @@ export const getStore = async (id: string): Promise<PoIStoreWithStoreHours> => {
     store_hours: JSON.parse(queryResult.data[0].store_hours),
   };
   return result;
+};
+
+export const getSessionUser = async (
+  id: string,
+): Promise<Pick<Session, 'user'>> => {
+  const account = (
+    await executeUsp<PoIAccountWithRoleName>(
+      'usp_Account_FetchWithRoleNameById',
+      [
+        {
+          name: 'Id',
+          type: sql.UniqueIdentifier,
+          value: id,
+        },
+      ],
+    )
+  ).data[0];
+
+  const accountCamelCase = {
+    avatarUrl: '',
+    lastName: account.last_name,
+    firstName: account.first_name,
+  };
+
+  return {
+    user: {
+      id: account.id,
+      avatarUrl: getAvatarUrl(accountCamelCase),
+      email: account.email,
+      firstName: account.first_name,
+      lastName: account.last_name,
+      fullName: virtuals.getFullName(account.last_name, account.first_name),
+      role: account.role_name as 'ADMIN' | 'CUSTOMER' | 'SUPPLIER',
+      verified: account.verified,
+    },
+  };
 };

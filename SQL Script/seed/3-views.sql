@@ -1,7 +1,7 @@
 USE nutribox
 GO
 
-CREATE VIEW vw_ProductsWithUnexpiredOrdersAndImages
+CREATE OR ALTER VIEW vw_ProductsWithUnexpiredOrdersAndImages
 AS
 SELECT p.id,
        p.name,
