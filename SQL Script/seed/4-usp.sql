@@ -151,7 +151,7 @@ BEGIN
                FROM vw_ProductsWithUnexpiredOrdersAndImages up
                WHERE ci.product_id = up.id
                FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
-           ) AS product_id
+           ) AS product
     FROM cart_items ci
     WHERE ci.account_id = @AccountId;
 END;

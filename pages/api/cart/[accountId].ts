@@ -68,7 +68,7 @@ const handler = nc<
     const cartState: CartState2 = {
       cart: queryResult.data.map((item) => ({
         ...item,
-        product_id: JSON.parse(item.product_id),
+        product: JSON.parse(item.product),
       })),
     };
 
