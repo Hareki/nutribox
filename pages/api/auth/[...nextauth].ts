@@ -6,7 +6,7 @@ import { getSessionUser } from 'api/base/server-side-modules/mssql-modules';
 import connectToDB from 'api/database/mongoose/databaseConnection';
 import { sql } from 'api/database/mssql.config';
 import { executeUsp } from 'api/helpers/mssql.helper';
-import type { PoIAccount } from 'api/mssql/pojos/account.pojo';
+import type { PoIAccountWithRoleName } from 'api/mssql/pojos/account.pojo';
 import { virtuals } from 'api/mssql/virtuals';
 import { getAvatarUrl } from 'helpers/account.helper';
 
@@ -58,7 +58,7 @@ export const authOptions: AuthOptions = {
         // );
 
         const account = (
-          await executeUsp<PoIAccount>('usp_Account_FetchByEmail', [
+          await executeUsp<PoIAccountWithRoleName>('usp_Account_FetchByEmail', [
             {
               name: 'Email',
               type: sql.NVarChar,
@@ -75,6 +75,12 @@ export const authOptions: AuthOptions = {
         );
         if (!isPasswordMatch) return null;
 
+        const accountCamelCase = {
+          firstName: account.first_name,
+          lastName: account.last_name,
+          avatarUrl: '',
+        };
+
         // INSTRUCTIONS:
         // Default property is "name, email, image" (id is NEEDED to identify the user, but not included by default)
         // The complete user object (All fields returned included) is available at the jwt, signIn callback (user),
@@ -85,12 +91,12 @@ export const authOptions: AuthOptions = {
         // by manually add them at the session callback
         const user = {
           id: account.id,
-          firstName: account.firstName,
-          lastName: account.lastName,
-          fullName: virtuals.getFullName(account.lastName, account.firstName),
+          firstName: account.first_name,
+          lastName: account.last_name,
+          fullName: virtuals.getFullName(account.last_name, account.first_name),
           email: account.email,
-          avatarUrl: getAvatarUrl(account),
-          role: account.role,
+          avatarUrl: getAvatarUrl(accountCamelCase),
+          role: account.role_name as 'ADMIN' | 'CUSTOMER' | 'SUPPLIER',
           verified: account.verified,
         };
         return user;

@@ -902,8 +902,9 @@ GO
 CREATE OR ALTER PROCEDURE usp_Account_FetchByEmail @Email NVARCHAR(100)
 AS
 BEGIN
-    SELECT *
-    FROM accounts
+    SELECT a.*, r.name as role_name
+    FROM accounts a
+	INNER JOIN roles r ON a.role_id = r.id
     WHERE email = @Email
 END;
 GO
