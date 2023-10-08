@@ -6,7 +6,7 @@ export enum EmployeeRole {
   SHIPPER = 'SHIPPER',
 }
 
-export enum AddressTitle {
+export enum CustomerAddressType {
   OFFICE = 'OFFICE',
   HOME = 'HOME',
 }
@@ -16,7 +16,15 @@ export enum OrderStatus {
   PROCESSING = 'PROCESSING',
   SHIPPING = 'SHIPPING',
   SHIPPED = 'SHIPPED',
-  CANCELLED = 'CANCELLED',
+  // COMPLETED = 'COMPLETED',
+
+  // CANCELLED = 'CANCELLED',
+
+  // RETURN_REQUESTED = 'RETURN_REQUESTED',
+  // RETURN_REJECTED = 'RETURN_REJECTED',
+  // RETURN_ACCEPTED = 'RETURN_ACCEPTED',
+  // RETURN_SHIPPING = 'RETURN_SHIPPING',
+  // RETURN_COMPLETED = 'RETURN_COMPLETED',
 }
 
 export enum PaymentMethod {

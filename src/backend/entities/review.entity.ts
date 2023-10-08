@@ -23,7 +23,10 @@ export class ReviewEntity {
   })
   createdAt: Date;
 
-  @Column('text')
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
   comment: string;
 
   @Column('decimal')

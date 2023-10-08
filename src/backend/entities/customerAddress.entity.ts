@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { CustomerEntity } from './customer.entity';
 
-import { AddressTitle as AddressType } from 'backend/enums/Entities.enum';
+import { CustomerAddressType } from 'backend/enums/Entities.enum';
 
 @Entity({ name: 'customer_address' })
 export class CustomerAddressEntity {
@@ -28,6 +28,6 @@ export class CustomerAddressEntity {
   @Column()
   isDefault: boolean;
 
-  @Column({ type: 'enum', enum: AddressType })
-  type: AddressType;
+  @Column({ type: 'enum', enum: CustomerAddressType })
+  type: CustomerAddressType;
 }
