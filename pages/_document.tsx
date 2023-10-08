@@ -1,17 +1,11 @@
+import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import createEmotionServer from '@emotion/server/create-instance';
-import type {
-  DocumentProps } from 'next/document';
-import Document, {
-  Head,
-  Html,
-  Main,
-  NextScript,
-} from 'next/document';
+import type { DocumentProps } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
 import i18nextConfig from '../next-i18next.config';
-import createEmotionCache from '../src/createEmotionCache';
 
 export default class Bazaar extends Document<DocumentProps> {
   render() {
@@ -38,6 +32,10 @@ export default class Bazaar extends Document<DocumentProps> {
       </Html>
     );
   }
+}
+
+function createEmotionCache() {
+  return createCache({ key: 'css' });
 }
 
 // `getInitialProps` belongs to `_document` (instead of `_app`),
@@ -73,12 +71,11 @@ Bazaar.getInitialProps = async (ctx) => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: (App: any) => (props) =>
-        (
-          <CacheProvider value={cache}>
-            <App {...props} />
-          </CacheProvider>
-        ),
+      enhanceApp: (App: any) => (props) => (
+        <CacheProvider value={cache}>
+          <App {...props} />
+        </CacheProvider>
+      ),
     });
 
   const initialProps = await Document.getInitialProps(ctx);

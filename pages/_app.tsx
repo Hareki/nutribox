@@ -12,12 +12,12 @@ import { Provider as ReduxProvider } from 'react-redux';
 
 import nextI18NextConfig from '../next-i18next.config';
 
+import OpenGraphTags from 'components/abstract/OpenGraphTags';
 import QueryClientSsrProvider from 'contexts/QueryClientSsrProvider';
 import SettingsProvider from 'contexts/SettingContext';
 import SnackbarProvider from 'contexts/SnackbarProvider';
 import { store as reduxStore } from 'store';
 import MuiTheme from 'theme/MuiTheme';
-import OpenGraphTags from 'utils/OpenGraphTags';
 
 import '../src/styles/global.css';
 import '../src/fonts/SVN-Rubik/index.css';

@@ -7,11 +7,11 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
