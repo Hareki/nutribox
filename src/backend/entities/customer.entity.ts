@@ -34,7 +34,7 @@ export class CustomerEntity {
   @Column()
   phone: string;
 
-  @Column('date')
+  @Column('timestamp without time zone')
   birthday: Date;
 
   @OneToMany(

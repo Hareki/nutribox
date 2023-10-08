@@ -33,13 +33,13 @@ export class AccountEntity {
   @Column({ nullable: true })
   verificationToken: string;
 
-  @Column({ nullable: true, type: 'date' })
+  @Column({ nullable: true, type: 'timestamp without time zone' })
   verificationTokenExpiry: Date;
 
   @Column({ nullable: true })
   forgotPasswordToken: string;
 
-  @Column({ nullable: true, type: 'date' })
+  @Column({ nullable: true, type: 'timestamp without time zone' })
   forgotPasswordTokenExpiry: Date;
 
   @OneToOne(() => CustomerEntity, (customer) => customer.account, {

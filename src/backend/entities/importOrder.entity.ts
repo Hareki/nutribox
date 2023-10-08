@@ -1,6 +1,7 @@
 import type { Relation } from 'typeorm';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -22,16 +23,19 @@ export class ImportOrderEntity {
   @ManyToOne(() => SupplierEntity, (supplier) => supplier.importOrders)
   supplier: Relation<SupplierEntity>;
 
-  @Column('date')
+  @CreateDateColumn({
+    type: 'timestamp without time zone',
+    name: 'created_at',
+  })
   createdAt: Date;
 
-  @Column('date')
+  @Column('timestamp without time zone')
   importDate: Date;
 
-  @Column('date')
+  @Column('timestamp without time zone')
   manufacturingDate: Date;
 
-  @Column('date')
+  @Column('timestamp without time zone')
   expirationDate: Date;
 
   @Column('int')

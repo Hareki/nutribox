@@ -42,7 +42,7 @@ export class EmployeeEntity {
   @Column()
   phone: string;
 
-  @Column('date')
+  @Column('timestamp without time zone')
   birthday: Date;
 
   @OneToMany(

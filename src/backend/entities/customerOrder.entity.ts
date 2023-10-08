@@ -1,10 +1,12 @@
 import type { Relation } from 'typeorm';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { CustomerEntity } from './customer.entity';
@@ -28,7 +30,10 @@ export class CustomerOrderEntity {
   )
   orderItems: Relation<CustomerOrderItemEntity>[];
 
-  @Column('date')
+  @CreateDateColumn({
+    type: 'timestamp without time zone',
+    name: 'created_at',
+  })
   createdAt: Date;
 
   @Column({ type: 'enum', enum: OrderStatus })
@@ -61,20 +66,23 @@ export class CustomerOrderEntity {
   @Column('decimal')
   total: number;
 
-  @Column('date')
+  @Column('timestamp without time zone')
   estimatedDeliveryTime: Date;
 
   @Column('decimal')
   estimatedDistance: number;
 
-  @Column({ nullable: true, type: 'date' })
+  @Column({ nullable: true, type: 'timestamp without time zone' })
   deliveredOn: Date;
 
   @Column('uuid')
-  modifiedBy: string;
+  updatedBy: string;
 
-  @Column('date')
-  modifiedAt: Date;
+  @UpdateDateColumn({
+    type: 'timestamp without time zone',
+    name: 'updated_at',
+  })
+  updatedAt: Date;
 
   @Column()
   cancellationReason: string;

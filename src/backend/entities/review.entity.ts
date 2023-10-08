@@ -1,5 +1,11 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { CustomerOrderItemEntity } from './customerOrderItem.entity';
 
@@ -11,7 +17,10 @@ export class ReviewEntity {
   @OneToOne(() => CustomerOrderItemEntity)
   customerOrderItem: Relation<CustomerOrderItemEntity>;
 
-  @Column('date')
+  @CreateDateColumn({
+    type: 'timestamp without time zone',
+    name: 'created_at',
+  })
   createdAt: Date;
 
   @Column('text')
