@@ -1,45 +1,22 @@
 import { z } from 'zod';
 
+import { zodString, zodUuid } from './helper';
+
 import { PHONE_REGEX } from 'constants/regex.constant';
 
 const SupplierSchema = z.object({
-  id: z
-    .string({
-      required_error: 'Supplier.Id.Required',
-    })
-    .uuid(),
-  name: z
-    .string()
-    .min(3, {
-      message: 'Supplier.Name.Min',
-    })
-    .max(50, { message: 'Supplier.Name.Max' }),
-  phone: z
-    .string({
-      required_error: 'Supplier.Phone.Required',
-    })
-    .regex(PHONE_REGEX, {
-      message: 'Supplier.Phone.InvalidFormat',
-    }),
-  email: z
-    .string({
-      required_error: 'Supplier.Email.Required',
-    })
-    .email({
-      message: 'Supplier.Email.InvalidFormat',
-    }),
-  provinceCode: z.string({
-    required_error: 'Supplier.ProvinceCode.Required',
+  id: zodUuid('Supplier.Id'),
+  name: zodString('Supplier.Name', 3, 50),
+  phone: zodString('Supplier.Phone').regex(PHONE_REGEX, {
+    message: 'Supplier.Phone.InvalidFormat',
   }),
-  districtCode: z.string({
-    required_error: 'Supplier.DistrictCode.Required',
+  email: zodString('Supplier.Email').email({
+    message: 'Supplier.Email.InvalidFormat',
   }),
-  wardCode: z.string({
-    required_error: 'Supplier.WardCode.Required',
-  }),
-  streetAddress: z.string({
-    required_error: 'Supplier.StreetAddress.Required',
-  }),
+  provinceCode: zodString('Supplier.ProvinceCode.Required', 1, 5),
+  districtCode: zodString('Supplier.DistrictCode.Required', 1, 5),
+  wardCode: zodString('Supplier.WardCode.Required', 1, 5),
+  streetAddress: zodString('Supplier.StreetAddress', 1, 100),
 });
 
 type SupplierModel = z.infer<typeof SupplierSchema>;

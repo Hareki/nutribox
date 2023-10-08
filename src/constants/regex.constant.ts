@@ -7,3 +7,5 @@ export const MASK_PHONE_REGEX = /^(\d{3})-(\d{3})-(\d{4})$/;
 
 export const NAME_REGEX =
   /^(?=.*[^\s\d!@#$%~])[^\d!@#$%~]+(?:\s[^\d!@#$%~]+)*$/;
+
+export const PID_REGEX = /^[0-9]{3}[0-3][0-9]{2}[0-9]{6}$/;
