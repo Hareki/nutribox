@@ -1,0 +1,12 @@
+{
+  "Review.Id.Required": "Vui lòng nhập ID đánh giá.",
+  "Review.CreatedAt.Required": "Vui lòng nhập ngày tạo đánh giá.",
+  "Review.CustomerOrderItemId.Required": "Vui lòng nhập ID mặt hàng trong đơn hàng khách hàng liên quan.",
+  "Review.Comment.Required": "Vui lòng nhập đánh giá.",
+  "Review.Comment.Min": "Vui lòng nhập đánh giá.",
+  "Review.Comment.Max": "Đánh giá không được vượt quá 500 ký tự.",
+  "Review.Star.Required": "Vui lòng đánh giá bằng số sao.",
+  "Review.Star.Min": "Đánh giá không thể ít hơn 1 sao.",
+  "Review.Star.Max": "Đánh giá không thể vượt quá 5 sao.",
+  "Review.Star.InvalidFormat": "Vui lòng đánh giá bằng số sao nguyên hoặc nửa sao (ví dụ: 1, 1.5, 2, ...)."
+}

@@ -1,0 +1,7 @@
+{
+  "ExportOrder.ImportOrderId.Required": "Please enter the import order ID.",
+  "ExportOrder.CustomerOrderItemId.Required": "Please enter the customer order item ID.",
+  "ExportOrder.Quantity.Required": "Please enter the quantity.",
+  "ExportOrder.Quantity.Min": "Quantity should be at least 1.",
+  "ExportOrder.Quantity.Max": "Quantity should not exceed 1000."
+}

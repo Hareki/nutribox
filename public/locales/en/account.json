@@ -1,0 +1,18 @@
+{
+  "Account.Id.Required": "Please enter the ID.",
+  "Account.Email.Required": "Please enter the Email.",
+  "Account.Email.InvalidFormat": "Invalid email format.",
+  "Account.Password.Required": "Please enter the Password.",
+  "Account.Password.Min": "Password must be at least 6 characters.",
+  "Account.Password.Max": "Password must not exceed 50 characters.",
+  "Account.AvatarUrl.Min": "Avatar URL must be at least 1 character.",
+  "Account.AvatarUrl.Max": "Avatar URL must not exceed 500 characters.",
+  "Account.Disabled.Required": "Please enter the Disabled status.",
+  "Account.Verified.Required": "Please enter the Verified status.",
+  "Account.VerificationToken.Min": "Verification Token must be at least 1 character.",
+  "Account.VerificationToken.Max": "Verification Token must not exceed 500 characters.",
+  "Account.VerificationTokenExpiry.InvalidFormat": "Invalid expiry date format for Verification Token.",
+  "Account.ForgotPasswordToken.Min": "Forgot Password Token must be at least 1 character.",
+  "Account.ForgotPasswordToken.Max": "Forgot Password Token must not exceed 500 characters.",
+  "Account.ForgotPasswordTokenExpiry.InvalidFormat": "Invalid expiry date format for Forgot Password Token."
+}

@@ -1,0 +1,12 @@
+{
+  "Review.Id.Required": "Please enter the review ID.",
+  "Review.CreatedAt.Required": "Please enter the creation date of the review.",
+  "Review.CustomerOrderItemId.Required": "Please enter the associated customer order item ID.",
+  "Review.Comment.Required": "Please enter your comment.",
+  "Review.Comment.Min": "Please enter your comment.",
+  "Review.Comment.Max": "Your comment should not exceed 500 characters.",
+  "Review.Star.Required": "Please rate with stars.",
+  "Review.Star.Min": "The rating cannot be less than 1 star.",
+  "Review.Star.Max": "The rating cannot exceed 5 stars.",
+  "Review.Star.InvalidFormat": "Please rate using whole stars or half stars (e.g., 1, 1.5, 2, ...)."
+}

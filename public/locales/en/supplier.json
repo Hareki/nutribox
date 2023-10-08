@@ -1,0 +1,16 @@
+{
+  "Supplier.Id.Required": "Please enter the supplier ID.",
+  "Supplier.Name.Required": "Please enter the supplier name.",
+  "Supplier.Name.Min": "Supplier name should be at least 3 characters.",
+  "Supplier.Name.Max": "Supplier name should not exceed 50 characters.",
+  "Supplier.Phone.Required": "Please enter the supplier's phone number.",
+  "Supplier.Phone.InvalidFormat": "The supplier's phone number format is invalid.",
+  "Supplier.Email.Required": "Please enter the supplier's email.",
+  "Supplier.Email.InvalidFormat": "The supplier's email format is invalid.",
+  "Supplier.ProvinceCode.Required": "Please enter the province code.",
+  "Supplier.DistrictCode.Required": "Please enter the district code.",
+  "Supplier.WardCode.Required": "Please enter the ward code.",
+  "Supplier.StreetAddress.Required": "Please enter the street address.",
+  "Supplier.StreetAddress.Min": "Please enter the street address.",
+  "Supplier.StreetAddress.Max": "Street address should not exceed 100 characters."
+}

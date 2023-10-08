@@ -1,0 +1,19 @@
+{
+  "Customer.Id.Required": "Vui lòng nhập ID.",
+  "Customer.FirstName.Required": "Vui lòng nhập Tên.",
+  "Customer.FirstName.Min": "Vui lòng nhập Tên",
+  "Customer.FirstName.Max": "Tên không được vượt quá 50 ký tự.",
+  "Customer.FirstName.InvalidFormat": "Định dạng Tên không hợp lệ.",
+  "Customer.LastName.Required": "Vui lòng nhập Họ và tên lót",
+  "Customer.LastName.Min": "Vui lòng nhập Họ và tên lót",
+  "Customer.LastName.Max": "Họ không được vượt quá 50 ký tự.",
+  "Customer.LastName.InvalidFormat": "Định dạng Họ không hợp lệ.",
+  "Customer.Email.Required": "Vui lòng nhập Email.",
+  "Customer.Email.InvalidFormat": "Định dạng email không hợp lệ.",
+  "Customer.Phone.Required": "Vui lòng nhập Số điện thoại.",
+  "Customer.Phone.Min": "Vui lòng nhập Số điện thoại.",
+  "Customer.Phone.Max": "Số điện thoại không được vượt quá 50 ký tự.",
+  "Customer.Phone.InvalidFormat": "Định dạng Số điện thoại không hợp lệ.",
+  "Customer.Birthday.Required": "Vui lòng nhập Ngày sinh.",
+  "Customer.Birthday.InvalidFormat": "Định dạng Ngày sinh không hợp lệ."
+}

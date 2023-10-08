@@ -1,0 +1,16 @@
+{
+  "CustomerOrderItem.CustomerOrderId.Required": "Vui lòng nhập ID đơn hàng khách hàng.",
+  "CustomerOrderItem.ProductId.Required": "Vui lòng nhập ID sản phẩm.",
+  "CustomerOrderItem.Quantity.Required": "Vui lòng nhập số lượng.",
+  "CustomerOrderItem.Quantity.InvalidFormat": "Định dạng số lượng không hợp lệ.",
+  "CustomerOrderItem.Quantity.Min": "Số lượng phải ít nhất là 1.",
+  "CustomerOrderItem.Quantity.Max": "Số lượng không được vượt quá 1000.",
+  "CustomerOrderItem.UnitRetailPrice.Required": "Vui lòng nhập giá bán lẻ đơn vị.",
+  "CustomerOrderItem.UnitRetailPrice.InvalidFormat": "Định dạng giá bán lẻ đơn vị không hợp lệ.",
+  "CustomerOrderItem.UnitRetailPrice.Min": "Giá bán lẻ đơn vị phải ít nhất là 0.",
+  "CustomerOrderItem.UnitRetailPrice.Max": "Giá bán lẻ đơn vị không được vượt quá 10,000,000.",
+  "CustomerOrderItem.UnitImportPrice.Required": "Vui lòng nhập giá nhập khẩu đơn vị.",
+  "CustomerOrderItem.UnitImportPrice.InvalidFormat": "Định dạng giá nhập khẩu đơn vị không hợp lệ.",
+  "CustomerOrderItem.UnitImportPrice.Min": "Giá nhập khẩu đơn vị phải ít nhất là 0.",
+  "CustomerOrderItem.UnitImportPrice.Max": "Giá nhập khẩu đơn vị không được vượt quá 10,000,000."
+}

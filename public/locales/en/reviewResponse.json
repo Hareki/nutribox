@@ -1,0 +1,8 @@
+{
+  "ReviewResponse.Id.Required": "Please enter the review response ID.",
+  "ReviewResponse.ReviewId.Required": "Please enter the associated review ID.",
+  "ReviewResponse.Comment.Required": "Please enter your response.",
+  "ReviewResponse.Comment.Min": "Please enter your response.",
+  "ReviewResponse.Comment.Max": "Your response should not exceed 500 characters.",
+  "ReviewResponse.EmployeeId.Required": "Please enter the associated employee ID."
+}

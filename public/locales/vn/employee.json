@@ -1,0 +1,17 @@
+{
+  "Employee.Id.Required": "Vui lòng nhập ID nhân viên.",
+  "Employee.PersonalId.Required": "Vui lòng nhập số CMND/CCCD.",
+  "Employee.PersonalId.InvalidFormat": "Định dạng CMND/CCCD không hợp lệ.",
+  "Employee.Role.Required": "Vui lòng chọn vai trò nhân viên.",
+  "Employee.AccountId.Required": "Vui lòng nhập ID tài khoản.",
+  "Employee.FirstName.Required": "Vui lòng nhập tên.",
+  "Employee.FirstName.InvalidFormat": "Định dạng tên không hợp lệ.",
+  "Employee.LastName.Required": "Vui lòng nhập họ và tên đệm.",
+  "Employee.LastName.InvalidFormat": "Định dạng họ và tên đệm không hợp lệ.",
+  "Employee.Email.Required": "Vui lòng nhập email.",
+  "Employee.Email.InvalidFormat": "Định dạng email không hợp lệ.",
+  "Employee.Phone.Required": "Vui lòng nhập số điện thoại.",
+  "Employee.Phone.InvalidFormat": "Định dạng số điện thoại không hợp lệ.",
+  "Employee.Birthday.Required": "Vui lòng nhập ngày sinh.",
+  "Employee.Birthday.InvalidFormat": "Định dạng ngày không hợp lệ."
+}

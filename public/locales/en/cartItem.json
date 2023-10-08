@@ -1,0 +1,8 @@
+{
+  "CartItem.ProductId.Required": "Please enter the Product ID.",
+  "CartItem.CustomerId.Required": "Please enter the Customer ID.",
+  "CartItem.Quantity.Required": "Please enter the Quantity.",
+  "CartItem.Quantity.InvalidFormat": "Invalid format for Quantity.",
+  "CartItem.Quantity.Min": "Quantity must be at least 1.",
+  "CartItem.Quantity.Max": "Quantity must not exceed 100."
+}

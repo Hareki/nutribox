@@ -1,0 +1,7 @@
+{
+  "ExportOrder.ImportOrderId.Required": "Vui lòng nhập ID đơn nhập hàng.",
+  "ExportOrder.CustomerOrderItemId.Required": "Vui lòng nhập ID mặt hàng trong đơn đặt hàng của khách hàng.",
+  "ExportOrder.Quantity.Required": "Vui lòng nhập số lượng.",
+  "ExportOrder.Quantity.Min": "Số lượng phải ít nhất là 1.",
+  "ExportOrder.Quantity.Max": "Số lượng không được vượt quá 1000."
+}

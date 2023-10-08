@@ -1,0 +1,8 @@
+{
+  "ReviewResponse.Id.Required": "Vui lòng nhập ID phản hồi đánh giá.",
+  "ReviewResponse.ReviewId.Required": "Vui lòng nhập ID đánh giá liên quan.",
+  "ReviewResponse.Comment.Required": "Vui lòng nhập phản hồi.",
+  "ReviewResponse.Comment.Min": "Vui lòng nhập phản hồi.",
+  "ReviewResponse.Comment.Max": "Phản hồi không được vượt quá 500 ký tự.",
+  "ReviewResponse.EmployeeId.Required": "Vui lòng nhập ID nhân viên liên quan."
+}

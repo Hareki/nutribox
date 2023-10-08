@@ -1,0 +1,7 @@
+{
+  "ProductImage.Id.Required": "Vui lòng nhập ID hình ảnh sản phẩm.",
+  "ProductImage.ProductId.Required": "Vui lòng nhập ID sản phẩm cho hình ảnh.",
+  "ProductImage.ImageUrl.Required": "Vui lòng nhập URL hình ảnh.",
+  "ProductImage.ImageUrl.Min": "Vui lòng nhập URL hình ảnh.",
+  "ProductImage.ImageUrl.Max": "URL hình ảnh không được vượt quá 500 ký tự."
+}

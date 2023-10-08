@@ -1,0 +1,7 @@
+{
+  "ProductCategory.Id.Required": "Vui lòng nhập ID danh mục sản phẩm.",
+  "ProductCategory.Name.Required": "Vui lòng nhập tên danh mục sản phẩm.",
+  "ProductCategory.Name.Min": "Tên danh mục sản phẩm phải có ít nhất 3 ký tự.",
+  "ProductCategory.Name.Max": "Tên danh mục sản phẩm không được vượt quá 50 ký tự.",
+  "ProductCategory.Available.Required": "Vui lòng chỉ rõ danh mục sản phẩm có sẵn hay không."
+}

@@ -1,0 +1,17 @@
+{
+  "Employee.Id.Required": "Please enter the employee ID.",
+  "Employee.PersonalId.Required": "Please enter the personal ID.",
+  "Employee.PersonalId.InvalidFormat": "Invalid personal ID format.",
+  "Employee.Role.Required": "Please select the employee role.",
+  "Employee.AccountId.Required": "Please enter the account ID.",
+  "Employee.FirstName.Required": "Please enter the first name.",
+  "Employee.FirstName.InvalidFormat": "Invalid first name format.",
+  "Employee.LastName.Required": "Please enter the last name.",
+  "Employee.LastName.InvalidFormat": "Invalid last name format.",
+  "Employee.Email.Required": "Please enter the email.",
+  "Employee.Email.InvalidFormat": "Invalid email format.",
+  "Employee.Phone.Required": "Please enter the phone number.",
+  "Employee.Phone.InvalidFormat": "Invalid phone number format.",
+  "Employee.Birthday.Required": "Please enter the birthday.",
+  "Employee.Birthday.InvalidFormat": "Invalid date format."
+}

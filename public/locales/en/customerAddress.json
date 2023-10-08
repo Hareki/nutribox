@@ -1,0 +1,18 @@
+{
+  "CustomerAddress.Id.Required": "Please enter the ID.",
+  "CustomerAddress.CustomerId.Required": "Please enter the Customer ID.",
+  "CustomerAddress.ProvinceCode.Required": "Please enter the Province Code.",
+  "CustomerAddress.ProvinceCode.Min": "Please enter the Province Code.",
+  "CustomerAddress.ProvinceCode.Max": "Province Code must not exceed 50 characters.",
+  "CustomerAddress.DistrictCode.Required": "Please enter the District Code.",
+  "CustomerAddress.DistrictCode.Min": "Please enter the District Code.",
+  "CustomerAddress.DistrictCode.Max": "District Code must not exceed 50 characters.",
+  "CustomerAddress.WardCode.Required": "Please enter the Ward Code.",
+  "CustomerAddress.WardCode.Min": "Please enter the Ward Code.",
+  "CustomerAddress.WardCode.Max": "Ward Code must not exceed 50 characters.",
+  "CustomerAddress.StreetAddress.Required": "Please enter the Street Address.",
+  "CustomerAddress.StreetAddress.Min": "Please enter the Street Address.",
+  "CustomerAddress.StreetAddress.Max": "Street Address must not exceed 500 characters.",
+  "CustomerAddress.IsDefault.Required": "Please enter the Default status.",
+  "CustomerAddress.Type.Required": "Please enter the Address Type."
+}

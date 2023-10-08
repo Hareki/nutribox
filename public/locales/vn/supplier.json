@@ -1,0 +1,16 @@
+{
+  "Supplier.Id.Required": "Vui lòng nhập ID nhà cung cấp.",
+  "Supplier.Name.Required": "Vui lòng nhập tên nhà cung cấp.",
+  "Supplier.Name.Min": "Tên nhà cung cấp phải có ít nhất 3 ký tự.",
+  "Supplier.Name.Max": "Tên nhà cung cấp không được vượt quá 50 ký tự.",
+  "Supplier.Phone.Required": "Vui lòng nhập số điện thoại của nhà cung cấp.",
+  "Supplier.Phone.InvalidFormat": "Định dạng số điện thoại của nhà cung cấp không hợp lệ.",
+  "Supplier.Email.Required": "Vui lòng nhập email của nhà cung cấp.",
+  "Supplier.Email.InvalidFormat": "Định dạng email của nhà cung cấp không hợp lệ.",
+  "Supplier.ProvinceCode.Required": "Vui lòng nhập mã tỉnh.",
+  "Supplier.DistrictCode.Required": "Vui lòng nhập mã huyện.",
+  "Supplier.WardCode.Required": "Vui lòng nhập mã xã/phường.",
+  "Supplier.StreetAddress.Required": "Vui lòng nhập địa chỉ đường phố.",
+  "Supplier.StreetAddress.Min": "Địa chỉ đường phố phải có ít nhất 1 ký tự.",
+  "Supplier.StreetAddress.Max": "Địa chỉ đường phố không được vượt quá 100 ký tự."
+}

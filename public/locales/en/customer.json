@@ -1,0 +1,19 @@
+{
+  "Customer.Id.Required": "Please enter the ID.",
+  "Customer.FirstName.Required": "Please enter the First Name.",
+  "Customer.FirstName.Min": "Please enter the First Name.",
+  "Customer.FirstName.Max": "First Name must not exceed 50 characters.",
+  "Customer.FirstName.InvalidFormat": "Invalid format for First Name.",
+  "Customer.LastName.Required": "Please enter the Last Name.",
+  "Customer.LastName.Min": "Please enter the Last Name.",
+  "Customer.LastName.Max": "Last Name must not exceed 50 characters.",
+  "Customer.LastName.InvalidFormat": "Invalid format for Last Name.",
+  "Customer.Email.Required": "Please enter the Email.",
+  "Customer.Email.InvalidFormat": "Invalid email format.",
+  "Customer.Phone.Required": "Please enter the Phone number.",
+  "Customer.Phone.Min": "Please enter the Phone number.",
+  "Customer.Phone.Max": "Phone number must not exceed 50 characters.",
+  "Customer.Phone.InvalidFormat": "Invalid format for Phone number.",
+  "Customer.Birthday.Required": "Please enter the Birthday.",
+  "Customer.Birthday.InvalidFormat": "Invalid date format for Birthday."
+}

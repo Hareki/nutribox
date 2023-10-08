@@ -1,0 +1,16 @@
+{
+  "CustomerOrderItem.CustomerOrderId.Required": "Please enter the customer order ID.",
+  "CustomerOrderItem.ProductId.Required": "Please enter the product ID.",
+  "CustomerOrderItem.Quantity.Required": "Please enter the quantity.",
+  "CustomerOrderItem.Quantity.InvalidFormat": "Invalid quantity format.",
+  "CustomerOrderItem.Quantity.Min": "Quantity must be at least 1.",
+  "CustomerOrderItem.Quantity.Max": "Quantity cannot exceed 1000.",
+  "CustomerOrderItem.UnitRetailPrice.Required": "Please enter the unit retail price.",
+  "CustomerOrderItem.UnitRetailPrice.InvalidFormat": "Invalid unit retail price format.",
+  "CustomerOrderItem.UnitRetailPrice.Min": "Unit retail price must be at least 0.",
+  "CustomerOrderItem.UnitRetailPrice.Max": "Unit retail price cannot exceed 10,000,000.",
+  "CustomerOrderItem.UnitImportPrice.Required": "Please enter the unit import price.",
+  "CustomerOrderItem.UnitImportPrice.InvalidFormat": "Invalid unit import price format.",
+  "CustomerOrderItem.UnitImportPrice.Min": "Unit import price must be at least 0.",
+  "CustomerOrderItem.UnitImportPrice.Max": "Unit import price cannot exceed 10,000,000."
+}
