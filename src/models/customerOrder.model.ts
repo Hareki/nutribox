@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import type { AccountModel } from './account.model';
+import type { CustomerModel } from './customer.model';
 import { zodDate, zodNumber, zodString, zodUuid } from './helper';
 
 import { OrderStatus, PaymentMethod } from 'backend/enums/Entities.enum'; // Assuming enums are defined somewhere
@@ -53,5 +55,30 @@ const CustomerOrderSchema = z.object({
 
 type CustomerOrderModel = z.infer<typeof CustomerOrderSchema>;
 
+type CustomerOrderReferenceKeys = keyof Pick<
+  CustomerOrderModel,
+  'customer' | 'updatedBy'
+>;
+
+type PopulateField<K extends keyof CustomerOrderModel> = K extends 'customer'
+  ? CustomerModel
+  : K extends 'updatedBy'
+  ? AccountModel
+  : never;
+
+type PopulateCustomerOrderFields<K extends CustomerOrderReferenceKeys> = Omit<
+  CustomerOrderModel,
+  K
+> & {
+  [P in K]: PopulateField<P>;
+};
+
+type FullyPopulatedCustomerOrderModel =
+  PopulateCustomerOrderFields<CustomerOrderReferenceKeys>;
+
 export { CustomerOrderSchema };
-export type { CustomerOrderModel };
+export type {
+  CustomerOrderModel,
+  FullyPopulatedCustomerOrderModel,
+  PopulateCustomerOrderFields,
+};

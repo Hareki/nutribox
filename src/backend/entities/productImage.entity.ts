@@ -8,7 +8,7 @@ export class ProductImageEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => ProductEntity, (product) => product.images)
+  @ManyToOne(() => ProductEntity, (product) => product.productImages)
   product: Relation<ProductEntity>;
 
   @Column()

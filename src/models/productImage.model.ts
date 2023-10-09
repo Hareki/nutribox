@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { zodString, zodUuid } from './helper';
+import type { ProductModel } from './product.model';
 
 const ProductImageSchema = z.object({
   id: zodUuid('ProductImage.Id'),
@@ -12,5 +13,25 @@ const ProductImageSchema = z.object({
 
 type ProductImageModel = z.infer<typeof ProductImageSchema>;
 
+type ProductImageReferenceKeys = keyof Pick<ProductImageModel, 'product'>;
+
+type PopulateField<K extends keyof ProductImageModel> = K extends 'product'
+  ? ProductModel
+  : never;
+
+type PopulateProductImageFields<K extends ProductImageReferenceKeys> = Omit<
+  ProductImageModel,
+  K
+> & {
+  [P in K]: PopulateField<P>;
+};
+
+type FullyPopulatedProductImageModel =
+  PopulateProductImageFields<ProductImageReferenceKeys>;
+
 export { ProductImageSchema };
-export type { ProductImageModel };
+export type {
+  ProductImageModel,
+  FullyPopulatedProductImageModel,
+  PopulateProductImageFields,
+};

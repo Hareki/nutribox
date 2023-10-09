@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
+import type { CustomerOrderModel } from './customerOrder.model';
+import type { ExportOrderModel } from './exportOrder.model';
 import { zodNumber, zodUuid } from './helper';
+import type { ProductModel } from './product.model';
 
 const CustomerOrderItemSchema = z.object({
   customerOrder: zodUuid('CustomerOrderItem.CustomerOrderId'),
@@ -28,5 +31,31 @@ const CustomerOrderItemSchema = z.object({
 
 type CustomerOrderItemModel = z.infer<typeof CustomerOrderItemSchema>;
 
+type CustomerOrderItemReferenceKeys = keyof Pick<
+  CustomerOrderItemModel,
+  'customerOrder' | 'product' | 'exportOrders'
+>;
+
+type PopulateField<K extends keyof CustomerOrderItemModel> =
+  K extends 'customerOrder'
+    ? CustomerOrderModel
+    : K extends 'product'
+    ? ProductModel
+    : K extends 'exportOrders'
+    ? ExportOrderModel[]
+    : never;
+
+type PopulateCustomerOrderItemFields<K extends CustomerOrderItemReferenceKeys> =
+  Omit<CustomerOrderItemModel, K> & {
+    [P in K]: PopulateField<P>;
+  };
+
+type FullyPopulatedCustomerOrderItemModel =
+  PopulateCustomerOrderItemFields<CustomerOrderItemReferenceKeys>;
+
 export { CustomerOrderItemSchema };
-export type { CustomerOrderItemModel };
+export type {
+  CustomerOrderItemModel,
+  FullyPopulatedCustomerOrderItemModel,
+  PopulateCustomerOrderItemFields,
+};

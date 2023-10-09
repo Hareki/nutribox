@@ -25,6 +25,8 @@ import { ProductCategoryEntity } from 'backend/entities/productCategory.entity';
 import { ProductImageEntity } from 'backend/entities/productImage.entity';
 import { ReviewEntity } from 'backend/entities/review.entity';
 import { ReviewResponseEntity } from 'backend/entities/reviewResponse.entity';
+import { StoreEntity } from 'backend/entities/store.entity';
+import { StoreWorkTimeEntity } from 'backend/entities/storeWorkTime.entity';
 import { SupplierEntity } from 'backend/entities/supplier.entity';
 
 const connectionOptions: Record<string, ConnectionOptions> = {
@@ -59,6 +61,8 @@ const connectionOptions: Record<string, ConnectionOptions> = {
       ReviewEntity,
       ReviewResponseEntity,
       SupplierEntity,
+      StoreEntity,
+      StoreWorkTimeEntity,
     ],
   },
 };

@@ -1,11 +1,16 @@
 import { z } from 'zod';
 
+import type { CartItemModel } from './cartItem.model';
 import {
   zodString,
   type RefinementParameters,
   zodNumber,
   zodUuid,
 } from './helper';
+import type { ImportOrderModel } from './importOder.model';
+import type { ProductCategoryModel } from './productCategory.model';
+import type { ProductImageModel } from './productImage.model';
+import type { SupplierModel } from './supplier.model';
 
 const ProductSchema = z.object({
   id: zodUuid('Product.Id'),
@@ -35,7 +40,7 @@ const ProductSchema = z.object({
 
   maxQuantity: zodNumber('Product.MaxQuantity', 'int', 1, 1_000),
 
-  images: z.array(z.string().uuid()).optional(),
+  productImages: z.array(z.string().uuid()).optional(),
 
   cartItems: z.array(z.string().uuid()).optional(),
 
@@ -57,5 +62,35 @@ const PriceRefinement: RefinementParameters<ProductModel> = [
 const getRefinedProductSchema = (schema: z.Schema<any>) =>
   schema.refine(...PriceRefinement);
 
+type ProductReferenceKeys = keyof Pick<
+  ProductModel,
+  | 'category'
+  | 'defaultSupplierId'
+  | 'productImages'
+  | 'cartItems'
+  | 'importOrders'
+>;
+
+type PopulateField<K extends keyof ProductModel> = K extends 'category'
+  ? ProductCategoryModel
+  : K extends 'defaultSupplierId'
+  ? SupplierModel
+  : K extends 'productImages'
+  ? ProductImageModel[]
+  : K extends 'cartItems'
+  ? CartItemModel[]
+  : K extends 'importOrders'
+  ? ImportOrderModel[]
+  : never;
+
+type PopulateProductFields<K extends ProductReferenceKeys> = Omit<
+  ProductModel,
+  K
+> & {
+  [P in K]: PopulateField<P>;
+};
+
+type FullyPopulatedProductModel = PopulateProductFields<ProductReferenceKeys>;
+
 export { ProductSchema, getRefinedProductSchema };
-export type { ProductModel };
+export type { ProductModel, FullyPopulatedProductModel, PopulateProductFields };

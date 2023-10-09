@@ -49,7 +49,7 @@ export class ProductEntity {
   maxQuantity: number;
 
   @OneToMany(() => ProductImageEntity, (productImage) => productImage.product)
-  images: Relation<ProductImageEntity>[];
+  productImages: Relation<ProductImageEntity>[];
 
   @OneToMany(() => CartItemEntity, (cartItem) => cartItem.product)
   cartItems: Relation<CartItemEntity>[];

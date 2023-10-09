@@ -1,10 +1,10 @@
 import type { Relation } from 'typeorm';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { StoreWorkTime } from './storeWorkTime.entity';
+import { StoreWorkTimeEntity } from './storeWorkTime.entity';
 
 @Entity({ name: 'store' })
-export class Store {
+export class StoreEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,6 +26,6 @@ export class Store {
   @Column()
   streetAddress: string;
 
-  @OneToMany(() => StoreWorkTime, (storeWorkTime) => storeWorkTime.store)
-  workTimes: Relation<StoreWorkTime>[];
+  @OneToMany(() => StoreWorkTimeEntity, (storeWorkTime) => storeWorkTime.store)
+  storeWorkTimes: Relation<StoreWorkTimeEntity>[];
 }

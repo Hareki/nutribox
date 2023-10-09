@@ -41,7 +41,7 @@ export class CustomerEntity {
     () => CustomerAddressEntity,
     (customerAddress) => customerAddress.customer,
   )
-  addresses: Relation<CustomerAddressEntity>[];
+  customerAddresses: Relation<CustomerAddressEntity>[];
 
   @OneToMany(
     () => CustomerOrderEntity,

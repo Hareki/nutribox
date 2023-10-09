@@ -10,7 +10,7 @@ export class CustomerAddressEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => CustomerEntity, (customer) => customer.addresses)
+  @ManyToOne(() => CustomerEntity, (customer) => customer.customerAddresses)
   customer: Relation<CustomerEntity>;
 
   @Column()

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import type { CustomerOrderItemModel } from './customerOrderItem.model';
 import { zodDate, zodNumber, zodString, zodUuid } from './helper';
 
 const ReviewSchema = z.object({
@@ -21,5 +22,20 @@ const ReviewSchema = z.object({
 
 type ReviewModel = z.infer<typeof ReviewSchema>;
 
+type ReviewReferenceKeys = keyof Pick<ReviewModel, 'customerOrderItem'>;
+
+type PopulateField<K extends keyof ReviewModel> = K extends 'customerOrderItem'
+  ? CustomerOrderItemModel
+  : never;
+
+type PopulateReviewFields<K extends ReviewReferenceKeys> = Omit<
+  ReviewModel,
+  K
+> & {
+  [P in K]: PopulateField<P>;
+};
+
+type FullyPopulatedReviewModel = PopulateReviewFields<ReviewReferenceKeys>;
+
 export { ReviewSchema };
-export type { ReviewModel };
+export type { ReviewModel, FullyPopulatedReviewModel, PopulateReviewFields };

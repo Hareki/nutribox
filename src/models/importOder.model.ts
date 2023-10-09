@@ -1,11 +1,14 @@
 import { z } from 'zod';
 
+import type { ExportOrderModel } from './exportOrder.model';
 import {
   zodDate,
   type RefinementParameters,
   zodNumber,
   zodUuid,
 } from './helper';
+import type { ProductModel } from './product.model';
+import type { SupplierModel } from './supplier.model';
 
 import { isBeforeOrEqual } from 'utils/date.helper';
 
@@ -77,5 +80,32 @@ const getRefinedImportOrderSchema = (schema: z.Schema<any>) =>
     .refine(...ImportDateRefinement2)
     .refine(...ImportQuantityRefinement);
 
+type ImportOrderReferenceKeys = keyof Pick<
+  ImportOrderModel,
+  'product' | 'supplier' | 'exportOrders'
+>;
+
+type PopulateField<K extends keyof ImportOrderModel> = K extends 'product'
+  ? ProductModel
+  : K extends 'supplier'
+  ? SupplierModel
+  : K extends 'exportOrders'
+  ? ExportOrderModel[]
+  : never;
+
+type PopulateImportOrderFields<K extends ImportOrderReferenceKeys> = Omit<
+  ImportOrderModel,
+  K
+> & {
+  [P in K]: PopulateField<P>;
+};
+
+type FullyPopulatedImportOrderModel =
+  PopulateImportOrderFields<ImportOrderReferenceKeys>;
+
 export { ImportOrderSchema, getRefinedImportOrderSchema };
-export type { ImportOrderModel };
+export type {
+  ImportOrderModel,
+  FullyPopulatedImportOrderModel,
+  PopulateImportOrderFields,
+};

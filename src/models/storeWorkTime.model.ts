@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { zodString, zodUuid } from './helper';
+import type { StoreModel } from './store.model';
 
 import { DayOfWeek } from 'backend/enums/Entities.enum';
 
@@ -20,5 +21,25 @@ const StoreWorkTimeSchema = z.object({
 
 type StoreWorkTimeModel = z.infer<typeof StoreWorkTimeSchema>;
 
+type StoreWorkTimeReferenceKeys = keyof Pick<StoreWorkTimeModel, 'store'>;
+
+type PopulateField<K extends keyof StoreWorkTimeModel> = K extends 'store'
+  ? StoreModel
+  : never;
+
+type PopulateStoreWorkTimeFields<K extends StoreWorkTimeReferenceKeys> = Omit<
+  StoreWorkTimeModel,
+  K
+> & {
+  [P in K]: PopulateField<P>;
+};
+
+type FullyPopulatedStoreWorkTimeModel =
+  PopulateStoreWorkTimeFields<StoreWorkTimeReferenceKeys>;
+
 export { StoreWorkTimeSchema };
-export type { StoreWorkTimeModel };
+export type {
+  StoreWorkTimeModel,
+  FullyPopulatedStoreWorkTimeModel,
+  PopulateStoreWorkTimeFields,
+};

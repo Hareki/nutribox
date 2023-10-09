@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { zodString, zodUuid } from './helper';
+import type { ImportOrderModel } from './importOder.model';
 
 import { PHONE_REGEX } from 'constants/regex.constant';
 
@@ -25,10 +26,30 @@ const SupplierSchema = z.object({
 
   streetAddress: zodString('Supplier.StreetAddress', 1, 100),
 
-  importedProducts: z.array(z.string().uuid()).optional(),
+  importOrders: z.array(z.string().uuid()).optional(),
 });
 
 type SupplierModel = z.infer<typeof SupplierSchema>;
 
+type SupplierReferenceKeys = keyof Pick<SupplierModel, 'importOrders'>;
+
+type PopulateField<K extends keyof SupplierModel> = K extends 'importOrders'
+  ? ImportOrderModel[]
+  : never;
+
+type PopulateSupplierFields<K extends SupplierReferenceKeys> = Omit<
+  SupplierModel,
+  K
+> & {
+  [P in K]: PopulateField<P>;
+};
+
+type FullyPopulatedSupplierModel =
+  PopulateSupplierFields<SupplierReferenceKeys>;
+
 export { SupplierSchema };
-export type { SupplierModel };
+export type {
+  SupplierModel,
+  FullyPopulatedSupplierModel,
+  PopulateSupplierFields,
+};
