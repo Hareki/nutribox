@@ -8,13 +8,14 @@ import {
   OneToMany,
 } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { AccountEntity } from './account.entity';
 import { ReviewResponseEntity } from './reviewResponse.entity';
 
 import { EmployeeRole } from 'backend/enums/Entities.enum';
 
 @Entity({ name: 'employee' })
-export class EmployeeEntity {
+export class EmployeeEntity extends AbstractEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

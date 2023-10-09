@@ -1,12 +1,13 @@
 import type { Relation } from 'typeorm';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { StoreEntity } from './store.entity';
 
 import { DayOfWeek } from 'backend/enums/Entities.enum';
 
 @Entity({ name: 'store_work_time' })
-export class StoreWorkTimeEntity {
+export class StoreWorkTimeEntity extends AbstractEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

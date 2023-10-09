@@ -1,11 +1,18 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
 import { EmployeeEntity } from './employee.entity';
 
 @Entity({ name: 'account' })
-export class AccountEntity {
+export class AccountEntity extends AbstractEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -43,10 +50,12 @@ export class AccountEntity {
   @OneToOne(() => CustomerEntity, (customer) => customer.account, {
     nullable: true,
   })
+  @JoinColumn()
   customer: Relation<CustomerEntity>;
 
   @OneToOne(() => EmployeeEntity, (employee) => employee.account, {
     nullable: true,
   })
+  @JoinColumn()
   employee: Relation<EmployeeEntity>;
 }

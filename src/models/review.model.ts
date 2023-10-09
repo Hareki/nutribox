@@ -10,6 +10,8 @@ const ReviewSchema = z.object({
 
   createdAt: zodDate('Review.CreatedAt'),
 
+  updatedAt: zodDate('Review.UpdatedAt'),
+
   comment: zodString('Review.Comment', 1, 500).optional(),
 
   star: zodNumber('Review.Star', 'float', 1, 5).refine(

@@ -1,27 +1,28 @@
 import type { Relation } from 'typeorm';
 import {
   Column,
-  CreateDateColumn,
   Entity,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { CustomerOrderItemEntity } from './customerOrderItem.entity';
 
 @Entity({ name: 'review' })
-export class ReviewEntity {
+export class ReviewEntity extends AbstractEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @UpdateDateColumn({
+    type: 'timestamp without time zone',
+    name: 'updated_at',
+  })
+  updatedAt: Date;
+
   @OneToOne(() => CustomerOrderItemEntity)
   customerOrderItem: Relation<CustomerOrderItemEntity>;
-
-  @CreateDateColumn({
-    type: 'timestamp without time zone',
-    name: 'created_at',
-  })
-  createdAt: Date;
 
   @Column({
     type: 'text',

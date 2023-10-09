@@ -8,13 +8,14 @@ import {
   JoinColumn,
 } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { AccountEntity } from './account.entity';
 import { CartItemEntity } from './cartItem.entity';
 import { CustomerAddressEntity } from './customerAddress.entity';
 import { CustomerOrderEntity } from './customerOrder.entity';
 
 @Entity({ name: 'customer' })
-export class CustomerEntity {
+export class CustomerEntity extends AbstractEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

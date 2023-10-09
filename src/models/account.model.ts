@@ -1,9 +1,15 @@
 import { z } from 'zod';
 
+import type { CustomerModel } from './customer.model';
+import type { EmployeeModel } from './employee.model';
 import { zodDate, zodString, zodUuid } from './helper';
 
 const AccountSchema = z.object({
   id: zodUuid('Account.Id'),
+
+  customer: zodUuid('Account.CustomerId').optional(),
+
+  employee: zodUuid('Account.EmployeeId').optional(),
 
   email: zodString('Account.Email').email({
     message: 'Account.Email.InvalidFormat',
@@ -40,5 +46,22 @@ const AccountSchema = z.object({
 
 type AccountModel = z.infer<typeof AccountSchema>;
 
+type AccountReferenceKeys = keyof Pick<AccountModel, 'customer' | 'employee'>;
+
+type PopulateField<K extends keyof AccountModel> = K extends 'customer'
+  ? CustomerModel
+  : K extends 'employee'
+  ? EmployeeModel
+  : never;
+
+type PopulateAccountFields<K extends AccountReferenceKeys> = Omit<
+  AccountModel,
+  K
+> & {
+  [P in K]: PopulateField<P>;
+};
+
+type FullyPopulatedAccountModel = PopulateAccountFields<AccountReferenceKeys>;
+
 export { AccountSchema };
-export type { AccountModel };
+export type { AccountModel, FullyPopulatedAccountModel, PopulateAccountFields };

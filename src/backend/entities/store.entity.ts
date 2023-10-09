@@ -1,17 +1,22 @@
 import type { Relation } from 'typeorm';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { StoreWorkTimeEntity } from './storeWorkTime.entity';
 
 @Entity({ name: 'store' })
-export class StoreEntity {
+export class StoreEntity extends AbstractEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   email: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   phone: string;
 
   @Column()

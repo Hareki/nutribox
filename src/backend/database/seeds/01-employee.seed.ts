@@ -4,7 +4,10 @@ import type { Factory, Seeder } from 'typeorm-seeding';
 import { EmployeeEntity } from 'backend/entities/employee.entity';
 import { EmployeeRole } from 'backend/enums/Entities.enum';
 
-const employeeSeeds: Omit<EmployeeEntity, 'account' | 'reviewResponses'>[] = [
+const employeeSeeds: Omit<
+  EmployeeEntity,
+  'account' | 'reviewResponses' | 'createdAt'
+>[] = [
   {
     id: 'e18e7d23-55bd-48b0-b2fd-64ca6932df27',
     firstName: 'Tú',

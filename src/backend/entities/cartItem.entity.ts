@@ -1,11 +1,12 @@
 import type { Relation } from 'typeorm';
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
 import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'cart_item' })
-export class CartItemEntity {
+export class CartItemEntity extends AbstractEntity {
   @PrimaryColumn({
     type: 'uuid',
     name: 'product_id',

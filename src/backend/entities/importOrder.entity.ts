@@ -1,19 +1,19 @@
 import type { Relation } from 'typeorm';
 import {
   Column,
-  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { ExportOrderEntity } from './exportOrder.entity';
 import { ProductEntity } from './product.entity';
 import { SupplierEntity } from './supplier.entity';
 
 @Entity({ name: 'import_order' })
-export class ImportOrderEntity {
+export class ImportOrderEntity extends AbstractEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,12 +22,6 @@ export class ImportOrderEntity {
 
   @ManyToOne(() => SupplierEntity, (supplier) => supplier.importOrders)
   supplier: Relation<SupplierEntity>;
-
-  @CreateDateColumn({
-    type: 'timestamp without time zone',
-    name: 'created_at',
-  })
-  createdAt: Date;
 
   @Column('timestamp without time zone')
   importDate: Date;

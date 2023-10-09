@@ -57,6 +57,4 @@ const config: ConnectionOptions = {
   factories: ['src/backend/database/factories/*{.ts,.js}'],
 };
 
-console.log('DIRNAME', __dirname);
-
 export default config;

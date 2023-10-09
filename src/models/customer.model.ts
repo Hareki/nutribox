@@ -29,7 +29,7 @@ const CustomerSchema = z.object({
     message: 'Customer.Phone.InvalidFormat',
   }),
 
-  birthDay: zodDate('Customer.Birthday'),
+  birthday: zodDate('Customer.Birthday'),
 
   customerAddresses: z.array(z.string().uuid()).optional(),
 

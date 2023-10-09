@@ -1,11 +1,15 @@
 import { z } from 'zod';
 
 import type { EmployeeModel } from './employee.model';
-import { zodString, zodUuid } from './helper';
+import { zodDate, zodString, zodUuid } from './helper';
 import type { ReviewModel } from './review.model';
 
 const ReviewResponseSchema = z.object({
   id: zodUuid('ReviewResponse.Id'),
+
+  createdAt: zodDate('ReviewResponse.CreatedAt'),
+
+  updatedAt: zodDate('ReviewResponse.UpdatedAt'),
 
   review: zodUuid('ReviewResponse.ReviewId'),
 

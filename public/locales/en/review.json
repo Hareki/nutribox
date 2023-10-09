@@ -1,6 +1,7 @@
 {
   "Review.Id.Required": "Please enter the review ID.",
   "Review.CreatedAt.Required": "Please enter the creation date of the review.",
+  "Review.UpdatedAt.Required": "Please enter the last update date of the review.",
   "Review.CustomerOrderItemId.Required": "Please enter the associated customer order item ID.",
   "Review.Comment.Required": "Please enter your comment.",
   "Review.Comment.Min": "Please enter your comment.",

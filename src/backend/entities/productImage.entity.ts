@@ -1,10 +1,11 @@
 import type { Relation } from 'typeorm';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'product_image' })
-export class ProductImageEntity {
+export class ProductImageEntity extends AbstractEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
