@@ -1,11 +1,5 @@
 import type { Relation } from 'typeorm';
-import {
-  Column,
-  Entity,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-} from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { CustomerEntity } from './customer.entity';
 import { EmployeeEntity } from './employee.entity';
@@ -24,10 +18,14 @@ export class AccountEntity {
   @Column({ nullable: true })
   avatarUrl: string;
 
-  @Column()
+  @Column({
+    default: false,
+  })
   disabled: boolean;
 
-  @Column()
+  @Column({
+    default: false,
+  })
   verified: boolean;
 
   @Column({ nullable: true })
@@ -45,12 +43,10 @@ export class AccountEntity {
   @OneToOne(() => CustomerEntity, (customer) => customer.account, {
     nullable: true,
   })
-  @JoinColumn()
   customer: Relation<CustomerEntity>;
 
   @OneToOne(() => EmployeeEntity, (employee) => employee.account, {
     nullable: true,
   })
-  @JoinColumn()
   employee: Relation<EmployeeEntity>;
 }

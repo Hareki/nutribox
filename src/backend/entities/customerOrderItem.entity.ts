@@ -1,5 +1,5 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 import { CustomerOrderEntity } from './customerOrder.entity';
 import { ExportOrderEntity } from './exportOrder.entity';
@@ -11,9 +11,17 @@ export class CustomerOrderItemEntity {
     () => CustomerOrderEntity,
     (customerOrder) => customerOrder.customerOrderItems,
   )
+  @PrimaryColumn({
+    type: 'uuid',
+    name: 'customer_order_id',
+  })
   customerOrder: Relation<CustomerOrderEntity>;
 
   @ManyToOne(() => ProductEntity, (product) => product.customerOrderItems)
+  @PrimaryColumn({
+    type: 'uuid',
+    name: 'product_id',
+  })
   product: Relation<ProductEntity>;
 
   @Column('decimal')

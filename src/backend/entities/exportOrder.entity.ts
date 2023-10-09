@@ -6,11 +6,11 @@ import { ImportOrderEntity } from './importOrder.entity';
 
 @Entity({ name: 'export_order' })
 export class ExportOrderEntity {
-  @PrimaryColumn('uuid', { name: 'id' })
+  @PrimaryColumn('uuid', { name: 'import_order_id' })
   @ManyToOne(() => ImportOrderEntity, (importOrder) => importOrder.exportOrders)
   importOrder: Relation<ImportOrderEntity>;
 
-  @PrimaryColumn('uuid', { name: 'id' })
+  @PrimaryColumn('uuid', { name: 'customer_order_item_id' })
   @ManyToOne(
     () => CustomerOrderItemEntity,
     (customerOrderItem) => customerOrderItem.exportOrders,
