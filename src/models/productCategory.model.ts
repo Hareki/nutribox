@@ -4,7 +4,9 @@ import { zodString, zodUuid } from './helper';
 
 const ProductCategorySchema = z.object({
   id: zodUuid('ProductCategory.Id'),
+
   available: z.boolean(),
+
   name: zodString('ProductCategory.Name', 3, 50),
 });
 

@@ -4,7 +4,9 @@ import { zodString, zodUuid } from './helper';
 
 const ProductImageSchema = z.object({
   id: zodUuid('ProductImage.Id'),
-  productId: zodUuid('ProductImage.ProductId'),
+
+  product: zodUuid('ProductImage.ProductId'),
+
   imageUrl: zodString('ProductImage.ImageUrl', 1, 500),
 });
 

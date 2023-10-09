@@ -26,9 +26,9 @@ export class CustomerOrderEntity {
 
   @OneToMany(
     () => CustomerOrderItemEntity,
-    (customerOrderItem) => customerOrderItem.order,
+    (customerOrderItem) => customerOrderItem.customerOrder,
   )
-  orderItems: Relation<CustomerOrderItemEntity>[];
+  customerOrderItems: Relation<CustomerOrderItemEntity>[];
 
   @CreateDateColumn({
     type: 'timestamp without time zone',
@@ -42,7 +42,7 @@ export class CustomerOrderEntity {
   @Column()
   phone: string;
 
-  @Column({ type: 'enum', enum: PaymentMethod })
+  @Column({ type: 'enum', enum: PaymentMethod, nullable: true })
   paidOnlineVia: PaymentMethod;
 
   @Column()

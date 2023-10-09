@@ -9,11 +9,11 @@ import { ProductEntity } from './product.entity';
 export class CustomerOrderItemEntity {
   @ManyToOne(
     () => CustomerOrderEntity,
-    (customerOrder) => customerOrder.orderItems,
+    (customerOrder) => customerOrder.customerOrderItems,
   )
-  order: Relation<CustomerOrderEntity>;
+  customerOrder: Relation<CustomerOrderEntity>;
 
-  @ManyToOne(() => ProductEntity, (product) => product.orderItems)
+  @ManyToOne(() => ProductEntity, (product) => product.customerOrderItems)
   product: Relation<ProductEntity>;
 
   @Column('decimal')

@@ -58,7 +58,7 @@ export class ProductEntity {
     () => CustomerOrderItemEntity,
     (customerOrderItem) => customerOrderItem.product,
   )
-  orderItems: Relation<CustomerOrderItemEntity>[];
+  customerOrderItems: Relation<CustomerOrderItemEntity>[];
 
   @OneToMany(() => ImportOrderEntity, (importOrder) => importOrder.product)
   importOrders: Relation<ImportOrderEntity>[];
