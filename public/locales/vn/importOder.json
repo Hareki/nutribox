@@ -1,5 +1,5 @@
 {
-  "ImportOrder.Id.Required": "Vui lòng nhập ID đơn nhập hàng.",
+  "ImportOrder.Id.Required": "Vui lòng nhập Mã đơn nhập hàng.",
   "ImportOrder.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
   "ImportOrder.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "ImportOrder.ImportDate.Required": "Vui lòng nhập ngày nhập hàng.",
@@ -8,8 +8,8 @@
   "ImportOrder.ManufacturingDate.InvalidFormat": "Định dạng ngày sản xuất không hợp lệ.",
   "ImportOrder.ExpirationDate.Required": "Vui lòng nhập ngày hết hạn.",
   "ImportOrder.ExpirationDate.InvalidFormat": "Định dạng ngày hết hạn không hợp lệ.",
-  "ImportOrder.ProductId.Required": "Vui lòng nhập ID sản phẩm.",
-  "ImportOrder.SupplierId.Required": "Vui lòng nhập ID nhà cung cấp.",
+  "ImportOrder.ProductId.Required": "Vui lòng nhập Mã sản phẩm.",
+  "ImportOrder.SupplierId.Required": "Vui lòng nhập Mã nhà cung cấp.",
   "ImportOrder.ImportQuantity.Required": "Vui lòng nhập số lượng nhập.",
   "ImportOrder.ImportQuantity.Min": "Số lượng nhập phải ít nhất là 1.",
   "ImportOrder.ImportQuantity.Max": "Số lượng nhập không được vượt quá 1000.",

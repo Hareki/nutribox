@@ -1,7 +1,7 @@
 {
-  "Review.Id.Required": "Vui lòng nhập ID đánh giá.",
+  "Review.Id.Required": "Vui lòng nhập Mã đánh giá.",
   "Review.CreatedAt.Required": "Vui lòng nhập ngày tạo đánh giá.",
-  "Review.CustomerOrderItemId.Required": "Vui lòng nhập ID mặt hàng trong đơn hàng khách hàng liên quan.",
+  "Review.CustomerOrderItemId.Required": "Vui lòng nhập Mã mặt hàng trong đơn hàng khách hàng liên quan.",
   "Review.Comment.Required": "Vui lòng nhập đánh giá.",
   "Review.Comment.Min": "Vui lòng nhập đánh giá.",
   "Review.Comment.Max": "Đánh giá không được vượt quá 500 ký tự.",

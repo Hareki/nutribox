@@ -1,5 +1,5 @@
 {
-  "Customer.Id.Required": "Vui lòng nhập ID.",
+  "Customer.Id.Required": "Vui lòng nhập Mã.",
   "Customer.FirstName.Required": "Vui lòng nhập Tên.",
   "Customer.FirstName.Min": "Vui lòng nhập Tên",
   "Customer.FirstName.Max": "Tên không được vượt quá 50 ký tự.",

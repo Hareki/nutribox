@@ -1,5 +1,5 @@
 {
-  "Supplier.Id.Required": "Vui lòng nhập ID nhà cung cấp.",
+  "Supplier.Id.Required": "Vui lòng nhập Mã nhà cung cấp.",
   "Supplier.Name.Required": "Vui lòng nhập tên nhà cung cấp.",
   "Supplier.Name.Min": "Tên nhà cung cấp phải có ít nhất 3 ký tự.",
   "Supplier.Name.Max": "Tên nhà cung cấp không được vượt quá 50 ký tự.",

@@ -1,5 +1,5 @@
 {
-  "Account.Id.Required": "Vui lòng nhập ID.",
+  "Account.Id.Required": "Vui lòng nhập Mã.",
   "Account.Email.Required": "Vui lòng nhập Email.",
   "Account.Email.InvalidFormat": "Định dạng email không hợp lệ.",
   "Account.Password.Required": "Vui lòng nhập Mật khẩu.",

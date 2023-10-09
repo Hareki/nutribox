@@ -1,6 +1,6 @@
 {
-  "CustomerAddress.Id.Required": "Vui lòng nhập ID.",
-  "CustomerAddress.CustomerId.Required": "Vui lòng nhập ID khách hàng.",
+  "CustomerAddress.Id.Required": "Vui lòng nhập Mã.",
+  "CustomerAddress.CustomerId.Required": "Vui lòng nhập Mã khách hàng.",
   "CustomerAddress.ProvinceCode.Required": "Vui lòng nhập Mã thành phố/tỉnh.",
   "CustomerAddress.ProvinceCode.Min": "Vui lòng nhập Mã thành phố/tỉnh.",
   "CustomerAddress.ProvinceCode.Max": "Mã thành phố/tỉnh không được vượt quá 50 ký tự.",

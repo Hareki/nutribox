@@ -1,9 +1,9 @@
 {
-  "Employee.Id.Required": "Vui lòng nhập ID nhân viên.",
+  "Employee.Id.Required": "Vui lòng nhập Mã nhân viên.",
   "Employee.PersonalId.Required": "Vui lòng nhập số CMND/CCCD.",
   "Employee.PersonalId.InvalidFormat": "Định dạng CMND/CCCD không hợp lệ.",
   "Employee.Role.Required": "Vui lòng chọn vai trò nhân viên.",
-  "Employee.AccountId.Required": "Vui lòng nhập ID tài khoản.",
+  "Employee.AccountId.Required": "Vui lòng nhập Mã tài khoản.",
   "Employee.FirstName.Required": "Vui lòng nhập tên.",
   "Employee.FirstName.InvalidFormat": "Định dạng tên không hợp lệ.",
   "Employee.LastName.Required": "Vui lòng nhập họ và tên đệm.",

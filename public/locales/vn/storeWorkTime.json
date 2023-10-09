@@ -1,0 +1,7 @@
+{
+  "StoreWorkTime.Id.Required": "Vui lòng nhập Mã thời gian làm việc.",
+  "StoreWorkTime.StoreId.Required": "Vui lòng nhập Mã cửa hàng.",
+  "StoreWorkTime.DayOfWeek.Required": "Vui lòng chọn một ngày trong tuần.",
+  "StoreWorkTime.OpenTime.Required": "Vui lòng nhập thời gian mở cửa.",
+  "StoreWorkTime.CloseTime.Required": "Vui lòng nhập thời gian đóng cửa."
+}

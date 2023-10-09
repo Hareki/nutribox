@@ -1,5 +1,5 @@
 {
-  "CustomerOrder.Id.Required": "Vui lòng nhập ID.",
+  "CustomerOrder.Id.Required": "Vui lòng nhập Mã.",
   "CustomerOrder.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
   "CustomerOrder.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "CustomerOrder.Status.Required": "Vui lòng nhập trạng thái đơn hàng.",
@@ -29,7 +29,7 @@
   "CustomerOrder.EstimatedDistance.InvalidFormat": "Định dạng khoảng cách dự kiến không hợp lệ.",
   "CustomerOrder.EstimatedDistance.Min": "Khoảng cách dự kiến phải ít nhất là 0.",
   "CustomerOrder.DeliveredOn.InvalidFormat": "Định dạng ngày giao hàng không hợp lệ.",
-  "CustomerOrder.UpdatedBy.Required": "Vui lòng nhập ID người cập nhật.",
+  "CustomerOrder.UpdatedBy.Required": "Vui lòng nhập Mã người cập nhật.",
   "CustomerOrder.UpdatedAt.Required": "Vui lòng nhập ngày cập nhật.",
   "CustomerOrder.UpdatedAt.InvalidFormat": "Định dạng ngày cập nhật không hợp lệ."
 }

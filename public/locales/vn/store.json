@@ -1,0 +1,13 @@
+{
+  "Store.Id.Required": "Vui lòng nhập Mã cửa hàng.",
+  "Store.Email.Required": "Vui lòng nhập email của cửa hàng.",
+  "Store.Email.InvalidFormat": "Định dạng email của cửa hàng không hợp lệ.",
+  "Store.Phone.Required": "Vui lòng nhập số điện thoại của cửa hàng.",
+  "Store.Phone.InvalidFormat": "Định dạng số điện thoại của cửa hàng không hợp lệ.",
+  "Store.ProvinceCode.Required": "Vui lòng nhập mã tỉnh.",
+  "Store.DistrictCode.Required": "Vui lòng nhập mã huyện.",
+  "Store.WardCode.Required": "Vui lòng nhập mã xã/phường.",
+  "Store.StreetAddress.Required": "Vui lòng nhập địa chỉ đường phố.",
+  "Store.StreetAddress.Min": "Địa chỉ đường phố phải có ít nhất 1 ký tự.",
+  "Store.StreetAddress.Max": "Địa chỉ đường phố không được vượt quá 100 ký tự."
+}
