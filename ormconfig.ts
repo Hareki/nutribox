@@ -53,8 +53,8 @@ const config: ConnectionOptions = {
   // error: Cannot use import statement outside a module
   // reason NextJS configuration conflicts with TypeORM
   // entities: ['src/backend/entities/*{.ts,.js}'],
-  seeds: ['src/database/seeds/*{.ts,.js}'],
-  factories: ['src/database/factories/*{.ts,.js}'],
+  seeds: ['src/backend/database/seeds/*{.ts,.js}'],
+  factories: ['src/backend/database/factories/*{.ts,.js}'],
 };
 
 console.log('DIRNAME', __dirname);
