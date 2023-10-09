@@ -29,13 +29,7 @@ const employeeSeeds: Omit<EmployeeEntity, 'account' | 'reviewResponses'>[] = [
 
 export default class createEmployees implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    await connection
-      .createQueryBuilder()
-      .insert()
-      .into(EmployeeEntity)
-      .values(employeeSeeds)
-      .orUpdate()
-      .orIgnore()
-      .execute();
+    const employeeRepo = connection.getRepository(EmployeeEntity);
+    await employeeRepo.save(employeeSeeds);
   }
 }

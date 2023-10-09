@@ -1,8 +1,12 @@
 import crypto from 'crypto-js';
 
 export function hashPassword(password: string): string {
-  const hash = crypto.HmacSHA256(password, process.env.CRYPTOJS_SECRET);
-  return crypto.enc.Base64.stringify(hash);
+  const secret = process.env.CRYPTOJS_SECRET;
+  if (secret) {
+    const hash = crypto.HmacSHA256(password, secret);
+    return crypto.enc.Base64.stringify(hash);
+  }
+  throw new Error('process.env.CRYPTOJS_SECRET is not defined');
 }
 
 export function comparePassword(

@@ -15,10 +15,10 @@
     "pretty": "prettier --write . --ignore-path .gitignore",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx . --ignore-path .gitignore",
     "formatter": "run-s pretty lint:fix",
-    "typeorm": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js",
+    "typeorm": "ts-node -r dotenv/config -r tsconfig-paths/register node_modules/typeorm/cli.js",
     "schema:drop": "npm run typeorm schema:drop",
-    "seed:config": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js config",
-    "seed:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed",
+    "seed:config": "ts-node -r dotenv/config -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js config",
+    "seed:run": "ts-node -r dotenv/config -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed",
     "db:reset": "run-s schema:drop seed:run"
   },
   "lint-staged": {
