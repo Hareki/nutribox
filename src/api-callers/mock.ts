@@ -1,13 +1,12 @@
-import axios from 'axios';
+import { services } from 'backend/database/mock/services';
+import { testimonials } from 'backend/database/mock/testimonials';
 
 const getServices = async (): Promise<any[]> => {
-  const response = await axios.get('/api/mock/services');
-  return response.data;
+  return services;
 };
 
 const getTestimonials = async () => {
-  const response = await axios.get('/api/mock/testimonials');
-  return response.data;
+  return testimonials;
 };
 
 export const Mock = {

@@ -46,7 +46,6 @@
     "@types/googlemaps": "^3.43.3",
     "apexcharts": "^3.35.3",
     "axios": "^1.5.1",
-    "axios-mock-adapter": "^1.22.0",
     "clsx": "^2.0.0",
     "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",

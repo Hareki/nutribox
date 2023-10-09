@@ -6,7 +6,7 @@ export const API_STAFF_ROUTE = `${API_BASE_ROUTE}staff/`;
 
 export const NOT_FOUND_ROUTE = `${BASE_ROUTE}/404`;
 
-export const MOCK_ROUTE = `${BASE_ROUTE}/mock`;
+export const MOCK_ROUTE = `${API_BASE_ROUTE}/mock`;
 
 export const PRODUCT_DETAIL_ROUTE = `${BASE_ROUTE}/products`; // [slug]
 export const CHECKOUT_ROUTE = `${BASE_ROUTE}/checkout`;

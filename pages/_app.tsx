@@ -24,8 +24,6 @@ import '../src/fonts/SVN-Rubik/index.css';
 import 'nprogress/nprogress.css';
 import 'simplebar/dist/simplebar.min.css';
 
-import '../src/backend/database/mock';
-
 type MyAppProps = AppProps & {
   Component: NextPage & {
     getLayout?: (page: ReactElement) => ReactNode;
