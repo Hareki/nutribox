@@ -11,7 +11,7 @@ import { CustomerOrderEntity } from './customerOrder.entity';
 export class CustomerEntity extends AbstractEntity {
   @OneToOne(() => AccountEntity, (account) => account.customer)
   @JoinColumn()
-  account: Relation<AccountEntity>;
+  account: Relation<AccountEntity> | string;
 
   @OneToMany(
     () => CustomerAddressEntity,

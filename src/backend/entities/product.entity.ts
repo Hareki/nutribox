@@ -14,7 +14,7 @@ export class ProductEntity extends AbstractEntity {
     () => ProductCategoryEntity,
     (productCategory) => productCategory.products,
   )
-  productCategory: Relation<ProductCategoryEntity>;
+  productCategory: Relation<ProductCategoryEntity> | string;
 
   @OneToMany(() => ProductImageEntity, (productImage) => productImage.product)
   productImages: Relation<ProductImageEntity>[] | string[];
@@ -29,7 +29,7 @@ export class ProductEntity extends AbstractEntity {
   customerOrderItems: Relation<CustomerOrderItemEntity>[] | string[];
 
   @OneToMany(() => ImportOrderEntity, (importOrder) => importOrder.product)
-  importOrders: Relation<ImportOrderEntity>[];
+  importOrders: Relation<ImportOrderEntity>[] | string[];
 
   @Column({
     unique: true,

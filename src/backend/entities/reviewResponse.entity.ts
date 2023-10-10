@@ -16,10 +16,10 @@ import { ReviewEntity } from './review.entity';
 export class ReviewResponseEntity extends AbstractEntity {
   @OneToOne(() => ReviewEntity)
   @JoinColumn()
-  review: Relation<ReviewEntity>;
+  review: Relation<ReviewEntity> | string;
 
   @ManyToOne(() => EmployeeEntity, (employee) => employee.reviewResponses)
-  employee: Relation<EmployeeEntity>;
+  employee: Relation<EmployeeEntity> | string;
 
   @UpdateDateColumn({
     type: 'timestamp without time zone',
