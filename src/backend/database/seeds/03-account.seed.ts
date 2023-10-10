@@ -5,23 +5,26 @@ import { AccountEntity } from 'backend/entities/account.entity';
 import { hashPassword } from 'backend/utils/auth.helper';
 
 type AccountSeed = Pick<AccountEntity, 'email' | 'password'> & {
-  employee: {
+  employee?: {
+    id: string;
+  };
+  customer?: {
     id: string;
   };
 };
 
 const accountSeeds: AccountSeed[] = [
   {
-    email: 'MinhTu@gmail.com',
+    email: 'admin@gmail.com',
     password: hashPassword('123456'),
     employee: {
       id: 'e18e7d23-55bd-48b0-b2fd-64ca6932df27',
     },
   },
   {
-    email: 'MinhPhuc@gmail.com',
+    email: 'customer@gmail.com',
     password: hashPassword('123456'),
-    employee: {
+    customer: {
       id: 'e31e759a-edb9-40e8-bb2a-fb6b9e65d986',
     },
   },
