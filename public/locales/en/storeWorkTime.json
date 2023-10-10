@@ -1,5 +1,7 @@
 {
-  "StoreWorkTime.Id.Required": "Please enter the work time ID.",
+  "StoreWorkTime.Id.Required": "Please enter the ID.",
+  "StoreWorkTime.CreatedAt.Required": "Please enter the creation date.",
+  "StoreWorkTime.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "StoreWorkTime.StoreId.Required": "Please enter the store ID.",
   "StoreWorkTime.DayOfWeek.Required": "Please select a day of the week.",
   "StoreWorkTime.OpenTime.Required": "Please enter the opening time.",

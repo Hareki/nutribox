@@ -15,11 +15,13 @@ import { isBeforeOrEqual } from 'utils/date.helper';
 const ImportOrderSchema = z.object({
   id: zodUuid('ImportOrder.Id'),
 
+  createdAt: zodDate('ImportOrder.CreatedAt'),
+
   product: zodUuid('ImportOrder.ProductId'),
 
   supplier: zodUuid('ImportOrder.SupplierId'),
 
-  createdAt: zodDate('ImportOrder.CreatedAt'),
+  exportOrders: z.array(z.string().uuid()).optional(),
 
   importDate: zodDate('ImportOrder.ImportDate'),
 
@@ -42,8 +44,6 @@ const ImportOrderSchema = z.object({
     0,
     1_000,
   ),
-
-  exportOrders: z.array(z.string().uuid()).optional(),
 });
 
 type ImportOrderModel = z.infer<typeof ImportOrderSchema>;

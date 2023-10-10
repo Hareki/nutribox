@@ -1,5 +1,7 @@
 {
   "Customer.Id.Required": "Vui lòng nhập Mã.",
+  "Customer.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "Customer.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "Customer.FirstName.Required": "Vui lòng nhập Tên.",
   "Customer.FirstName.Min": "Vui lòng nhập Tên",
   "Customer.FirstName.Max": "Tên không được vượt quá 50 ký tự.",

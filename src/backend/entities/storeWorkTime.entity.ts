@@ -1,5 +1,5 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { StoreEntity } from './store.entity';
@@ -8,11 +8,8 @@ import { DayOfWeek } from 'backend/enums/Entities.enum';
 
 @Entity({ name: 'store_work_time' })
 export class StoreWorkTimeEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @ManyToOne(() => StoreEntity, (store) => store.storeWorkTimes)
-  store: Relation<StoreEntity>;
+  store: Relation<StoreEntity> | string;
 
   @Column({
     type: 'enum',

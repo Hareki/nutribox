@@ -1,5 +1,7 @@
 {
-  "ProductImage.Id.Required": "Please enter the product image ID.",
+  "ProductImage.Id.Required": "Please enter the ID.",
+  "ProductImage.CreatedAt.Required": "Please enter the creation date.",
+  "ProductImage.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "ProductImage.ProductId.Required": "Please enter the product ID for the image.",
   "ProductImage.ImageUrl.Required": "Please enter the image URL.",
   "ProductImage.ImageUrl.Min": "Please enter the image URL.",

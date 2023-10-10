@@ -1,10 +1,14 @@
 import { z } from 'zod';
 
 import type { CustomerModel } from './customer.model';
-import { zodNumber, zodUuid } from './helper';
+import { zodDate, zodNumber, zodUuid } from './helper';
 import type { ProductModel } from './product.model';
 
 const CartItemSchema = z.object({
+  id: zodUuid('CartItem.Id'),
+
+  createdAt: zodDate('CartItem.CreatedAt'),
+
   product: zodUuid('CartItem.ProductId'),
 
   customer: zodUuid('CartItem.CustomerId'),

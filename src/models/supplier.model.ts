@@ -1,12 +1,16 @@
 import { z } from 'zod';
 
-import { zodString, zodUuid } from './helper';
+import { zodDate, zodString, zodUuid } from './helper';
 import type { ImportOrderModel } from './importOder.model';
 
 import { PHONE_REGEX } from 'constants/regex.constant';
 
 const SupplierSchema = z.object({
   id: zodUuid('Supplier.Id'),
+
+  createdAt: zodDate('Supplier.CreatedAt'),
+
+  importOrders: z.array(z.string().uuid()).optional(),
 
   name: zodString('Supplier.Name', 3, 50),
 
@@ -25,8 +29,6 @@ const SupplierSchema = z.object({
   wardCode: zodString('Supplier.WardCode.Required', 1, 5),
 
   streetAddress: zodString('Supplier.StreetAddress', 1, 100),
-
-  importOrders: z.array(z.string().uuid()).optional(),
 });
 
 type SupplierModel = z.infer<typeof SupplierSchema>;

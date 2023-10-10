@@ -9,13 +9,13 @@ const ReviewResponseSchema = z.object({
 
   createdAt: zodDate('ReviewResponse.CreatedAt'),
 
-  updatedAt: zodDate('ReviewResponse.UpdatedAt'),
-
   review: zodUuid('ReviewResponse.ReviewId'),
 
-  comment: zodString('ReviewResponse.Comment', 1, 500),
-
   employee: zodUuid('ReviewResponse.EmployeeId'),
+
+  updatedAt: zodDate('ReviewResponse.UpdatedAt'),
+
+  comment: zodString('ReviewResponse.Comment', 1, 500),
 });
 
 type ReviewResponseModel = z.infer<typeof ReviewResponseSchema>;

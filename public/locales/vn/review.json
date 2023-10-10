@@ -1,6 +1,7 @@
 {
-  "Review.Id.Required": "Vui lòng nhập Mã đánh giá.",
+  "Review.Id.Required": "Vui lòng nhập Mã.",
   "Review.CreatedAt.Required": "Vui lòng nhập ngày tạo đánh giá.",
+  "Review.CreatedAt.InvalidFormat": "Định dạng ngày tạo đánh giá không hợp lệ.",
   "Review.UpdatedAt.Required": "Vui lòng nhập ngày cập nhật đánh giá.",
   "Review.CustomerOrderItemId.Required": "Vui lòng nhập Mã mặt hàng trong đơn hàng khách hàng liên quan.",
   "Review.Comment.Required": "Vui lòng nhập đánh giá.",

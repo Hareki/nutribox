@@ -1,5 +1,7 @@
 {
-  "ProductImage.Id.Required": "Vui lòng nhập Mã hình ảnh sản phẩm.",
+  "ProductImage.Id.Required": "Vui lòng nhập Mã.",
+  "ProductImage.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "ProductImage.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "ProductImage.ProductId.Required": "Vui lòng nhập Mã sản phẩm cho hình ảnh.",
   "ProductImage.ImageUrl.Required": "Vui lòng nhập URL hình ảnh.",
   "ProductImage.ImageUrl.Min": "Vui lòng nhập URL hình ảnh.",

@@ -1,5 +1,7 @@
 {
-  "Employee.Id.Required": "Please enter the employee ID.",
+  "Employee.Id.Required": "Please enter the ID.",
+  "Employee.CreatedAt.Required": "Please enter the creation date.",
+  "Employee.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "Employee.PersonalId.Required": "Please enter the personal ID.",
   "Employee.PersonalId.InvalidFormat": "Invalid personal ID format.",
   "Employee.Role.Required": "Please select the employee role.",

@@ -2,13 +2,19 @@ import { z } from 'zod';
 
 import type { CustomerOrderModel } from './customerOrder.model';
 import type { ExportOrderModel } from './exportOrder.model';
-import { zodNumber, zodUuid } from './helper';
+import { zodDate, zodNumber, zodUuid } from './helper';
 import type { ProductModel } from './product.model';
 
 const CustomerOrderItemSchema = z.object({
+  id: zodUuid('CustomerOrderItem.Id'),
+
+  createdAt: zodDate('CustomerOrderItem.CreatedAt'),
+
   customerOrder: zodUuid('CustomerOrderItem.CustomerOrderId'),
 
   product: zodUuid('CustomerOrderItem.ProductId'),
+
+  exportOrders: z.array(z.string().uuid()).optional(),
 
   unitRetailPrice: zodNumber(
     'CustomerOrderItem.UnitRetailPrice',
@@ -25,8 +31,6 @@ const CustomerOrderItemSchema = z.object({
   ),
 
   quantity: zodNumber('CustomerOrderItem.Quantity', 'int', 1, 1000),
-
-  exportOrders: z.array(z.string().uuid()).optional(),
 });
 
 type CustomerOrderItemModel = z.infer<typeof CustomerOrderItemSchema>;

@@ -1,4 +1,7 @@
 {
+  "CustomerOrderItem.Id.Required": "Please enter the ID.",
+  "CustomerOrderItem.CreatedAt.Required": "Please enter the creation date.",
+  "CustomerOrderItem.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "CustomerOrderItem.CustomerOrderId.Required": "Please enter the customer order ID.",
   "CustomerOrderItem.ProductId.Required": "Please enter the product ID.",
   "CustomerOrderItem.Quantity.Required": "Please enter the quantity.",

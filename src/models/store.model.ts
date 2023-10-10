@@ -1,12 +1,16 @@
 import { z } from 'zod';
 
-import { zodString, zodUuid } from './helper';
+import { zodDate, zodString, zodUuid } from './helper';
 import type { StoreWorkTimeModel } from './storeWorkTime.model';
 
 import { PHONE_REGEX } from 'constants/regex.constant';
 
 const StoreSchema = z.object({
   id: zodUuid('Store.Id'),
+
+  createdAt: zodDate('Store.CreatedAt'),
+
+  storeWorkTimes: z.array(z.string().uuid().length(7)),
 
   email: zodString('Store.Email').email({
     message: 'Store.Email.InvalidFormat',
@@ -23,8 +27,6 @@ const StoreSchema = z.object({
   wardCode: zodString('Store.WardCode', 1, 5),
 
   streetAddress: zodString('Store.StreetAddress', 1, 100),
-
-  storeWorkTimes: z.array(z.string().uuid().length(7)),
 });
 
 type StoreModel = z.infer<typeof StoreSchema>;

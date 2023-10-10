@@ -6,6 +6,7 @@ import {
   type RefinementParameters,
   zodNumber,
   zodUuid,
+  zodDate,
 } from './helper';
 import type { ImportOrderModel } from './importOder.model';
 import type { ProductCategoryModel } from './productCategory.model';
@@ -15,7 +16,17 @@ import type { SupplierModel } from './supplier.model';
 const ProductSchema = z.object({
   id: zodUuid('Product.Id'),
 
-  category: zodUuid('Product.CategoryId'),
+  createdAt: zodDate('Product.CreatedAt'),
+
+  productCategory: zodUuid('Product.ProductCategoryId'),
+
+  productImages: z.array(z.string().uuid()).optional(),
+
+  cartItems: z.array(z.string().uuid()).optional(),
+
+  customerOrderItems: z.array(z.string().uuid()).optional(),
+
+  importOrders: z.array(z.string().uuid()).optional(),
 
   name: zodString('Product.Name', 3, 50),
 
@@ -39,14 +50,6 @@ const ProductSchema = z.object({
   }),
 
   maxQuantity: zodNumber('Product.MaxQuantity', 'int', 1, 1_000),
-
-  productImages: z.array(z.string().uuid()).optional(),
-
-  cartItems: z.array(z.string().uuid()).optional(),
-
-  customerOrderItems: z.array(z.string().uuid()).optional(),
-
-  importOrders: z.array(z.string().uuid()).optional(),
 });
 
 type ProductModel = z.infer<typeof ProductSchema>;
@@ -64,7 +67,7 @@ const getRefinedProductSchema = (schema: z.Schema<any>) =>
 
 type ProductReferenceKeys = keyof Pick<
   ProductModel,
-  | 'category'
+  | 'productCategory'
   | 'defaultSupplierId'
   | 'productImages'
   | 'cartItems'

@@ -1,12 +1,5 @@
 import type { Relation } from 'typeorm';
-import {
-  Column,
-  Entity,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { AccountEntity } from './account.entity';
@@ -16,12 +9,24 @@ import { CustomerOrderEntity } from './customerOrder.entity';
 
 @Entity({ name: 'customer' })
 export class CustomerEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @OneToOne(() => AccountEntity, (account) => account.customer)
   @JoinColumn()
   account: Relation<AccountEntity>;
+
+  @OneToMany(
+    () => CustomerAddressEntity,
+    (customerAddress) => customerAddress.customer,
+  )
+  customerAddresses: Relation<CustomerAddressEntity>[] | string[];
+
+  @OneToMany(
+    () => CustomerOrderEntity,
+    (customerOrder) => customerOrder.customer,
+  )
+  customerOrders: Relation<CustomerOrderEntity>[] | string[];
+
+  @OneToMany(() => CartItemEntity, (cartItem) => cartItem.customer)
+  cartItems: Relation<CartItemEntity>[] | string[];
 
   @Column()
   firstName: string;
@@ -37,19 +42,4 @@ export class CustomerEntity extends AbstractEntity {
 
   @Column('timestamp without time zone')
   birthday: Date;
-
-  @OneToMany(
-    () => CustomerAddressEntity,
-    (customerAddress) => customerAddress.customer,
-  )
-  customerAddresses: Relation<CustomerAddressEntity>[];
-
-  @OneToMany(
-    () => CustomerOrderEntity,
-    (customerOrder) => customerOrder.customer,
-  )
-  orders: Relation<CustomerOrderEntity>[];
-
-  @OneToMany(() => CartItemEntity, (cartItem) => cartItem.customer)
-  cartItems: Relation<CartItemEntity>[];
 }

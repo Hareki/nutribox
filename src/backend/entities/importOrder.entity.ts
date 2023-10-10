@@ -14,14 +14,14 @@ import { SupplierEntity } from './supplier.entity';
 
 @Entity({ name: 'import_order' })
 export class ImportOrderEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @ManyToOne(() => ProductEntity, (product) => product.importOrders)
-  product: Relation<ProductEntity>;
+  product: Relation<ProductEntity> | string;
 
   @ManyToOne(() => SupplierEntity, (supplier) => supplier.importOrders)
-  supplier: Relation<SupplierEntity>;
+  supplier: Relation<SupplierEntity> | string;
+
+  @OneToMany(() => ExportOrderEntity, (exportOrder) => exportOrder.importOrder)
+  exportOrders: Relation<ExportOrderEntity>[] | string[];
 
   @Column('timestamp without time zone')
   importDate: Date;
@@ -40,7 +40,4 @@ export class ImportOrderEntity extends AbstractEntity {
 
   @Column('int')
   remainingQuantity: number;
-
-  @OneToMany(() => ExportOrderEntity, (exportOrder) => exportOrder.importOrder)
-  exportOrders: Relation<ExportOrderEntity>[];
 }

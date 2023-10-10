@@ -1,5 +1,7 @@
 {
   "CustomerAddress.Id.Required": "Vui lòng nhập Mã.",
+  "CustomerAddress.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "CustomerAddress.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "CustomerAddress.CustomerId.Required": "Vui lòng nhập Mã khách hàng.",
   "CustomerAddress.ProvinceCode.Required": "Vui lòng nhập Mã thành phố/tỉnh.",
   "CustomerAddress.ProvinceCode.Min": "Vui lòng nhập Mã thành phố/tỉnh.",

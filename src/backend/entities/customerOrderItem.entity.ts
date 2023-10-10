@@ -12,18 +12,16 @@ export class CustomerOrderItemEntity extends AbstractEntity {
     () => CustomerOrderEntity,
     (customerOrder) => customerOrder.customerOrderItems,
   )
-  @PrimaryColumn({
-    type: 'uuid',
-    name: 'customer_order_id',
-  })
-  customerOrder: Relation<CustomerOrderEntity>;
+  customerOrder: Relation<CustomerOrderEntity> | string;
 
   @ManyToOne(() => ProductEntity, (product) => product.customerOrderItems)
-  @PrimaryColumn({
-    type: 'uuid',
-    name: 'product_id',
-  })
-  product: Relation<ProductEntity>;
+  product: Relation<ProductEntity> | string;
+
+  @OneToMany(
+    () => ExportOrderEntity,
+    (exportOrder) => exportOrder.customerOrderItem,
+  )
+  exportOrders: Relation<ExportOrderEntity>[] | string[];
 
   @Column('decimal')
   unitRetailPrice: number;
@@ -33,10 +31,4 @@ export class CustomerOrderItemEntity extends AbstractEntity {
 
   @Column('int')
   quantity: number;
-
-  @OneToMany(
-    () => ExportOrderEntity,
-    (exportOrder) => exportOrder.customerOrderItem,
-  )
-  exportOrders: Relation<ExportOrderEntity>[];
 }

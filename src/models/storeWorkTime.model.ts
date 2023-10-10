@@ -1,12 +1,14 @@
 import { z } from 'zod';
 
-import { zodString, zodUuid } from './helper';
+import { zodDate, zodString, zodUuid } from './helper';
 import type { StoreModel } from './store.model';
 
 import { DayOfWeek } from 'backend/enums/Entities.enum';
 
 const StoreWorkTimeSchema = z.object({
   id: zodUuid('StoreWorkTime.Id'),
+
+  createdAt: zodDate('StoreWorkTime.CreatedAt'),
 
   store: zodUuid('StoreWorkTime.StoreId'),
 

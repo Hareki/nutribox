@@ -11,7 +11,15 @@ import { NAME_REGEX, PHONE_REGEX } from 'constants/regex.constant';
 const CustomerSchema = z.object({
   id: zodUuid('Customer.Id'),
 
+  createdAt: zodDate('Customer.CreatedAt'),
+
   account: zodUuid('Customer.AccountId'),
+
+  customerAddresses: z.array(z.string().uuid()).optional(),
+
+  customerOrders: z.array(z.string().uuid()).optional(),
+
+  cartItems: z.array(z.string().uuid()).optional(),
 
   firstName: zodString('Customer.FirstName', 1, 50).regex(NAME_REGEX, {
     message: 'Customer.FirstName.InvalidFormat',
@@ -30,12 +38,6 @@ const CustomerSchema = z.object({
   }),
 
   birthday: zodDate('Customer.Birthday'),
-
-  customerAddresses: z.array(z.string().uuid()).optional(),
-
-  customerOrders: z.array(z.string().uuid()).optional(),
-
-  cartItems: z.array(z.string().uuid()).optional(),
 });
 
 type CustomerModel = z.infer<typeof CustomerSchema>;

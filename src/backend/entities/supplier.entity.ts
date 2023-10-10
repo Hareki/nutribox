@@ -1,14 +1,17 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
+import { AbstractEntity } from './abstract.entity';
 import { ImportOrderEntity } from './importOrder.entity';
 
 @Entity({ name: 'supplier' })
-export class SupplierEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class SupplierEntity extends AbstractEntity {
+  @OneToMany(() => ImportOrderEntity, (importOrder) => importOrder.supplier)
+  importOrders: Relation<ImportOrderEntity>[] | string[];
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   name: string;
 
   @Column()
@@ -28,7 +31,4 @@ export class SupplierEntity {
 
   @Column()
   streetAddress: string;
-
-  @OneToMany(() => ImportOrderEntity, (importOrder) => importOrder.supplier)
-  importOrders: Relation<ImportOrderEntity>[];
 }

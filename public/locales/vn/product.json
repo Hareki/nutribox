@@ -1,6 +1,8 @@
 {
-  "Product.Id.Required": "Vui lòng nhập Mã sản phẩm.",
-  "Product.CategoryId.Required": "Vui lòng nhập Mã danh mục.",
+  "Product.Id.Required": "Vui lòng nhập Mã.",
+  "Product.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "Product.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
+  "Product.ProductCategoryId.Required": "Vui lòng nhập Mã danh mục sản phẩm.",
   "Product.Name.Required": "Vui lòng nhập tên sản phẩm.",
   "Product.Name.Min": "Tên sản phẩm phải có ít nhất 3 ký tự.",
   "Product.Name.Max": "Tên sản phẩm không nên vượt quá 50 ký tự.",

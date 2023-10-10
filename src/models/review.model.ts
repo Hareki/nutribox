@@ -6,9 +6,11 @@ import { zodDate, zodNumber, zodString, zodUuid } from './helper';
 const ReviewSchema = z.object({
   id: zodUuid('Review.Id'),
 
-  customerOrderItem: zodUuid('Review.CustomerOrderItemId'),
-
   createdAt: zodDate('Review.CreatedAt'),
+
+  reviewResponse: zodUuid('Review.ReviewResponseId').optional(),
+
+  customerOrderItem: zodUuid('Review.CustomerOrderItemId'),
 
   updatedAt: zodDate('Review.UpdatedAt'),
 

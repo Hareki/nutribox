@@ -1,5 +1,7 @@
 {
   "Account.Id.Required": "Please enter the ID.",
+  "Account.CreatedAt.Required": "Please enter the Account creation date.",
+  "Account.CreatedAt.InvalidFormat": "Invalid Account creation date format.",
   "Account.Email.Required": "Please enter the Email.",
   "Account.Email.InvalidFormat": "Invalid email format.",
   "Account.Password.Required": "Please enter the Password.",

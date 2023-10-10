@@ -1,10 +1,14 @@
 import { z } from 'zod';
 
 import type { CustomerOrderItemModel } from './customerOrderItem.model';
-import { zodNumber, zodUuid } from './helper';
+import { zodDate, zodNumber, zodUuid } from './helper';
 import type { ImportOrderModel } from './importOder.model';
 
 const ExportOrderSchema = z.object({
+  id: zodUuid('ExportOrder.Id'),
+
+  createdAt: zodDate('ExportOrder.CreatedAt'),
+
   importOrder: zodUuid('ExportOrder.ImportOrderId'),
 
   customerOrderItem: zodUuid('ExportOrder.CustomerOrderItemId'),

@@ -1,10 +1,11 @@
 {
-  "ReviewResponse.Id.Required": "Please enter the review response ID.",
+  "ReviewResponse.Id.Required": "Please enter the ID.",
+  "ReviewResponse.CreatedAt.Required": "Please enter the creation date.",
+  "ReviewResponse.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "ReviewResponse.ReviewId.Required": "Please enter the associated review ID.",
   "ReviewResponse.Comment.Required": "Please enter your response.",
   "ReviewResponse.Comment.Min": "Please enter your response.",
   "ReviewResponse.Comment.Max": "Your response should not exceed 500 characters.",
   "ReviewResponse.EmployeeId.Required": "Please enter the associated employee ID.",
-  "ReviewResponse.CreatedAt.Required": "Please enter the creation date of the review response.",
   "ReviewResponse.UpdatedAt.Required": "Please enter the last update date of the review response."
 }

@@ -16,8 +16,11 @@ import { EmployeeRole } from 'backend/enums/Entities.enum';
 
 @Entity({ name: 'employee' })
 export class EmployeeEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @OneToMany(
+    () => ReviewResponseEntity,
+    (reviewResponse) => reviewResponse.employee,
+  )
+  reviewResponses: Relation<ReviewResponseEntity>[] | string[];
 
   @Column()
   personalId: string;
@@ -45,10 +48,4 @@ export class EmployeeEntity extends AbstractEntity {
 
   @Column('timestamp without time zone')
   birthday: Date;
-
-  @OneToMany(
-    () => ReviewResponseEntity,
-    (reviewResponse) => reviewResponse.employee,
-  )
-  reviewResponses: Relation<ReviewResponseEntity>[];
 }

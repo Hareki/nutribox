@@ -1,10 +1,11 @@
 {
-  "ReviewResponse.Id.Required": "Vui lòng nhập Mã phản hồi đánh giá.",
+  "ReviewResponse.Id.Required": "Vui lòng nhập Mã.",
+  "ReviewResponse.CreatedAt.Required": "Vui lòng nhập ngày tạo phản hồi.",
+  "ReviewResponse.CreatedAt.InvalidFormat": "Định dạng ngày tạo phản hồi không hợp lệ.",
   "ReviewResponse.ReviewId.Required": "Vui lòng nhập Mã đánh giá liên quan.",
   "ReviewResponse.Comment.Required": "Vui lòng nhập phản hồi.",
   "ReviewResponse.Comment.Min": "Vui lòng nhập phản hồi.",
   "ReviewResponse.Comment.Max": "Phản hồi không được vượt quá 500 ký tự.",
   "ReviewResponse.EmployeeId.Required": "Vui lòng nhập Mã nhân viên phản hồi.",
-  "ReviewResponse.CreatedAt.Required": "Vui lòng nhập ngày tạo phản hồi.",
   "ReviewResponse.UpdatedAt.Required": "Vui lòng nhập ngày cập nhật phản hồi."
 }

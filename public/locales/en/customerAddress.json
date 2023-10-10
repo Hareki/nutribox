@@ -1,5 +1,7 @@
 {
   "CustomerAddress.Id.Required": "Please enter the ID.",
+  "CustomerAddress.CreatedAt.Required": "Please enter the creation date.",
+  "CustomerAddress.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "CustomerAddress.CustomerId.Required": "Please enter the Customer ID.",
   "CustomerAddress.ProvinceCode.Required": "Please enter the Province Code.",
   "CustomerAddress.ProvinceCode.Min": "Please enter the Province Code.",

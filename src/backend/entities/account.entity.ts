@@ -1,11 +1,5 @@
 import type { Relation } from 'typeorm';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
@@ -13,8 +7,17 @@ import { EmployeeEntity } from './employee.entity';
 
 @Entity({ name: 'account' })
 export class AccountEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @OneToOne(() => CustomerEntity, (customer) => customer.account, {
+    nullable: true,
+  })
+  @JoinColumn()
+  customer: Relation<CustomerEntity> | string;
+
+  @OneToOne(() => EmployeeEntity, (employee) => employee.account, {
+    nullable: true,
+  })
+  @JoinColumn()
+  employee: Relation<EmployeeEntity> | string;
 
   @Column()
   email: string;
@@ -46,16 +49,4 @@ export class AccountEntity extends AbstractEntity {
 
   @Column({ nullable: true, type: 'timestamp without time zone' })
   forgotPasswordTokenExpiry: Date;
-
-  @OneToOne(() => CustomerEntity, (customer) => customer.account, {
-    nullable: true,
-  })
-  @JoinColumn()
-  customer: Relation<CustomerEntity>;
-
-  @OneToOne(() => EmployeeEntity, (employee) => employee.account, {
-    nullable: true,
-  })
-  @JoinColumn()
-  employee: Relation<EmployeeEntity>;
 }

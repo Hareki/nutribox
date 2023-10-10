@@ -1,4 +1,7 @@
 {
+  "CustomerOrderItem.Id.Required": "Vui lòng nhập Mã.",
+  "CustomerOrderItem.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "CustomerOrderItem.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "CustomerOrderItem.CustomerOrderId.Required": "Vui lòng nhập Mã đơn hàng khách hàng.",
   "CustomerOrderItem.ProductId.Required": "Vui lòng nhập Mã sản phẩm.",
   "CustomerOrderItem.Quantity.Required": "Vui lòng nhập số lượng.",

@@ -1,4 +1,7 @@
 {
+  "CartItem.Id.Required": "Please enter the ID.",
+  "CartItem.CreatedAt.Required": "Please enter the creation date.",
+  "CartItem.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "CartItem.ProductId.Required": "Please enter the Product ID.",
   "CartItem.CustomerId.Required": "Please enter the Customer ID.",
   "CartItem.Quantity.Required": "Please enter the Quantity.",

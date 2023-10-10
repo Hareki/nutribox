@@ -10,11 +10,11 @@ import { PHONE_REGEX } from 'constants/regex.constant';
 const CustomerOrderSchema = z.object({
   id: zodUuid('CustomerOrder.Id'),
 
+  createdAt: zodDate('CustomerOrder.CreatedAt'),
+
   customer: zodUuid('CustomerOrder.CustomerId').optional(),
 
   customerOrderItems: z.array(z.string().uuid()),
-
-  createdAt: zodDate('CustomerOrder.CreatedAt'),
 
   status: z.nativeEnum(OrderStatus, {
     required_error: 'CustomerOrder.Status.Required',

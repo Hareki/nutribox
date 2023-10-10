@@ -1,5 +1,7 @@
 {
-  "StoreWorkTime.Id.Required": "Vui lòng nhập Mã thời gian làm việc.",
+  "StoreWorkTime.Id.Required": "Vui lòng nhập Mã.",
+  "StoreWorkTime.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "StoreWorkTime.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "StoreWorkTime.StoreId.Required": "Vui lòng nhập Mã cửa hàng.",
   "StoreWorkTime.DayOfWeek.Required": "Vui lòng chọn một ngày trong tuần.",
   "StoreWorkTime.OpenTime.Required": "Vui lòng nhập thời gian mở cửa.",

@@ -1,5 +1,7 @@
 {
   "Customer.Id.Required": "Please enter the ID.",
+  "Customer.CreatedAt.Required": "Please enter the creation date.",
+  "Customer.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "Customer.FirstName.Required": "Please enter the First Name.",
   "Customer.FirstName.Min": "Please enter the First Name.",
   "Customer.FirstName.Max": "First Name must not exceed 50 characters.",

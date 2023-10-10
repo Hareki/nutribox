@@ -1,5 +1,5 @@
 {
-  "ImportOrder.Id.Required": "Please enter the import order ID.",
+  "ImportOrder.Id.Required": "Please enter the ID.",
   "ImportOrder.CreatedAt.Required": "Please enter the creation date.",
   "ImportOrder.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "ImportOrder.ImportDate.Required": "Please enter the import date.",

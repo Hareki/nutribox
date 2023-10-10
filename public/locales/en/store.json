@@ -1,5 +1,7 @@
 {
-  "Store.Id.Required": "Please enter the store ID.",
+  "Store.Id.Required": "Please enter the ID.",
+  "Store.CreatedAt.Required": "Please enter the creation date.",
+  "Store.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "Store.Email.Required": "Please enter the store's email.",
   "Store.Email.InvalidFormat": "The store's email format is invalid.",
   "Store.Phone.Required": "Please enter the store's phone number.",

@@ -10,6 +10,10 @@ import { NAME_REGEX, PHONE_REGEX, PID_REGEX } from 'constants/regex.constant';
 const EmployeeSchema = z.object({
   id: zodUuid('Employee.Id'),
 
+  createdAt: zodDate('Employee.CreatedAt'),
+
+  reviewResponses: z.array(z.string().uuid()).optional(),
+
   personalId: zodString('Employee.PersonalId').regex(PID_REGEX, {
     message: 'Employee.PersonalId.InvalidFormat',
   }),
@@ -37,8 +41,6 @@ const EmployeeSchema = z.object({
   }),
 
   birthday: zodDate('Employee.Birthday'),
-
-  reviewResponses: z.array(z.string().uuid()).optional(),
 });
 
 type EmployeeModel = z.infer<typeof EmployeeSchema>;

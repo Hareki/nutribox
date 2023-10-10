@@ -1,5 +1,5 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
@@ -7,19 +7,11 @@ import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'cart_item' })
 export class CartItemEntity extends AbstractEntity {
-  @PrimaryColumn({
-    type: 'uuid',
-    name: 'product_id',
-  })
   @ManyToOne(() => ProductEntity, (product) => product.cartItems)
-  product: Relation<ProductEntity>;
+  product: Relation<ProductEntity> | string;
 
-  @PrimaryColumn({
-    type: 'uuid',
-    name: 'customer_id',
-  })
   @ManyToOne(() => CustomerEntity, (customer) => customer.cartItems)
-  customer: Relation<CustomerEntity>;
+  customer: Relation<CustomerEntity> | string;
 
   @Column('int')
   quantity: number;

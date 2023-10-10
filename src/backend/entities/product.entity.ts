@@ -1,11 +1,5 @@
 import type { Relation } from 'typeorm';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { CartItemEntity } from './cartItem.entity';
@@ -16,14 +10,26 @@ import { ProductImageEntity } from './productImage.entity';
 
 @Entity({ name: 'product' })
 export class ProductEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @ManyToOne(
     () => ProductCategoryEntity,
     (productCategory) => productCategory.products,
   )
-  category: Relation<ProductCategoryEntity>;
+  productCategory: Relation<ProductCategoryEntity>;
+
+  @OneToMany(() => ProductImageEntity, (productImage) => productImage.product)
+  productImages: Relation<ProductImageEntity>[] | string[];
+
+  @OneToMany(() => CartItemEntity, (cartItem) => cartItem.product)
+  cartItems: Relation<CartItemEntity>[] | string[];
+
+  @OneToMany(
+    () => CustomerOrderItemEntity,
+    (customerOrderItem) => customerOrderItem.product,
+  )
+  customerOrderItems: Relation<CustomerOrderItemEntity>[] | string[];
+
+  @OneToMany(() => ImportOrderEntity, (importOrder) => importOrder.product)
+  importOrders: Relation<ImportOrderEntity>[];
 
   @Column({
     unique: true,
@@ -36,7 +42,10 @@ export class ProductEntity extends AbstractEntity {
   @Column('decimal')
   retailPrice: number;
 
-  @Column('uuid')
+  @Column({
+    type: 'uuid',
+    nullable: true,
+  })
   defaultSupplierId: string;
 
   @Column()
@@ -45,24 +54,11 @@ export class ProductEntity extends AbstractEntity {
   @Column('int')
   shelfLife: number;
 
-  @Column()
+  @Column({
+    default: true,
+  })
   available: boolean;
 
   @Column('int')
   maxQuantity: number;
-
-  @OneToMany(() => ProductImageEntity, (productImage) => productImage.product)
-  productImages: Relation<ProductImageEntity>[];
-
-  @OneToMany(() => CartItemEntity, (cartItem) => cartItem.product)
-  cartItems: Relation<CartItemEntity>[];
-
-  @OneToMany(
-    () => CustomerOrderItemEntity,
-    (customerOrderItem) => customerOrderItem.product,
-  )
-  customerOrderItems: Relation<CustomerOrderItemEntity>[];
-
-  @OneToMany(() => ImportOrderEntity, (importOrder) => importOrder.product)
-  importOrders: Relation<ImportOrderEntity>[];
 }

@@ -1,4 +1,7 @@
 {
+  "CartItem.Id.Required": "Vui lòng nhập Mã.",
+  "CartItem.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "CartItem.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "CartItem.ProductId.Required": "Vui lòng nhập Mã sản phẩm.",
   "CartItem.CustomerId.Required": "Vui lòng nhập Mã khách hàng.",
   "CartItem.Quantity.Required": "Vui lòng nhập Số lượng.",

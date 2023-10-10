@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
-import { zodString, zodUuid } from './helper';
+import { zodDate, zodString, zodUuid } from './helper';
 import type { ProductModel } from './product.model';
 
 const ProductImageSchema = z.object({
   id: zodUuid('ProductImage.Id'),
+
+  createdAt: zodDate('ProductImage.CreatedAt'),
 
   product: zodUuid('ProductImage.ProductId'),
 

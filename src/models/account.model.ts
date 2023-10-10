@@ -7,6 +7,8 @@ import { zodDate, zodString, zodUuid } from './helper';
 const AccountSchema = z.object({
   id: zodUuid('Account.Id'),
 
+  createdAt: zodDate('Account.CreatedAt'),
+
   customer: zodUuid('Account.CustomerId').optional(),
 
   employee: zodUuid('Account.EmployeeId').optional(),

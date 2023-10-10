@@ -1,12 +1,14 @@
 import { z } from 'zod';
 
 import type { CustomerModel } from './customer.model';
-import { zodString, zodUuid } from './helper';
+import { zodDate, zodString, zodUuid } from './helper';
 
 import { CustomerAddressType } from 'backend/enums/Entities.enum';
 
 const CustomerAddressSchema = z.object({
   id: zodUuid('CustomerAddress.Id'),
+
+  createdAt: zodDate('CustomerAddress.CreatedAt'),
 
   customer: zodUuid('CustomerAddress.CustomerId'),
 

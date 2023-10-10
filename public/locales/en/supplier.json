@@ -1,5 +1,7 @@
 {
-  "Supplier.Id.Required": "Please enter the supplier ID.",
+  "Supplier.Id.Required": "Please enter the ID.",
+  "Supplier.CreatedAt.Required": "Please enter the creation date.",
+  "Supplier.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "Supplier.Name.Required": "Please enter the supplier name.",
   "Supplier.Name.Min": "Supplier name should be at least 3 characters.",
   "Supplier.Name.Max": "Supplier name should not exceed 50 characters.",

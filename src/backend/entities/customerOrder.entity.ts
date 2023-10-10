@@ -4,7 +4,6 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -16,19 +15,16 @@ import { OrderStatus, PaymentMethod } from 'backend/enums/Entities.enum';
 
 @Entity({ name: 'customer_order' })
 export class CustomerOrderEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @ManyToOne(() => CustomerEntity, (customer) => customer.orders, {
+  @ManyToOne(() => CustomerEntity, (customer) => customer.customerOrders, {
     nullable: true,
   })
-  customer: Relation<CustomerEntity>;
+  customer: Relation<CustomerEntity> | string;
 
   @OneToMany(
     () => CustomerOrderItemEntity,
     (customerOrderItem) => customerOrderItem.customerOrder,
   )
-  customerOrderItems: Relation<CustomerOrderItemEntity>[];
+  customerOrderItems: Relation<CustomerOrderItemEntity>[] | string[];
 
   @Column({ type: 'enum', enum: OrderStatus })
   status: OrderStatus;
@@ -78,6 +74,8 @@ export class CustomerOrderEntity extends AbstractEntity {
   })
   updatedAt: Date;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   cancellationReason: string;
 }

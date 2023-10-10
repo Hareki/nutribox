@@ -1,16 +1,18 @@
 import { z } from 'zod';
 
-import { zodString, zodUuid } from './helper';
+import { zodDate, zodString, zodUuid } from './helper';
 import type { ProductModel } from './product.model';
 
 const ProductCategorySchema = z.object({
   id: zodUuid('ProductCategory.Id'),
 
+  createdAt: zodDate('ProductCategory.CreatedAt'),
+
+  products: z.array(z.string().uuid()).optional(),
+
   available: z.boolean(),
 
   name: zodString('ProductCategory.Name', 3, 50),
-
-  products: z.array(z.string().uuid()).optional(),
 });
 
 type ProductCategoryModel = z.infer<typeof ProductCategorySchema>;

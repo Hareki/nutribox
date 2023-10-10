@@ -1,13 +1,13 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { StoreWorkTimeEntity } from './storeWorkTime.entity';
 
 @Entity({ name: 'store' })
 export class StoreEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @OneToMany(() => StoreWorkTimeEntity, (storeWorkTime) => storeWorkTime.store)
+  storeWorkTimes: Relation<StoreWorkTimeEntity>[] | string[];
 
   @Column({
     unique: true,
@@ -30,7 +30,4 @@ export class StoreEntity extends AbstractEntity {
 
   @Column()
   streetAddress: string;
-
-  @OneToMany(() => StoreWorkTimeEntity, (storeWorkTime) => storeWorkTime.store)
-  storeWorkTimes: Relation<StoreWorkTimeEntity>[];
 }

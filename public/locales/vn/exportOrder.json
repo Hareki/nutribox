@@ -1,4 +1,7 @@
 {
+  "ExportOrder.Id.Required": "Vui lòng nhập Mã.",
+  "ExportOrder.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "ExportOrder.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "ExportOrder.ImportOrderId.Required": "Vui lòng nhập Mã đơn nhập hàng.",
   "ExportOrder.CustomerOrderItemId.Required": "Vui lòng nhập Mã mặt hàng trong đơn đặt hàng của khách hàng.",
   "ExportOrder.Quantity.Required": "Vui lòng nhập số lượng.",

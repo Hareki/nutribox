@@ -1,5 +1,7 @@
 {
-  "Store.Id.Required": "Vui lòng nhập Mã cửa hàng.",
+  "Store.Id.Required": "Vui lòng nhập Mã.",
+  "Store.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
+  "Store.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "Store.Email.Required": "Vui lòng nhập email của cửa hàng.",
   "Store.Email.InvalidFormat": "Định dạng email của cửa hàng không hợp lệ.",
   "Store.Phone.Required": "Vui lòng nhập số điện thoại của cửa hàng.",

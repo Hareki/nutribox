@@ -2,27 +2,30 @@ import type { Relation } from 'typeorm';
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { CustomerOrderItemEntity } from './customerOrderItem.entity';
+import { ReviewResponseEntity } from './reviewResponse.entity';
 
 @Entity({ name: 'review' })
 export class ReviewEntity extends AbstractEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @OneToOne(() => CustomerOrderItemEntity)
+  @JoinColumn()
+  customerOrderItem: Relation<CustomerOrderItemEntity> | string;
+
+  @OneToOne(() => ReviewResponseEntity)
+  @JoinColumn()
+  reviewResponse: Relation<ReviewResponseEntity> | string;
 
   @UpdateDateColumn({
     type: 'timestamp without time zone',
     name: 'updated_at',
   })
   updatedAt: Date;
-
-  @OneToOne(() => CustomerOrderItemEntity)
-  customerOrderItem: Relation<CustomerOrderItemEntity>;
 
   @Column({
     type: 'text',

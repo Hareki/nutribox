@@ -1,5 +1,7 @@
 {
-  "ProductCategory.Id.Required": "Please enter the product category ID.",
+  "ProductCategory.Id.Required": "Please enter the ID.",
+  "ProductCategory.CreatedAt.Required": "Please enter the creation date.",
+  "ProductCategory.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "ProductCategory.Name.Required": "Please enter the product category name.",
   "ProductCategory.Name.Min": "Product category name should be at least 3 characters.",
   "ProductCategory.Name.Max": "Product category name should not exceed 50 characters.",
