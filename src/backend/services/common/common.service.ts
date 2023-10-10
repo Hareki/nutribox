@@ -14,36 +14,42 @@ export class CommonService {
     const { entity, filter, relations, select } = input;
     const repository: Repository<E> = await getRepo(entity);
 
-    const commonOptions = {
-      where: filter,
-      take: 1,
-      select,
-      order: {
-        createdAt: 'DESC',
-      } as any,
-    };
+    let queryBuilder = repository.createQueryBuilder(entity.name);
 
-    const recordsWithIds = await repository.find({
-      loadRelationIds: true,
-      ...commonOptions,
-    });
-
-    if (!relations || relations.length === 0) {
-      return recordsWithIds[0];
+    // By default, load relation IDs for all relations
+    const entityMetadata = repository.metadata;
+    for (const allRelationObjs of entityMetadata.relations) {
+      if (!relations || !relations.includes(allRelationObjs.propertyName)) {
+        queryBuilder = queryBuilder.loadRelationIdAndMap(
+          `${entity.name}.${allRelationObjs.propertyName}`,
+          `${entity.name}.${allRelationObjs.propertyName}`,
+        );
+      }
     }
 
-    const recordsWithRelations = await repository.find({
-      relations,
-      ...commonOptions,
-    });
+    if (relations && relations.length > 0) {
+      for (const relation of relations) {
+        queryBuilder = queryBuilder.leftJoinAndSelect(
+          `${entity.name}.${relation}`,
+          relation,
+        );
+      }
+    }
 
-    // Merge the two records
-    const mergedRecord: E = {
-      ...recordsWithIds[0],
-      ...recordsWithRelations[0],
-    };
+    if (filter) {
+      queryBuilder = queryBuilder.where(filter);
+    }
 
-    return mergedRecord;
+    if (select && select.length > 0) {
+      queryBuilder = queryBuilder.select(
+        select.map((field) => `${entity.name}.${String(field)}`),
+      );
+    }
+
+    queryBuilder = queryBuilder.orderBy(`${entity.name}.createdAt`, 'DESC');
+    queryBuilder = queryBuilder.take(1);
+
+    return queryBuilder.getOne();
   }
 
   public static async getRecords<E extends ObjectLiteral>(
@@ -61,42 +67,54 @@ export class CommonService {
     const { limit, page } = paginationParams;
     const repository: Repository<E> = await getRepo(entity);
 
+    let queryBuilder = repository.createQueryBuilder(entity.name);
+
+    const entityMetadata = repository.metadata;
+
+    // By default, load relation IDs for all relations
+    for (const allRelationObjs of entityMetadata.relations) {
+      if (!relations || !relations.includes(allRelationObjs.propertyName)) {
+        queryBuilder = queryBuilder.loadRelationIdAndMap(
+          `${entity.name}.${allRelationObjs.propertyName}`, // field name contains relation ID
+          `${entity.name}.${allRelationObjs.propertyName}`, // reference to relation object
+        );
+      }
+    }
+
+    if (relations && relations.length > 0) {
+      for (const relation of relations) {
+        queryBuilder = queryBuilder.leftJoinAndSelect(
+          `${entity.name}.${relation}`,
+          relation,
+        );
+      }
+    }
+
     const finalFilter = (filter || {}) as Record<string, any>;
     if (!getAll) {
       finalFilter.active = true;
     }
 
-    const commonOptions = {
-      where: finalFilter,
-      skip: (page - 1) * limit,
-      take: limit,
-      select,
-      order: order || ({ createdAt: 'DESC' } as any),
-    };
-
-    // Initial query with loadRelationIds
-    const [recordsWithIds, totalRecords] = await repository.findAndCount({
-      loadRelationIds: true,
-      ...commonOptions,
-    });
-
-    if (!relations || relations.length === 0) {
-      return [recordsWithIds, totalRecords];
+    if (finalFilter) {
+      queryBuilder = queryBuilder.where(finalFilter);
     }
 
-    // Now, find records with actual relations to populate the relation objects
-    const recordsWithRelations = await repository.find({
-      relations,
-      ...commonOptions,
-    });
+    if (select && select.length > 0) {
+      queryBuilder = queryBuilder.select(
+        select.map((field) => `${entity.name}.${String(field)}`),
+      );
+    }
 
-    // Merge the two record lists. Since we're working with arrays here, you might want to map and spread.
-    const mergedRecords = recordsWithIds.map((record, index) => ({
-      ...record,
-      ...recordsWithRelations[index],
-    }));
+    queryBuilder = queryBuilder.skip((page - 1) * limit);
+    queryBuilder = queryBuilder.take(limit);
+    queryBuilder = queryBuilder.orderBy(
+      order || { [`${entity.name}.createdAt`]: 'DESC' },
+    );
 
-    return [mergedRecords, totalRecords];
+    const records = await queryBuilder.getMany();
+    const totalRecords = await queryBuilder.getCount();
+
+    return [records, totalRecords];
   }
 
   public static async getRecordsByKeyword<E extends ObjectLiteral>(
@@ -104,42 +122,68 @@ export class CommonService {
   ): Promise<E[]> {
     const { entity, searchParams, filter, relations, select, getAll, order } =
       input;
+
     const { keyword, fieldName, limit } = searchParams;
     const repository: Repository<E> = await getRepo(entity);
 
-    let finalWhere: any;
-    if (Array.isArray(filter)) {
-      finalWhere = filter.map((element) => {
-        const result: Record<string, any> = {
-          ...element,
-          [fieldName]: ILike(`%${keyword}%`),
-        };
-        if (!getAll) {
-          result.active = true;
-        }
-        return result;
-      });
-    } else {
-      finalWhere = {
-        ...filter,
-        [fieldName]: ILike(`%${keyword}%`),
-      };
-      if (!getAll) {
-        finalWhere.active = true;
+    let queryBuilder = repository.createQueryBuilder(entity.name);
+
+    const entityMetadata = repository.metadata;
+
+    // By default, load relation IDs for all relations
+    for (const allRelationObjs of entityMetadata.relations) {
+      if (!relations || !relations.includes(allRelationObjs.propertyName)) {
+        queryBuilder = queryBuilder.loadRelationIdAndMap(
+          `${entity.name}.${allRelationObjs.propertyName}Id`,
+          `${entity.name}.${allRelationObjs.propertyName}`,
+        );
       }
     }
 
-    const commonOptions = {
-      where: finalWhere,
-      take: limit,
-      select,
-      order: order || ({ createdAt: 'DESC' } as any),
-    };
+    if (relations && relations.length > 0) {
+      for (const relation of relations) {
+        queryBuilder = queryBuilder.leftJoinAndSelect(
+          `${entity.name}.${relation}`,
+          relation,
+        );
+      }
+    }
 
-    const records: E[] = await repository.find({
-      ...commonOptions,
-      relations,
-    });
+    if (Array.isArray(filter)) {
+      queryBuilder = queryBuilder.where(
+        filter.map((element) => ({
+          ...element,
+          [fieldName]: ILike(`%${keyword}%`),
+        })),
+      );
+    } else {
+      queryBuilder = queryBuilder.where({
+        ...filter,
+        [fieldName]: ILike(`%${keyword}%`),
+      });
+    }
+
+    if (!getAll) {
+      queryBuilder = queryBuilder.andWhere('active = :active', {
+        active: true,
+      });
+    }
+
+    if (select && select.length > 0) {
+      queryBuilder = queryBuilder.select(
+        select.map((field) => `${entity.name}.${String(field)}`),
+      );
+    }
+
+    queryBuilder = queryBuilder.orderBy(
+      order || { [`${entity.name}.createdAt`]: 'DESC' },
+    );
+
+    if (limit) {
+      queryBuilder = queryBuilder.take(limit);
+    }
+
+    const records = await queryBuilder.getMany();
 
     return records;
   }

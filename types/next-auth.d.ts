@@ -1,33 +1,26 @@
-import type { IAccount } from 'api/models/Account.model/types';
+import type {
+  AccountWithPopulatedSide,
+  CredentialInputs,
+} from 'backend/types/auth';
+import type { FullyPopulatedAccountModel } from 'models/account.model';
 
-// OVERWRITE THE NEXT-AUTH TYPES (OFFICIAL DOCUMENTATION)
 declare module 'next-auth' {
-  // interface Session {
-  //   user: {
-  //     /** The user's unique identifier. */
-  //     id: string;
-  //     /** The user's role. */
-  //     role: 'ADMIN' | 'CUSTOMER' | 'SUPPLIER';
-  //   } & DefaultSession['user'];
-  // }
-
   interface Session {
-    user: Pick<
-      IAccount,
-      | 'id'
-      | 'fullName'
-      | 'firstName'
-      | 'lastName'
-      | 'email'
-      | 'avatarUrl'
-      | 'role'
-      | 'verified'
-    >;
+    user: Omit<FullyPopulatedAccountModel, 'password'> & {
+      password?: string;
+    };
   }
 
-  interface User
-    extends Pick<
-      IAccount,
-      'id' | 'fullName' | 'email' | 'avatarUrl' | 'role' | 'verified'
-    > {}
+  interface User extends AccountWithPopulatedSide {}
+}
+
+declare module 'next-auth/react' {
+  export interface SignInOptions extends CredentialInputs {}
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    accountId?: string;
+    exp?: number;
+  }
 }

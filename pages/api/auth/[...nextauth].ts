@@ -2,6 +2,12 @@ import type { AuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+import { AccountEntity } from 'backend/entities/account.entity';
+import { AccountService } from 'backend/services/account/account.service';
+import { CommonService } from 'backend/services/common/common.service';
+import type { CredentialInputs } from 'backend/types/auth';
+import type { FullyPopulatedAccountModel } from 'models/account.model';
+
 export const authOptions: AuthOptions = {
   pages: {
     signIn: '/login',
@@ -10,36 +16,39 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.userId = user.id;
+        token.accountId = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      // const freshUser = await CommonService.getRecord({
-      //   entity: AccountEntity,
-      //   filter: {
-      //     id: token.userId,
-      //   },
-      //   relations: ['lecturer'],
-      // });
-      // session.user = freshUser;
+      const account = (await CommonService.getRecord({
+        entity: AccountEntity,
+        filter: {
+          id: token.accountId,
+        },
+        relations: ['customer', 'employee'],
+      })) as FullyPopulatedAccountModel;
+      console.log('file: [...nextauth].ts:31 - session - account:', account);
 
-      // delete session.user.password;
-      // delete session.user.createdAt;
-      // delete session.user.updatedAt;
+      session.user = account;
+      delete session.user.password;
+      delete session.user.verificationToken;
+      delete session.user.verificationTokenExpiry;
+      delete session.user.forgotPasswordToken;
+      delete session.user.forgotPasswordTokenExpiry;
 
       return session;
     },
   },
   providers: [
     CredentialsProvider({
-      name: 'MCE',
+      name: 'Nutribox',
       credentials: {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
 
-      async authorize(credentials) {
+      async authorize(credentials: CredentialInputs) {
         /* 
         INSTRUCTIONS:
         
@@ -52,23 +61,21 @@ export const authOptions: AuthOptions = {
 
         if (!credentials) return null;
 
-        // const { email, password } = credentials;
-        // const user = await AccountService.checkCredentials(
-        //   {
-        //     email,
-        //   },
-        //   password,
-        // );
-        // if (user) {
-        //   if (!user.enable) {
-        //     throw new Error('account is not activated!');
-        //   }
-        //   if (!user.active) {
-        //     throw new Error('account is disabled!');
-        //   }
-        //   return user;
-        // }
-        return null;
+        const { email, password, userType } = credentials;
+        const account = await AccountService.checkCredentials(
+          {
+            email,
+          },
+          password,
+          userType,
+        );
+
+        if (!account) return null;
+
+        if (!account.verified) throw new Error('account is not verified yet!');
+        if (account.disabled) throw new Error('account is disabled!');
+
+        return account;
       },
     }),
   ],
