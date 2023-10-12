@@ -1,3 +1,4 @@
+import type { EmployeeRole } from 'backend/enums/Entities.enum';
 import type {
   AccountWithPopulatedSide,
   CredentialInputs,
@@ -21,6 +22,7 @@ declare module 'next-auth/react' {
 declare module 'next-auth/jwt' {
   interface JWT {
     accountId?: string;
+    employeeRole?: EmployeeRole | undefined;
     exp?: number;
   }
 }

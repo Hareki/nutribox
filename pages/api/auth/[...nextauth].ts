@@ -15,8 +15,10 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        token.accountId = user.id;
+      const castedUser = user as FullyPopulatedAccountModel;
+      if (castedUser) {
+        token.accountId = castedUser.id;
+        token.employeeRole = castedUser.employee?.role;
       }
       return token;
     },
@@ -28,7 +30,6 @@ export const authOptions: AuthOptions = {
         },
         relations: ['customer', 'employee'],
       })) as FullyPopulatedAccountModel;
-      console.log('file: [...nextauth].ts:31 - session - account:', account);
 
       session.user = account;
       delete session.user.password;

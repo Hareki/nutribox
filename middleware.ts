@@ -1,52 +1,119 @@
-import type { NextFetchEvent } from 'next/server';
+import { NOTFOUND } from 'dns';
+
+import { fromUnixTime } from 'date-fns';
+import { StatusCodes } from 'http-status-codes';
 import { NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 
-// NextJS Middleware in combination with NextAuth
+import type { EmployeeRole } from 'backend/enums/Entities.enum';
+import type { JSError } from 'backend/types/jsend';
+import type { MethodRoutePair, RequestMethod } from 'backend/types/utils';
+import {
+  CashierApiRoutes,
+  CustomerApiRoutes,
+  ManagerApiRoutes,
+  PublicApiRoutes,
+  ShipperApiRoutes,
+  WarehouseManagerApiRoutes,
+} from 'constants/routes.api.constant';
+import {
+  CashierRoutes,
+  CustomerRoutes,
+  ManagerRoutes,
+  NOT_FOUND_ROUTE,
+  PublicRoutes,
+  ShipperRoutes,
+  WarehouseManagerRoutes,
+} from 'constants/routes.ui.constant';
+
+type Role = Exclude<keyof typeof EmployeeRole | 'CUSTOMER', 'WAREHOUSE_STAFF'>;
+
+export function isAuthorized(
+  url: string,
+  method: RequestMethod,
+  role: Role,
+): boolean {
+  const roleToRoutesMap: Record<Role, (string | MethodRoutePair)[]> = {
+    ['MANAGER']: [...ManagerRoutes, ...ManagerApiRoutes],
+    ['CASHIER']: [...CashierRoutes, ...CashierApiRoutes],
+    ['WAREHOUSE_MANAGER']: [
+      ...WarehouseManagerRoutes,
+      ...WarehouseManagerApiRoutes,
+    ],
+    ['SHIPPER']: [...ShipperRoutes, ...ShipperApiRoutes],
+    ['CUSTOMER']: [...CustomerRoutes, ...CustomerApiRoutes],
+  };
+
+  const roleRoutes = roleToRoutesMap[role];
+
+  for (const route of roleRoutes) {
+    if (typeof route === 'string') {
+      if (route === url) return true;
+    } else if ('route' in route) {
+      if (route.route === url && route.methods.includes(method)) return true;
+    }
+  }
+
+  return false;
+}
+
 export default withAuth(
-  async function middleware(req, event: NextFetchEvent) {
-    const notFoundUrl = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/404`;
-    const loginUrl = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/login`;
+  async function middleware(req) {
+    const { url, method } = req;
+    console.log('file: middleware.ts:60 - middleware - url:', url);
+    const { token } = req.nextauth;
+    console.log('file: middleware.ts:62 - middleware - token:', token);
 
-    const token = req.nextauth.token;
-    const isAdmin = token?.role === 'ADMIN';
-    // const isCustomer = token?.role === 'CUSTOMER';
-
-    if (!token) {
-      console.log('Token not found, redirecting to login page');
-      return NextResponse.redirect(loginUrl);
+    if (
+      PublicRoutes.includes(url) ||
+      PublicApiRoutes.some(
+        (routePair) =>
+          routePair.route === url &&
+          routePair.methods.includes(method as RequestMethod),
+      )
+    ) {
+      return undefined; // Allow public route requests to pass through
     }
 
-    if (req.url.startsWith('/api/admin') && !isAdmin) {
-      console.log(
-        'Token found, but account is not authorized, redirecting to 404 page',
-      );
-      return NextResponse.redirect(notFoundUrl);
+    console.log('get here?');
+
+    const employeeRole = token?.employeeRole;
+    const hasValidToken = !!token && fromUnixTime(token.exp || 0) > new Date();
+
+    if (hasValidToken && employeeRole) {
+      if (
+        isAuthorized(
+          url,
+          method as RequestMethod,
+          (employeeRole || 'CUSTOMER').toString() as Role,
+        )
+      ) {
+        console.log('is authorized');
+        return undefined;
+      }
     }
+
+    const response: JSError = {
+      status: 'error',
+      message: 'Unauthorized',
+      code: StatusCodes.UNAUTHORIZED,
+    };
+
+    console.log('is not authorized');
+
+    // return new NextResponse(JSON.stringify(response), {
+    //   status: StatusCodes.UNAUTHORIZED,
+    //   headers: { 'content-type': 'application/json' },
+    // });
+    return NextResponse.redirect(NOT_FOUND_ROUTE);
   },
   {
     callbacks: {
-      // authorized: ({ token, req }) => {
-      //   if (!token) return false;
-
-      //   if (req.url.startsWith('/api/admin')) {
-      //     (req as any).isAuthenticated = true;
-      //     return token.role === 'ADMIN';
-      //   } else {
-      //     return token.role === 'ADMIN' || token.role === 'CUSTOMER';
-      //   }
-      // },
       authorized: () => true,
     },
   },
 );
 
 export const config = {
-  matcher: [
-    '/api/admin/:path*',
-    '/api/profile/:path*',
-    '/api/cart/:accountId',
-    '/checkout',
-    '/distance',
-  ],
+  matcher: '/((?!404|assets/).*)',
 };
