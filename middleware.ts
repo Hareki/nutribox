@@ -1,14 +1,12 @@
-import { NOTFOUND } from 'dns';
-
 import { fromUnixTime } from 'date-fns';
 import { StatusCodes } from 'http-status-codes';
 import { NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 
 import type { EmployeeRole } from 'backend/enums/Entities.enum';
-import type { JSError } from 'backend/types/jsend';
 import type { MethodRoutePair, RequestMethod } from 'backend/types/utils';
 import {
+  API_BASE_ROUTE,
   CashierApiRoutes,
   CustomerApiRoutes,
   ManagerApiRoutes,
@@ -60,9 +58,7 @@ export function isAuthorized(
 export default withAuth(
   async function middleware(req) {
     const { url, method } = req;
-    console.log('file: middleware.ts:60 - middleware - url:', url);
     const { token } = req.nextauth;
-    console.log('file: middleware.ts:62 - middleware - token:', token);
 
     if (
       PublicRoutes.includes(url) ||
@@ -75,12 +71,10 @@ export default withAuth(
       return undefined; // Allow public route requests to pass through
     }
 
-    console.log('get here?');
-
     const employeeRole = token?.employeeRole;
     const hasValidToken = !!token && fromUnixTime(token.exp || 0) > new Date();
 
-    if (hasValidToken && employeeRole) {
+    if (hasValidToken) {
       if (
         isAuthorized(
           url,
@@ -88,24 +82,26 @@ export default withAuth(
           (employeeRole || 'CUSTOMER').toString() as Role,
         )
       ) {
-        console.log('is authorized');
         return undefined;
       }
     }
 
-    const response: JSError = {
-      status: 'error',
-      message: 'Unauthorized',
-      code: StatusCodes.UNAUTHORIZED,
-    };
+    const isApiRoute = url.startsWith(API_BASE_ROUTE);
+    if (!isApiRoute) {
+      return NextResponse.redirect(NOT_FOUND_ROUTE);
+    }
 
-    console.log('is not authorized');
-
-    // return new NextResponse(JSON.stringify(response), {
-    //   status: StatusCodes.UNAUTHORIZED,
-    //   headers: { 'content-type': 'application/json' },
-    // });
-    return NextResponse.redirect(NOT_FOUND_ROUTE);
+    return new NextResponse(
+      JSON.stringify({
+        status: 'error',
+        message: 'Unauthorized',
+        code: StatusCodes.UNAUTHORIZED,
+      }),
+      {
+        status: StatusCodes.UNAUTHORIZED,
+        headers: { 'content-type': 'application/json' },
+      },
+    );
   },
   {
     callbacks: {

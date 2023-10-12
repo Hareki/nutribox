@@ -17,16 +17,21 @@ const AccountSchema = z.object({
     message: 'Account.Email.InvalidFormat',
   }),
 
-  password: zodString('Account.Password', 6, 50).refine((password) => {
-    const hasUppercase = /[A-Z]/.test(password);
+  password: zodString('Account.Password', 6, 50).refine(
+    (password) => {
+      const hasUppercase = /[A-Z]/.test(password);
 
-    // eslint-disable-next-line no-useless-escape
-    const hasSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(
-      password,
-    );
+      // eslint-disable-next-line no-useless-escape
+      const hasSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(
+        password,
+      );
 
-    return hasUppercase && hasSpecialCharacter;
-  }),
+      return hasUppercase && hasSpecialCharacter;
+    },
+    {
+      message: 'Account.Password.InvalidFormat',
+    },
+  ),
 
   avatarUrl: zodString('Account.AvatarUrl', 1, 500).optional(),
 
