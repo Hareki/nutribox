@@ -21,7 +21,7 @@ export const PublicRoutes = [
   FORGOT_PASSWORD_ROUTE,
   RESET_PASSWORD_ROUTE,
   PRODUCT_DETAIL_ROUTE,
-  // TESTING_ROUTE,
+  TESTING_ROUTE,
 ];
 
 export const PROFILE_ROUTE = `${BASE_ROUTE}/profile`;
@@ -92,8 +92,6 @@ export const ManagerRoutes = [
   SUPPLIER_DETAIL_STAFF_ROUTE,
 
   STORE_DETAIL_STAFF_ROUTE,
-
-  TESTING_ROUTE,
 ];
 
 export const WarehouseManagerRoutes = [
