@@ -1,4 +1,4 @@
-# Fresh Food and Essentials Retail Management System (FFERMS)
+# Xây dựng hệ thống quản lý mua bán thực phẩm tươi sống và nhu yếu phẩm
 
 ## Overview
 
