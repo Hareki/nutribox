@@ -53,3 +53,9 @@ export const removeQueryParameters = (urlString) => {
   const url = new URL(urlString);
   return url.origin + url.pathname;
 };
+
+export const matchesRoute = (url: string, route: string) => {
+  // Replace :id (or any other placeholder starting with ":") with a regex pattern
+  const pattern = new RegExp(`^${route.replace(/:\w+/g, '([^/]+)')}$`);
+  return pattern.test(url);
+};

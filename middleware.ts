@@ -7,7 +7,11 @@ import type { RequestMethod } from 'backend/types/utils';
 import { API_BASE_ROUTE, PublicApiRoutes } from 'constants/routes.api.constant';
 import { NOT_FOUND_ROUTE, PublicRoutes } from 'constants/routes.ui.constant';
 import type { Role } from 'utils/middleware.helper';
-import { isAuthorized, removeQueryParameters } from 'utils/middleware.helper';
+import {
+  isAuthorized,
+  matchesRoute,
+  removeQueryParameters,
+} from 'utils/middleware.helper';
 
 export default withAuth(
   async function middleware(req) {
@@ -19,7 +23,7 @@ export default withAuth(
       PublicRoutes.includes(url) ||
       PublicApiRoutes.some(
         (routePair) =>
-          routePair.route === url &&
+          matchesRoute(url, routePair.route) &&
           routePair.methods.includes(method as RequestMethod),
       )
     ) {

@@ -5,7 +5,10 @@ import type { MethodRoutePair } from 'backend/types/utils';
 export const API_BASE_ROUTE = `${BASE_ROUTE}/api`;
 export const API_BASE_STAFF_ROUTE = `${API_BASE_ROUTE}/staff`;
 
-export const PRODUCTS_API_ROUTE = `${API_BASE_ROUTE}/products/:path*`;
+export const PRODUCTS_API_ROUTE = `${API_BASE_ROUTE}/products`;
+export const PRODUCT_DETAIL_API_ROUTE = `${PRODUCTS_API_ROUTE}/:id`;
+export const NEW_PRODUCTS_API_ROUTE = `${PRODUCTS_API_ROUTE}/new`;
+export const HOT_PRODUCTS_API_ROUTE = `${PRODUCTS_API_ROUTE}/hot`;
 export const SIGN_UP_API_ROUTE = `${API_BASE_ROUTE}/sign-up`;
 export const VERIFY_EMAIL_API_ROUTE = `${API_BASE_ROUTE}/verify-email`;
 export const FORGOT_PASSWORD_API_ROUTE = `${API_BASE_ROUTE}/password/forgot`;
@@ -17,6 +20,18 @@ export const PublicApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET'],
     route: PRODUCTS_API_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: PRODUCT_DETAIL_API_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: NEW_PRODUCTS_API_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: HOT_PRODUCTS_API_ROUTE,
   },
   {
     methods: ['POST'],

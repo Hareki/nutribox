@@ -10,7 +10,7 @@ import type { FullyPopulatedAccountModel } from 'models/account.model';
 
 export const authOptions: AuthOptions = {
   pages: {
-    signIn: '/login',
+    signIn: '/sign-in',
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
