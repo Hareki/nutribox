@@ -30,8 +30,8 @@ export class CommonService {
     if (relations && relations.length > 0) {
       for (const relation of relations) {
         queryBuilder = queryBuilder.leftJoinAndSelect(
-          `${entity.name}.${relation}`,
-          relation,
+          `${entity.name}.${String(relation)}`,
+          String(relation),
         );
       }
     }
@@ -55,15 +55,8 @@ export class CommonService {
   public static async getRecords<E extends ObjectLiteral>(
     input: GetRecordsInputs<E>,
   ): Promise<[E[], number]> {
-    const {
-      entity,
-      paginationParams,
-      filter,
-      relations,
-      select,
-      getAll,
-      order,
-    } = input;
+    const { entity, paginationParams, filter, relations, select, order } =
+      input;
     const { limit, page } = paginationParams;
     const repository: Repository<E> = await getRepo(entity);
 
@@ -84,16 +77,13 @@ export class CommonService {
     if (relations && relations.length > 0) {
       for (const relation of relations) {
         queryBuilder = queryBuilder.leftJoinAndSelect(
-          `${entity.name}.${relation}`,
-          relation,
+          `${entity.name}.${String(relation)}`,
+          String(relation),
         );
       }
     }
 
     const finalFilter = (filter || {}) as Record<string, any>;
-    if (!getAll) {
-      finalFilter.active = true;
-    }
 
     if (finalFilter) {
       queryBuilder = queryBuilder.where(finalFilter);
@@ -120,8 +110,7 @@ export class CommonService {
   public static async getRecordsByKeyword<E extends ObjectLiteral>(
     input: GetRecordsByKeywordInputs<E>,
   ): Promise<E[]> {
-    const { entity, searchParams, filter, relations, select, getAll, order } =
-      input;
+    const { entity, searchParams, filter, relations, select, order } = input;
 
     const { keyword, fieldName, limit } = searchParams;
     const repository: Repository<E> = await getRepo(entity);
@@ -143,8 +132,8 @@ export class CommonService {
     if (relations && relations.length > 0) {
       for (const relation of relations) {
         queryBuilder = queryBuilder.leftJoinAndSelect(
-          `${entity.name}.${relation}`,
-          relation,
+          `${entity.name}.${String(relation)}`,
+          String(relation),
         );
       }
     }
@@ -160,12 +149,6 @@ export class CommonService {
       queryBuilder = queryBuilder.where({
         ...filter,
         [fieldName]: ILike(`%${keyword}%`),
-      });
-    }
-
-    if (!getAll) {
-      queryBuilder = queryBuilder.andWhere('active = :active', {
-        active: true,
       });
     }
 
