@@ -32,7 +32,7 @@ const customerOrderSeeds: CustomerOrderSeed[] = [
     updatedBy: 'e31e759a-edb9-40e8-bb2a-fb6b9e65d986',
     total: 35_000,
     profit: 16_500,
-    status: OrderStatus.PENDING,
+    status: OrderStatus.SHIPPED,
     estimatedDeliveryTime: new Date('2024-09-13'),
     estimatedDistance: 10,
   },

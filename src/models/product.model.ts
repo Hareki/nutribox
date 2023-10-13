@@ -84,6 +84,8 @@ type PopulateField<K extends keyof ProductModel> = K extends 'category'
   ? CartItemModel[]
   : K extends 'importOrders'
   ? ImportOrderModel[]
+  : K extends 'productCategory'
+  ? ProductCategoryModel
   : never;
 
 type PopulateProductFields<K extends ProductReferenceKeys> = Omit<

@@ -40,6 +40,7 @@ export const PREPARATION_TIME = 10; // in minutes
 export const MAX_DELIVERY_RANGE = 10; // in km
 export const MAX_DELIVERY_DURATION = 45; // in minutes
 
+// MONGODB, DEPRECATED
 export const OrderStatus = Object.freeze({
   Pending: { id: '641ae36318e353f785a7f695', name: 'Chờ xác nhận' },
   Processing: { id: '641ae39318e353f785a7f696', name: 'Đang xử lý' },
