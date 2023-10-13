@@ -6,16 +6,16 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
+import { serialize } from 'api/helpers/object.helper';
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 import { useReducer } from 'react';
 
-import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import ConfirmDialog from 'components/dialog/confirm-dialog';
@@ -117,9 +117,8 @@ function AdminOrderDetails({ initialOrder }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
   const isValidId = Types.ObjectId.isValid(context.params.id as string);

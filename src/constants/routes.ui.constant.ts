@@ -8,7 +8,7 @@ export const NOT_FOUND_ROUTE = `${BASE_ROUTE}/404`;
 export const VERIFICATION_RESULT_ROUTE = `${BASE_ROUTE}/verification-result`;
 export const FORGOT_PASSWORD_ROUTE = `${BASE_ROUTE}/forgot-password`;
 export const RESET_PASSWORD_ROUTE = `${BASE_ROUTE}/reset-password`;
-export const PRODUCT_DETAIL_ROUTE = `${BASE_ROUTE}/products/:slug-id`;
+export const PRODUCT_DETAIL_ROUTE = `${BASE_ROUTE}/products/:slug`;
 
 export const TESTING_ROUTE = `${BASE_ROUTE}/testing`;
 
@@ -42,8 +42,10 @@ export const CustomerRoutes = [
 
 export const DASHBOARD_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/dashboard`;
 export const PROFILE_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/profile`;
+
 export const CUSTOMERS_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/customers`;
 export const CUSTOMER_DETAIL_STAFF_ROUTE = `${CUSTOMERS_STAFF_ROUTE}/:id`;
+
 export const ORDERS_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/orders`;
 export const ORDERS_DETAIL_STAFF_ROUTE = `${ORDERS_STAFF_ROUTE}/:id`;
 
@@ -63,7 +65,7 @@ export const SUPPLIERS_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/suppliers`;
 export const SUPPLIER_DETAIL_STAFF_ROUTE = `${SUPPLIERS_STAFF_ROUTE}/:id`;
 export const NEW_SUPPLIER_ROUTE = `${SUPPLIERS_STAFF_ROUTE}/new`;
 
-export const STORE_DETAIL_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/store/:id`;
+export const STORE_DETAIL_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/stores/:id`;
 export const COUNTER_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/counter`;
 
 export const ManagerRoutes = [
