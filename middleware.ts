@@ -3,62 +3,17 @@ import { StatusCodes } from 'http-status-codes';
 import { NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 
-import type { EmployeeRole } from 'backend/enums/Entities.enum';
-import type { MethodRoutePair, RequestMethod } from 'backend/types/utils';
-import {
-  API_BASE_ROUTE,
-  CashierApiRoutes,
-  CustomerApiRoutes,
-  ManagerApiRoutes,
-  PublicApiRoutes,
-  ShipperApiRoutes,
-  WarehouseManagerApiRoutes,
-} from 'constants/routes.api.constant';
-import {
-  CashierRoutes,
-  CustomerRoutes,
-  ManagerRoutes,
-  NOT_FOUND_ROUTE,
-  PublicRoutes,
-  ShipperRoutes,
-  WarehouseManagerRoutes,
-} from 'constants/routes.ui.constant';
-
-type Role = Exclude<keyof typeof EmployeeRole | 'CUSTOMER', 'WAREHOUSE_STAFF'>;
-
-export function isAuthorized(
-  url: string,
-  method: RequestMethod,
-  role: Role,
-): boolean {
-  const roleToRoutesMap: Record<Role, (string | MethodRoutePair)[]> = {
-    ['MANAGER']: [...ManagerRoutes, ...ManagerApiRoutes],
-    ['CASHIER']: [...CashierRoutes, ...CashierApiRoutes],
-    ['WAREHOUSE_MANAGER']: [
-      ...WarehouseManagerRoutes,
-      ...WarehouseManagerApiRoutes,
-    ],
-    ['SHIPPER']: [...ShipperRoutes, ...ShipperApiRoutes],
-    ['CUSTOMER']: [...CustomerRoutes, ...CustomerApiRoutes],
-  };
-
-  const roleRoutes = roleToRoutesMap[role];
-
-  for (const route of roleRoutes) {
-    if (typeof route === 'string') {
-      if (route === url) return true;
-    } else if ('route' in route) {
-      if (route.route === url && route.methods.includes(method)) return true;
-    }
-  }
-
-  return false;
-}
+import type { RequestMethod } from 'backend/types/utils';
+import { API_BASE_ROUTE, PublicApiRoutes } from 'constants/routes.api.constant';
+import { NOT_FOUND_ROUTE, PublicRoutes } from 'constants/routes.ui.constant';
+import type { Role } from 'utils/middleware.helper';
+import { isAuthorized, removeQueryParameters } from 'utils/middleware.helper';
 
 export default withAuth(
   async function middleware(req) {
-    const { url, method } = req;
+    const { url: rawUrl, method } = req;
     const { token } = req.nextauth;
+    const url = removeQueryParameters(rawUrl);
 
     if (
       PublicRoutes.includes(url) ||
@@ -68,7 +23,7 @@ export default withAuth(
           routePair.methods.includes(method as RequestMethod),
       )
     ) {
-      return undefined; // Allow public route requests to pass through
+      return undefined;
     }
 
     const employeeRole = token?.employeeRole;
