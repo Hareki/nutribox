@@ -36,4 +36,6 @@ next-env.d.ts
 .vercel
 
 .vscode/launch.json
+pages/testing.tsx
+pages/api/testing.ts
 
