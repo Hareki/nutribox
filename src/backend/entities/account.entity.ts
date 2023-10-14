@@ -19,7 +19,9 @@ export class AccountEntity extends AbstractEntity {
   @JoinColumn()
   employee: Relation<EmployeeEntity> | string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   email: string;
 
   @Column()

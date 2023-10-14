@@ -16,7 +16,7 @@ type AccountSeed = Pick<AccountEntity, 'email' | 'password' | 'verified'> & {
 const accountSeeds: AccountSeed[] = [
   {
     email: 'admin@gmail.com',
-    password: hashPassword('123456'),
+    password: hashPassword('Admin@123'),
     employee: {
       id: 'e18e7d23-55bd-48b0-b2fd-64ca6932df27',
     },
@@ -24,7 +24,7 @@ const accountSeeds: AccountSeed[] = [
   },
   {
     email: 'customer@gmail.com',
-    password: hashPassword('123456'),
+    password: hashPassword('Admin@123'),
     customer: {
       id: 'e31e759a-edb9-40e8-bb2a-fb6b9e65d986',
     },

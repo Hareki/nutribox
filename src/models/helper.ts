@@ -1,4 +1,6 @@
 import { z } from 'zod';
+
+import { DATE_REGEX } from 'constants/regex.constant';
 export type RefinementParameters<T> = [
   (data: T) => boolean,
   { message: string; path: string[] },
@@ -34,9 +36,13 @@ export const zodDate = (prefix: string) =>
       required_error: `${prefix}.Required`,
     })
     .or(
-      z.string({
-        required_error: `${prefix}.Required`,
-      }),
+      z
+        .string({
+          required_error: `${prefix}.Required`,
+        })
+        .regex(DATE_REGEX, {
+          message: `${prefix}.InvalidFormat`,
+        }),
     )
     .refine(
       (data) => {

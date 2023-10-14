@@ -1,11 +1,16 @@
-import type { CredentialsIdentifier } from './types';
+import { omit } from 'lodash';
 
+import type { CredentialsIdentifier } from './helper';
+
+import type { SignUpDto } from 'backend/dtos/sign-up.dto';
 import { AccountEntity } from 'backend/entities/account.entity';
+import { CustomerEntity } from 'backend/entities/customer.entity';
+import { handleTypeOrmError } from 'backend/handlers/commonHandlers';
 import type { AccountWithPopulatedSide, UserType } from 'backend/types/auth';
 import { hashPassword } from 'backend/utils/auth.helper';
 import { getRepo } from 'backend/utils/database.helper';
 import type { FullyPopulatedAccountModel } from 'models/account.model';
-
+import type { CustomerModel } from 'models/customer.model';
 export class AccountService {
   public static async checkCredentials<U extends UserType>(
     identifier: CredentialsIdentifier,
@@ -38,5 +43,35 @@ export class AccountService {
       return account;
     }
     return null;
+  }
+
+  public static async createCustomerAccount(
+    dto: SignUpDto,
+  ): Promise<AccountWithPopulatedSide<'customer'>> {
+    const accountRepo = await getRepo(AccountEntity);
+    const customerRepo = await getRepo(CustomerEntity);
+
+    const hashedPassword = hashPassword(dto.password);
+
+    try {
+      const customer = (await customerRepo.save({
+        ...omit(dto, ['password']),
+      })) as CustomerModel;
+
+      const account = await accountRepo.save({
+        email: dto.email,
+        password: hashedPassword,
+        customer: {
+          id: customer.id,
+        },
+      });
+
+      return {
+        ...account,
+        customer,
+      };
+    } catch (error) {
+      return handleTypeOrmError(error);
+    }
   }
 }
