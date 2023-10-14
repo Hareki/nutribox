@@ -18,7 +18,6 @@ export const handleAccountError = (error: any, res: NextApiResponse) => {
   }
 
   if (error instanceof EntityNotFoundError) {
-    console.log('GET HERE 123');
     errorCode = StatusCodes.BAD_REQUEST;
     data = { email: 'Account.VerificationToken.Invalid' };
   }

@@ -3,7 +3,7 @@ import { MoreThan } from 'typeorm';
 
 import type { CredentialsIdentifier } from './helper';
 
-import type { SignUpDto } from 'backend/dtos/sign-up.dto';
+import type { SignUpDto } from 'backend/dtos/signUp.dto';
 import { AccountEntity } from 'backend/entities/account.entity';
 import { CustomerEntity } from 'backend/entities/customer.entity';
 import { handleTypeOrmError } from 'backend/handlers/commonHandlers';
@@ -97,6 +97,35 @@ export class AccountService {
       account.verificationToken = null as any;
       account.verificationTokenExpiry = null as any;
       account.verified = true;
+
+      await accountRepo.save(account);
+
+      return account as AccountWithPopulatedSide<'customer'>;
+    } catch (error) {
+      return handleTypeOrmError(error);
+    }
+  }
+
+  public static async resetPassword(
+    token: string,
+    password: string,
+  ): Promise<AccountWithPopulatedSide<'customer'>> {
+    const accountRepo = await getRepo(AccountEntity);
+
+    try {
+      const account = await accountRepo.findOneOrFail({
+        where: {
+          forgotPasswordToken: token,
+          forgotPasswordTokenExpiry: MoreThan(new Date()),
+        },
+      });
+
+      // `undefined` doesn't erase the value, `null` does. But we can't declare null type for entities due to some conflict
+      // Example: Data type "Object" in "AccountEntity.verificationToken" is not supported by "postgres" database.
+      // => Have to bypass the type check
+      account.password = hashPassword(password);
+      account.forgotPasswordToken = null as any;
+      account.forgotPasswordTokenExpiry = null as any;
 
       await accountRepo.save(account);
 

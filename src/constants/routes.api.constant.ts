@@ -38,7 +38,7 @@ export const PublicApiRoutes: MethodRoutePair[] = [
     route: SIGN_UP_API_ROUTE,
   },
   {
-    methods: ['GET'],
+    methods: ['POST'],
     route: VERIFY_EMAIL_API_ROUTE,
   },
   {
