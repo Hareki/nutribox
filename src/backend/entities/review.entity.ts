@@ -31,7 +31,7 @@ export class ReviewEntity extends AbstractEntity {
     type: 'text',
     nullable: true,
   })
-  comment: string;
+  comment?: string;
 
   @Column('decimal')
   star: number;

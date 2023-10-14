@@ -18,7 +18,7 @@ export class CustomerOrderEntity extends AbstractEntity {
   @ManyToOne(() => CustomerEntity, (customer) => customer.customerOrders, {
     nullable: true,
   })
-  customer: Relation<CustomerEntity> | string;
+  customer?: Relation<CustomerEntity> | string;
 
   @OneToMany(
     () => CustomerOrderItemEntity,
@@ -33,7 +33,7 @@ export class CustomerOrderEntity extends AbstractEntity {
   phone: string;
 
   @Column({ type: 'enum', enum: PaymentMethod, nullable: true })
-  paidOnlineVia: PaymentMethod;
+  paidOnlineVia?: PaymentMethod;
 
   @Column()
   provinceCode: string;
@@ -48,7 +48,7 @@ export class CustomerOrderEntity extends AbstractEntity {
   streetAddress: string;
 
   @Column({ nullable: true })
-  note: string;
+  note?: string;
 
   @Column('decimal')
   profit: number;
@@ -63,7 +63,7 @@ export class CustomerOrderEntity extends AbstractEntity {
   estimatedDistance: number;
 
   @Column({ nullable: true, type: 'timestamp without time zone' })
-  deliveredOn: Date;
+  deliveredOn?: Date;
 
   @Column('uuid')
   updatedBy: string;
@@ -77,5 +77,5 @@ export class CustomerOrderEntity extends AbstractEntity {
   @Column({
     nullable: true,
   })
-  cancellationReason: string;
+  cancellationReason?: string;
 }

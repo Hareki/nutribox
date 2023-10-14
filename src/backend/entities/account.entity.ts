@@ -11,13 +11,13 @@ export class AccountEntity extends AbstractEntity {
     nullable: true,
   })
   @JoinColumn()
-  customer: Relation<CustomerEntity> | string;
+  customer?: Relation<CustomerEntity> | string;
 
   @OneToOne(() => EmployeeEntity, (employee) => employee.account, {
     nullable: true,
   })
   @JoinColumn()
-  employee: Relation<EmployeeEntity> | string;
+  employee?: Relation<EmployeeEntity> | string;
 
   @Column({
     unique: true,
@@ -28,7 +28,7 @@ export class AccountEntity extends AbstractEntity {
   password: string;
 
   @Column({ nullable: true })
-  avatarUrl: string;
+  avatarUrl?: string;
 
   @Column({
     default: false,
@@ -41,14 +41,14 @@ export class AccountEntity extends AbstractEntity {
   verified: boolean;
 
   @Column({ nullable: true })
-  verificationToken: string;
+  verificationToken?: string;
 
   @Column({ nullable: true, type: 'timestamp without time zone' })
-  verificationTokenExpiry: Date;
+  verificationTokenExpiry?: Date;
 
   @Column({ nullable: true })
-  forgotPasswordToken: string;
+  forgotPasswordToken?: string;
 
   @Column({ nullable: true, type: 'timestamp without time zone' })
-  forgotPasswordTokenExpiry: Date;
+  forgotPasswordTokenExpiry?: Date;
 }

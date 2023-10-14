@@ -32,7 +32,7 @@ export class EmployeeEntity extends AbstractEntity {
     nullable: true,
   })
   @JoinColumn()
-  account: Relation<AccountEntity> | string;
+  account?: Relation<AccountEntity> | string;
 
   @Column()
   firstName: string;

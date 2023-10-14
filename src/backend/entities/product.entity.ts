@@ -46,7 +46,7 @@ export class ProductEntity extends AbstractEntity {
     type: 'uuid',
     nullable: true,
   })
-  defaultSupplierId: string;
+  defaultSupplierId?: string;
 
   @Column()
   description: string;
