@@ -11,7 +11,7 @@ import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
 import { CustomerOrderItemEntity } from './customerOrderItem.entity';
 
-import { OrderStatus, PaymentMethod } from 'backend/enums/Entities.enum';
+import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum';
 
 @Entity({ name: 'customer_order' })
 export class CustomerOrderEntity extends AbstractEntity {

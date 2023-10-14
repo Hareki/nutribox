@@ -3,7 +3,7 @@ import { z } from 'zod';
 import type { CustomerModel } from './customer.model';
 import { zodDate, zodString, zodUuid } from './helper';
 
-import { CustomerAddressType } from 'backend/enums/Entities.enum';
+import { CustomerAddressType } from 'backend/enums/entities.enum';
 
 const CustomerAddressSchema = z.object({
   id: zodUuid('CustomerAddress.Id'),

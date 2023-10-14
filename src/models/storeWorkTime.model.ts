@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { zodDate, zodString, zodUuid } from './helper';
 import type { StoreModel } from './store.model';
 
-import { DayOfWeek } from 'backend/enums/Entities.enum';
+import { DayOfWeek } from 'backend/enums/entities.enum';
 
 const StoreWorkTimeSchema = z.object({
   id: zodUuid('StoreWorkTime.Id'),

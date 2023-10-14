@@ -1,4 +1,4 @@
-import type { EmployeeRole } from 'backend/enums/Entities.enum';
+import type { EmployeeRole } from 'backend/enums/entities.enum';
 import type {
   AccountWithPopulatedSide,
   CredentialInputs,

@@ -4,7 +4,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
 
-import { CustomerAddressType } from 'backend/enums/Entities.enum';
+import { CustomerAddressType } from 'backend/enums/entities.enum';
 
 @Entity({ name: 'customer_address' })
 export class CustomerAddressEntity extends AbstractEntity {

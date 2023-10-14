@@ -4,7 +4,7 @@ import type { AccountModel } from './account.model';
 import { zodDate, zodString, zodUuid } from './helper';
 import type { ReviewResponseModel } from './reviewResponse.model';
 
-import { EmployeeRole } from 'backend/enums/Entities.enum';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import { NAME_REGEX, PHONE_REGEX, PID_REGEX } from 'constants/regex.constant';
 
 const EmployeeSchema = z.object({

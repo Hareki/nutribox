@@ -4,7 +4,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 import { StoreEntity } from './store.entity';
 
-import { DayOfWeek } from 'backend/enums/Entities.enum';
+import { DayOfWeek } from 'backend/enums/entities.enum';
 
 @Entity({ name: 'store_work_time' })
 export class StoreWorkTimeEntity extends AbstractEntity {

@@ -2,7 +2,7 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { StoreWorkTimeEntity } from 'backend/entities/storeWorkTime.entity';
-import { DayOfWeek } from 'backend/enums/Entities.enum';
+import { DayOfWeek } from 'backend/enums/entities.enum';
 
 type StoreWorkTimeSeed = Omit<StoreWorkTimeEntity, 'createdAt' | 'store'> & {
   store: {

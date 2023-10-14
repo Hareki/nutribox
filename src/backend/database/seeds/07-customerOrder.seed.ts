@@ -2,7 +2,7 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
-import { OrderStatus } from 'backend/enums/Entities.enum';
+import { OrderStatus } from 'backend/enums/entities.enum';
 
 type CustomerOrderSeed = Omit<
   CustomerOrderEntity,

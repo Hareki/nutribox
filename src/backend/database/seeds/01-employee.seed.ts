@@ -2,7 +2,7 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { EmployeeEntity } from 'backend/entities/employee.entity';
-import { EmployeeRole } from 'backend/enums/Entities.enum';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 
 const employeeSeeds: Omit<
   EmployeeEntity,
