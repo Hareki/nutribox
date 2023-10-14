@@ -1,5 +1,8 @@
+import type { DeepPartial, ObjectType } from 'typeorm';
 import { ILike, type ObjectLiteral, type Repository } from 'typeorm';
 
+import { handleTypeOrmError } from 'backend/handlers/commonHandlers';
+import { RecordNotFoundError } from 'backend/types/errors/common';
 import type {
   GetRecordInputs,
   GetRecordsByKeywordInputs,
@@ -169,5 +172,64 @@ export class CommonService {
     const records = await queryBuilder.getMany();
 
     return records;
+  }
+
+  public static async createRecord<E extends ObjectLiteral>(
+    entity: ObjectType<E>,
+    data: DeepPartial<E>,
+  ): Promise<E> {
+    try {
+      const repository: Repository<E> = await getRepo(entity);
+      const entityInstance = repository.create(data);
+      const record = await repository.save(entityInstance as DeepPartial<E>);
+      return record;
+    } catch (error) {
+      return handleTypeOrmError(error);
+    }
+  }
+
+  public static async updateRecord<E extends ObjectLiteral>(
+    entity: ObjectType<E>,
+    id: number | string,
+    data: DeepPartial<E>,
+  ): Promise<E> {
+    try {
+      const repository: Repository<E> = await getRepo(entity);
+      const existingRecord = await repository.findOne(id);
+
+      if (!existingRecord) {
+        throw new RecordNotFoundError(
+          `Entity ${entity.name} with id ${id} not found`,
+        );
+      }
+
+      const updatedRecord = repository.merge(existingRecord, data);
+      const subject = await repository.save(updatedRecord as DeepPartial<E>);
+
+      return subject;
+    } catch (error) {
+      return handleTypeOrmError(error);
+    }
+  }
+
+  public static async deleteRecord<E extends ObjectLiteral>(
+    entity: ObjectType<E>,
+    id: number | string,
+  ): Promise<boolean> {
+    try {
+      const repository: Repository<E> = await getRepo(entity);
+      const existingRecord = await repository.findOne(id);
+
+      if (!existingRecord) {
+        throw new RecordNotFoundError(
+          `Entity ${entity.name} with id ${id} not found`,
+        );
+      }
+
+      await repository.remove(existingRecord);
+      return true;
+    } catch (error) {
+      return handleTypeOrmError(error);
+    }
   }
 }
