@@ -7,7 +7,7 @@ import type { FullyPopulatedAccountModel } from 'models/account.model';
 
 declare module 'next-auth' {
   interface Session {
-    user: Omit<FullyPopulatedAccountModel, 'password'> & {
+    account: Omit<FullyPopulatedAccountModel, 'password'> & {
       password?: string;
     };
   }

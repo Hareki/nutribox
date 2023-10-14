@@ -67,7 +67,7 @@ export const CHECKOUT_API_ROUTE = `${API_BASE_ROUTE}/checkout`;
 
 export const CustomerApiRoutes: MethodRoutePair[] = [
   {
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'PUT', 'PATCH'],
     route: PROFILE_API_ROUTE,
   },
   {

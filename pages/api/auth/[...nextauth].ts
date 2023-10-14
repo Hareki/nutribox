@@ -31,12 +31,12 @@ export const authOptions: AuthOptions = {
         relations: ['customer', 'employee'],
       })) as FullyPopulatedAccountModel;
 
-      session.user = account;
-      delete session.user.password;
-      delete session.user.verificationToken;
-      delete session.user.verificationTokenExpiry;
-      delete session.user.forgotPasswordToken;
-      delete session.user.forgotPasswordTokenExpiry;
+      session.account = account;
+      delete session.account.password;
+      delete session.account.verificationToken;
+      delete session.account.verificationTokenExpiry;
+      delete session.account.forgotPasswordToken;
+      delete session.account.forgotPasswordTokenExpiry;
 
       return session;
     },

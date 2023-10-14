@@ -6,7 +6,6 @@ import { CommonService } from '../common/common.service';
 import { generateToken } from './helper';
 
 import { AccountEntity } from 'backend/entities/account.entity';
-import { RecordNotFoundError } from 'backend/types/errors/common';
 
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -27,14 +26,10 @@ export class MailerService {
       },
     });
 
-    if (!account) {
-      throw new RecordNotFoundError(`Account with ${email} not found`);
-    }
-
     const token = generateToken();
     const expiry = addHours(new Date(), 1);
 
-    return { account, token, expiry };
+    return { account: account!, token, expiry };
   }
 
   static async sendResetPasswordEmail(email: string) {

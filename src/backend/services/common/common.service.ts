@@ -1,8 +1,11 @@
 import type { DeepPartial, ObjectType } from 'typeorm';
-import { ILike, type ObjectLiteral, type Repository } from 'typeorm';
+import {
+  EntityNotFoundError,
+  ILike,
+  type ObjectLiteral,
+  type Repository,
+} from 'typeorm';
 
-import { handleTypeOrmError } from 'backend/handlers/commonHandlers';
-import { RecordNotFoundError } from 'backend/types/errors/common';
 import type {
   GetRecordInputs,
   GetRecordsByKeywordInputs,
@@ -13,7 +16,7 @@ import { getRepo } from 'backend/utils/database.helper';
 export class CommonService {
   public static async getRecord<E extends ObjectLiteral>(
     input: GetRecordInputs<E>,
-  ): Promise<E | undefined> {
+  ): Promise<E> {
     const { entity, filter, relations, select } = input;
     const repository: Repository<E> = await getRepo(entity);
 
@@ -52,7 +55,13 @@ export class CommonService {
     queryBuilder = queryBuilder.orderBy(`${entity.name}.createdAt`, 'DESC');
     queryBuilder = queryBuilder.take(1);
 
-    return queryBuilder.getOne();
+    const result = await queryBuilder.getOne();
+
+    if (!result) {
+      throw new EntityNotFoundError(entity, filter);
+    }
+
+    return result;
   }
 
   public static async getRecords<E extends ObjectLiteral>(
@@ -178,14 +187,10 @@ export class CommonService {
     entity: ObjectType<E>,
     data: DeepPartial<E>,
   ): Promise<E> {
-    try {
-      const repository: Repository<E> = await getRepo(entity);
-      const entityInstance = repository.create(data);
-      const record = await repository.save(entityInstance as DeepPartial<E>);
-      return record;
-    } catch (error) {
-      return handleTypeOrmError(error);
-    }
+    const repository: Repository<E> = await getRepo(entity);
+    const entityInstance = repository.create(data);
+    const record = await repository.save(entityInstance as DeepPartial<E>);
+    return record;
   }
 
   public static async updateRecord<E extends ObjectLiteral>(
@@ -193,43 +198,23 @@ export class CommonService {
     id: number | string,
     data: DeepPartial<E>,
   ): Promise<E> {
-    try {
-      const repository: Repository<E> = await getRepo(entity);
-      const existingRecord = await repository.findOne(id);
+    const repository: Repository<E> = await getRepo(entity);
+    const existingRecord = await repository.findOneOrFail(id);
 
-      if (!existingRecord) {
-        throw new RecordNotFoundError(
-          `Entity ${entity.name} with id ${id} not found`,
-        );
-      }
+    const updatedRecord = repository.merge(existingRecord, data);
+    const subject = await repository.save(updatedRecord as DeepPartial<E>);
 
-      const updatedRecord = repository.merge(existingRecord, data);
-      const subject = await repository.save(updatedRecord as DeepPartial<E>);
-
-      return subject;
-    } catch (error) {
-      return handleTypeOrmError(error);
-    }
+    return subject;
   }
 
   public static async deleteRecord<E extends ObjectLiteral>(
     entity: ObjectType<E>,
     id: number | string,
   ): Promise<boolean> {
-    try {
-      const repository: Repository<E> = await getRepo(entity);
-      const existingRecord = await repository.findOne(id);
+    const repository: Repository<E> = await getRepo(entity);
+    const existingRecord = await repository.findOneOrFail(id);
 
-      if (!existingRecord) {
-        throw new RecordNotFoundError(
-          `Entity ${entity.name} with id ${id} not found`,
-        );
-      }
-
-      await repository.remove(existingRecord);
-      return true;
-    } catch (error) {
-      return handleTypeOrmError(error);
-    }
+    await repository.remove(existingRecord);
+    return true;
   }
 }

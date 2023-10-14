@@ -1,26 +1,61 @@
 import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { ErrorHandler } from 'next-connect';
+import { EntityNotFoundError } from 'typeorm';
 
-import type { JSError } from 'backend/types/jsend';
+import { BadRequestError, DuplicationError } from 'backend/types/errors/common';
+import type { JSError, JSFail } from 'backend/types/jsend';
 
 // Get executed whenever middlewares or main handlers throw errors
 export const defaultNcOnError: ErrorHandler<
   NextApiRequest,
-  NextApiResponse<JSError>
+  NextApiResponse<JSError | JSFail<any>>
 > = (err: Error, req, res) => {
-  const responseCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  let errorCode: number | undefined;
+  let data: Record<string, any> | undefined;
 
-  // if (!err.message.startsWith('No repository for')) {
+  // common caught errors go here
+  if (err instanceof DuplicationError) {
+    errorCode = StatusCodes.CONFLICT;
+    data = { [err.duplicatedField]: err.message };
+  }
+
+  // common caught errors go here
+  if (err instanceof BadRequestError) {
+    errorCode = StatusCodes.BAD_REQUEST;
+    data = { [err.badRequestField]: err.message };
+  }
+
+  // usually uncaught errors during CRUD go here
+  if (err instanceof EntityNotFoundError) {
+    errorCode = StatusCodes.NOT_FOUND;
+    data = {
+      message: err.message,
+    };
+  }
+
+  if (data && errorCode) {
+    res.status(errorCode).json({
+      status: 'fail',
+      data,
+    });
+
+    console.log('=============== COMMON ERROR ================');
+    console.log(err.message);
+    console.log(err.stack);
+    console.log('=================================================');
+    return;
+  }
+
+  // truly unexpected errors go here
   console.log('=============== UNEXPECTED ERROR ================');
   console.log(err.message);
   console.log(err.stack);
   console.log('=================================================');
-  // }
 
-  res.status(responseCode).json({
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     status: 'error',
     message: err.message,
-    code: responseCode,
+    code: StatusCodes.INTERNAL_SERVER_ERROR,
   });
 };

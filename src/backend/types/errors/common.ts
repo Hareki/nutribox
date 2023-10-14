@@ -1,18 +1,8 @@
-export class RecordNotFoundError extends Error {
-  public readonly name = 'RecordNotFoundError';
-
-  constructor(message: string) {
-    super(message);
-    // This line is needed for the instance of check to work when target is set to ES5.
-    Object.setPrototypeOf(this, new.target.prototype);
-  }
-}
-
 export class DuplicationError extends Error {
   public readonly name = 'DuplicationError';
   public readonly duplicatedField: string;
 
-  constructor(message: string, duplicatedField: string) {
+  constructor(duplicatedField: string, message: string) {
     super(message);
     this.duplicatedField = duplicatedField;
 
@@ -21,11 +11,14 @@ export class DuplicationError extends Error {
   }
 }
 
-export class EntityNotFoundError extends Error {
-  public readonly name = 'EntityNotFoundError';
+export class BadRequestError extends Error {
+  public readonly name = 'BadRequestError';
+  public readonly badRequestField: string;
 
-  constructor(message: string) {
+  constructor(badRequestField: string, message: string) {
     super(message);
+    this.badRequestField = badRequestField;
+
     // This line is needed for the instance of check to work when target is set to ES5.
     Object.setPrototypeOf(this, new.target.prototype);
   }

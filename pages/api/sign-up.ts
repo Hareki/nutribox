@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { SignUpDtoSchema } from 'backend/dtos/signUp.dto';
-import { handleAccountError } from 'backend/handlers/account';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
 import { AccountService } from 'backend/services/account/account.service';
@@ -22,17 +21,13 @@ const handler = nc<
 handler.post(
   createSchemaValidationMiddleware(SignUpDtoSchema),
   async (req, res) => {
-    try {
-      const data = await AccountService.createCustomerAccount(req.body);
-      await MailerService.sendVerificationEmail(data.email);
+    const data = await AccountService.createCustomerAccount(req.body);
+    await MailerService.sendVerificationEmail(data.email);
 
-      res.status(StatusCodes.CREATED).json({
-        status: 'success',
-        data,
-      });
-    } catch (error) {
-      handleAccountError(error, res);
-    }
+    res.status(StatusCodes.CREATED).json({
+      status: 'success',
+      data,
+    });
   },
 );
 

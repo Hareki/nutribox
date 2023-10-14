@@ -1,16 +1,26 @@
 import { omit } from 'lodash';
 import { MoreThan } from 'typeorm';
 
+import { CommonService } from '../common/common.service';
+
 import type { CredentialsIdentifier } from './helper';
 
+import type { ChangePasswordDto } from 'backend/dtos/changePassword.dto';
 import type { SignUpDto } from 'backend/dtos/signUp.dto';
 import { AccountEntity } from 'backend/entities/account.entity';
 import { CustomerEntity } from 'backend/entities/customer.entity';
-import { handleTypeOrmError } from 'backend/handlers/commonHandlers';
 import type { AccountWithPopulatedSide, UserType } from 'backend/types/auth';
+import { BadRequestError, DuplicationError } from 'backend/types/errors/common';
 import { hashPassword } from 'backend/utils/auth.helper';
 import { getRepo } from 'backend/utils/database.helper';
-import type { FullyPopulatedAccountModel } from 'models/account.model';
+import {
+  isDuplicateError,
+  isEntityNotFoundError,
+} from 'backend/utils/validation.helper';
+import type {
+  FullyPopulatedAccountModel,
+  PopulateAccountFields,
+} from 'models/account.model';
 import type { CustomerModel } from 'models/customer.model';
 export class AccountService {
   public static async checkCredentials<U extends UserType>(
@@ -73,7 +83,10 @@ export class AccountService {
         password: '',
       };
     } catch (error) {
-      return handleTypeOrmError(error);
+      if (isDuplicateError(error)) {
+        throw new DuplicationError('email', 'Account.Email.Duplicate');
+      }
+      throw error;
     }
   }
 
@@ -100,9 +113,18 @@ export class AccountService {
 
       await accountRepo.save(account);
 
-      return account as AccountWithPopulatedSide<'customer'>;
+      return {
+        ...account,
+        password: '',
+      } as AccountWithPopulatedSide<'customer'>;
     } catch (error) {
-      return handleTypeOrmError(error);
+      if (isEntityNotFoundError(error)) {
+        throw new BadRequestError(
+          'verificationToken',
+          'Account.VerificationToken.Invalid',
+        );
+      }
+      throw error;
     }
   }
 
@@ -112,26 +134,63 @@ export class AccountService {
   ): Promise<AccountWithPopulatedSide<'customer'>> {
     const accountRepo = await getRepo(AccountEntity);
 
+    const account = await CommonService.getRecord({
+      entity: AccountEntity,
+      filter: {
+        forgotPasswordToken: token,
+        forgotPasswordTokenExpiry: MoreThan(new Date()),
+      },
+    });
+
+    // `undefined` doesn't erase the value, `null` does. But we can't declare null type for entities due to some conflict
+    // Example: Data type "Object" in "AccountEntity.verificationToken" is not supported by "postgres" database.
+    // => Have to bypass the type check
+    account.password = hashPassword(password);
+    account.forgotPasswordToken = null as any;
+    account.forgotPasswordTokenExpiry = null as any;
+
+    await accountRepo.save(account);
+
+    return {
+      ...account,
+      password: '',
+    } as AccountWithPopulatedSide<'customer'>;
+  }
+
+  public static async changePassword(
+    id: string,
+    dto: ChangePasswordDto,
+  ): Promise<PopulateAccountFields<'customer' | 'employee'>> {
+    const oldHashedPassword = hashPassword(dto.oldPassword);
+
     try {
-      const account = await accountRepo.findOneOrFail({
-        where: {
-          forgotPasswordToken: token,
-          forgotPasswordTokenExpiry: MoreThan(new Date()),
+      await CommonService.getRecord({
+        entity: AccountEntity,
+        filter: {
+          id,
+          password: oldHashedPassword,
         },
       });
 
-      // `undefined` doesn't erase the value, `null` does. But we can't declare null type for entities due to some conflict
-      // Example: Data type "Object" in "AccountEntity.verificationToken" is not supported by "postgres" database.
-      // => Have to bypass the type check
-      account.password = hashPassword(password);
-      account.forgotPasswordToken = null as any;
-      account.forgotPasswordTokenExpiry = null as any;
+      await CommonService.updateRecord(AccountEntity, id, {
+        password: hashPassword(dto.newPassword),
+      });
 
-      await accountRepo.save(account);
+      const populatedAccount = (await CommonService.getRecord({
+        entity: AccountEntity,
+        filter: { id },
+        relations: ['customer', 'employee'],
+      })) as PopulateAccountFields<'customer' | 'employee'>;
 
-      return account as AccountWithPopulatedSide<'customer'>;
+      return {
+        ...populatedAccount,
+        password: '',
+      };
     } catch (error) {
-      return handleTypeOrmError(error);
+      if (isEntityNotFoundError(error)) {
+        throw new BadRequestError('oldPassword', 'Account.OldPassword.Invalid');
+      }
+      throw error;
     }
   }
 }

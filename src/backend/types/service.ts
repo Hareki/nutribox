@@ -5,7 +5,12 @@ import type { PaginationParams, SearchParams } from './pagination';
 export interface GetRecordInputs<E> {
   entity: ObjectType<E>;
   relations?: (keyof E)[];
-  filter?: DeepPartial<E> | DeepPartial<E>[];
+  // filter?: DeepPartial<E> | DeepPartial<E>[];
+  filter?:
+    | Partial<Record<keyof E, any>>
+    | Partial<Record<keyof E, any>>[]
+    | DeepPartial<E>
+    | DeepPartial<E>[];
   select?: (keyof E)[];
   order?: DeepPartial<E>;
 }

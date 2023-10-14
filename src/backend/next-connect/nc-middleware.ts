@@ -7,7 +7,7 @@ export const createSchemaValidationMiddleware =
   (schema: z.ZodSchema<Record<string, any>>) =>
   async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     try {
-      schema.parse(req.body);
+      req.body = schema.parse(req.body);
       return next();
     } catch (error) {
       if (error instanceof z.ZodError) {
