@@ -9,6 +9,7 @@
   "Account.Password.Min": "Mật khẩu phải có ít nhất 6 ký tự.",
   "Account.Password.Max": "Mật khẩu không được vượt quá 50 ký tự.",
   "Account.Password.InvalidFormat": "Mật khẩu phải chứa ít nhất 1 chữ cái viết hóa và 1 kí tự đặc biệt",
+  "Account.VerificationToken.Invalid": "Liên kết xác thực đã hết hạn hoặc không hợp lệ",
   "Account.AvatarUrl.Min": "URL ảnh đại diện phải có ít nhất 1 ký tự",
   "Account.AvatarUrl.Max": "URL ảnh đại diện không được vượt quá 500 ký tự.",
   "Account.Disabled.Required": "Vui lòng nhập Trạng thái vô hiệu hóa.",

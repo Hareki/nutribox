@@ -2,12 +2,9 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { SignUpDtoSchema } from 'backend/dtos/sign-up.dto';
 import { handleAccountError } from 'backend/handlers/account';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
 import { AccountService } from 'backend/services/account/account.service';
-import { MailerService } from 'backend/services/mailer/mailer.service';
 import type { AccountWithPopulatedSide } from 'backend/types/auth';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
 
@@ -19,21 +16,19 @@ const handler = nc<
   NextApiResponse<SuccessResponse | FailResponse>
 >(DEFAULT_NC_CONFIGS);
 
-handler.post(
-  createSchemaValidationMiddleware(SignUpDtoSchema),
-  async (req, res) => {
-    try {
-      const data = await AccountService.createCustomerAccount(req.body);
-      await MailerService.sendVerificationEmail(data.email);
+handler.get(async (req, res) => {
+  const token = req.query.token as string;
 
-      res.status(StatusCodes.CREATED).json({
-        status: 'success',
-        data,
-      });
-    } catch (error) {
-      handleAccountError(error, res);
-    }
-  },
-);
+  try {
+    const data = await AccountService.verifyCustomerEmail(token);
+
+    res.status(StatusCodes.OK).json({
+      status: 'success',
+      data,
+    });
+  } catch (error) {
+    handleAccountError(error, res);
+  }
+});
 
 export default handler;

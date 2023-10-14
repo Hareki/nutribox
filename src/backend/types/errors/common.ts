@@ -20,3 +20,13 @@ export class DuplicationError extends Error {
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
+
+export class EntityNotFoundError extends Error {
+  public readonly name = 'EntityNotFoundError';
+
+  constructor(message: string) {
+    super(message);
+    // This line is needed for the instance of check to work when target is set to ES5.
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}

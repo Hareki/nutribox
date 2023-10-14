@@ -1,6 +1,12 @@
+import { EntityNotFoundError } from 'typeorm';
+
 export const isDuplicateError = (error: any): boolean => {
   const { message } = error;
   return (message as string).includes('duplicate key value');
+};
+
+export const isEntityNotFoundError = (error: any): boolean => {
+  return error instanceof EntityNotFoundError;
 };
 
 export const extractDuplicateColumnName = (error: any): string => {

@@ -9,6 +9,7 @@
   "Account.Password.Min": "Password must be at least 6 characters.",
   "Account.Password.Max": "Password must not exceed 50 characters.",
   "Account.Password.InvalidFormat": "Password must contain at least 1 uppercase letter and 1 special character.",
+  "Account.VerificationToken.Invalid": "Invalid or expired verification link.",
   "Account.AvatarUrl.Min": "Avatar URL must be at least 1 character.",
   "Account.AvatarUrl.Max": "Avatar URL must not exceed 500 characters.",
   "Account.Disabled.Required": "Please enter the Disabled status.",
