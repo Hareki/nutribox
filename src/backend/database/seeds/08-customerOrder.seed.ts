@@ -27,7 +27,7 @@ const customerOrderSeeds: CustomerOrderSeed[] = [
     provinceCode: '79',
     districtCode: '769',
     wardCode: '26812',
-    streetAddress: '123 Nguyen Van Linh',
+    streetAddress: '12/12 Đường 49',
     note: 'This is note',
     updatedBy: 'e31e759a-edb9-40e8-bb2a-fb6b9e65d986',
     total: 35_000,

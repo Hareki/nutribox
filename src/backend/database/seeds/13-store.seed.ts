@@ -13,7 +13,7 @@ const storeSeeds: StoreSeed[] = [
     provinceCode: '79',
     districtCode: '769',
     wardCode: '26812',
-    streetAddress: '123 Nguyen Van Linh',
+    streetAddress: '12/12 Đường 49',
   },
 ];
 
