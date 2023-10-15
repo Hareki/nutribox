@@ -55,7 +55,13 @@ export const removeQueryParameters = (urlString) => {
   return url.origin + url.pathname;
 };
 
-export const matchesRoute = (url: string, route: string) => {
+export const matchesRoute = (url: string, route: string, shortened = false) => {
+  // If the URL is shortened, remove the domain from the route before matching
+  if (shortened) {
+    const routeUrl = new URL(route);
+    route = routeUrl.pathname + routeUrl.search + routeUrl.hash;
+  }
+
   // Replace :id (or any other placeholder starting with ":") with a regex pattern
   const pattern = new RegExp(`^${route.replace(/:\w+/g, '([^/]+)')}$`);
   return pattern.test(url);

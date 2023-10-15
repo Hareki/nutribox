@@ -31,7 +31,7 @@ const customerAddressSeeds: CustomerAddressSeed[] = [
     customer: {
       id: 'e31e759a-edb9-40e8-bb2a-fb6b9e65d986',
     },
-    isDefault: true,
+    isDefault: false,
     provinceCode: '79',
     districtCode: '760',
     wardCode: '26734',

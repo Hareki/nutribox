@@ -71,11 +71,11 @@ export const CustomerApiRoutes: MethodRoutePair[] = [
     route: PROFILE_API_ROUTE,
   },
   {
-    methods: ['GET'],
+    methods: ['GET', 'POST'],
     route: ADDRESSES_API_ROUTE,
   },
   {
-    methods: ['GET', 'PUT'],
+    methods: ['GET', 'PUT', 'DELETE'],
     route: ADDRESS_DETAIL_API_ROUTE,
   },
   {
