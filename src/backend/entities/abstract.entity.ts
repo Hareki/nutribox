@@ -5,7 +5,7 @@ export abstract class AbstractEntity {
   id: string;
 
   @CreateDateColumn({
-    type: 'timestamp without time zone',
+    type: 'timestamp with time zone',
     name: 'created_at',
   })
   createdAt: Date;

@@ -17,13 +17,13 @@ export class ImportOrderEntity extends AbstractEntity {
   @OneToMany(() => ExportOrderEntity, (exportOrder) => exportOrder.importOrder)
   exportOrders: Relation<ExportOrderEntity>[] | string[];
 
-  @Column('timestamp without time zone')
+  @Column('timestamp with time zone')
   importDate: Date;
 
-  @Column('timestamp without time zone')
+  @Column('timestamp with time zone')
   manufacturingDate: Date;
 
-  @Column('timestamp without time zone')
+  @Column('timestamp with time zone')
   expirationDate: Date;
 
   @Column('int')

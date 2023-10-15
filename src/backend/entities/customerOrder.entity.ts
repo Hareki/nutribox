@@ -56,20 +56,20 @@ export class CustomerOrderEntity extends AbstractEntity {
   @Column('decimal')
   total: number;
 
-  @Column('timestamp without time zone')
+  @Column('timestamp with time zone')
   estimatedDeliveryTime: Date;
 
   @Column('decimal')
   estimatedDistance: number;
 
-  @Column({ nullable: true, type: 'timestamp without time zone' })
+  @Column({ nullable: true, type: 'timestamp with time zone' })
   deliveredOn?: Date;
 
   @Column('uuid')
   updatedBy: string;
 
   @UpdateDateColumn({
-    type: 'timestamp without time zone',
+    type: 'timestamp with time zone',
     name: 'updated_at',
   })
   updatedAt: Date;

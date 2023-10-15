@@ -17,9 +17,9 @@ export class StoreWorkTimeEntity extends AbstractEntity {
   })
   dayOfWeek: DayOfWeek;
 
-  @Column('timestamp without time zone')
+  @Column('timestamp with time zone')
   openTime: Date;
 
-  @Column('timestamp without time zone')
+  @Column('timestamp with time zone')
   closeTime: Date;
 }

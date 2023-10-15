@@ -22,7 +22,7 @@ export class ReviewResponseEntity extends AbstractEntity {
   employee: Relation<EmployeeEntity> | string;
 
   @UpdateDateColumn({
-    type: 'timestamp without time zone',
+    type: 'timestamp with time zone',
     name: 'updated_at',
   })
   updatedAt: Date;

@@ -43,12 +43,12 @@ export class AccountEntity extends AbstractEntity {
   @Column({ nullable: true })
   verificationToken?: string;
 
-  @Column({ nullable: true, type: 'timestamp without time zone' })
+  @Column({ nullable: true, type: 'timestamp with time zone' })
   verificationTokenExpiry?: Date;
 
   @Column({ nullable: true })
   forgotPasswordToken?: string;
 
-  @Column({ nullable: true, type: 'timestamp without time zone' })
+  @Column({ nullable: true, type: 'timestamp with time zone' })
   forgotPasswordTokenExpiry?: Date;
 }

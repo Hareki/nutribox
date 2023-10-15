@@ -40,6 +40,6 @@ export class CustomerEntity extends AbstractEntity {
   @Column()
   phone: string;
 
-  @Column('timestamp without time zone')
+  @Column('timestamp with time zone')
   birthday: Date;
 }
