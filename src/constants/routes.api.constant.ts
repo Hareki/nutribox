@@ -57,7 +57,7 @@ export const PublicApiRoutes: MethodRoutePair[] = [
 
 export const PROFILE_API_ROUTE = `${API_BASE_ROUTE}/profile`;
 export const ADDRESSES_API_ROUTE = `${PROFILE_API_ROUTE}/addresses`;
-export const ADDRESS_DETAIL_API_ROUTE = `${PROFILE_API_ROUTE}/addresses/:id`;
+export const ADDRESS_DETAIL_API_ROUTE = `${ADDRESSES_API_ROUTE}/:id`;
 
 export const ORDERS_API_ROUTE = `${PROFILE_API_ROUTE}/orders`;
 export const ORDER_DETAIL_API_ROUTE = `${ORDERS_API_ROUTE}/:id`;

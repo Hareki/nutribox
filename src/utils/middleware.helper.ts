@@ -42,7 +42,8 @@ export function isAuthorized(
     if (typeof route === 'string') {
       if (route === url) return true;
     } else if ('route' in route) {
-      if (route.route === url && route.methods.includes(method)) return true;
+      if (matchesRoute(url, route.route) && route.methods.includes(method))
+        return true;
     }
   }
 
