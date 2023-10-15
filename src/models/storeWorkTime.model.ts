@@ -16,9 +16,9 @@ const StoreWorkTimeSchema = z.object({
     required_error: 'StoreWorkTime.DayOfWeek.Required',
   }),
 
-  openTime: zodString('StoreWorkTime.OpenTime'),
+  openTime: zodDate('StoreWorkTime.OpenTime'),
 
-  closeTime: zodString('StoreWorkTime.CloseTime'),
+  closeTime: zodDate('StoreWorkTime.CloseTime'),
 });
 
 type StoreWorkTimeModel = z.infer<typeof StoreWorkTimeSchema>;

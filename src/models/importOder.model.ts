@@ -10,7 +10,7 @@ import {
 import type { ProductModel } from './product.model';
 import type { SupplierModel } from './supplier.model';
 
-import { isBeforeOrEqual } from 'utils/date.helper';
+import { isDateTimeAfter } from 'utils/date.helper';
 
 const ImportOrderSchema = z.object({
   id: zodUuid('ImportOrder.Id'),
@@ -50,7 +50,7 @@ type ImportOrderModel = z.infer<typeof ImportOrderSchema>;
 
 const ImportDateRefinement1: RefinementParameters<ImportOrderModel> = [
   (data: ImportOrderModel) =>
-    isBeforeOrEqual(data.importDate, data.expirationDate),
+    !isDateTimeAfter(data.importDate, data.expirationDate),
   {
     message: 'ImportOrder.ImportDate.BeforeOrEqual.ExpirationDate',
     path: ['defaultImportPrice'],
@@ -59,7 +59,7 @@ const ImportDateRefinement1: RefinementParameters<ImportOrderModel> = [
 
 const ImportDateRefinement2: RefinementParameters<ImportOrderModel> = [
   (data: ImportOrderModel) =>
-    isBeforeOrEqual(data.manufacturingDate, data.expirationDate),
+    !isDateTimeAfter(data.manufacturingDate, data.expirationDate),
   {
     message: 'ImportOrder.ManufacturingDate.BeforeOrEqual.ExpirationDate',
     path: ['defaultImportPrice'],

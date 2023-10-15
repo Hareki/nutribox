@@ -87,7 +87,7 @@ export const CustomerApiRoutes: MethodRoutePair[] = [
     route: ORDER_DETAIL_API_ROUTE,
   },
   {
-    methods: ['POST'],
+    methods: ['GET'],
     route: CHECKOUT_VALIDATION_API_ROUTE,
   },
   {
