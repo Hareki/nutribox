@@ -32,12 +32,14 @@ handler
   .post(
     createSchemaValidationMiddleware(NewCustomerAddressDtoSchema),
     async (req, res) => {
-      const dto = req.body as NewCustomerAddressDto;
-      const address = (await CommonService.createRecord(
-        CustomerAddressEntity,
-        dto,
-      )) as CustomerAddressModel;
+      const account = await getSessionAccount(req, res);
 
+      const dto = req.body as NewCustomerAddressDto;
+
+      const address = await CustomerService.addAddress(
+        account.customer.id,
+        dto,
+      );
       res.status(StatusCodes.CREATED).json({
         status: 'success',
         data: address,

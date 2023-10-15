@@ -4,11 +4,9 @@ import nc from 'next-connect';
 
 import type { UpdateCustomerAddressDto } from 'backend/dtos/profile/addresses/updateCustomerAddress.dto';
 import { UpdateCustomerAddressDtoSchema } from 'backend/dtos/profile/addresses/updateCustomerAddress.dto';
-import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
-import { CommonService } from 'backend/services/common/common.service';
-import { createAddressAuthorizationMiddleware } from 'backend/services/customer/customer.middleware';
+import { createAddressAccessGuard } from 'backend/services/customer/customer.middleware';
 import { CustomerService } from 'backend/services/customer/customer.service';
 import type { JSSuccess } from 'backend/types/jsend';
 import { getSessionAccount } from 'backend/utils/auth2.helper';
@@ -21,18 +19,21 @@ const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
 );
 
 handler
-  .get(createAddressAuthorizationMiddleware())
+  .get(createAddressAccessGuard())
   .put(
-    createAddressAuthorizationMiddleware(),
+    createAddressAccessGuard(),
     createSchemaValidationMiddleware(UpdateCustomerAddressDtoSchema),
     async (req, res) => {
-      const { id, ...dto } = req.body as UpdateCustomerAddressDto;
+      const account = await getSessionAccount(req, res);
 
-      const address = (await CommonService.updateRecord(
-        CustomerAddressEntity,
+      const id = req.query.id as string;
+      const dto = req.body as UpdateCustomerAddressDto;
+
+      const address = await CustomerService.updateAddress(
         id,
+        account.customer.id,
         dto,
-      )) as CustomerAddressModel;
+      );
 
       res.status(StatusCodes.OK).json({
         status: 'success',
@@ -40,7 +41,7 @@ handler
       });
     },
   )
-  .delete(createAddressAuthorizationMiddleware(), async (req, res) => {
+  .delete(createAddressAccessGuard(), async (req, res) => {
     const account = await getSessionAccount(req, res);
     const id = req.query.id as string;
     await CustomerService.deleteAddress(id, account.customer.id);

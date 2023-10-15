@@ -31,5 +31,6 @@
   "CustomerOrder.DeliveredOn.InvalidFormat": "Định dạng ngày giao hàng không hợp lệ.",
   "CustomerOrder.UpdatedBy.Required": "Vui lòng nhập Mã người cập nhật.",
   "CustomerOrder.UpdatedAt.Required": "Vui lòng nhập ngày cập nhật.",
-  "CustomerOrder.UpdatedAt.InvalidFormat": "Định dạng ngày cập nhật không hợp lệ."
+  "CustomerOrder.UpdatedAt.InvalidFormat": "Định dạng ngày cập nhật không hợp lệ.",
+  "CustomerOrder.NotCancellable.Client": "Đã quá hạn để hủy đơn hàng này."
 }

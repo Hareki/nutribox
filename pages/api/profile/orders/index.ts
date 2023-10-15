@@ -2,33 +2,37 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { ProductEntity } from 'backend/entities/product.entity';
+import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { CommonService } from 'backend/services/common/common.service';
 import type { CommonArgs } from 'backend/services/common/helper';
-import type { CommonProductModel } from 'backend/services/product/helper';
 import type { JSSuccess } from 'backend/types/jsend';
+import { getSessionAccount } from 'backend/utils/auth2.helper';
 import {
   getPaginationParams,
   setPaginationHeader,
 } from 'backend/utils/req.helper';
+import type { CustomerOrderModel } from 'models/customerOrder.model';
 
-type SuccessResponse = JSSuccess<CommonProductModel[]>;
+type SuccessResponse = JSSuccess<CustomerOrderModel[] | CustomerOrderModel>;
 
 const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
   DEFAULT_NC_CONFIGS,
 );
 
 handler.get(async (req, res) => {
+  const account = await getSessionAccount(req, res);
   const paginationParams = getPaginationParams(req);
   const keyword = req.query.keyword as string;
-  const category = req.query.category as string;
+  const status = req.query.status as string;
 
-  const commonArgs: CommonArgs<ProductEntity> = {
-    entity: ProductEntity,
-    relations: ['productImages', 'productCategory', 'importOrders'],
+  const commonArgs: CommonArgs<CustomerOrderEntity> = {
+    entity: CustomerOrderEntity,
     filter: {
-      productCategory: category,
+      customer: {
+        id: account.customer.id,
+      },
+      ...(status ? { status } : {}),
     },
   };
 
@@ -37,10 +41,10 @@ handler.get(async (req, res) => {
       ...commonArgs,
       searchParams: {
         keyword,
-        fieldName: 'name',
+        fieldName: 'id',
         limit: paginationParams.limit,
       },
-    })) as CommonProductModel[];
+    })) as CustomerOrderModel[];
 
     res.status(StatusCodes.OK).json({
       status: 'success',
@@ -59,7 +63,7 @@ handler.get(async (req, res) => {
 
     res.status(StatusCodes.OK).json({
       status: 'success',
-      data: data as CommonProductModel[],
+      data: data as CustomerOrderModel[],
     });
   }
 });

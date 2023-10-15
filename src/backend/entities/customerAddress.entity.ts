@@ -1,5 +1,5 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
@@ -9,6 +9,7 @@ import { CustomerAddressType } from 'backend/enums/entities.enum';
 @Entity({ name: 'customer_address' })
 export class CustomerAddressEntity extends AbstractEntity {
   @ManyToOne(() => CustomerEntity, (customer) => customer.customerAddresses)
+  @JoinColumn({ name: 'customer_id' })
   customer: Relation<CustomerEntity> | string;
 
   @Column()
