@@ -29,7 +29,7 @@ handler
   .get(async (req, res) => {
     const account = await getSessionAccount(req, res);
 
-    const data = await CustomerService.getProfileInfo(
+    const data = await CustomerService.getDashboardInfo(
       account?.customer.id || '',
     );
     res.status(StatusCodes.OK).json({

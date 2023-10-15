@@ -46,7 +46,7 @@ export class CustomerService {
     };
   }
 
-  public static async getProfileInfo(id: string): Promise<DashboardInfo> {
+  public static async getDashboardInfo(id: string): Promise<DashboardInfo> {
     const customer = (await CommonService.getRecord({
       entity: CustomerEntity,
       filter: { id },
