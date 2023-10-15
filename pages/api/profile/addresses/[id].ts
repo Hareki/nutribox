@@ -7,7 +7,7 @@ import { UpdateCustomerAddressDtoSchema } from 'backend/dtos/profile/addresses/u
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
 import { createAddressAccessGuard } from 'backend/services/customer/customer.middleware';
-import { CustomerService } from 'backend/services/customer/customer.service';
+import { CustomerAddressService } from 'backend/services/customerAddress/customerAddress.service';
 import type { JSSuccess } from 'backend/types/jsend';
 import { getSessionAccount } from 'backend/utils/auth2.helper';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
@@ -29,7 +29,7 @@ handler
       const id = req.query.id as string;
       const dto = req.body as UpdateCustomerAddressDto;
 
-      const address = await CustomerService.updateAddress(
+      const address = await CustomerAddressService.updateAddress(
         id,
         account.customer.id,
         dto,
@@ -44,7 +44,7 @@ handler
   .delete(createAddressAccessGuard(), async (req, res) => {
     const account = await getSessionAccount(req, res);
     const id = req.query.id as string;
-    await CustomerService.deleteAddress(id, account.customer.id);
+    await CustomerAddressService.deleteAddress(id, account.customer.id);
 
     res.status(StatusCodes.OK).json({
       status: 'success',
