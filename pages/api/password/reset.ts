@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { ResetPasswordDtoSchema } from 'backend/dtos/resetPassword.dto';
+import { ResetPasswordDtoSchema } from 'backend/dtos/password/resetPassword.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
 import { AccountService } from 'backend/services/account/account.service';

@@ -2,8 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import type { UpdateCustomerAddressDto } from 'backend/dtos/customerAddress/updateCustomerAddress.dto';
-import { UpdateCustomerAddressDtoSchema } from 'backend/dtos/customerAddress/updateCustomerAddress.dto';
+import type { UpdateCustomerAddressDto } from 'backend/dtos/profile/addresses/updateCustomerAddress.dto';
+import { UpdateCustomerAddressDtoSchema } from 'backend/dtos/profile/addresses/updateCustomerAddress.dto';
 import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';

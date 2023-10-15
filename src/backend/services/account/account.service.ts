@@ -5,7 +5,7 @@ import { CommonService } from '../common/common.service';
 
 import type { CredentialsIdentifier } from './helper';
 
-import type { ChangePasswordDto } from 'backend/dtos/changePassword.dto';
+import type { ChangePasswordDto } from 'backend/dtos/password/changePassword.dto';
 import type { SignUpDto } from 'backend/dtos/signUp.dto';
 import { AccountEntity } from 'backend/entities/account.entity';
 import { CustomerEntity } from 'backend/entities/customer.entity';

@@ -2,9 +2,9 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import type { ChangePasswordDto } from 'backend/dtos/changePassword.dto';
-import { ChangePasswordDtoSchema } from 'backend/dtos/changePassword.dto';
-import { UpdateProfileDtoSchema } from 'backend/dtos/profile.dto';
+import type { ChangePasswordDto } from 'backend/dtos/password/changePassword.dto';
+import { ChangePasswordDtoSchema } from 'backend/dtos/password/changePassword.dto';
+import { UpdateProfileDtoSchema } from 'backend/dtos/profile/profile.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
 import { AccountService } from 'backend/services/account/account.service';

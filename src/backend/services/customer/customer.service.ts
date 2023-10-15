@@ -4,7 +4,7 @@ import { CommonService } from '../common/common.service';
 
 import type { OrderStatusCount, DashboardInfo } from './helper';
 
-import type { UpdateProfileDto } from 'backend/dtos/profile.dto';
+import type { UpdateProfileDto } from 'backend/dtos/profile/profile.dto';
 import { CustomerEntity } from 'backend/entities/customer.entity';
 import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
