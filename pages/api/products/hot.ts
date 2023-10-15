@@ -14,7 +14,8 @@ const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
 );
 
 handler.get(async (req, res) => {
-  const data = await ProductService.getHotProducts(5);
+  const limit = Number(req.query.limit) || 5;
+  const data = await ProductService.getHotProducts(limit);
 
   res.status(StatusCodes.OK).json({
     status: 'success',
