@@ -1,5 +1,30 @@
+import type { DeepPartial, ObjectType } from 'typeorm';
+
+import type { PaginationParams, SearchParams } from '../../types/pagination';
+
 import type { AbstractEntity } from 'backend/entities/abstract.entity';
-import type { GetRecordsInputs } from 'backend/types/service';
+
+export interface GetRecordInputs<E> {
+  entity: ObjectType<E>;
+  relations?: (keyof E)[];
+  // filter?: DeepPartial<E> | DeepPartial<E>[];
+  filter?:
+    | Partial<Record<keyof E, any>>
+    | Partial<Record<keyof E, any>>[]
+    | DeepPartial<E>
+    | DeepPartial<E>[];
+  select?: (keyof E)[];
+  order?: DeepPartial<E>;
+}
+
+export interface GetRecordsInputs<E> extends GetRecordInputs<E> {
+  paginationParams?: PaginationParams;
+}
+
+export interface GetRecordsByKeywordInputs<E> extends GetRecordInputs<E> {
+  searchParams: SearchParams;
+  getAll?: boolean;
+}
 
 export type CommonArgs<T extends AbstractEntity> = Partial<
   GetRecordsInputs<T>

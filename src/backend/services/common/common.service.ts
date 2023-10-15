@@ -10,7 +10,7 @@ import type {
   GetRecordInputs,
   GetRecordsByKeywordInputs,
   GetRecordsInputs,
-} from 'backend/types/service';
+} from 'backend/services/common/helper';
 import { getRepo } from 'backend/utils/database.helper';
 
 export class CommonService {
@@ -69,7 +69,11 @@ export class CommonService {
   ): Promise<[E[], number]> {
     const { entity, paginationParams, filter, relations, select, order } =
       input;
-    const { limit, page } = paginationParams;
+    const { limit, page } = paginationParams || {
+      limit: Number.MAX_SAFE_INTEGER,
+      page: 1,
+    };
+
     const repository: Repository<E> = await getRepo(entity);
 
     let queryBuilder = repository.createQueryBuilder(entity.name);
