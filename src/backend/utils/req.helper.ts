@@ -4,11 +4,14 @@ import type {
   PaginationParams,
   SetPaginationHeaderInputs,
 } from 'backend/types/pagination';
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'constants/pagination.constant';
+import {
+  DEFAULT_DOCS_PER_PAGE,
+  DEFAULT_PAGE,
+} from 'constants/default.constant';
 
 export const getPaginationParams = (req: NextApiRequest): PaginationParams => {
   const page: number = Number(req.query.page) || DEFAULT_PAGE;
-  const limit: number = Number(req.query.limit) || DEFAULT_LIMIT;
+  const limit: number = Number(req.query.limit) || DEFAULT_DOCS_PER_PAGE;
 
   return { page, limit };
 };

@@ -6,6 +6,7 @@ import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import type { CommonProductModel } from 'backend/services/product/helper';
 import { ProductService } from 'backend/services/product/product.service';
 import type { JSSuccess } from 'backend/types/jsend';
+import { DEFAULT_NEW_PRODUCT_LIMIT } from 'constants/default.constant';
 
 type SuccessResponse = JSSuccess<CommonProductModel[]>;
 
@@ -14,7 +15,7 @@ const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
 );
 
 handler.get(async (req, res) => {
-  const limit = Number(req.query.limit) || 5;
+  const limit = Number(req.query.limit) || DEFAULT_NEW_PRODUCT_LIMIT;
   const data = await ProductService.getNewProducts(limit);
 
   res.status(StatusCodes.OK).json({
