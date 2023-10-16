@@ -27,9 +27,6 @@ export class CustomerOrderItemEntity extends AbstractEntity {
   @Column('decimal')
   unitRetailPrice: number;
 
-  @Column('decimal')
-  unitImportPrice: number;
-
   @Column('int')
   quantity: number;
 }

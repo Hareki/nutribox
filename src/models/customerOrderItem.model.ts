@@ -23,13 +23,6 @@ const CustomerOrderItemSchema = z.object({
     10_000_000,
   ),
 
-  unitImportPrice: zodNumber(
-    'CustomerOrderItem.UnitImportPrice',
-    'float',
-    0,
-    10_000_000,
-  ),
-
   quantity: zodNumber('CustomerOrderItem.Quantity', 'int', 1, 1000),
 });
 
