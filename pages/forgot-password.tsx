@@ -14,7 +14,7 @@ import InfoDialog from 'components/dialog/info-dialog';
 import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import { getPageLayout } from 'components/layouts/PageLayout';
-import apiCaller from 'utils/apiCallers/mail';
+import mailCaller from 'api-callers/mail';
 
 const initialValues = {
   email: '',
@@ -38,7 +38,7 @@ function ResetPassword() {
     unknown,
     string
   >({
-    mutationFn: (email) => apiCaller.requestResetPassword(email),
+    mutationFn: (email) => mailCaller.forgotPassword(email),
     onError: (error) => {
       console.log(error);
       enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {

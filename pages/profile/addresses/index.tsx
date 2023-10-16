@@ -9,7 +9,7 @@ import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.sc
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import AddressEditor from 'pages-sections/profile/address/AddressEditor';
 import AddressViewer from 'pages-sections/profile/address/AddressViewer';
-import apiCaller from 'utils/apiCallers/profile/address';
+import addressCaller from 'api-callers/profile/addresses';
 
 function Address(): ReactElement {
   const { data: session, status } = useSession();
@@ -20,7 +20,7 @@ function Address(): ReactElement {
 
   const { data: addresses, isLoading } = useQuery({
     queryKey: ['addresses', sessionUserId],
-    queryFn: () => apiCaller.getAddresses(sessionUserId),
+    queryFn: () => addressCaller.getAddresses(sessionUserId),
   });
 
   if (status === 'loading') return <CircularProgress />;

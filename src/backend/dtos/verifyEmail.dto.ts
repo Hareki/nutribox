@@ -2,8 +2,8 @@ import type { z } from 'zod';
 
 import { AccountSchema } from 'models/account.model';
 
-export const VerifyPasswordDtoSchema = AccountSchema.pick({
+export const VerifyEmailDtoSchema = AccountSchema.pick({
   verificationToken: true,
 }).required();
 
-export type VerifyPasswordDto = z.infer<typeof VerifyPasswordDtoSchema>;
+export type VerifyEmailDto = z.infer<typeof VerifyEmailDtoSchema>;

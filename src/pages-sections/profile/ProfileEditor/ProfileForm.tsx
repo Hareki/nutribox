@@ -31,7 +31,7 @@ import { FlexBox } from 'components/flex-box';
 import { getAvatarUrl } from 'helpers/account.helper';
 import { phoneRegex } from 'helpers/regex.helper';
 import { reloadSession } from 'helpers/session.helper';
-import apiCaller from 'utils/apiCallers/profile';
+import profileCaller from 'api-callers/profile';
 import { IKPublicContext } from 'utils/constants';
 interface ProfileFormProps {
   account: IAccount;
@@ -55,7 +55,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
     any,
     UpdateAccountRequestBody
   >({
-    mutationFn: (body) => apiCaller.updateAccount(account.id, body),
+    mutationFn: (body) => profileCaller.updateAccount(account.id, body),
     onSuccess: () => {
       reloadSession();
       enqueueSnackbar('Chỉnh sửa thông tin thành công', { variant: 'success' });
@@ -78,7 +78,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
   >({
     mutationFn: ({ avatarUrl }) => {
       console.log('avatarUrl', avatarUrl);
-      return apiCaller.updateAccount(account.id, { avatarUrl });
+      return profileCaller.updateAccount(account.id, { avatarUrl });
     },
     onSuccess: (response) => {
       setIsUploadingImage(false);

@@ -8,7 +8,7 @@ import { useDebounce } from 'usehooks-ts';
 
 import { SearchOutlinedIcon, SearchResultCard } from './styled';
 
-import apiCaller from 'utils/apiCallers/product/search';
+import apiCaller from 'api-callers/product/search';
 
 const SearchInput: FC = () => {
   const parentRef = useRef();

@@ -14,10 +14,11 @@ import {
   Skeleton,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import type { IStore } from 'api/models/Store.model/types';
 import Link from 'next/link';
 import type { FC } from 'react';
 
-import type { IStore } from 'api/models/Store.model/types';
+import apiCaller from 'api-callers/admin/store';
 import { H3 } from 'components/abstract/Typography';
 import Image from 'components/common/input/MuiImage';
 import { FlexBox } from 'components/flex-box';
@@ -31,7 +32,6 @@ import {
   getDayOfWeekLabel,
   getStoreHoursLabel,
 } from 'helpers/storeHours.helper';
-import apiCaller from 'utils/apiCallers/admin/store';
 import { StoreId } from 'utils/constants';
 
 const StyledHeader = styled(H3)({

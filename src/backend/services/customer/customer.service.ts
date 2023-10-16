@@ -1,9 +1,14 @@
 import { CommonService } from '../common/common.service';
 
-import type { OrderStatusCount, DashboardInfo } from './helper';
+import type {
+  OrderStatusCount,
+  DashboardInfo,
+  ProfileMenuCount,
+} from './helper';
 
 import type { UpdateProfileDto } from 'backend/dtos/profile/profile.dto';
 import { CustomerEntity } from 'backend/entities/customer.entity';
+import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
 import { getRepo } from 'backend/helpers/database.helper';
@@ -70,5 +75,18 @@ export class CustomerService {
     )) as CustomerModel;
 
     return updatedCustomer;
+  }
+
+  public static async getMenuCount(id: string): Promise<ProfileMenuCount> {
+    const orderRepo = await getRepo(CustomerOrderEntity);
+    const addressRepo = await getRepo(CustomerAddressEntity);
+
+    const orderCount = await orderRepo.count({ customer: id });
+    const addressCount = await addressRepo.count({ customer: id });
+
+    return {
+      orderCount,
+      addressCount,
+    };
   }
 }

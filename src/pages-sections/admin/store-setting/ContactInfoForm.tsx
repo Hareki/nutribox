@@ -16,7 +16,7 @@ import {
   transformFormikValueToAddress,
 } from 'helpers/address.helper';
 import { phoneRegex } from 'helpers/regex.helper';
-import apiCaller from 'utils/apiCallers/admin/store';
+import apiCaller from 'api-callers/admin/store';
 import { StoreId } from 'utils/constants';
 
 interface ContactInfoFormProps {

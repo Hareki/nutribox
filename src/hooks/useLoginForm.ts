@@ -2,7 +2,7 @@ import type { SignInResponse } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
-import apiCaller from 'utils/apiCallers/mail';
+import mailCaller from 'api-callers/mail';
 
 export interface LoginRequestBody {
   email: string;
@@ -17,7 +17,7 @@ export const useLoginForm = () => {
 
   const handleFormSubmit = async (values: LoginRequestBody) => {
     setCheckingCredentials(true);
-    const { data: verified } = await apiCaller.checkVerification(values.email);
+    const { data: verified } = await mailCaller.checkVerification(values.email);
     console.log(
       'file: useLoginForm.ts:21 - handleFormSubmit - verified:',
       verified,

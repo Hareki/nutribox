@@ -22,7 +22,7 @@ import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
 import SupplierRow from 'pages-sections/admin/supplier/SupplierRow';
-import apiCaller from 'utils/apiCallers/admin/supplier';
+import apiCaller from 'api-callers/admin/supplier';
 
 SupplierList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -125,9 +125,8 @@ function SupplierList() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
   return { props: {} };

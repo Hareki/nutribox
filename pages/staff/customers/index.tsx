@@ -7,11 +7,12 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
+import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
 import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
+import apiCaller from 'api-callers/admin/account';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
@@ -22,7 +23,6 @@ import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
 import AccountRow from 'pages-sections/admin/account/AccountRow';
-import apiCaller from 'utils/apiCallers/admin/account';
 
 AccountList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -142,9 +142,8 @@ function AccountList() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
   return { props: {} };

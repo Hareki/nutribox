@@ -19,7 +19,7 @@ import { getPageLayout } from 'components/layouts/PageLayout';
 import LazyImage from 'components/LazyImage';
 import { isValidPassword } from 'helpers/password.helper';
 import EyeToggleButton from 'pages-sections/auth/EyeToggleButton';
-import apiCaller from 'utils/apiCallers/mail';
+import mailCaller from 'api-callers/mail';
 
 ChangePassword.getLayout = getPageLayout;
 
@@ -57,7 +57,7 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
     string
   >({
     mutationFn: (password) =>
-      apiCaller.resetPassword({
+      mailCaller.resetPassword({
         newPassword: password,
         token,
       }),

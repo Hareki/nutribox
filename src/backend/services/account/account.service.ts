@@ -9,14 +9,14 @@ import type { ChangePasswordDto } from 'backend/dtos/password/changePassword.dto
 import type { SignUpDto } from 'backend/dtos/signUp.dto';
 import { AccountEntity } from 'backend/entities/account.entity';
 import { CustomerEntity } from 'backend/entities/customer.entity';
-import type { AccountWithPopulatedSide, UserType } from 'backend/types/auth';
-import { BadRequestError, DuplicationError } from 'backend/types/errors/common';
 import { hashPassword } from 'backend/helpers/auth.helper';
 import { getRepo } from 'backend/helpers/database.helper';
 import {
   isDuplicateError,
   isEntityNotFoundError,
 } from 'backend/helpers/validation.helper';
+import type { AccountWithPopulatedSide, UserType } from 'backend/types/auth';
+import { BadRequestError, DuplicationError } from 'backend/types/errors/common';
 import type {
   FullyPopulatedAccountModel,
   PopulateAccountFields,
@@ -90,18 +90,19 @@ export class AccountService {
     }
   }
 
-  public static async verifyCustomerEmail(
+  public static async verifyEmail(
     token: string,
-  ): Promise<AccountWithPopulatedSide<'customer'>> {
+  ): Promise<FullyPopulatedAccountModel> {
     const accountRepo = await getRepo(AccountEntity);
 
     try {
-      const account = await accountRepo.findOneOrFail({
-        where: {
+      const account = await CommonService.getRecord({
+        entity: AccountEntity,
+        filter: {
           verificationToken: token,
           verificationTokenExpiry: MoreThan(new Date()),
         },
-        relations: ['customer'],
+        relations: ['customer', 'employee'],
       });
 
       // `undefined` doesn't erase the value, `null` does. But we can't declare null type for entities due to some conflict
@@ -116,7 +117,7 @@ export class AccountService {
       return {
         ...account,
         password: '',
-      } as AccountWithPopulatedSide<'customer'>;
+      } as FullyPopulatedAccountModel;
     } catch (error) {
       if (isEntityNotFoundError(error)) {
         throw new BadRequestError(
@@ -131,7 +132,7 @@ export class AccountService {
   public static async resetPassword(
     token: string,
     password: string,
-  ): Promise<AccountWithPopulatedSide<'customer'>> {
+  ): Promise<FullyPopulatedAccountModel> {
     const accountRepo = await getRepo(AccountEntity);
 
     const account = await CommonService.getRecord({
@@ -140,6 +141,7 @@ export class AccountService {
         forgotPasswordToken: token,
         forgotPasswordTokenExpiry: MoreThan(new Date()),
       },
+      relations: ['customer', 'employee'],
     });
 
     // `undefined` doesn't erase the value, `null` does. But we can't declare null type for entities due to some conflict
@@ -154,7 +156,7 @@ export class AccountService {
     return {
       ...account,
       password: '',
-    } as AccountWithPopulatedSide<'customer'>;
+    } as FullyPopulatedAccountModel;
   }
 
   public static async changePassword(

@@ -23,8 +23,8 @@ import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
 import { getNextOrderStatusName } from 'helpers/order.helper';
-import productApiCaller from 'utils/apiCallers/product/[slug]';
-import orderApiCaller from 'utils/apiCallers/profile/order';
+import productApiCaller from 'api-callers/product/[slug]';
+import orderApiCaller from 'api-callers/profile/orders';
 
 AdminOrderDetails.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;

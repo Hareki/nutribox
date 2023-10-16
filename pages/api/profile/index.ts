@@ -5,13 +5,13 @@ import nc from 'next-connect';
 import type { ChangePasswordDto } from 'backend/dtos/password/changePassword.dto';
 import { ChangePasswordDtoSchema } from 'backend/dtos/password/changePassword.dto';
 import { UpdateProfileDtoSchema } from 'backend/dtos/profile/profile.dto';
+import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createValidationGuard } from 'backend/services/common/common.guard';
 import { AccountService } from 'backend/services/account/account.service';
+import { createValidationGuard } from 'backend/services/common/common.guard';
 import { CustomerService } from 'backend/services/customer/customer.service';
 import type { DashboardInfo } from 'backend/services/customer/helper';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import type { PopulateAccountFields } from 'models/account.model';
 import type { CustomerModel } from 'models/customer.model';
 

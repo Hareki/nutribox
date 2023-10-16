@@ -20,8 +20,8 @@ import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import Navigations from 'components/layouts/customer-dashboard/Navigations';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
-import productApiCaller from 'utils/apiCallers/product/[slug]';
-import orderApiCaller from 'utils/apiCallers/profile/order';
+import productApiCaller from 'api-callers/product/[slug]';
+import orderApiCaller from 'api-callers/profile/orders';
 
 type Props = {
   initialOrder: ICustomerOrder;
@@ -101,9 +101,8 @@ function ProfileOrderDetails({ initialOrder }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
   const order = await CustomerOrderController.getOne({
     id: context.params.id as string,

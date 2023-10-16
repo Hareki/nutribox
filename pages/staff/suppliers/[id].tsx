@@ -22,7 +22,7 @@ import { transformFormikValueToAddress } from 'helpers/address.helper';
 import { getMessageList } from 'helpers/feedback.helper';
 import type { SupplierInfoFormValues } from 'pages-sections/admin/supplier/SupplierForm';
 import SupplierForm from 'pages-sections/admin/supplier/SupplierForm';
-import apiCaller from 'utils/apiCallers/admin/supplier';
+import apiCaller from 'api-callers/admin/supplier';
 
 AdminSupplierDetails.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -118,9 +118,8 @@ export default function AdminSupplierDetails({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
   const isValidId = Types.ObjectId.isValid(context.params.id as string);

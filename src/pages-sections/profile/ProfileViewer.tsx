@@ -18,7 +18,7 @@ import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/N
 import { getAvatarUrl } from 'helpers/account.helper';
 import { translateOrderStatusCountLabel } from 'helpers/order.helper';
 import { formatDate } from 'lib';
-import apiCaller from 'utils/apiCallers/profile';
+import profileCaller from 'api-callers/profile';
 
 type ProfileProps = {
   account: IAccount;
@@ -36,7 +36,7 @@ const ProfileViewer: FC<ProfileProps> = ({
 
   const { data: orderStatusCount, isLoading: isLoadingCount } = useQuery({
     queryKey: ['order-status-count', account.id],
-    queryFn: () => apiCaller.getOrderStatusCount(account.id),
+    queryFn: () => profileCaller.getOrderStatusCount(account.id),
     onError: (err) => console.log(err),
   });
 

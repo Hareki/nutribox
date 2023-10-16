@@ -9,6 +9,7 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
+import type { ICdsUpeProduct } from 'api/models/Product.model/types';
 import { Fragment, useState } from 'react';
 
 import type { ExpirationOrder } from '../../../../../pages/api/admin/product/expiration-order';
@@ -16,13 +17,12 @@ import type { ExpirationOrder } from '../../../../../pages/api/admin/product/exp
 import ExpirationOrderModal from './ExpirationOrderModal';
 import ExpirationOrderRow from './ExpirationOrderRow';
 
-import type { ICdsUpeProduct } from 'api/models/Product.model/types';
+import apiCaller from 'api-callers/admin/product';
 import TableHeader from 'components/data-table/TableHeader';
 import { FlexBox } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
-import apiCaller from 'utils/apiCallers/admin/product';
 
 const tableHeading = [
   { id: 'supplierName', label: 'Nhà cung cấp', align: 'left' }, // supplier

@@ -1,12 +1,13 @@
 import { Box, Grid } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import { useQuery } from '@tanstack/react-query';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
+import { serialize } from 'api/helpers/object.helper';
 import type { GetServerSideProps } from 'next';
 import type { Session } from 'next-auth';
 import type { ReactElement } from 'react';
 
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
+import apiCaller from 'api-callers/admin/dashboard';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { formatCurrency } from 'lib';
 import Analytics from 'pages-sections/dashboard/Analytics';
@@ -15,7 +16,6 @@ import StatisticCard from 'pages-sections/dashboard/StatisticCard';
 import StatisticProductCard from 'pages-sections/dashboard/StatisticProductCard';
 import StockOutProducts from 'pages-sections/dashboard/StockOutProducts';
 import TodayCard from 'pages-sections/dashboard/TodayCard';
-import apiCaller from 'utils/apiCallers/admin/dashboard';
 
 VendorDashboard.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;

@@ -9,6 +9,8 @@ import {
   TextField,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import type { ICdsUpeProduct } from 'api/models/Product.model/types';
+import type { IProductCategoryDropdown } from 'api/models/ProductCategory.model/types';
 import { useFormik } from 'formik';
 import type { Dispatch, FC } from 'react';
 import { Fragment } from 'react';
@@ -16,8 +18,7 @@ import * as yup from 'yup';
 
 import type { UpdateProductInfoRb } from '../../../../pages/api/admin/product/[id]';
 
-import type { ICdsUpeProduct } from 'api/models/Product.model/types';
-import type { IProductCategoryDropdown } from 'api/models/ProductCategory.model/types';
+import apiCaller from 'api-callers/admin/product';
 import CurrencyInput from 'components/common/input/CurrencyInput';
 import CustomSwitch from 'components/common/input/CustomSwitch';
 import InfoDialog from 'components/dialog/info-dialog';
@@ -25,7 +26,6 @@ import type {
   InfoDialogAction,
   InfoDialogState,
 } from 'components/dialog/info-dialog/reducer';
-import apiCaller from 'utils/apiCallers/admin/product';
 
 export interface ProductInfoFormValues
   extends Omit<UpdateProductInfoRb, 'category'> {

@@ -12,6 +12,7 @@ import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 
+import apiCaller from 'api-callers/admin/order';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
@@ -21,7 +22,6 @@ import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
 import { OrderRow } from 'pages-sections/admin';
-import apiCaller from 'utils/apiCallers/admin/order';
 
 OrderList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -123,9 +123,8 @@ function OrderList() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
   return { props: {} };

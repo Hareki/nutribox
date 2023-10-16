@@ -10,7 +10,7 @@ import type { IAccount } from 'api/models/Account.model/types';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
-import apiCaller from 'utils/apiCallers/profile';
+import profileCaller from 'api-callers/profile';
 
 Profile.getLayout = getCustomerDashboardLayout;
 
@@ -21,7 +21,7 @@ function Profile({ initialAccount }: ProfileProps): ReactElement {
 
   const { data: account } = useQuery({
     queryKey: ['account', initialAccount.id],
-    queryFn: () => apiCaller.getAccount(initialAccount.id),
+    queryFn: () => profileCaller.getAccount(initialAccount.id),
     // FIXME onError bị lặp giữa các useMutation
     onError: (err) => console.log(err),
     initialData: initialAccount,

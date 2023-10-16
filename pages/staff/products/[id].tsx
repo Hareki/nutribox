@@ -1,5 +1,10 @@
 import { Box, Card, Divider } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import ProductController from 'api/controllers/Product.controller';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
+import { serialize } from 'api/helpers/object.helper';
+import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
+import type { JSendFailResponse } from 'api/types/response.type';
 import type { AxiosError } from 'axios';
 import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
@@ -10,11 +15,7 @@ import { useState } from 'react';
 
 import type { UpdateProductInfoRb } from '../../api/admin/product/[id]';
 
-import ProductController from 'api/controllers/Product.controller';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
-import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
-import type { JSendFailResponse } from 'api/types/response.type';
+import apiCaller from 'api-callers/admin/product';
 import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
@@ -27,7 +28,6 @@ import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageL
 import ImageListForm from 'pages-sections/admin/products/ImageListForm';
 import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';
 import type { ProductInfoFormValues } from 'pages-sections/admin/products/ProductForm';
-import apiCaller from 'utils/apiCallers/admin/product';
 
 AdminProductDetails.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -205,9 +205,8 @@ export default function AdminProductDetails({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
   const isValidId = Types.ObjectId.isValid(context.params.id as string);

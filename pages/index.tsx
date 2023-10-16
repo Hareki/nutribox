@@ -37,8 +37,8 @@ import HeroSection from 'pages-sections/home-page/HeroSection';
 import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
 import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
-import apiCaller from 'utils/apiCallers';
-import searchApiCaller from 'utils/apiCallers/product/search';
+import homePageCaller from 'api-callers';
+import searchApiCaller from 'api-callers/product/search';
 import { ProfileInfiniteProductConstant, StoreId } from 'utils/constants';
 import api from 'utils/mock-data/home-page';
 
@@ -114,7 +114,7 @@ function HomePage(props: HomePageProps) {
 
   const { data: categoryNavigation } = useQuery({
     queryKey: ['products', 'category-navigation'],
-    queryFn: apiCaller.getAllCategories,
+    queryFn: homePageCaller.getAllCategories,
   });
 
   const {
@@ -128,7 +128,7 @@ function HomePage(props: HomePageProps) {
     // Can NOT set a default value for pageParam like this ({ pageParam = 1}). Because default value has no effect with NULL, only with UNDEFINED.
     queryFn: ({ pageParam }) => {
       if (!pageParam) pageParam = 1; // Even with this, it will still be NULL in pageParams, if initial pageParam is not specified.
-      return apiCaller.getAllProducts(pageParam);
+      return homePageCaller.getAllProducts(pageParam);
     },
     getNextPageParam: (lastPage) =>
       lastPage.nextPageNum < 0 ? undefined : lastPage.nextPageNum,
@@ -143,12 +143,12 @@ function HomePage(props: HomePageProps) {
 
   const { data: hotProducts } = useQuery({
     queryKey: ['products', 'hot'],
-    queryFn: apiCaller.getHotProducts,
+    queryFn: homePageCaller.getHotProducts,
   });
 
   const { data: newProducts } = useQuery({
     queryKey: ['products', 'new'],
-    queryFn: apiCaller.getNewProducts,
+    queryFn: homePageCaller.getNewProducts,
   });
 
   const categoryQueries = useMemo(() => {
@@ -163,7 +163,7 @@ function HomePage(props: HomePageProps) {
         queryKey: ['products', 'category', category.id],
         queryFn: () => {
           setIsLoading(true);
-          return apiCaller.getCategoryWithProducts(category.id);
+          return homePageCaller.getCategoryWithProducts(category.id);
         },
         enabled: selectedCategoryId === category.id,
         onSettled: () => {

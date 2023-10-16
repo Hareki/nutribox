@@ -14,7 +14,7 @@ import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboar
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import OrderRow from 'pages-sections/profile/order/OrderRow';
-import apiCaller from 'utils/apiCallers/profile/order';
+import orderCaller from 'api-callers/profile/orders';
 
 Order.getLayout = getCustomerDashboardLayout;
 
@@ -30,7 +30,7 @@ function Order({ sessionUserId }: AddressProps): ReactElement {
   } = usePaginationQuery<ICustomerOrder>({
     baseQueryKey: ['orders', sessionUserId],
     // FIXME confusing custom hook
-    getPaginationDataFn: apiCaller.getOrders,
+    getPaginationDataFn: orderCaller.getOrders,
     otherArgs: sessionUserId,
   });
 

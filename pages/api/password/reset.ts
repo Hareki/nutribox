@@ -4,13 +4,13 @@ import nc from 'next-connect';
 
 import { ResetPasswordDtoSchema } from 'backend/dtos/password/resetPassword.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createValidationGuard } from 'backend/services/common/common.guard';
 import { AccountService } from 'backend/services/account/account.service';
-import type { AccountWithPopulatedSide } from 'backend/types/auth';
+import { createValidationGuard } from 'backend/services/common/common.guard';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
+import type { FullyPopulatedAccountModel } from 'models/account.model';
 
-type SuccessResponse = JSSuccess<AccountWithPopulatedSide<'customer'>>;
-type FailResponse = JSFail<AccountWithPopulatedSide<'customer'>>;
+type SuccessResponse = JSSuccess<FullyPopulatedAccountModel>;
+type FailResponse = JSFail<FullyPopulatedAccountModel>;
 
 const handler = nc<
   NextApiRequest,

@@ -10,8 +10,8 @@ import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
 import { getMessageList } from 'helpers/feedback.helper';
 import Signup from 'pages-sections/auth/Signup';
-import mailApiCaller from 'utils/apiCallers/mail';
-import apiCaller from 'utils/apiCallers/signup';
+import mailApiCaller from 'api-callers/mail';
+import signUpCaller from 'api-callers/sign-up';
 
 const SignUpPage: NextPage = () => {
   const [state, dispatch] = useReducer(infoDialogReducer, {
@@ -25,7 +25,7 @@ const SignUpPage: NextPage = () => {
   const handleFormSubmit = async (values: SignUpRequestBody) => {
     console.log('file: signup.tsx:30 - handleFormSubmit - values:', values);
     setLoading(true);
-    const signupResult = await apiCaller.signUp(values);
+    const signupResult = await signUpCaller.signUp(values);
     if (signupResult.status !== 'success') {
       const messagesObject = signupResult.data;
       setLoading(false);
@@ -42,9 +42,7 @@ const SignUpPage: NextPage = () => {
       return;
     }
 
-    const verificationResult = await mailApiCaller.sendVerificationEmail(
-      values.email,
-    );
+    const verificationResult = await mailApiCaller.verifyEmail(values.email);
     if (verificationResult.status !== 'success') {
       setLoading(false);
       setHasError(true);

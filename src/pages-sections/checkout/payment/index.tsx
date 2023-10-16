@@ -12,7 +12,7 @@ import type { IAccount } from 'api/models/Account.model/types';
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import PageLayout from 'components/layouts/PageLayout';
 import { convertCartToOrderRb } from 'helpers/product.helper';
-import apiCaller from 'utils/apiCallers/checkout';
+import apiCaller from 'api-callers/checkout';
 
 Payment.getLayout = function getLayout(page: ReactElement) {
   return <PageLayout>{page}</PageLayout>;
@@ -62,7 +62,7 @@ function Payment({
         data2: step2Data,
       });
       console.log('file: index.tsx:62 - Payment - requestBody:', requestBody);
-      return apiCaller.completeOrder(requestBody);
+      return apiCaller.checkout(requestBody);
     },
     onSuccess: () => {
       queryClient.refetchQueries(['cart', account.id]);

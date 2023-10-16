@@ -16,7 +16,7 @@ import TableHeader from 'components/data-table/TableHeader';
 import Scrollbar from 'components/Scrollbar';
 import { getFullAddress } from 'helpers/address.helper';
 import useMuiTable from 'hooks/useMuiTable';
-import apiCaller from 'utils/apiCallers/profile/address';
+import addressCaller from 'api-callers/profile/addresses';
 
 const tableHeading = [
   { id: 'title', label: 'Tên', align: 'left' },
@@ -38,7 +38,7 @@ interface AccountAddressViewerProps {
 const AccountAddressViewer = ({ accountId }: AccountAddressViewerProps) => {
   const { data: addresses, isLoading } = useQuery({
     queryKey: ['addresses', accountId],
-    queryFn: () => apiCaller.getAddresses(accountId),
+    queryFn: () => addressCaller.getAddresses(accountId),
   });
 
   const filterAddress = addresses?.map(mapAddressRow);

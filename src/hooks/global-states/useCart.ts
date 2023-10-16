@@ -8,7 +8,7 @@ import useLoginDialog from './useLoginDialog';
 
 import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
 import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
-import apiCaller from 'utils/apiCallers/global/cart';
+import apiCaller from 'api-callers/global/cart';
 
 export type CartState = { cart: IPopulatedCartItem[] };
 

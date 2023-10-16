@@ -10,7 +10,7 @@ import { Fragment } from 'react';
 import { FlexBox } from 'components/flex-box';
 import type { NavLinkProps } from 'components/nav-link/NavLink';
 import NavLink from 'components/nav-link/NavLink';
-import apiCaller from 'utils/apiCallers/profile/menu-count';
+import menuCountCaller from 'api-callers/profile/menu-count';
 
 // custom styled components
 const MainContainer = styled(Card)(({ theme }) => ({
@@ -53,7 +53,7 @@ const Navigations = () => {
 
   const { data: count } = useQuery({
     queryKey: ['count', session?.user?.id],
-    queryFn: () => apiCaller.countAddressAndOrder(session.user.id),
+    queryFn: () => menuCountCaller.countAddressAndOrder(session.user.id),
     enabled: status === 'authenticated' && !!session,
   });
 

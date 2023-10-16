@@ -12,7 +12,7 @@ import { H5 } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
 import { isValidPassword } from 'helpers/password.helper';
 import EyeToggleButton from 'pages-sections/auth/EyeToggleButton';
-import apiCaller from 'utils/apiCallers/profile';
+import profileCaller from 'api-callers/profile';
 
 const initialValues = {
   oldPassword: '',
@@ -49,7 +49,7 @@ const PasswordChangeForm = ({
     void
   >({
     mutationFn: () =>
-      apiCaller.updateAccount(account.id, {
+      profileCaller.updateAccount(account.id, {
         password: values.newPassword,
       }),
     onSuccess: () => {
@@ -73,7 +73,7 @@ const PasswordChangeForm = ({
     void
   >({
     mutationFn: () =>
-      apiCaller.checkOldPassword(account.id, values.oldPassword),
+      profileCaller.checkOldPassword(account.id, values.oldPassword),
     onSuccess: (isOldPasswordValid) => {
       if (!isOldPasswordValid) {
         errors.oldPassword = 'Mật khẩu cũ không đúng';

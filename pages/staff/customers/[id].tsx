@@ -1,18 +1,18 @@
 import { Box } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { Types } from 'mongoose';
-import type { GetServerSideProps } from 'next';
-import type { ReactElement } from 'react';
-
 import AccountController from 'api/controllers/Account.controller';
 import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { IAccount } from 'api/models/Account.model/types';
+import { Types } from 'mongoose';
+import type { GetServerSideProps } from 'next';
+import type { ReactElement } from 'react';
+
+import apiCaller from 'api-callers/admin/account';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import AccountAddressViewer from 'pages-sections/admin/account/AccountAddressViewer';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
-import apiCaller from 'utils/apiCallers/admin/account';
 
 AdminAccountDetails.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -42,9 +42,8 @@ function AdminAccountDetails({ initialAccount }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
   const isValidId = Types.ObjectId.isValid(context.params.id as string);

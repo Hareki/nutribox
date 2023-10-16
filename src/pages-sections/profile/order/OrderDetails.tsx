@@ -26,7 +26,7 @@ import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/N
 import { getFullAddress } from 'helpers/address.helper';
 import useWindowSize from 'hooks/useWindowSize';
 import { formatCurrency } from 'lib';
-import apiCaller from 'utils/apiCallers/product/[slug]';
+import apiCaller from 'api-callers/product/[slug]';
 
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
   flexWrap: 'wrap',

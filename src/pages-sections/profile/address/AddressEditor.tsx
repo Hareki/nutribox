@@ -15,7 +15,7 @@ import Card1 from 'components/common/Card1';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
-import apiCaller from 'utils/apiCallers/profile/address';
+import addressCaller from 'api-callers/profile/addresses';
 
 type MutateAddressVariables = {
   type: 'add' | 'edit';
@@ -77,7 +77,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     const type = isAddMode ? 'add' : 'edit';
     let isDefault = false;
     if (isAddMode) {
-      const addresses = await apiCaller.getAddresses(accountId);
+      const addresses = await addressCaller.getAddresses(accountId);
       isDefault = addresses.length === 0;
     }
     const body = {
@@ -120,9 +120,9 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
   >({
     mutationFn: ({ type, baseBody: body }) => {
       if (type === 'add') {
-        return apiCaller.addAddress(accountId, body);
+        return addressCaller.addAddress(accountId, body);
       } else {
-        return apiCaller.updateAddress(accountId, {
+        return addressCaller.updateAddress(accountId, {
           ...body,
           id: editingAddress.id,
         });

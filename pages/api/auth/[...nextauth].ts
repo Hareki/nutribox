@@ -73,8 +73,8 @@ export const authOptions: AuthOptions = {
 
         if (!account) return null;
 
-        if (!account.verified) throw new Error('account is not verified yet!');
-        if (account.disabled) throw new Error('account is disabled!');
+        if (!account.verified) throw new Error('Account.Verified.Invalid');
+        if (account.disabled) throw new Error('Account.Disabled.True');
 
         return account;
       },

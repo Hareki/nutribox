@@ -40,9 +40,9 @@ import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
-import storeApiCaller from 'utils/apiCallers/admin/store';
-import apiCaller from 'utils/apiCallers/checkout';
-import type { AddressAPI } from 'utils/apiCallers/profile/address';
+import storeApiCaller from 'api-callers/admin/store';
+import apiCaller from 'api-callers/checkout';
+import type { AddressAPI } from 'api-callers/profile/addresses';
 import { PREPARATION_TIME, StoreId } from 'utils/constants';
 
 interface CartDetailsProps {
@@ -96,7 +96,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
     setIsEstimating(true);
     apiCaller
-      .getDeliveryInfo(currentFullAddress, getFullAddress(storeInfo))
+      .getCheckoutValidation(currentFullAddress, getFullAddress(storeInfo))
       .then((deliveryInfo) => {
         setEstimated({
           heavyTraffic: deliveryInfo.heavyTraffic,

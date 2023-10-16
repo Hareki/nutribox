@@ -1,5 +1,6 @@
 import { CommonService } from '../common/common.service';
 
+import type { ProductDetailWithRelated } from './helper';
 import { CommonProductRelations, type CommonProductModel } from './helper';
 
 import { CustomerOrderItemEntity } from 'backend/entities/customerOrderItem.entity';
@@ -12,7 +13,7 @@ export class ProductService {
   public static getProductWithRelatedProducts = async (
     id: string,
     limit = 5,
-  ) => {
+  ): Promise<ProductDetailWithRelated> => {
     const relations: (keyof ProductEntity)[] = [
       'productImages',
       'productCategory',
@@ -38,7 +39,7 @@ export class ProductService {
         productCategory: data?.productCategory.id,
       },
       paginationParams: {
-        limit: limit,
+        limit,
         page: 1,
       },
     });
@@ -88,5 +89,14 @@ export class ProductService {
 
     // Ensure the order of products matches the order of most sold
     return productIds.map((id) => products.find((p) => p.id === id)!);
+  };
+
+  public static getProductSlugs = async () => {
+    const [simplifiedProducts] = await CommonService.getRecords({
+      entity: ProductEntity,
+      select: ['id', 'name'],
+    });
+
+    return simplifiedProducts.map((p) => `${p.name}-${p.id}`);
   };
 }

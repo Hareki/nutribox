@@ -3,16 +3,12 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import type { CommonProductModel } from 'backend/services/product/helper';
+import type { ProductDetailWithRelated } from 'backend/services/product/helper';
 import { ProductService } from 'backend/services/product/product.service';
 import type { JSSuccess } from 'backend/types/jsend';
 import { DEFAULT_RELATED_PRODUCTS_LIMIT } from 'constants/pagination.constant';
 
-export type ProductResponseModel = CommonProductModel & {
-  relatedProducts: CommonProductModel[];
-};
-
-type SuccessResponse = JSSuccess<ProductResponseModel>;
+type SuccessResponse = JSSuccess<ProductDetailWithRelated>;
 
 const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
   DEFAULT_NC_CONFIGS,

@@ -19,7 +19,7 @@ import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { getFullAddress } from 'helpers/address.helper';
-import apiCaller from 'utils/apiCallers/profile/address';
+import addressCaller from 'api-callers/profile/addresses';
 
 type AddressViewerProps = {
   isLoading: boolean;
@@ -51,7 +51,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
     string
   >({
     mutationFn: (addressId) =>
-      apiCaller.deleteAddress(accountId, { addressId }),
+      addressCaller.deleteAddress(accountId, { addressId }),
     onSuccess: (newAddresses) => {
       enqueueSnackbar('Xoá địa chỉ đã chọn thành công', { variant: 'success' });
       queryClient.invalidateQueries(['addresses', accountId]);
@@ -71,7 +71,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
     string
   >({
     mutationFn: (addressId) =>
-      apiCaller.setDefaultAddress(accountId, addressId),
+      addressCaller.setDefaultAddress(accountId, addressId),
     onSuccess: (newAddresses) => {
       enqueueSnackbar('Đặt làm địa chỉ mặc định thành công', {
         variant: 'success',

@@ -3,7 +3,7 @@ import type { FormikHandlers, FormikHelpers } from 'formik';
 import { Fragment } from 'react';
 
 import { useAddressQuery } from 'hooks/useAddressQuery';
-import type { AddressAPI } from 'utils/apiCallers/profile/address';
+import type { AddressAPI } from 'api-callers/profile/addresses';
 
 type AddressFormProps = {
   values: {

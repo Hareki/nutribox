@@ -1,5 +1,8 @@
 import { Box, Card, Divider } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
+import { checkContextCredentials } from 'api/helpers/auth.helper';
+import type { IPopulatedCategoryProduct } from 'api/models/Product.model/types';
+import type { JSendFailResponse } from 'api/types/response.type';
 import type { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -11,9 +14,7 @@ import { useState } from 'react';
 
 import type { CreateProductRb } from '../../api/admin/product/create';
 
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { IPopulatedCategoryProduct } from 'api/models/Product.model/types';
-import type { JSendFailResponse } from 'api/types/response.type';
+import apiCaller from 'api-callers/admin/product';
 import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
@@ -25,7 +26,6 @@ import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageL
 import ImageListForm from 'pages-sections/admin/products/ImageListForm';
 import type { ProductInfoFormValues } from 'pages-sections/admin/products/ProductForm';
 import ProductForm from 'pages-sections/admin/products/ProductForm';
-import apiCaller from 'utils/apiCallers/admin/product';
 
 AdminProductCreate.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -221,9 +221,8 @@ export default function AdminProductCreate() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
   return {

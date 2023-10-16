@@ -10,3 +10,7 @@ export const CommonProductRelations: (keyof ProductEntity)[] = [
   'productCategory',
   'importOrders',
 ];
+
+export type ProductDetailWithRelated = CommonProductModel & {
+  relatedProducts: CommonProductModel[];
+};

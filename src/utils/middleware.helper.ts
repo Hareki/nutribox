@@ -63,6 +63,12 @@ export const matchesRoute = (url: string, route: string, shortened = false) => {
   }
 
   // Replace :id (or any other placeholder starting with ":") with a regex pattern
-  const pattern = new RegExp(`^${route.replace(/:\w+/g, '([^/]+)')}$`);
+  const pattern = new RegExp(
+    `^${route.replace(/:[a-zA-Z0-9_-]+/g, '([^/]+)')}$`,
+  );
   return pattern.test(url);
+};
+
+export const insertId = (url: string, id: string | number): string => {
+  return url.replace(/:[a-zA-Z0-9_-]+/, id.toString());
 };
