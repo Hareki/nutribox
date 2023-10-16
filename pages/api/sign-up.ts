@@ -4,8 +4,8 @@ import nc from 'next-connect';
 
 import { SignUpDtoSchema } from 'backend/dtos/signUp.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createValidationGuard } from 'backend/services/common/common.guard';
 import { AccountService } from 'backend/services/account/account.service';
+import { createValidationGuard } from 'backend/services/common/common.guard';
 import { MailerService } from 'backend/services/mailer/mailer.service';
 import type { AccountWithPopulatedSide } from 'backend/types/auth';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';

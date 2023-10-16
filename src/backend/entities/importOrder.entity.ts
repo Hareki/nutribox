@@ -23,7 +23,10 @@ export class ImportOrderEntity extends AbstractEntity {
   @Column('timestamp with time zone')
   manufacturingDate: Date;
 
-  @Column('timestamp with time zone')
+  @Column({
+    type: 'timestamp with time zone',
+    name: 'expiration_date',
+  })
   expirationDate: Date;
 
   @Column('int')

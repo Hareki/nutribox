@@ -50,9 +50,23 @@ type PopulateCustomerOrderItemFields<K extends CustomerOrderItemReferenceKeys> =
 type FullyPopulatedCustomerOrderItemModel =
   PopulateCustomerOrderItemFields<CustomerOrderItemReferenceKeys>;
 
+type PopulateIdField<K extends keyof CustomerOrderItemModel> =
+  K extends 'customerOrder'
+    ? { id: string }
+    : K extends 'product'
+    ? { id: string }
+    : never;
+
+type PopulateCustomerOrderItemIdFields<
+  K extends CustomerOrderItemReferenceKeys,
+> = Omit<CustomerOrderItemModel, K> & {
+  [P in K]: PopulateIdField<P>;
+};
+
 export { CustomerOrderItemSchema };
 export type {
   CustomerOrderItemModel,
   FullyPopulatedCustomerOrderItemModel,
+  PopulateCustomerOrderItemIdFields,
   PopulateCustomerOrderItemFields,
 };

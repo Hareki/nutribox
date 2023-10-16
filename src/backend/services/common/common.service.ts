@@ -6,12 +6,13 @@ import {
   type Repository,
 } from 'typeorm';
 
-import type {
-  GetRecordInputs,
-  GetRecordsByKeywordInputs,
-  GetRecordsInputs,
-} from 'backend/services/common/helper';
 import { getRepo } from 'backend/helpers/database.helper';
+import {
+  prefixObjectKeys,
+  type GetRecordInputs,
+  type GetRecordsByKeywordInputs,
+  type GetRecordsInputs,
+} from 'backend/services/common/helper';
 
 export class CommonService {
   public static async getRecord<E extends ObjectLiteral>(
@@ -67,8 +68,15 @@ export class CommonService {
   public static async getRecords<E extends ObjectLiteral>(
     input: GetRecordsInputs<E>,
   ): Promise<[E[], number]> {
-    const { entity, paginationParams, filter, relations, select, order } =
-      input;
+    const {
+      entity,
+      paginationParams,
+      filter,
+      relations,
+      select,
+      order,
+      whereInIds,
+    } = input;
     const { limit, page } = paginationParams || {
       limit: Number.MAX_SAFE_INTEGER,
       page: 1,
@@ -105,17 +113,27 @@ export class CommonService {
       queryBuilder = queryBuilder.where(finalFilter);
     }
 
+    if (whereInIds) {
+      queryBuilder = queryBuilder.whereInIds(whereInIds);
+    }
+
     if (select && select.length > 0) {
       queryBuilder = queryBuilder.select(
         select.map((field) => `${entity.name}.${String(field)}`),
       );
     }
 
+    const orderBy = order
+      ? prefixObjectKeys(order, entity.name)
+      : {
+          [`${entity.name}.createdAt`]: 'DESC',
+        };
+
     queryBuilder = queryBuilder.skip((page - 1) * limit);
     queryBuilder = queryBuilder.take(limit);
-    queryBuilder = queryBuilder.orderBy(
-      order || { [`${entity.name}.createdAt`]: 'DESC' },
-    );
+    queryBuilder = queryBuilder.orderBy(orderBy);
+
+    const test = queryBuilder.getQueryAndParameters();
 
     const records = await queryBuilder.getMany();
     const totalRecords = await queryBuilder.getCount();
@@ -174,9 +192,13 @@ export class CommonService {
       );
     }
 
-    queryBuilder = queryBuilder.orderBy(
-      order || { [`${entity.name}.createdAt`]: 'DESC' },
-    );
+    const orderBy = order
+      ? prefixObjectKeys(order, entity.name)
+      : {
+          [`${entity.name}.createdAt`]: 'DESC',
+        };
+
+    queryBuilder = queryBuilder.orderBy(orderBy);
 
     if (limit) {
       queryBuilder = queryBuilder.take(limit);

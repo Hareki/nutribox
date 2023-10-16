@@ -30,7 +30,6 @@ const customerOrderItemSeeds: CustomerOrderItemSeed[] = [
       id: '2a3ccc96-4f4e-5062-986a-1bcbd711e66c',
     },
     quantity: 1,
-    unitImportPrice: 5500, // lấy theo giá của importOrder, ko phải của default_import_price trong product
     unitRetailPrice: 15_000,
   },
   {
@@ -45,7 +44,6 @@ const customerOrderItemSeeds: CustomerOrderItemSeed[] = [
       id: 'afa69721-8a38-5dde-9028-062551493e38',
     },
     quantity: 3,
-    unitImportPrice: 6500,
     unitRetailPrice: 10_000,
   },
 ];

@@ -62,6 +62,7 @@ export const ADDRESS_DETAIL_API_ROUTE = `${ADDRESSES_API_ROUTE}/:id`;
 export const ORDERS_API_ROUTE = `${PROFILE_API_ROUTE}/orders`;
 export const ORDER_DETAIL_API_ROUTE = `${ORDERS_API_ROUTE}/:id`;
 
+export const CART_ITEM_API_ROUTE = `${API_BASE_ROUTE}/cart-items`;
 export const CHECKOUT_VALIDATION_API_ROUTE = `${API_BASE_ROUTE}/checkout/validate`;
 export const CHECKOUT_API_ROUTE = `${API_BASE_ROUTE}/checkout`;
 
@@ -85,6 +86,10 @@ export const CustomerApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET', 'PATCH'],
     route: ORDER_DETAIL_API_ROUTE,
+  },
+  {
+    methods: ['GET', 'POST'],
+    route: CART_ITEM_API_ROUTE,
   },
   {
     methods: ['GET'],

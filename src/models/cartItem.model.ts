@@ -13,7 +13,7 @@ const CartItemSchema = z.object({
 
   customer: zodUuid('CartItem.CustomerId'),
 
-  quantity: zodNumber('CartItem.Quantity', 'int', 1, 100),
+  quantity: zodNumber('CartItem.Quantity', 'int', 0, 100),
 });
 
 type CartItemModel = z.infer<typeof CartItemSchema>;

@@ -6,6 +6,6 @@
   "CartItem.CustomerId.Required": "Vui lòng nhập Mã khách hàng.",
   "CartItem.Quantity.Required": "Vui lòng nhập Số lượng.",
   "CartItem.Quantity.InvalidFormat": "Định dạng Số lượng không hợp lệ.",
-  "CartItem.Quantity.Min": "Số lượng phải ít nhất là 1.",
+  "CartItem.Quantity.Min": "Số lượng phải ít nhất là 0.",
   "CartItem.Quantity.Max": "Số lượng không được vượt quá 100."
 }

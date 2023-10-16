@@ -2,30 +2,44 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { SignUpDtoSchema } from 'backend/dtos/signUp.dto';
+import { CheckoutDtoSchema } from 'backend/dtos/checkout.dto';
+import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { AccountService } from 'backend/services/account/account.service';
 import { createValidationGuard } from 'backend/services/common/common.guard';
-import { MailerService } from 'backend/services/mailer/mailer.service';
-import type { AccountWithPopulatedSide } from 'backend/types/auth';
+import {
+  createCartItemAccessGuard,
+  createCheckoutValidationGuard,
+} from 'backend/services/customerOrder/customerOrder.guard';
+import { CustomerOrderService } from 'backend/services/customerOrder/customerOrder.service';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
+import type { CustomerOrderModel } from 'models/customerOrder.model';
 
-type SuccessResponse = JSSuccess<AccountWithPopulatedSide<'customer'>>;
-type FailResponse = JSFail<AccountWithPopulatedSide<'customer'>>;
+type SuccessResponse = JSSuccess<CustomerOrderModel>;
+type FailResponse = JSFail<CustomerOrderModel>;
 
 const handler = nc<
   NextApiRequest,
   NextApiResponse<SuccessResponse | FailResponse>
 >(DEFAULT_NC_CONFIGS);
 
-handler.post(createValidationGuard(SignUpDtoSchema), async (req, res) => {
-  const data = await AccountService.createCustomerAccount(req.body);
-  await MailerService.sendVerificationEmail(data.email);
+handler.post(
+  createValidationGuard(CheckoutDtoSchema),
+  createCartItemAccessGuard(),
+  createCheckoutValidationGuard(),
+  async (req, res) => {
+    const { checkoutValidation, ...dto } = req.body;
+    const account = await getSessionAccount(req, res);
 
-  res.status(StatusCodes.CREATED).json({
-    status: 'success',
-    data,
-  });
-});
+    const customerOrder = await CustomerOrderService.checkout(
+      dto,
+      account.customer.id,
+      checkoutValidation,
+    );
+    res.status(StatusCodes.CREATED).json({
+      status: 'success',
+      data: customerOrder,
+    });
+  },
+);
 
 export default handler;

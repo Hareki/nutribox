@@ -15,11 +15,11 @@ const CustomerSchema = z.object({
 
   account: zodUuid('Customer.AccountId'),
 
-  customerAddresses: z.array(z.string().uuid()).optional(),
+  customerAddresses: z.array(zodUuid('Customer.CustomerAddresses')).optional(),
 
-  customerOrders: z.array(z.string().uuid()).optional(),
+  customerOrders: z.array(zodUuid('Customer.CustomerOrders')).optional(),
 
-  cartItems: z.array(z.string().uuid()).optional(),
+  cartItems: z.array(zodUuid('Customer.CartItems')).optional(),
 
   firstName: zodString('Customer.FirstName', 1, 50).regex(NAME_REGEX, {
     message: 'Customer.FirstName.InvalidFormat',

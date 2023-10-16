@@ -63,6 +63,36 @@ const importOrderSeeds: ImportOrderSeed[] = [
     remainingQuantity: 1,
     unitImportPrice: 6500,
   },
+  {
+    id: 'b85c9706-4a9c-54b8-b83f-b897336e725c',
+    importDate: new Date(),
+    manufacturingDate: addDays(new Date(), -5),
+    expirationDate: addDays(new Date(), -5 + 60),
+    product: {
+      id: 'd1b3ce4d-6a49-5991-b330-8eaf371c6efd',
+    },
+    supplier: {
+      id: '97318538-5f74-5f3d-942c-6d87935b1726',
+    },
+    importQuantity: 10,
+    remainingQuantity: 10,
+    unitImportPrice: 6500,
+  },
+  {
+    id: '3f44a820-2db4-552f-9681-121ffda15a89',
+    importDate: new Date(),
+    manufacturingDate: addDays(new Date(), -1),
+    expirationDate: addDays(new Date(), -1 + 60),
+    product: {
+      id: 'd1b3ce4d-6a49-5991-b330-8eaf371c6efd',
+    },
+    supplier: {
+      id: '97318538-5f74-5f3d-942c-6d87935b1726',
+    },
+    importQuantity: 5,
+    remainingQuantity: 5,
+    unitImportPrice: 6500,
+  },
 ];
 
 export default class createImportOrders implements Seeder {
