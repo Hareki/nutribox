@@ -6,7 +6,7 @@ import type {
   IPopulatedUpeProductCategory,
 } from 'api/models/ProductCategory.model/types';
 import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 export const allCategory: IProductCategory = {
   id: '',

@@ -5,10 +5,10 @@ import nc from 'next-connect';
 import type { NewCustomerAddressDto } from 'backend/dtos/profile/addresses/newCustomerAddress.dto';
 import { NewCustomerAddressDtoSchema } from 'backend/dtos/profile/addresses/newCustomerAddress.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
+import { createValidationGuard } from 'backend/services/common/common.guard';
 import { CustomerAddressService } from 'backend/services/customerAddress/customerAddress.service';
 import type { JSSuccess } from 'backend/types/jsend';
-import { getSessionAccount } from 'backend/utils/auth2.helper';
+import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 type SuccessResponse = JSSuccess<CustomerAddressModel[] | CustomerAddressModel>;
@@ -30,7 +30,7 @@ handler
     });
   })
   .post(
-    createSchemaValidationMiddleware(NewCustomerAddressDtoSchema),
+    createValidationGuard(NewCustomerAddressDtoSchema),
     async (req, res) => {
       const account = await getSessionAccount(req, res);
 

@@ -2,7 +2,7 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { AccountEntity } from 'backend/entities/account.entity';
-import { hashPassword } from 'backend/utils/auth.helper';
+import { hashPassword } from 'backend/helpers/auth.helper';
 
 type AccountSeed = Pick<AccountEntity, 'email' | 'password' | 'verified'> & {
   employee?: {

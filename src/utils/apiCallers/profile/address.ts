@@ -7,7 +7,7 @@ import type {
 } from '../../../../pages/api/profile/address/[accountId]';
 
 import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
-import appAxios from 'utils/axiosInstance';
+import appAxios from 'constants/axiosFe.constant';
 
 export interface AddressAPI {
   code: number;

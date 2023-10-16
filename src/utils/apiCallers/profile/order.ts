@@ -3,7 +3,7 @@ import type { CancelOrderRequestBody } from '../../../../pages/api/profile/order
 
 import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 import { ProfileOrderPaginationConstant } from 'utils/constants';
 
 export const getOrders = async (

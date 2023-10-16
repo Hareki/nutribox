@@ -1,6 +1,6 @@
 import type { ProfileMenuCount } from '../../../../pages/api/profile/menu-count';
 
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 export const countAddressAndOrder = async (
   accountId: string,

@@ -4,7 +4,7 @@ import { CommonService } from '../common/common.service';
 
 import type { NewCustomerAddressDto } from 'backend/dtos/profile/addresses/newCustomerAddress.dto';
 import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
-import { isEntityNotFoundError } from 'backend/utils/validation.helper';
+import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 export class CustomerAddressService {

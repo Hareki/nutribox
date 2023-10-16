@@ -6,7 +6,7 @@ import type { UpdateProfileDto } from 'backend/dtos/profile/profile.dto';
 import { CustomerEntity } from 'backend/entities/customer.entity';
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
-import { getRepo } from 'backend/utils/database.helper';
+import { getRepo } from 'backend/helpers/database.helper';
 import type { CustomerModel } from 'models/customer.model';
 
 export class CustomerService {

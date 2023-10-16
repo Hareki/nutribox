@@ -6,7 +6,7 @@ import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import type { CommonProductModel } from 'backend/services/product/helper';
 import { ProductService } from 'backend/services/product/product.service';
 import type { JSSuccess } from 'backend/types/jsend';
-import { DEFAULT_NEW_PRODUCTS_LIMIT } from 'constants/default.constant';
+import { DEFAULT_NEW_PRODUCTS_LIMIT } from 'constants/pagination.constant';
 
 type SuccessResponse = JSSuccess<CommonProductModel[]>;
 

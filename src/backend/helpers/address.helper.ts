@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { assertNever } from '../../helpers/assertion.helper';
 
-import { GOOGLE_MAPS_CLIENT } from 'constants/google.constants';
+import { GOOGLE_MAPS_CLIENT } from 'constants/google.constant';
 
 type AddressType = 'province' | 'district' | 'ward';
 

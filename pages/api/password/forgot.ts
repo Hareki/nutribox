@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { ForgotPasswordDtoSchema } from 'backend/dtos/password/forgotPassword.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
+import { createValidationGuard } from 'backend/services/common/common.guard';
 import { MailerService } from 'backend/services/mailer/mailer.service';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
 
@@ -17,7 +17,7 @@ const handler = nc<
 >(DEFAULT_NC_CONFIGS);
 
 handler.post(
-  createSchemaValidationMiddleware(ForgotPasswordDtoSchema),
+  createValidationGuard(ForgotPasswordDtoSchema),
   async (req, res) => {
     const email = req.body.email as string;
 

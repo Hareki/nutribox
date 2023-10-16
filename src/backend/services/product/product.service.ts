@@ -5,7 +5,7 @@ import { CommonProductRelations, type CommonProductModel } from './helper';
 import { CustomerOrderItemEntity } from 'backend/entities/customerOrderItem.entity';
 import { ProductEntity } from 'backend/entities/product.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
-import { getRepo } from 'backend/utils/database.helper';
+import { getRepo } from 'backend/helpers/database.helper';
 import type { PopulateProductFields } from 'models/product.model';
 
 export class ProductService {

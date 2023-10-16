@@ -1,6 +1,6 @@
 import type { IProduct } from 'api/models/Product.model/types';
 import { extractIdFromSlug } from 'helpers/product.helper';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 const getSlugs = async (): Promise<string[]> => {
   const response = await axiosInstance.get('/product/slugs');

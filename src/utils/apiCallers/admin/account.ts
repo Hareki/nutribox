@@ -3,7 +3,7 @@ import type {
   IAccountWithTotalOrders,
 } from 'api/models/Account.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 import { AdminMainTablePaginationConstant } from 'utils/constants';
 
 export const getAccounts = async (

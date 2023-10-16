@@ -11,7 +11,7 @@ import type { JSSuccess } from 'backend/types/jsend';
 import {
   getPaginationParams,
   setPaginationHeader,
-} from 'backend/utils/req.helper';
+} from 'backend/helpers/req.helper';
 
 type SuccessResponse = JSSuccess<CommonProductModel[]>;
 

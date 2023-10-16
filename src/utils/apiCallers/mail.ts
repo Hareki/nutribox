@@ -2,7 +2,7 @@ import type {
   JSendFailResponse,
   JSendSuccessResponse,
 } from 'api/types/response.type';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 const sendVerificationEmail = async (
   email: string,

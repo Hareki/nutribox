@@ -1,6 +1,6 @@
 import type { DashboardData } from '../../../../pages/api/admin/dashboard';
 
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 const getStatisticData = async (): Promise<DashboardData> => {
   const response = await axiosInstance.get(`/admin/dashboard`);

@@ -5,11 +5,11 @@ import nc from 'next-connect';
 import type { UpdateCustomerAddressDto } from 'backend/dtos/profile/addresses/updateCustomerAddress.dto';
 import { UpdateCustomerAddressDtoSchema } from 'backend/dtos/profile/addresses/updateCustomerAddress.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
-import { createAddressAccessGuard } from 'backend/services/customer/customer.middleware';
+import { createValidationGuard } from 'backend/services/common/common.guard';
+import { createAddressAccessGuard } from 'backend/services/customer/customer.guard';
 import { CustomerAddressService } from 'backend/services/customerAddress/customerAddress.service';
 import type { JSSuccess } from 'backend/types/jsend';
-import { getSessionAccount } from 'backend/utils/auth2.helper';
+import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 type SuccessResponse = JSSuccess<CustomerAddressModel | undefined>;
@@ -22,7 +22,7 @@ handler
   .get(createAddressAccessGuard())
   .put(
     createAddressAccessGuard(),
-    createSchemaValidationMiddleware(UpdateCustomerAddressDtoSchema),
+    createValidationGuard(UpdateCustomerAddressDtoSchema),
     async (req, res) => {
       const account = await getSessionAccount(req, res);
 

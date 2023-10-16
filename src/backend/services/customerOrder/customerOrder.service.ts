@@ -3,7 +3,7 @@ import {
   getFullAddress,
   type EstimatedDeliveryInfo,
   getEstimatedDeliveryInfo,
-} from '../../utils/address.helper';
+} from '../../helpers/address.helper';
 import { CommonService } from '../common/common.service';
 
 import type { CheckoutValidation } from './helper';
@@ -12,7 +12,7 @@ import { StoreEntity } from 'backend/entities/store.entity';
 import {
   MAX_DELIVERY_DURATION,
   MAX_DELIVERY_RANGE,
-} from 'constants/delivery.constants';
+} from 'constants/delivery.constant';
 import type { PopulateStoreFields } from 'models/store.model';
 import type { StoreWorkTimeModel } from 'models/storeWorkTime.model';
 import { getDayOfWeek, isTimeWithinRange } from 'utils/date.helper';

@@ -2,7 +2,7 @@ import type { UpdateAccountRequestBody } from '../../../../pages/api/profile/[id
 import type { OrderStatusCount } from '../../../../pages/api/profile/order-status-count';
 
 import type { IAccount } from 'api/models/Account.model/types';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 // Assume it's a success response, because if it's not, it will get to the onError anyway
 const getAccount = async (accountId: string): Promise<IAccount> => {

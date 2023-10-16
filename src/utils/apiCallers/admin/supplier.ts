@@ -3,7 +3,7 @@ import type { CreateSupplierRb } from '../../../../pages/api/admin/supplier/crea
 
 import type { ISupplier } from 'api/models/Supplier.model/types';
 import type { GetAllPaginationResult } from 'api/types/pagination.type';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 import { AdminMainTablePaginationConstant } from 'utils/constants';
 
 const getSuppliers = async (

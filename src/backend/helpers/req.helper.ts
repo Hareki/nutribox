@@ -7,7 +7,7 @@ import type {
 import {
   DEFAULT_DOCS_PER_PAGE,
   DEFAULT_PAGE,
-} from 'constants/default.constant';
+} from 'constants/pagination.constant';
 
 export const getPaginationParams = (req: NextApiRequest): PaginationParams => {
   const page: number = Number(req.query.page) || DEFAULT_PAGE;

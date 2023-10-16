@@ -11,7 +11,7 @@ import type {
   GetRecordsByKeywordInputs,
   GetRecordsInputs,
 } from 'backend/services/common/helper';
-import { getRepo } from 'backend/utils/database.helper';
+import { getRepo } from 'backend/helpers/database.helper';
 
 export class CommonService {
   public static async getRecord<E extends ObjectLiteral>(

@@ -11,12 +11,12 @@ import { AccountEntity } from 'backend/entities/account.entity';
 import { CustomerEntity } from 'backend/entities/customer.entity';
 import type { AccountWithPopulatedSide, UserType } from 'backend/types/auth';
 import { BadRequestError, DuplicationError } from 'backend/types/errors/common';
-import { hashPassword } from 'backend/utils/auth.helper';
-import { getRepo } from 'backend/utils/database.helper';
+import { hashPassword } from 'backend/helpers/auth.helper';
+import { getRepo } from 'backend/helpers/database.helper';
 import {
   isDuplicateError,
   isEntityNotFoundError,
-} from 'backend/utils/validation.helper';
+} from 'backend/helpers/validation.helper';
 import type {
   FullyPopulatedAccountModel,
   PopulateAccountFields,

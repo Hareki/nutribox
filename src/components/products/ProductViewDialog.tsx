@@ -20,7 +20,7 @@ import Carousel from 'components/carousel/Carousel';
 import MuiImage from 'components/common/input/MuiImage';
 import { useCartSpinner } from 'hooks/useCartSpinner';
 import { formatCurrency } from 'lib';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 // styled components
 const ContentWrapper = styled(Box)(({ theme }) => ({

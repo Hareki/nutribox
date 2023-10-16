@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import { VerifyPasswordDtoSchema } from 'backend/dtos/verifyEmail.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createSchemaValidationMiddleware } from 'backend/next-connect/nc-middleware';
+import { createValidationGuard } from 'backend/services/common/common.guard';
 import { AccountService } from 'backend/services/account/account.service';
 import type { AccountWithPopulatedSide } from 'backend/types/auth';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
@@ -18,7 +18,7 @@ const handler = nc<
 >(DEFAULT_NC_CONFIGS);
 
 handler.post(
-  createSchemaValidationMiddleware(VerifyPasswordDtoSchema),
+  createValidationGuard(VerifyPasswordDtoSchema),
   async (req, res) => {
     const token = req.body.verificationToken as string;
 

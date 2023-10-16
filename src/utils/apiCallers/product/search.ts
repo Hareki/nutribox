@@ -1,5 +1,5 @@
 import type { IUpeProduct } from 'api/models/Product.model/types';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 const searchProductsByName = async (
   searchQuery: string,

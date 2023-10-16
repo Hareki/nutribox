@@ -7,11 +7,11 @@ import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { CommonService } from 'backend/services/common/common.service';
 import type { CommonArgs } from 'backend/services/common/helper';
 import type { JSSuccess } from 'backend/types/jsend';
-import { getSessionAccount } from 'backend/utils/auth2.helper';
+import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import {
   getPaginationParams,
   setPaginationHeader,
-} from 'backend/utils/req.helper';
+} from 'backend/helpers/req.helper';
 import type { CustomerOrderModel } from 'models/customerOrder.model';
 
 type SuccessResponse = JSSuccess<CustomerOrderModel[] | CustomerOrderModel>;

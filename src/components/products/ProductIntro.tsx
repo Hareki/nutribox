@@ -10,7 +10,7 @@ import { H1, H2, H6 } from 'components/abstract/Typography';
 import LazyImage from 'components/LazyImage';
 import { useCartSpinner } from 'hooks/useCartSpinner';
 import { formatCurrency } from 'lib';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 type ProductIntroProps = { product: IUpeProduct; sx?: SxProps<Theme> };
 

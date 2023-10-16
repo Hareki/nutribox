@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type { NextHandler } from 'next-connect';
 import { z } from 'zod';
 
-export const createSchemaValidationMiddleware =
+export const createValidationGuard =
   (schema: z.ZodSchema<Record<string, any>>) =>
   async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     try {

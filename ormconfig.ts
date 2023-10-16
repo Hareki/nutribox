@@ -17,7 +17,7 @@ import { ReviewResponseEntity } from 'backend/entities/reviewResponse.entity';
 import { StoreEntity } from 'backend/entities/store.entity';
 import { StoreWorkTimeEntity } from 'backend/entities/storeWorkTime.entity';
 import { SupplierEntity } from 'backend/entities/supplier.entity';
-import { SnakeNamingStrategy } from 'backend/utils/snakeCaseNamingStrategy.helper';
+import { SnakeNamingStrategy } from 'backend/helpers/snakeCaseNamingStrategy.helper';
 
 const config: ConnectionOptions = {
   name: 'default',

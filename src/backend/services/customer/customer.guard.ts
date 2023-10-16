@@ -8,8 +8,8 @@ import { CustomerCancellableOrderStatuses } from './helper';
 
 import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
-import { getSessionAccount } from 'backend/utils/auth2.helper';
-import { isEntityNotFoundError } from 'backend/utils/validation.helper';
+import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 import {
   ADDRESS_DETAIL_API_ROUTE,
   ORDER_DETAIL_API_ROUTE,

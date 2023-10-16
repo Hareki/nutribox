@@ -1,4 +1,4 @@
-import type { EstimatedDeliveryInfo } from 'backend/utils/address.helper';
+import type { EstimatedDeliveryInfo } from 'backend/helpers/address.helper';
 
 export type CheckoutValidation = {
   isValidTime: boolean;

@@ -1,7 +1,8 @@
+import type { IStore } from 'api/models/Store.model/types';
+
 import type { UpdateStoreInfoRb } from '../../../../pages/api/admin/store';
 
-import type { IStore } from 'api/models/Store.model/types';
-import axiosInstance from 'utils/axiosInstance';
+import axiosInstance from 'constants/axiosFe.constant';
 
 const getStoreInfo = async (id: string): Promise<IStore> => {
   const response = await axiosInstance.get('/store', {
