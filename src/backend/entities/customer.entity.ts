@@ -7,6 +7,11 @@ import { CartItemEntity } from './cartItem.entity';
 import { CustomerAddressEntity } from './customerAddress.entity';
 import { CustomerOrderEntity } from './customerOrder.entity';
 
+import {
+  DateEncryptionTransformer,
+  StringEncryptionTransformer,
+} from 'backend/transformers';
+
 @Entity({ name: 'customer' })
 export class CustomerEntity extends AbstractEntity {
   @OneToOne(() => AccountEntity, (account) => account.customer)
@@ -34,12 +39,16 @@ export class CustomerEntity extends AbstractEntity {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   email: string;
 
-  @Column()
+  @Column({
+    transformer: new StringEncryptionTransformer(),
+  })
   phone: string;
 
-  @Column('timestamp with time zone')
+  @Column('text', { transformer: new DateEncryptionTransformer() })
   birthday: Date;
 }

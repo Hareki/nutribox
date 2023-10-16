@@ -6,6 +6,10 @@ import { AccountEntity } from './account.entity';
 import { ReviewResponseEntity } from './reviewResponse.entity';
 
 import { EmployeeRole } from 'backend/enums/entities.enum';
+import {
+  DateEncryptionTransformer,
+  StringEncryptionTransformer,
+} from 'backend/transformers';
 
 @Entity({ name: 'employee' })
 export class EmployeeEntity extends AbstractEntity {
@@ -15,7 +19,9 @@ export class EmployeeEntity extends AbstractEntity {
   )
   reviewResponses: Relation<ReviewResponseEntity>[] | string[];
 
-  @Column()
+  @Column({
+    transformer: new StringEncryptionTransformer(),
+  })
   personalId: string;
 
   @Column({ type: 'enum', enum: EmployeeRole })
@@ -33,12 +39,16 @@ export class EmployeeEntity extends AbstractEntity {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   email: string;
 
-  @Column()
+  @Column({
+    transformer: new StringEncryptionTransformer(),
+  })
   phone: string;
 
-  @Column('timestamp with time zone')
+  @Column('text', { transformer: new DateEncryptionTransformer() })
   birthday: Date;
 }

@@ -5,6 +5,8 @@ import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
 import { EmployeeEntity } from './employee.entity';
 
+import { StringEncryptionTransformer } from 'backend/transformers';
+
 @Entity({ name: 'account' })
 export class AccountEntity extends AbstractEntity {
   @OneToOne(() => CustomerEntity, (customer) => customer.account, {
@@ -27,7 +29,10 @@ export class AccountEntity extends AbstractEntity {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    transformer: new StringEncryptionTransformer(),
+  })
   avatarUrl?: string;
 
   @Column({
@@ -40,13 +45,13 @@ export class AccountEntity extends AbstractEntity {
   })
   verified: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, transformer: new StringEncryptionTransformer() })
   verificationToken?: string;
 
   @Column({ nullable: true, type: 'timestamp with time zone' })
   verificationTokenExpiry?: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, transformer: new StringEncryptionTransformer() })
   forgotPasswordToken?: string;
 
   @Column({ nullable: true, type: 'timestamp with time zone' })
