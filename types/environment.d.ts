@@ -25,7 +25,7 @@ declare global {
       MAILER_PASSWORD: string;
 
       GOOGLE_API_KEY: string;
-      PROVINCE_API_URL: string;
+      NEXT_PUBLIC_PROVINCE_API_URL: string;
     }
   }
 }

@@ -50,7 +50,7 @@ const importOrderSeeds: ExportOrderSeed[] = [
 
 export default class createExportOrders implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    const customerOrderItemRepo = connection.getRepository(ExportOrderEntity);
-    await customerOrderItemRepo.save(importOrderSeeds);
+    const exportOrderRepo = connection.getRepository(ExportOrderEntity);
+    await exportOrderRepo.save(importOrderSeeds);
   }
 }

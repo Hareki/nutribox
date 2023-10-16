@@ -4,17 +4,15 @@ import nc from 'next-connect';
 
 import type { CustomerCancelOrderDto } from 'backend/dtos/profile/orders/cancelOrder.dto';
 import { CustomerCancelOrderDtoSchema } from 'backend/dtos/profile/orders/cancelOrder.dto';
-import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
-import { OrderStatus } from 'backend/enums/entities.enum';
+import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
-import { CommonService } from 'backend/services/common/common.service';
 import {
   createOrderAccessGuard,
   createOrderCancellingGuard,
 } from 'backend/services/customer/customer.guard';
+import { CustomerOrderService } from 'backend/services/customerOrder/customerOrder.service';
 import type { JSSuccess } from 'backend/types/jsend';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import type { CustomerOrderModel } from 'models/customerOrder.model';
 
 type SuccessResponse = JSSuccess<CustomerOrderModel[] | CustomerOrderModel>;
@@ -36,15 +34,11 @@ handler
       const id = req.query.id as string;
       const dto = req.body as CustomerCancelOrderDto;
 
-      const updatedOrder = (await CommonService.updateRecord(
-        CustomerOrderEntity,
+      const updatedOrder = await CustomerOrderService.cancelOrder(
         id,
-        {
-          status: OrderStatus.CANCELLED,
-          cancellationReason: dto.cancellationReason,
-          updatedBy: account?.customer.id,
-        },
-      )) as CustomerOrderModel;
+        account.customer.id,
+        dto,
+      );
 
       res.status(StatusCodes.OK).json({
         status: 'success',

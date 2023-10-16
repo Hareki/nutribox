@@ -17,9 +17,11 @@ import {
 export class CommonService {
   public static async getRecord<E extends ObjectLiteral>(
     input: GetRecordInputs<E>,
+    transactionRepo?: Repository<E>,
   ): Promise<E> {
     const { entity, filter, relations, select } = input;
-    const repository: Repository<E> = await getRepo(entity);
+    const repository: Repository<E> =
+      transactionRepo || (await getRepo(entity));
 
     let queryBuilder = repository.createQueryBuilder(entity.name);
 
@@ -67,6 +69,7 @@ export class CommonService {
 
   public static async getRecords<E extends ObjectLiteral>(
     input: GetRecordsInputs<E>,
+    transactionRepo?: Repository<E>,
   ): Promise<[E[], number]> {
     const {
       entity,
@@ -82,7 +85,8 @@ export class CommonService {
       page: 1,
     };
 
-    const repository: Repository<E> = await getRepo(entity);
+    const repository: Repository<E> =
+      transactionRepo || (await getRepo(entity));
 
     let queryBuilder = repository.createQueryBuilder(entity.name);
 
@@ -133,8 +137,6 @@ export class CommonService {
     queryBuilder = queryBuilder.take(limit);
     queryBuilder = queryBuilder.orderBy(orderBy);
 
-    const test = queryBuilder.getQueryAndParameters();
-
     const records = await queryBuilder.getMany();
     const totalRecords = await queryBuilder.getCount();
 
@@ -143,11 +145,13 @@ export class CommonService {
 
   public static async getRecordsByKeyword<E extends ObjectLiteral>(
     input: GetRecordsByKeywordInputs<E>,
+    transactionRepo?: Repository<E>,
   ): Promise<E[]> {
     const { entity, searchParams, filter, relations, select, order } = input;
 
     const { keyword, fieldName, limit } = searchParams;
-    const repository: Repository<E> = await getRepo(entity);
+    const repository: Repository<E> =
+      transactionRepo || (await getRepo(entity));
 
     let queryBuilder = repository.createQueryBuilder(entity.name);
 
@@ -212,8 +216,10 @@ export class CommonService {
   public static async createRecord<E extends ObjectLiteral>(
     entity: ObjectType<E>,
     data: DeepPartial<E>,
+    transactionRepo?: Repository<E>,
   ): Promise<E> {
-    const repository: Repository<E> = await getRepo(entity);
+    const repository: Repository<E> =
+      transactionRepo || (await getRepo(entity));
     const entityInstance = repository.create(data);
     const record = await repository.save(entityInstance as DeepPartial<E>);
     return record;
@@ -223,8 +229,10 @@ export class CommonService {
     entity: ObjectType<E>,
     id: number | string,
     data: DeepPartial<E>,
+    transactionRepo?: Repository<E>,
   ): Promise<E> {
-    const repository: Repository<E> = await getRepo(entity);
+    const repository: Repository<E> =
+      transactionRepo || (await getRepo(entity));
     const existingRecord = await repository.findOneOrFail(id);
 
     const updatedRecord = repository.merge(existingRecord, data);
@@ -236,8 +244,10 @@ export class CommonService {
   public static async deleteRecord<E extends ObjectLiteral>(
     entity: ObjectType<E>,
     id: number | string,
+    transactionRepo?: Repository<E>,
   ): Promise<boolean> {
-    const repository: Repository<E> = await getRepo(entity);
+    const repository: Repository<E> =
+      transactionRepo || (await getRepo(entity));
     const existingRecord = await repository.findOneOrFail(id);
 
     await repository.remove(existingRecord);

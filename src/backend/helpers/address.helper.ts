@@ -103,7 +103,7 @@ export const getAddressName = async <U extends AddressType>(
     }
   }
 
-  const url = `${process.env.PROVINCE_API_URL}/${prefix}/${code}`;
+  const url = `${process.env.NEXT_PUBLIC_PROVINCE_API_URL}/${prefix}/${code}`;
 
   const { data } = await axios.get<ProvinceApiElement<U>>(url);
   return data.name;

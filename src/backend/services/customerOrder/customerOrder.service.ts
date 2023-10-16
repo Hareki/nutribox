@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import type { Repository } from 'typeorm';
 import { MoreThan, getManager } from 'typeorm';
 
 import {
   getFullAddress,
   type EstimatedDeliveryInfo,
-  getEstimatedDeliveryInfo,
 } from '../../helpers/address.helper';
 import { CommonService } from '../common/common.service';
 
 import type { CheckoutValidation } from './helper';
 
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
+import type { CustomerCancelOrderDto } from 'backend/dtos/profile/orders/cancelOrder.dto';
 import { CartItemEntity } from 'backend/entities/cartItem.entity';
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
 import { CustomerOrderItemEntity } from 'backend/entities/customerOrderItem.entity';
@@ -19,18 +20,12 @@ import { ImportOrderEntity } from 'backend/entities/importOrder.entity';
 import { ProductEntity } from 'backend/entities/product.entity';
 import { StoreEntity } from 'backend/entities/store.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
-import { getRepo } from 'backend/helpers/database.helper';
 import {
   MAX_DELIVERY_DURATION,
   MAX_DELIVERY_RANGE,
 } from 'constants/delivery.constant';
-import type { PopulateCartItemFields } from 'models/cartItem.model';
 import type { CustomerOrderModel } from 'models/customerOrder.model';
-import type {
-  CustomerOrderItemModel,
-  PopulateCustomerOrderItemFields,
-  PopulateCustomerOrderItemIdFields,
-} from 'models/customerOrderItem.model';
+import type { PopulateCustomerOrderItemIdFields } from 'models/customerOrderItem.model';
 import type { ExportOrderModel } from 'models/exportOrder.model';
 import type { PopulateStoreFields } from 'models/store.model';
 import type { StoreWorkTimeModel } from 'models/storeWorkTime.model';
@@ -107,9 +102,8 @@ export class CustomerOrderService {
     dto: CheckoutDto,
     updatedBy: string,
     estimatedDeliveryInfo: EstimatedDeliveryInfo,
+    customerOrderRepo: Repository<CustomerOrderEntity>,
   ): Promise<CustomerOrderEntity> {
-    const customerOrderRepo = await getRepo(CustomerOrderEntity);
-
     const newOrder: Partial<CustomerOrderEntity> = {
       ...dto,
       profit: 0,
@@ -122,59 +116,76 @@ export class CustomerOrderService {
       updatedBy,
     };
 
-    return customerOrderRepo.save(newOrder);
+    return CommonService.createRecord(
+      CustomerOrderEntity,
+      newOrder,
+      customerOrderRepo,
+    );
   }
 
   private static async _createCustomerOrderItem(
     customerOrderId: string,
     cartItemId: string,
+    customerOrderItemRepo: Repository<CustomerOrderItemEntity>,
+    productRepo: Repository<ProductEntity>,
+    cartItemRepo: Repository<CartItemEntity>,
   ): Promise<CustomerOrderItemEntity> {
-    const customerOrderItemRepo = await getRepo(CustomerOrderItemEntity);
-    const productRepo = await getRepo(ProductEntity);
-
-    const cartItem = await CommonService.getRecord({
-      entity: CartItemEntity,
-      filter: { id: cartItemId },
-    });
-
-    const product = await productRepo.findOneOrFail(cartItem.product as string);
-
-    const orderItem = customerOrderItemRepo.create({
-      customerOrder: {
-        id: customerOrderId,
+    const cartItem = await CommonService.getRecord(
+      {
+        entity: CartItemEntity,
+        filter: { id: cartItemId },
       },
-      product: {
-        id: product.id,
-      },
-      unitRetailPrice: product.retailPrice,
-      quantity: cartItem.quantity,
-    });
+      cartItemRepo,
+    );
 
-    return customerOrderItemRepo.save(orderItem);
+    const product = await CommonService.getRecord(
+      {
+        entity: ProductEntity,
+        filter: { id: cartItem.product as string },
+      },
+      productRepo,
+    );
+
+    return CommonService.createRecord(
+      CustomerOrderItemEntity,
+      {
+        customerOrder: {
+          id: customerOrderId,
+        },
+        product: {
+          id: product.id,
+        },
+        unitRetailPrice: product.retailPrice,
+        quantity: cartItem.quantity,
+      },
+      customerOrderItemRepo,
+    );
   }
 
   private static async _createExportOrder(
     orderItem: PopulateCustomerOrderItemIdFields<'product'>,
+    importOrderRepo: Repository<ImportOrderEntity>,
+    exportOrderRepo: Repository<ExportOrderEntity>,
   ): Promise<void> {
-    const importOrderRepo = await getRepo(ImportOrderEntity);
-    const exportOrderRepo = await getRepo(ExportOrderEntity);
-
     let quantityToExport = orderItem.quantity;
 
     // Fetch all potential import orders
-    const [availableImportOrders] = await CommonService.getRecords({
-      entity: ImportOrderEntity,
-      filter: {
-        product: {
-          id: orderItem.product.id,
+    const [availableImportOrders] = await CommonService.getRecords(
+      {
+        entity: ImportOrderEntity,
+        filter: {
+          product: {
+            id: orderItem.product.id,
+          },
+          remainingQuantity: MoreThan(0),
+          expirationDate: MoreThan(new Date()),
         },
-        remainingQuantity: MoreThan(0),
-        expirationDate: MoreThan(new Date()),
+        order: {
+          expirationDate: 'ASC',
+        },
       },
-      order: {
-        expirationDate: 'ASC',
-      },
-    });
+      importOrderRepo,
+    );
 
     for (const importOrder of availableImportOrders) {
       if (quantityToExport <= 0) break;
@@ -184,18 +195,28 @@ export class CustomerOrderService {
         quantityToExport,
       );
 
-      await CommonService.createRecord(ExportOrderEntity, {
-        importOrder: {
-          id: importOrder.id,
+      const result = await CommonService.createRecord(
+        ExportOrderEntity,
+        {
+          importOrder: {
+            id: importOrder.id,
+          },
+          customerOrderItem: {
+            id: orderItem.id,
+          },
+          quantity: exportableQuantity,
         },
-        customerOrderItem: {
-          id: orderItem.id,
-        },
-        quantity: exportableQuantity,
-      });
+        exportOrderRepo,
+      );
 
-      importOrder.remainingQuantity -= exportableQuantity;
-      await importOrderRepo.save(importOrder);
+      await CommonService.updateRecord(
+        ImportOrderEntity,
+        importOrder.id,
+        {
+          remainingQuantity: importOrder.remainingQuantity - exportableQuantity,
+        },
+        importOrderRepo,
+      );
 
       quantityToExport -= exportableQuantity;
     }
@@ -207,18 +228,30 @@ export class CustomerOrderService {
 
   private static async _calculateProfitForOrderItem(
     orderItem: PopulateCustomerOrderItemIdFields<'product'>,
+    importOrderRepo: Repository<ImportOrderEntity>,
+    exportOrderRepo: Repository<ExportOrderEntity>,
   ): Promise<number> {
-    const exportOrderRepo = await getRepo(ExportOrderEntity);
-    const importOrderRepo = await getRepo(ImportOrderEntity);
-
     let totalImportCost = 0;
-    const relatedExportOrders = (await exportOrderRepo.find({
-      customerOrderItem: orderItem,
-    })) as ExportOrderModel[];
+
+    const [relatedExportOrders] = await CommonService.getRecords(
+      {
+        entity: ExportOrderEntity,
+        filter: {
+          customerOrderItem: {
+            id: orderItem.id,
+          },
+        },
+      },
+      exportOrderRepo,
+    );
 
     for (const exportOrder of relatedExportOrders) {
-      const relatedImportOrder = await importOrderRepo.findOneOrFail(
-        exportOrder.importOrder,
+      const relatedImportOrder = await CommonService.getRecord(
+        {
+          entity: ImportOrderEntity,
+          filter: { id: exportOrder.importOrder as string },
+        },
+        importOrderRepo,
       );
       totalImportCost +=
         relatedImportOrder.unitImportPrice * exportOrder.quantity;
@@ -238,10 +271,21 @@ export class CustomerOrderService {
 
     let result: CustomerOrderModel;
     await transactionalEntityManager.transaction(async (transactionalEM) => {
+      const customerOrderItemRepo = transactionalEM.getRepository(
+        CustomerOrderItemEntity,
+      );
+      const cartItemRepo = transactionalEM.getRepository(CartItemEntity);
+      const customerOrderRepo =
+        transactionalEM.getRepository(CustomerOrderEntity);
+      const importOrderRepo = transactionalEM.getRepository(ImportOrderEntity);
+      const exportOrderRepo = transactionalEM.getRepository(ExportOrderEntity);
+      const productRepo = transactionalEM.getRepository(ProductEntity);
+
       const customerOrder = await this._createCustomerOrder(
         dto,
         customerId,
         checkoutValidation.estimatedDeliveryInfo,
+        customerOrderRepo,
       );
       let totalProfit = 0;
 
@@ -249,26 +293,124 @@ export class CustomerOrderService {
         const orderItem = (await this._createCustomerOrderItem(
           customerOrder.id,
           cartItem,
+          customerOrderItemRepo,
+          productRepo,
+          cartItemRepo,
         )) as PopulateCustomerOrderItemIdFields<'product'>;
 
-        await CommonService.deleteRecord(CartItemEntity, cartItem);
+        await CommonService.deleteRecord(
+          CartItemEntity,
+          cartItem,
+          cartItemRepo,
+        );
 
-        await this._createExportOrder(orderItem);
+        await this._createExportOrder(
+          orderItem,
+          importOrderRepo,
+          exportOrderRepo,
+        );
 
-        const profitForItem =
-          await this._calculateProfitForOrderItem(orderItem);
+        const profitForItem = await this._calculateProfitForOrderItem(
+          orderItem,
+          importOrderRepo,
+          exportOrderRepo,
+        );
         totalProfit += profitForItem;
       }
 
       customerOrder.profit = totalProfit;
 
-      const customerOrderRepo =
-        transactionalEM.getRepository(CustomerOrderEntity);
-      result = (await customerOrderRepo.save(
+      result = (await CommonService.updateRecord(
+        CustomerOrderEntity,
+        customerOrder.id,
         customerOrder,
+        customerOrderRepo,
       )) as CustomerOrderModel;
     });
 
     return result!;
+  }
+
+  private static async _refundsProduct(
+    customerOrderId: string,
+    customerOrderItemRepo: Repository<CustomerOrderItemEntity>,
+    exportOrderRepo: Repository<ExportOrderEntity>,
+    importOrderRepo: Repository<ImportOrderEntity>,
+  ): Promise<void> {
+    const [customerOrderItems] = await CommonService.getRecords(
+      {
+        entity: CustomerOrderItemEntity,
+        filter: { customerOrder: customerOrderId },
+      },
+      customerOrderItemRepo,
+    );
+
+    for (const orderItem of customerOrderItems) {
+      const [exportOrders] = await CommonService.getRecords(
+        {
+          entity: ExportOrderEntity,
+          filter: { customerOrderItem: orderItem.id },
+        },
+        exportOrderRepo,
+      );
+
+      for (const exportOrder of exportOrders as ExportOrderModel[]) {
+        const importOrder = await CommonService.getRecord(
+          {
+            entity: ImportOrderEntity,
+            filter: { id: exportOrder.importOrder },
+          },
+          importOrderRepo,
+        );
+
+        importOrder.remainingQuantity += exportOrder.quantity;
+        await CommonService.updateRecord(
+          ImportOrderEntity,
+          importOrder.id,
+          importOrder,
+          importOrderRepo,
+        );
+      }
+    }
+  }
+
+  public static async cancelOrder(
+    customerOrderId: string,
+    updatedBy: string,
+    dto: CustomerCancelOrderDto,
+  ): Promise<CustomerOrderModel> {
+    const transactionalEntityManager = getManager();
+    let updatedOrder: CustomerOrderModel | undefined = undefined;
+
+    await transactionalEntityManager.transaction(async (transactionalEM) => {
+      const customerOrderRepo: Repository<CustomerOrderEntity> =
+        transactionalEM.getRepository(CustomerOrderEntity);
+      const customerOrderItemRepo: Repository<CustomerOrderItemEntity> =
+        transactionalEM.getRepository(CustomerOrderItemEntity);
+      const exportOrderRepo: Repository<ExportOrderEntity> =
+        transactionalEM.getRepository(ExportOrderEntity);
+      const importOrderRepo: Repository<ImportOrderEntity> =
+        transactionalEM.getRepository(ImportOrderEntity);
+
+      updatedOrder = (await CommonService.updateRecord(
+        CustomerOrderEntity,
+        customerOrderId,
+        {
+          status: OrderStatus.CANCELLED,
+          cancellationReason: dto.cancellationReason,
+          updatedBy,
+        },
+        customerOrderRepo,
+      )) as CustomerOrderModel;
+
+      this._refundsProduct(
+        customerOrderId,
+        customerOrderItemRepo,
+        exportOrderRepo,
+        importOrderRepo,
+      );
+    });
+
+    return updatedOrder!;
   }
 }

@@ -63,24 +63,24 @@ export const createCheckoutValidationGuard =
 
     req.body.checkoutValidation = checkoutValidation;
 
-    if (!checkoutValidation.isValidDistance) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        status: 'fail',
-        message: 'The distance is too far',
-      });
-    }
-    if (!checkoutValidation.isValidDuration) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        status: 'fail',
-        message: 'The duration is too long',
-      });
-    }
-    if (!checkoutValidation.isValidTime) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        status: 'fail',
-        message: 'Outside of working time',
-      });
-    }
+    // if (!checkoutValidation.isValidDistance) {
+    //   return res.status(StatusCodes.BAD_REQUEST).json({
+    //     status: 'fail',
+    //     message: 'The distance is too far',
+    //   });
+    // }
+    // if (!checkoutValidation.isValidDuration) {
+    //   return res.status(StatusCodes.BAD_REQUEST).json({
+    //     status: 'fail',
+    //     message: 'The duration is too long',
+    //   });
+    // }
+    // if (!checkoutValidation.isValidTime) {
+    //   return res.status(StatusCodes.BAD_REQUEST).json({
+    //     status: 'fail',
+    //     message: 'Outside of working time',
+    //   });
+    // }
 
     return next();
   };
