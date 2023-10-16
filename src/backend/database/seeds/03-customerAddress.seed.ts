@@ -40,7 +40,7 @@ const customerAddressSeeds: CustomerAddressSeed[] = [
   },
 ];
 
-export default class createCustomers implements Seeder {
+export default class createCustomerAddresses implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const customerAddressRepo = connection.getRepository(CustomerAddressEntity);
     await customerAddressRepo.save(customerAddressSeeds);
