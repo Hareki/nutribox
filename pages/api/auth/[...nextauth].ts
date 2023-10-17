@@ -49,7 +49,7 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
 
-      async authorize(credentials: CredentialInputs) {
+      async authorize(credentials) {
         /* 
         INSTRUCTIONS:
         
@@ -62,7 +62,8 @@ export const authOptions: AuthOptions = {
 
         if (!credentials) return null;
 
-        const { email, password, userType } = credentials;
+        const castedCredentials = credentials as CredentialInputs;
+        const { email, password, userType } = castedCredentials;
         const account = await AccountService.checkCredentials(
           {
             email,

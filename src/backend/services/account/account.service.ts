@@ -39,21 +39,26 @@ export class AccountService {
 
     if (!identifierFilter) return null;
 
-    const account = (await accountRepo
-      .createQueryBuilder('user')
-      .where('LOWER(user.email) = LOWER(:email)', { email })
-      .andWhere('user.password = :hashedPassword', { hashedPassword })
-      .leftJoinAndSelect('user.customer', 'customer')
-      .leftJoinAndSelect('user.employee', 'employee')
-      .getOne()) as FullyPopulatedAccountModel;
+    try {
+      const account = (await accountRepo
+        .createQueryBuilder('account')
+        .where('LOWER(account.email) = LOWER(:email)', { email })
+        .andWhere('account.password = :hashedPassword', { hashedPassword })
+        .leftJoinAndSelect('account.customer', 'customer')
+        .leftJoinAndSelect('account.employee', 'employee')
+        .getOne()) as FullyPopulatedAccountModel;
 
-    const isCustomer = userSide === 'customer' && account?.customer;
-    const isEmployee = userSide === 'employee' && account?.employee;
+      const isCustomer = userSide === 'customer' && account?.customer;
+      const isEmployee = userSide === 'employee' && account?.employee;
 
-    if (isCustomer || isEmployee) {
-      return account;
+      if (isCustomer || isEmployee) {
+        return account;
+      }
+      return null;
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-    return null;
   }
 
   public static async createCustomerAccount(

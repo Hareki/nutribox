@@ -1,8 +1,9 @@
+import { useMutation } from '@tanstack/react-query';
 import type { SignInResponse } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
-import mailCaller from 'api-callers/mail';
+import type { SignInDto } from 'backend/dtos/signIn.dto';
 
 export interface LoginRequestBody {
   email: string;
@@ -10,44 +11,47 @@ export interface LoginRequestBody {
 }
 
 export const useLoginForm = () => {
-  const [checkingCredentials, setCheckingCredentials] = useState(false);
   const [signInResponse, setSignInResponse] = useState<SignInResponse>();
   const [incorrect, setIncorrect] = useState(false);
   const [verified, setVerified] = useState(true);
 
-  const handleFormSubmit = async (values: LoginRequestBody) => {
-    setCheckingCredentials(true);
-    const { data: verified } = await mailCaller.checkVerification(values.email);
-    console.log(
-      'file: useLoginForm.ts:21 - handleFormSubmit - verified:',
-      verified,
-    );
-    console.log(
-      'file: useLoginForm.ts:21 - handleFormSubmit - values.email:',
-      values.email,
-    );
-    if (!verified) {
-      setCheckingCredentials(false);
-      setVerified(false);
-      return;
-    }
+  const { mutate: invokeSignIn, isLoading } = useMutation<
+    SignInResponse | undefined,
+    any,
+    SignInDto
+  >({
+    mutationFn: (values) =>
+      signIn('credentials', {
+        redirect: false,
+        ...values,
+        userType: 'customer',
+      }),
+    onSuccess: (result) => {
+      if (!result?.ok) {
+        const notVerified = result?.error?.includes('Account.Verified.Invalid');
+        const notFound = result?.error?.includes('CredentialsSignin');
+        if (notVerified) {
+          setVerified(false);
+          setIncorrect(false);
+        }
+        if (notFound) {
+          setIncorrect(true);
+          setVerified(true);
+        }
 
-    const result = await signIn('credentials', { redirect: false, ...values });
-    console.log(
-      'file: useLoginForm.ts:36 - handleFormSubmit - result:',
-      result,
-    );
-    setSignInResponse(result);
-    setCheckingCredentials(false);
-    if (result && !result.ok) {
-      setIncorrect(true);
-      // setLoading(false);
-    }
+        return;
+      }
+
+      setSignInResponse(result);
+    },
+  });
+
+  const handleFormSubmit = async (values: SignInDto) => {
+    invokeSignIn(values);
   };
-  // Can't merge signInResponse and incorrect into one state, because initially incorrect is false, and signInResponse is undefined.
-  // If we omit the signInResponse state and use the incorrect alone, that means it will automatically sign in the user.
+
   return {
-    checkingCredentials,
+    checkingCredentials: isLoading,
     handleFormSubmit,
     signInResponse,
     incorrect,

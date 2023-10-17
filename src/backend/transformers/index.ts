@@ -21,7 +21,8 @@ export class StringEncryptionTransformer implements ValueTransformer {
 
 export class DateEncryptionTransformer implements ValueTransformer {
   // Upon insertion.
-  to(value: Date): string {
+  to(value: Date | null): string | null {
+    if (value === null) return null;
     const secretKey = process.env.CRYPTOJS_SECRET!;
     // Convert Date object to string (ISO format)
     const dateStr = value.toISOString();
@@ -30,7 +31,8 @@ export class DateEncryptionTransformer implements ValueTransformer {
   }
 
   // Upon extraction.
-  from(value: string): Date {
+  from(value: string | null): Date | null {
+    if (value === null) return null;
     const secretKey = process.env.CRYPTOJS_SECRET!;
     // Decrypt the encrypted string
     const decryptedStr = crypto.AES.decrypt(value, secretKey).toString(

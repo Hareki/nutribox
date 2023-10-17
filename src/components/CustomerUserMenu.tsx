@@ -16,10 +16,14 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import type { FC, MouseEvent } from 'react';
+import type { FC, MouseEvent, MouseEventHandler } from 'react';
 import React, { useState } from 'react';
 
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import { H6, Small } from 'components/abstract/Typography';
+import { ORDERS_ROUTE, PROFILE_ROUTE } from 'constants/routes.ui.constant';
+import { getAvatarUrl, getFullName } from 'helpers/account.helper';
+import { assertNever } from 'helpers/assertion.helper';
 import useLoginDialog from 'hooks/global-states/useLoginDialog';
 import useSignOutDialog from 'hooks/useSignOutDialog';
 
@@ -28,37 +32,46 @@ const Divider = styled(Box)(({ theme }) => ({
   border: `1px dashed ${theme.palette.grey[200]}`,
 }));
 
-const getUserRoleName = (roleId: string) => {
-  switch (roleId) {
-    case 'ADMIN':
-      return 'Quản trị viên';
-    case 'CUSTOMER':
-      return 'Khách hàng';
-    case 'SUPPLIER':
-      return 'Nhà cung cấp';
-    default:
+const getUserRoleName = (role?: EmployeeRole) => {
+  if (!role) return 'Khách hàng';
+
+  switch (role) {
+    case EmployeeRole.CASHIER:
+      return 'Thu ngân';
+    case EmployeeRole.MANAGER:
+      return 'Quản lý';
+    case EmployeeRole.SHIPPER:
+      return 'Giao hàng';
+    case EmployeeRole.WAREHOUSE_MANAGER:
+      return 'Quản lý kho';
+    case EmployeeRole.WAREHOUSE_STAFF:
+      return 'Nhân viên kho';
+    default: {
+      assertNever(role);
       return '';
+    }
   }
 };
 
 interface AccountMenuProps {}
 
-const AccountMenu: FC<AccountMenuProps> = () => {
+const CustomerUserMenu: FC<AccountMenuProps> = () => {
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
-  const userFullName = session?.user?.fullName;
-  const userRole = session?.user?.role;
-  const userUrl = session?.user?.avatarUrl;
+  const userFullName = getFullName(session?.account.customer);
+  const userUrl = getAvatarUrl(session?.account.customer);
   const { palette } = useTheme();
 
   const { dialog: signOutDialog, dispatchConfirm } = useSignOutDialog();
   const { setLoginDialogOpen } = useLoginDialog();
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
   const open = Boolean(anchorEl);
 
   const handleClose = () => setAnchorEl(null);
-  const handleClick = (event: MouseEvent) => {
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (
+    event: MouseEvent,
+  ) => {
     if (isAuthenticated) {
       setAnchorEl(event.currentTarget);
       return;
@@ -106,7 +119,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
         onClose={handleClose}
         onClick={handleClose}
         id='account-menu'
-        anchorEl={anchorEl}
+        anchorEl={anchorEl as Element}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         PaperProps={{
@@ -142,11 +155,11 @@ const AccountMenu: FC<AccountMenuProps> = () => {
       >
         <Box px={2} pt={1}>
           <H6>{userFullName}</H6>
-          <Small color='grey.500'>{getUserRoleName(userRole)}</Small>
+          <Small color='grey.500'>Khách hàng</Small>
         </Box>
 
         <Divider />
-        <Link href='/profile'>
+        <Link href={PROFILE_ROUTE}>
           <MenuItem>
             <ListItemIcon>
               <PermIdentityIcon sx={iconStyles} />
@@ -155,7 +168,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
           </MenuItem>
         </Link>
 
-        <Link href='/profile/order'>
+        <Link href={ORDERS_ROUTE}>
           <MenuItem>
             <ListItemIcon>
               <DescriptionOutlinedIcon sx={iconStyles} />
@@ -164,7 +177,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
           </MenuItem>
         </Link>
 
-        {userRole === 'ADMIN' && (
+        {/* {userRole === 'ADMIN' && (
           <div>
             <Divider />
             <Link href='/admin/dashboard'>
@@ -176,7 +189,7 @@ const AccountMenu: FC<AccountMenuProps> = () => {
               </MenuItem>
             </Link>
           </div>
-        )}
+        )} */}
 
         <Divider />
         <MenuItem
@@ -197,4 +210,4 @@ const AccountMenu: FC<AccountMenuProps> = () => {
   );
 };
 
-export default AccountMenu;
+export default CustomerUserMenu;

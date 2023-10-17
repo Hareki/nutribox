@@ -12,7 +12,7 @@ import type { FC, ReactElement } from 'react';
 import { Fragment, useState } from 'react';
 
 import { Paragraph } from 'components/abstract/Typography';
-import AccountMenu from 'components/AccountMenu';
+import CustomerUserMenu from 'components/CustomerUserMenu';
 import CartDrawer from 'components/cart-drawer/CartDrawer';
 import Image from 'components/common/input/MuiImage';
 import { FlexBetween, FlexBox } from 'components/flex-box';
@@ -124,7 +124,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
               </Box>
 
               <Box>
-                <AccountMenu />
+                <CustomerUserMenu />
               </Box>
 
               <Box component={IconButton} onClick={toggleCartDrawer}>
@@ -181,7 +181,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
         {/* LOGIN AND CART BUTTON */}
         <FlexBox gap={1.5} alignItems='center'>
           <Box>
-            <AccountMenu />
+            <CustomerUserMenu />
           </Box>
 
           {!isCheckingOut && (

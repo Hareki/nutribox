@@ -10,7 +10,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import EyeToggleButton from './EyeToggleButton';
-import { Wrapper } from './Login';
+import { Wrapper } from './SignIn';
 
 import type { SignUpFormValues } from 'backend/dtos/signUp.dto';
 import { SignUpFormSchema } from 'backend/dtos/signUp.dto';
@@ -25,6 +25,7 @@ import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 interface SignUpProps {
   handleFormSubmit: (values: any) => void;
   loading: boolean;
+  disabled: boolean;
 }
 const initialValues: SignUpFormValues = {
   firstName: '',
@@ -36,7 +37,7 @@ const initialValues: SignUpFormValues = {
   confirmPassword: '',
 };
 
-const SignUp: FC<SignUpProps> = ({ handleFormSubmit, loading }) => {
+const SignUp: FC<SignUpProps> = ({ handleFormSubmit, loading, disabled }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const { t: tc } = useTranslation('customer');
   const { t: ta } = useTranslation('account');
@@ -233,6 +234,7 @@ const SignUp: FC<SignUpProps> = ({ handleFormSubmit, loading }) => {
         />
 
         <LoadingButton
+          disabled={disabled}
           loading={loading}
           loadingPosition='center'
           fullWidth

@@ -19,7 +19,7 @@ import { getPageLayout } from 'components/layouts/PageLayout';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
 import { extractIdFromSlug } from 'helpers/product.helper';
-import LoginDialog from 'pages-sections/auth/LoginDialog';
+import SignInDialog from 'pages-sections/auth/SignInDialog';
 import { StoreId } from 'utils/constants';
 
 // styled component
@@ -59,7 +59,7 @@ function ProductDetails(props: ProductDetailsProps) {
 
         <RelatedProductsSection products={relatedProducts} />
       </Container>
-      <LoginDialog />
+      <SignInDialog />
       <Footer initialStoreInfo={initialStoreInfo} />
     </Fragment>
   );

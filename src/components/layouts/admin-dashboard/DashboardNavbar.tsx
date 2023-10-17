@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
-import AccountMenu from 'components/AccountMenu';
+import CustomerUserMenu from 'components/CustomerUserMenu';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import Globe from 'components/icons/Globe';
 import Toggle from 'components/icons/Toggle';
@@ -86,7 +86,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({ handleDrawerToggle }) => {
           <Box flexGrow={1} />
 
           <FlexBox alignItems='center' gap={2}>
-            <AccountMenu />
+            <CustomerUserMenu />
           </FlexBox>
         </StyledToolBar>
       </Container>

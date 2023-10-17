@@ -2,9 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { SignUpDtoSchema } from 'backend/dtos/signUp.dto';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
-import { createValidationGuard } from 'backend/services/common/common.guard';
 import { StoreService } from 'backend/services/store/store.service';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
 import type { PopulateStoreFields } from 'models/store.model';
@@ -17,7 +15,7 @@ const handler = nc<
   NextApiResponse<SuccessResponse | FailResponse>
 >(DEFAULT_NC_CONFIGS);
 
-handler.post(createValidationGuard(SignUpDtoSchema), async (req, res) => {
+handler.get(async (req, res) => {
   const id = req.query.id as string;
   const data = await StoreService.getStoreInfo(id);
   res.status(StatusCodes.CREATED).json({

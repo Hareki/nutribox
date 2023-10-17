@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useReducer, useState } from 'react';
 
@@ -16,17 +15,19 @@ import {
 } from 'components/dialog/info-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
 import { extractErrorMessages } from 'helpers/error.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import SignUp from 'pages-sections/auth/SignUp';
 
 const SignUpPage: NextPage = () => {
   const [state, dispatch] = useReducer(infoDialogReducer, initDialogState);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [hasError, setHasError] = useState(false);
   const router = useRouter();
-  const { t } = useTranslation('customer');
+  const { t } = useCustomTranslation(['customer', 'account']);
 
   const { mutate: signUp, isLoading } = useMutation<
     AccountWithPopulatedSide<'customer'>,
-    any,
+    Record<string, string>,
     SignUpFormValues
   >({
     mutationFn: (values: SignUpFormValues) => signUpCaller.signUp(values),
@@ -44,20 +45,21 @@ const SignUpPage: NextPage = () => {
       });
     },
     onError: (error) => {
-      const messagesObject = error.data;
+      const messagesObject = error;
       setHasError(true);
 
-      dispatch({
-        type: 'open_dialog',
-        payload: {
-          variant: 'error',
-          title: 'Đăng ký thất bại',
-          content: extractErrorMessages(
-            messagesObject as Record<string, any>,
-            t,
-          ),
-        },
-      });
+      try {
+        dispatch({
+          type: 'open_dialog',
+          payload: {
+            variant: 'error',
+            title: 'Đăng ký thất bại',
+            content: extractErrorMessages(messagesObject, t),
+          },
+        });
+      } catch (error) {
+        console.log('asd', error);
+      }
     },
   });
 
@@ -69,7 +71,11 @@ const SignUpPage: NextPage = () => {
     <>
       <FlexRowCenter flexDirection='column' minHeight='100vh'>
         <SEO title='Sign up' />
-        <SignUp loading={isLoading} handleFormSubmit={handleFormSubmit} />
+        <SignUp
+          loading={isLoading}
+          disabled={isRedirecting}
+          handleFormSubmit={handleFormSubmit}
+        />
       </FlexRowCenter>
 
       <InfoDialog
@@ -77,8 +83,8 @@ const SignUpPage: NextPage = () => {
         open={state.open}
         handleClose={() => {
           dispatch({ type: 'close_dialog' });
-          console.log('file: signup.tsx:88 - hasError:', hasError);
           if (!hasError) {
+            setIsRedirecting(true);
             router.push('/');
           }
         }}

@@ -94,8 +94,9 @@ function prepareConnection() {
 export const getRepo = async <T extends ObjectLiteral>(
   entity: ObjectType<T>,
 ): Promise<Repository<T>> => {
-  await prepareConnection();
-  return getConnectionManager().get('default').getRepository(entity);
-  // const connection = await ensureConnection();
-  // return connection.getRepository(entity);
+  // await prepareConnection();
+  // return getConnectionManager().get('default').getRepository(entity);
+
+  const connection = await ensureConnection();
+  return connection.getRepository(entity);
 };

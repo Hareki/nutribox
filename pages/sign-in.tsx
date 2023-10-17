@@ -8,7 +8,7 @@ import { authOptions } from './api/auth/[...nextauth]';
 import SEO from 'components/abstract/SEO';
 import { FlexRowCenter } from 'components/flex-box';
 import { useLoginForm } from 'hooks/useLoginForm';
-import Login from 'pages-sections/auth/Login';
+import SignIn from 'pages-sections/auth/SignIn';
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const LoginPage: NextPage = () => {
   return (
     <FlexRowCenter flexDirection='column' minHeight='100vh'>
       <SEO title='Login' />
-      <Login
+      <SignIn
         loading={checkingCredentials || redirecting}
         handleFormSubmit={handleFormSubmit}
         incorrect={incorrect}

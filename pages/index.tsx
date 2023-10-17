@@ -38,7 +38,7 @@ import {
 } from 'constants/pagination.constant';
 import type { ProductCategoryModel } from 'models/productCategory.model';
 import type { PopulateStoreFields } from 'models/store.model';
-import LoginDialog from 'pages-sections/auth/LoginDialog';
+import SignInDialog from 'pages-sections/auth/SignInDialog';
 import AllProducts from 'pages-sections/home-page/AllProducts';
 import HeroSection from 'pages-sections/home-page/HeroSection';
 import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
@@ -269,7 +269,7 @@ function HomePage(props: HomePageProps) {
       <MobileNavigationBar>
         <CategoryNavbar navList={categoryNavigation || []} />
       </MobileNavigationBar>
-      <LoginDialog />
+      <SignInDialog />
       <Footer initialStoreInfo={props.initialStoreInfo} />
       <ReactQueryDevtools />
     </Fragment>

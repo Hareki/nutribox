@@ -1,12 +1,11 @@
 import type { AxiosError } from 'axios';
-import type { TFunction } from 'i18next';
 import { enqueueSnackbar } from 'notistack';
 
 import type { GeneralFunction } from 'types/common';
 
 export const extractErrorMessages = (
   responseData: Record<string, string>,
-  t: TFunction,
+  t: (key: string) => string,
 ): string[] => {
   const result = Object.keys(responseData).map(
     (errorProperty) => `${t(responseData[errorProperty] || '')}`,
@@ -21,7 +20,7 @@ export type GetDefaultOnApiErrorInputs = {
 export const getDefaultOnApiError =
   (
     { operationName, onDone }: GetDefaultOnApiErrorInputs,
-    t: TFunction<any, undefined>,
+    t: (key: string) => string,
   ) =>
   (error: AxiosError) => {
     const responseData = error.response?.data as Record<string, string>;

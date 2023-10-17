@@ -14,7 +14,7 @@ const signUp = async (
     // await new Promise((resolve) => setTimeout(resolve, 3000));
     return response.data.data;
   } catch (err: any) {
-    return err.response.data.data;
+    throw err.response.data.data;
   }
 };
 

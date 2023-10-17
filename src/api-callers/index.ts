@@ -41,9 +41,7 @@ const getAllProducts = async (
     },
   );
   const nextPageNum = response.headers['x-next-page'];
-  console.log('file: index.ts:47 - nextPageNum:', nextPageNum);
   const totalDocs = response.headers['x-total-count'];
-  console.log('file: index.ts:49 - totalDocs:', totalDocs);
 
   return {
     docs: response.data.data,

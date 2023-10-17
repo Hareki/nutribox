@@ -5,14 +5,20 @@ import { useFormik } from 'formik';
 import Link from 'next/link';
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
-import * as yup from 'yup';
 
 import EyeToggleButton from './EyeToggleButton';
 
+import type { SignInDto } from 'backend/dtos/signIn.dto';
+import { SignInDtoSchema } from 'backend/dtos/signIn.dto';
 import { H1, H4, H6 } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
 import MuiImage from 'components/common/input/MuiImage';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
+import {
+  FORGOT_PASSWORD_ROUTE,
+  SIGN_UP_ROUTE,
+} from 'constants/routes.ui.constant';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 const fbStyle = { background: '#3B5998', color: 'white' };
 const googleStyle = { background: '#4285F4', color: 'white' };
@@ -37,14 +43,14 @@ export const Wrapper = styled<FC<WrapperProps & CardProps>>(
   '.agreement': { marginTop: 12, marginBottom: 24 },
 }));
 
-interface LoginProps {
+interface SignInProps {
   handleFormSubmit: (values: any) => void;
   loading: boolean;
   incorrect: boolean;
   verified: boolean;
 }
 
-const Login: FC<LoginProps> = ({
+const SignIn: FC<SignInProps> = ({
   handleFormSubmit,
   loading = false,
   incorrect = false,
@@ -57,10 +63,10 @@ const Login: FC<LoginProps> = ({
   }, []);
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
+    useFormik<SignInDto>({
       initialValues,
       onSubmit: handleFormSubmit,
-      validationSchema: formSchema,
+      validationSchema: toFormikValidationSchema(SignInDtoSchema),
     });
 
   return (
@@ -146,7 +152,7 @@ const Login: FC<LoginProps> = ({
 
       <FlexRowCenter mt='1.25rem'>
         <Box>Chưa có tài khoản?</Box>
-        <Link href='/signup' passHref legacyBehavior>
+        <Link href={SIGN_UP_ROUTE} passHref legacyBehavior>
           <a>
             <H6 ml={1} borderBottom='1px solid' borderColor='grey.900'>
               Đăng ký
@@ -163,7 +169,7 @@ const Login: FC<LoginProps> = ({
         mt='1.25rem'
       >
         Quên mật khẩu?
-        <Link href='/mail/request-reset-password' passHref legacyBehavior>
+        <Link href={FORGOT_PASSWORD_ROUTE} passHref legacyBehavior>
           <a>
             <H6 ml={1} borderBottom='1px solid' borderColor='grey.900'>
               Khôi phục
@@ -180,13 +186,13 @@ const initialValues = {
   password: '',
 };
 
-const formSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Vui lòng nhập email hợp lệ')
-    .required('Vui lòng nhập email'),
-  password: yup.string().required('Vui lòng nhập mật khẩu'),
-});
+// const formSchema = yup.object().shape({
+//   email: yup
+//     .string()
+//     .email('Vui lòng nhập email hợp lệ')
+//     .required('Vui lòng nhập email'),
+//   password: yup.string().required('Vui lòng nhập mật khẩu'),
+// });
 
 // const formSchema = yup.object().shape({
 //   password: yup.string().required('Vui lòng nhập mật khẩu'),
@@ -222,4 +228,4 @@ const formSchema = yup.object().shape({
 //     .required('Vui lòng nhập email hoặc số điện thoại'),
 // });
 
-export default Login;
+export default SignIn;
