@@ -8,6 +8,7 @@ import {
   WarehouseManagerApiRoutes,
 } from 'constants/routes.api.constant';
 import {
+  BASE_ROUTE,
   CashierRoutes,
   CustomerRoutes,
   ManagerRoutes,
@@ -19,6 +20,29 @@ export type Role = Exclude<
   keyof typeof EmployeeRole | 'CUSTOMER',
   'WAREHOUSE_STAFF'
 >;
+
+const LANGUAGE_PREFIXES = ['en'];
+
+export const routeToRegexPattern = (route: string): RegExp => {
+  let pattern = route
+    .replace(/https?:\/\/[^/]+/, '') // strip out the domain
+    .replace(/\//g, '\\/') // escape slashes
+    .replace(/:\w+/g, '[^/]+'); // replace placeholders like :slug with a regex pattern
+
+  // Create a regex group for optional language prefixes
+  const langPrefixPattern =
+    LANGUAGE_PREFIXES.length > 0
+      ? `(\\/(${LANGUAGE_PREFIXES.join('|')}))?`
+      : '';
+
+  // Prefix with domain and optional language code
+  pattern = `^${BASE_ROUTE.replace(
+    new RegExp(`\\/(${LANGUAGE_PREFIXES.join('|')})?$`),
+    '',
+  )}${langPrefixPattern}${pattern}$`;
+
+  return new RegExp(pattern);
+};
 
 export function isAuthorized(
   url: string,
@@ -40,9 +64,13 @@ export function isAuthorized(
 
   for (const route of roleRoutes) {
     if (typeof route === 'string') {
-      if (route === url) return true;
+      const routePattern = routeToRegexPattern(route);
+      if (routePattern.test(url)) return true;
     } else if ('route' in route) {
-      if (matchesRoute(url, route.route) && route.methods.includes(method))
+      if (
+        matchesPlaceHolderRoute(url, route.route) &&
+        route.methods.includes(method)
+      )
         return true;
     }
   }
@@ -55,7 +83,11 @@ export const removeQueryParameters = (urlString) => {
   return url.origin + url.pathname;
 };
 
-export const matchesRoute = (url: string, route: string, shortened = false) => {
+export const matchesPlaceHolderRoute = (
+  url: string,
+  route: string,
+  shortened = false,
+) => {
   // If the URL is shortened, remove the domain from the route before matching
   if (shortened) {
     const routeUrl = new URL(route);

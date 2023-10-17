@@ -14,7 +14,7 @@ import {
   ADDRESS_DETAIL_API_ROUTE,
   ORDER_DETAIL_API_ROUTE,
 } from 'constants/routes.api.constant';
-import { matchesRoute } from 'utils/middleware.helper';
+import { matchesPlaceHolderRoute } from 'utils/middleware.helper';
 
 export const createAddressAccessGuard =
   () =>
@@ -33,7 +33,11 @@ export const createAddressAccessGuard =
       });
 
       if (
-        matchesRoute(req.url || '', ADDRESS_DETAIL_API_ROUTE, true) &&
+        matchesPlaceHolderRoute(
+          req.url || '',
+          ADDRESS_DETAIL_API_ROUTE,
+          true,
+        ) &&
         req.method === 'GET'
       ) {
         return res.status(StatusCodes.OK).json({
@@ -72,7 +76,7 @@ export const createOrderAccessGuard =
       });
 
       if (
-        matchesRoute(req.url || '', ORDER_DETAIL_API_ROUTE, true) &&
+        matchesPlaceHolderRoute(req.url || '', ORDER_DETAIL_API_ROUTE, true) &&
         req.method === 'GET'
       ) {
         return res.status(StatusCodes.OK).json({

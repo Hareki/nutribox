@@ -24,7 +24,7 @@ export const Wrapper = styled<FC<WrapperProps & CardProps>>(
     <Card {...rest}>{children}</Card>
   ),
 )<CardProps>(({ theme, passwordVisibility }) => ({
-  width: 500,
+  width: 600,
   padding: '2rem 3rem',
   [theme.breakpoints.down('sm')]: { width: '100%' },
   '.passwordEye': {

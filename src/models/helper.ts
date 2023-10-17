@@ -106,3 +106,20 @@ export const zodNumber = (
         ),
     )
     .transform((data) => Number(data));
+
+export const zodPassword = (prefix: string) =>
+  zodString(prefix, 6, 50).refine(
+    (password) => {
+      const hasUppercase = /[A-Z]/.test(password);
+
+      // eslint-disable-next-line no-useless-escape
+      const hasSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(
+        password,
+      );
+
+      return hasUppercase && hasSpecialCharacter;
+    },
+    {
+      message: `${prefix}.InvalidFormat`,
+    },
+  );

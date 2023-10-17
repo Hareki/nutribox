@@ -9,7 +9,7 @@
   "Account.Password.Min": "Password must be at least 6 characters.",
   "Account.Password.Max": "Password must not exceed 50 characters.",
   "Account.Password.InvalidFormat": "Password must contain at least 1 uppercase letter and 1 special character.",
-  "Account.ConfirmNewPassword.NotMatch": "Password and confirm password must be the same",
+  "Account.ConfirmPassword.NotMatch": "Password and confirm password must be the same",
   "Account.OldPassword.Invalid": "Old password is invalid",
   "Account.VerificationToken.Invalid": "Invalid or expired verification link.",
   "Account.AvatarUrl.Min": "Avatar URL must be at least 1 character.",

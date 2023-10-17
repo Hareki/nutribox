@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import type { CustomerModel } from './customer.model';
 import type { EmployeeModel } from './employee.model';
-import { zodDate, zodString, zodUuid } from './helper';
+import { zodDate, zodPassword, zodString, zodUuid } from './helper';
 
 const AccountSchema = z.object({
   id: zodUuid('Account.Id'),
@@ -17,21 +17,7 @@ const AccountSchema = z.object({
     message: 'Account.Email.InvalidFormat',
   }),
 
-  password: zodString('Account.Password', 6, 50).refine(
-    (password) => {
-      const hasUppercase = /[A-Z]/.test(password);
-
-      // eslint-disable-next-line no-useless-escape
-      const hasSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(
-        password,
-      );
-
-      return hasUppercase && hasSpecialCharacter;
-    },
-    {
-      message: 'Account.Password.InvalidFormat',
-    },
-  ),
+  password: zodPassword('Account.Password'),
 
   avatarUrl: zodString('Account.AvatarUrl', 1, 500).optional(),
 
@@ -59,6 +45,16 @@ const AccountSchema = z.object({
     'Account.ForgotPasswordTokenExpiry',
   ).optional(),
 });
+
+export const PasswordConfirmationSchema = z
+  .object({
+    password: zodPassword('Account.Password'),
+    confirmPassword: zodPassword('Account.ConfirmPassword'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Account.ConfirmPassword.NotMatch',
+    path: ['confirmPassword'],
+  });
 
 type AccountModel = z.infer<typeof AccountSchema>;
 

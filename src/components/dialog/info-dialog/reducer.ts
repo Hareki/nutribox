@@ -1,7 +1,6 @@
 import type { InfoDialogProps } from '.';
 
-export interface InfoDialogState
-  extends Partial<Omit<InfoDialogProps, 'handleClose'>> {}
+export interface InfoDialogState extends Omit<InfoDialogProps, 'handleClose'> {}
 
 interface OpenDialogAction {
   type: 'open_dialog';
@@ -32,4 +31,11 @@ export const infoDialogReducer = (
     default:
       return state;
   }
+};
+
+export const initDialogState: InfoDialogState = {
+  open: false,
+  variant: 'info',
+  title: '',
+  content: '',
 };

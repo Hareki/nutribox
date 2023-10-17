@@ -6,7 +6,7 @@ import type { CustomerAddressModel } from './customerAddress.model';
 import type { CustomerOrderModel } from './customerOrder.model';
 import { zodDate, zodString, zodUuid } from './helper';
 
-import { NAME_REGEX, PHONE_REGEX } from 'constants/regex.constant';
+import { MASK_PHONE_REGEX, NAME_REGEX } from 'constants/regex.constant';
 
 const CustomerSchema = z.object({
   id: zodUuid('Customer.Id'),
@@ -33,7 +33,7 @@ const CustomerSchema = z.object({
     message: 'Customer.Email.InvalidFormat',
   }),
 
-  phone: zodString('Customer.Phone', 1, 50).regex(PHONE_REGEX, {
+  phone: zodString('Customer.Phone', 1, 50).regex(MASK_PHONE_REGEX, {
     message: 'Customer.Phone.InvalidFormat',
   }),
 

@@ -9,9 +9,12 @@ import { NOT_FOUND_ROUTE, PublicRoutes } from 'constants/routes.ui.constant';
 import type { Role } from 'utils/middleware.helper';
 import {
   isAuthorized,
-  matchesRoute,
+  matchesPlaceHolderRoute,
   removeQueryParameters,
+  routeToRegexPattern,
 } from 'utils/middleware.helper';
+
+const PublicRoutePatterns = PublicRoutes.map(routeToRegexPattern);
 
 export default withAuth(
   async function middleware(req) {
@@ -20,10 +23,10 @@ export default withAuth(
     const url = removeQueryParameters(rawUrl);
 
     if (
-      PublicRoutes.includes(url) ||
+      PublicRoutePatterns.some((pattern) => pattern.test(url)) ||
       PublicApiRoutes.some(
         (routePair) =>
-          matchesRoute(url, routePair.route) &&
+          matchesPlaceHolderRoute(url, routePair.route) &&
           routePair.methods.includes(method as RequestMethod),
       )
     ) {

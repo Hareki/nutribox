@@ -13,8 +13,8 @@ const signUp = async (
     >(SIGN_UP_API_ROUTE, dto);
     // await new Promise((resolve) => setTimeout(resolve, 3000));
     return response.data.data;
-  } catch (err) {
-    return err.response.data;
+  } catch (err: any) {
+    return err.response.data.data;
   }
 };
 

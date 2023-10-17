@@ -43,7 +43,7 @@ const App = ({
 }: MyAppProps) => {
   const [queryClient] = useState(() => new QueryClient());
   const AnyComponent = Component as any;
-  const getLayout = AnyComponent.getLayout ?? ((page) => page);
+  const getLayout = AnyComponent.getLayout ?? ((page: any) => page);
 
   return (
     <Fragment>

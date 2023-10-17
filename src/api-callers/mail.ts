@@ -19,7 +19,7 @@ const verifyEmail = async (
     >(VERIFY_EMAIL_API_ROUTE, dto);
 
     return response.data.data;
-  } catch (err) {
+  } catch (err: any) {
     return err.response.data;
   }
 };

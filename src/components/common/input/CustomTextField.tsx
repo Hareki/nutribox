@@ -31,6 +31,7 @@ const CustomTextField: FC<Props> = ({ label, InputProps, ...props }) => {
       )}
 
       <TextField
+        fullWidth
         InputProps={{
           ...InputProps,
           style: { ...InputProps?.style, height: 44 },

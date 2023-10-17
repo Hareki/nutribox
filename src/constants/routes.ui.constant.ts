@@ -1,4 +1,5 @@
-export const BASE_ROUTE = process.env.NEXT_PUBLIC_DOMAIN_URL; // Public route as well
+// export const BASE_ROUTE = process.env.NEXT_PUBLIC_DOMAIN_URL; // Public route as well
+export const BASE_ROUTE = 'http://localhost:3000'; // Public route as well
 export const BASE_STAFF_ROUTE = `${BASE_ROUTE}/staff`;
 
 export const HOME_PAGE_ROUTE = `${BASE_ROUTE}`;
@@ -11,8 +12,10 @@ export const RESET_PASSWORD_ROUTE = `${BASE_ROUTE}/reset-password`;
 export const PRODUCT_DETAIL_ROUTE = `${BASE_ROUTE}/products/:slug`;
 
 export const TESTING_ROUTE = `${BASE_ROUTE}/testing`;
+export const TRANSLATION_ROUTE = `${BASE_ROUTE}/translation`;
 
 export const PublicRoutes = [
+  BASE_ROUTE,
   HOME_PAGE_ROUTE,
   SIGN_UP_ROUTE,
   SIGN_IN_ROUTE,
@@ -22,6 +25,7 @@ export const PublicRoutes = [
   RESET_PASSWORD_ROUTE,
   PRODUCT_DETAIL_ROUTE,
   TESTING_ROUTE,
+  TRANSLATION_ROUTE,
 ];
 
 export const PROFILE_ROUTE = `${BASE_ROUTE}/profile`;

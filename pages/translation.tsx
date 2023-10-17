@@ -1,12 +1,5 @@
-import type {
-  SelectChangeEvent } from '@mui/material';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 // import type { InferGetStaticPropsType } from "next";
@@ -23,7 +16,7 @@ const languageList = [
 
 const Translation = () => {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('customer');
   const [language, setLanguage] = useState(router.locale);
 
   const { pathname, asPath, query } = router;
@@ -37,7 +30,7 @@ const Translation = () => {
 
   return (
     <Box bgcolor='background.paper' p={6}>
-      <H2>{t('title')} </H2>
+      <H2>{t('Customer.LastName.Required')} </H2>
       <Paragraph mb={4}>{t('description')}</Paragraph>
 
       <FormControl>
@@ -61,7 +54,10 @@ const Translation = () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const locales = await serverSideTranslations(locale ?? 'en', ['common']);
+  const locales = await serverSideTranslations(locale ?? 'en', [
+    'common',
+    'customer',
+  ]);
 
   return { props: { ...locales } };
 };
