@@ -6,12 +6,13 @@ import {
   useQueries,
   useQuery,
 } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState, useMemo, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import homePageCaller from 'api-callers';
+import homePageCaller, { allCategory } from 'api-callers';
 import { Mock } from 'api-callers/mock';
 import searchApiCaller from 'api-callers/product/search';
 import type { Service } from 'backend/database/mock/services';
@@ -35,7 +36,8 @@ import {
   DEFAULT_NEW_PRODUCTS_LIMIT,
   DEFAULT_PAGE,
 } from 'constants/pagination.constant';
-import type { PopulateStoreFields, StoreModel } from 'models/store.model';
+import type { ProductCategoryModel } from 'models/productCategory.model';
+import type { PopulateStoreFields } from 'models/store.model';
 import LoginDialog from 'pages-sections/auth/LoginDialog';
 import AllProducts from 'pages-sections/home-page/AllProducts';
 import HeroSection from 'pages-sections/home-page/HeroSection';
@@ -205,10 +207,6 @@ function HomePage(props: HomePageProps) {
     ),
     [categoryNavigation, handleSelectCategory],
   );
-  console.log(
-    'file: index.tsx:212 - HomePage - props.serviceList:',
-    props.serviceList,
-  );
 
   return (
     <Fragment>
@@ -257,7 +255,7 @@ function HomePage(props: HomePageProps) {
                   products={allProducts || []}
                   pagination={{
                     fetchNextPage,
-                    hasNextPage: !hasNextPage,
+                    hasNextPage: !!hasNextPage,
                     isFetchingNextPage,
                   }}
                 />
@@ -273,6 +271,7 @@ function HomePage(props: HomePageProps) {
       </MobileNavigationBar>
       <LoginDialog />
       <Footer initialStoreInfo={props.initialStoreInfo} />
+      <ReactQueryDevtools />
     </Fragment>
   );
 }
@@ -287,14 +286,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const [categories] = await CommonService.getRecords({
       entity: ProductCategoryEntity,
     });
-
-    categories.unshift({
-      available: true,
-      createdAt: new Date(),
-      id: '',
-      name: 'Tất cả',
-      products: [],
-    });
+    (categories as ProductCategoryModel[]).unshift(allCategory);
 
     return categories;
   };

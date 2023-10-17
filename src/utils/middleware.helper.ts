@@ -83,24 +83,29 @@ export const removeQueryParameters = (urlString: string) => {
   return url.origin + url.pathname;
 };
 
+export const shortenUrl = (url: string) => {
+  const urlObj = new URL(url);
+  return urlObj.pathname + urlObj.search + urlObj.hash;
+};
+
 export const matchesPlaceHolderRoute = (
   url: string,
   route: string,
-  shortened = false,
+  urlShortened = false,
 ) => {
+  let finalRoute = route;
   // If the URL is shortened, remove the domain from the route before matching
-  if (shortened) {
-    const routeUrl = new URL(route);
-    route = routeUrl.pathname + routeUrl.search + routeUrl.hash;
+  if (urlShortened) {
+    finalRoute = shortenUrl(route);
   }
 
   // Replace :id (or any other placeholder starting with ":") with a regex pattern
   const pattern = new RegExp(
-    `^${route.replace(/:[a-zA-Z0-9_-]+/g, '([^/]+)')}$`,
+    `^${finalRoute.replace(/:[a-zA-Z0-9_-]+/g, '([^/]+)')}$`,
   );
   return pattern.test(url);
 };
 
 export const insertId = (url: string, id: string | number): string => {
-  return url.replace(/:[a-zA-Z0-9_-]+/, id.toString());
+  return shortenUrl(url).replace(/:[a-zA-Z0-9_-]+/, id.toString());
 };

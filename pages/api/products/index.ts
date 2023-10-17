@@ -28,7 +28,7 @@ handler.get(async (req, res) => {
     entity: ProductEntity,
     relations: ['productImages', 'productCategory', 'importOrders'],
     filter: {
-      productCategory: category,
+      ...(category && { productCategory: { id: category } }),
     },
   };
 

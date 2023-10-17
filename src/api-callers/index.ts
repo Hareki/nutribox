@@ -14,11 +14,11 @@ import type { GetInfinitePaginationResult } from 'types/pagination';
 import { insertId } from 'utils/middleware.helper';
 
 export const allCategory: ProductCategoryModel = {
-  id: '',
+  available: true,
   createdAt: new Date(),
+  id: '',
   name: 'Tất cả',
   products: [],
-  available: true,
 };
 
 const getAllCategories = async (): Promise<ProductCategoryModel[]> => {
@@ -26,7 +26,7 @@ const getAllCategories = async (): Promise<ProductCategoryModel[]> => {
     await axiosInstance.get<JSSuccess<ProductCategoryModel[]>>(
       CATEGORIES_API_ROUTE,
     );
-  return response.data.data;
+  return [allCategory, ...response.data.data];
 };
 
 const getAllProducts = async (
