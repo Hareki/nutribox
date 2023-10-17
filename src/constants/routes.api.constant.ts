@@ -8,6 +8,7 @@ export const API_BASE_STAFF_ROUTE = `${API_BASE_ROUTE}/staff`;
 export const PRODUCTS_API_ROUTE = `${API_BASE_ROUTE}/products`;
 export const CATEGORIES_API_ROUTE = `${API_BASE_ROUTE}/categories`;
 export const PRODUCT_DETAIL_API_ROUTE = `${PRODUCTS_API_ROUTE}/:id`;
+export const CATEGORY_DETAIL_API_ROUTE = `${API_BASE_ROUTE}/categories/:id`;
 export const NEW_PRODUCTS_API_ROUTE = `${PRODUCTS_API_ROUTE}/new`;
 export const HOT_PRODUCTS_API_ROUTE = `${PRODUCTS_API_ROUTE}/hot`;
 export const SLUGS_API_ROUTE = `${PRODUCTS_API_ROUTE}/slugs`;
@@ -15,6 +16,7 @@ export const SIGN_UP_API_ROUTE = `${API_BASE_ROUTE}/sign-up`;
 export const VERIFY_EMAIL_API_ROUTE = `${API_BASE_ROUTE}/verify-email`;
 export const FORGOT_PASSWORD_API_ROUTE = `${API_BASE_ROUTE}/password/forgot`;
 export const RESET_PASSWORD_API_ROUTE = `${API_BASE_ROUTE}/password/reset`;
+export const STORE_DETAIL_API_ROUTE = `${API_BASE_ROUTE}/stores/:id`;
 
 export const TESTING_API_ROUTE = `${API_BASE_ROUTE}/testing`;
 
@@ -26,6 +28,10 @@ export const PublicApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET'],
     route: CATEGORIES_API_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: CATEGORY_DETAIL_API_ROUTE,
   },
   {
     methods: ['GET'],
@@ -62,6 +68,10 @@ export const PublicApiRoutes: MethodRoutePair[] = [
   {
     methods: ['POST'],
     route: TESTING_API_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: STORE_DETAIL_API_ROUTE,
   },
 ];
 
@@ -137,7 +147,7 @@ export const PRODUCT_DETAIL_API_STAFF_ROUTE = `${PRODUCTS_API_STAFF_ROUTE}/:id`;
 export const SUPPLIERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/suppliers`;
 export const SUPPLIER_DETAIL_API_STAFF_ROUTE = `${SUPPLIERS_API_STAFF_ROUTE}/:id`;
 
-export const STORE_DETAIL_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/store/:id`;
+export const STORE_DETAIL_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/stores/:id`;
 export const COUNTER_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/counter`;
 
 export const ManagerApiRoutes: MethodRoutePair[] = [

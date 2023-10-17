@@ -1,10 +1,10 @@
 import { Box, Container, Grid, styled } from '@mui/material';
 import type { FC } from 'react';
 
+import type { Service } from 'backend/database/mock/services';
 import { H4, Span } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import appIcons from 'components/icons';
-import type Service from 'models/Service.model';
 
 // styled components
 const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
@@ -31,12 +31,13 @@ const ServicesSection: FC<Props> = ({ id, services }) => {
     <Container id={id} sx={{ pt: 12, pb: 8 }}>
       <Grid container spacing={3}>
         {servicesData?.map((item) => {
-          const Icon = appIcons[item.icon];
+          const Icon = appIcons[item.icon as keyof typeof appIcons];
 
           return (
             <Grid item lg={3} md={6} sm={6} xs={12} key={item.title}>
               <StyledFlexBox alignItems='center' gap={2}>
                 <FlexBox alignItems='center' color='grey.600' fontSize='50px'>
+                  {/* @ts-ignore */}
                   <Icon fontSize='50px' color='grey.600'>
                     {item.icon}
                   </Icon>

@@ -10,17 +10,19 @@ import {
   styled,
 } from '@mui/material';
 import type { FC } from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import OutOfStockChip from './OutOfStockChip';
 
-import type { IUpeProduct } from 'api/models/Product.model/types';
+import type { CommonProductModel } from 'backend/services/product/helper';
 import { H1, H2, Paragraph } from 'components/abstract/Typography';
 import Carousel from 'components/carousel/Carousel';
 import MuiImage from 'components/common/input/MuiImage';
+import axiosInstance from 'constants/axiosFe.constant';
+import { CATEGORY_DETAIL_API_ROUTE } from 'constants/routes.api.constant';
 import { useCartSpinner } from 'hooks/useCartSpinner';
 import { formatCurrency } from 'lib';
-import axiosInstance from 'constants/axiosFe.constant';
+import { insertId } from 'utils/middleware.helper';
 
 // styled components
 const ContentWrapper = styled(Box)(({ theme }) => ({
@@ -47,7 +49,7 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
 
 // =====================================================
 type ProductViewDialogProps = {
-  product: IUpeProduct;
+  product: CommonProductModel;
   categoryName?: string;
   openDialog: boolean;
   handleCloseDialog: () => void;
@@ -60,11 +62,20 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
 
   useEffect(() => {
     if (categoryName === 'đang tải...' && openDialog) {
-      axiosInstance.get(`/category/${product.category}`).then((res) => {
-        setCategoryName(res.data.data.name);
-      });
+      axiosInstance
+        .get(
+          `${insertId(CATEGORY_DETAIL_API_ROUTE, product.productCategory.id)}`,
+          {
+            params: {
+              noProducts: true,
+            },
+          },
+        )
+        .then((res) => {
+          setCategoryName(res.data.data.name);
+        });
     }
-  }, [openDialog, categoryName, product.category]);
+  }, [openDialog, categoryName, product.productCategory]);
 
   const {
     inStock,
@@ -73,6 +84,11 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
     disableAddToCart,
     cartItem,
   } = useCartSpinner(product);
+
+  const imageUrls = useMemo(
+    () => product.productImages.map((item) => item.imageUrl),
+    [product.productImages],
+  );
 
   return (
     <Dialog
@@ -86,11 +102,8 @@ const ProductViewDialog: FC<ProductViewDialogProps> = (props) => {
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
               {!inStock && <OutOfStockChip top='20px' left='20px' />}
-              <Carousel
-                totalSlides={product.imageUrls.length}
-                visibleSlides={1}
-              >
-                {product.imageUrls.map((item: string, index: number) => (
+              <Carousel totalSlides={imageUrls.length} visibleSlides={1}>
+                {imageUrls.map((item: string, index: number) => (
                   <MuiImage
                     key={index}
                     src={item}

@@ -21,11 +21,13 @@ export const setPaginationHeader = (
   { totalRecords, limit, page }: SetPaginationHeaderInputs,
 ): void => {
   const totalPages = Math.ceil(totalRecords / limit);
+  const nextPageNum = page < totalPages ? page + 1 : -1;
 
   res.setHeader('X-Total-Count', totalRecords);
   res.setHeader('X-Total-Pages', totalPages);
   res.setHeader('X-Current-Page', page);
   res.setHeader('X-Per-Page', limit);
+  res.setHeader('X-Next-Page', nextPageNum);
 };
 
 export const getArrayQuery = (

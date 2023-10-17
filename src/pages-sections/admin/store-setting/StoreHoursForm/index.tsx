@@ -13,7 +13,7 @@ import type { UpdateStoreHoursRb } from '../../../../../pages/api/admin/store';
 
 import StoreHoursInput from './StoreHoursInput';
 
-import apiCaller from 'api-callers/admin/store';
+import apiCaller from 'api-callers/stores';
 import { transformStoreHoursToFormikValue } from 'helpers/storeHours.helper';
 
 export type WeekDays =

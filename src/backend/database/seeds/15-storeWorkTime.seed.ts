@@ -3,6 +3,7 @@ import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { StoreWorkTimeEntity } from 'backend/entities/storeWorkTime.entity';
 import { DayOfWeek } from 'backend/enums/entities.enum';
+import { STORE_ID } from 'constants/temp.constant';
 
 type StoreWorkTimeSeed = Omit<StoreWorkTimeEntity, 'createdAt' | 'store'> & {
   store: {
@@ -17,7 +18,7 @@ const storeWorkTimeSeeds: StoreWorkTimeSeed[] = [
     closeTime: new Date('1970-01-01 17:00:00'),
     dayOfWeek: DayOfWeek.MONDAY,
     store: {
-      id: 'ce78d779-98f5-5b55-9ee3-926739703cc7',
+      id: STORE_ID,
     },
   },
   {
@@ -26,7 +27,7 @@ const storeWorkTimeSeeds: StoreWorkTimeSeed[] = [
     closeTime: new Date('1970-01-01 17:00:00'),
     dayOfWeek: DayOfWeek.TUESDAY,
     store: {
-      id: 'ce78d779-98f5-5b55-9ee3-926739703cc7',
+      id: STORE_ID,
     },
   },
   {
@@ -35,7 +36,7 @@ const storeWorkTimeSeeds: StoreWorkTimeSeed[] = [
     closeTime: new Date('1970-01-01 17:00:00'),
     dayOfWeek: DayOfWeek.WEDNESDAY,
     store: {
-      id: 'ce78d779-98f5-5b55-9ee3-926739703cc7',
+      id: STORE_ID,
     },
   },
   {
@@ -44,7 +45,7 @@ const storeWorkTimeSeeds: StoreWorkTimeSeed[] = [
     closeTime: new Date('1970-01-01 17:00:00'),
     dayOfWeek: DayOfWeek.THURSDAY,
     store: {
-      id: 'ce78d779-98f5-5b55-9ee3-926739703cc7',
+      id: STORE_ID,
     },
   },
   {
@@ -53,7 +54,7 @@ const storeWorkTimeSeeds: StoreWorkTimeSeed[] = [
     closeTime: new Date('1970-01-01 17:00:00'),
     dayOfWeek: DayOfWeek.FRIDAY,
     store: {
-      id: 'ce78d779-98f5-5b55-9ee3-926739703cc7',
+      id: STORE_ID,
     },
   },
   {
@@ -62,7 +63,7 @@ const storeWorkTimeSeeds: StoreWorkTimeSeed[] = [
     closeTime: new Date('1970-01-01 17:00:00'),
     dayOfWeek: DayOfWeek.SATURDAY,
     store: {
-      id: 'ce78d779-98f5-5b55-9ee3-926739703cc7',
+      id: STORE_ID,
     },
   },
   {
@@ -71,7 +72,7 @@ const storeWorkTimeSeeds: StoreWorkTimeSeed[] = [
     closeTime: new Date('1970-01-01 17:00:00'),
     dayOfWeek: DayOfWeek.SUNDAY,
     store: {
-      id: 'ce78d779-98f5-5b55-9ee3-926739703cc7',
+      id: STORE_ID,
     },
   },
 ];

@@ -1,16 +1,17 @@
+import type { CategoryWithProducts } from 'backend/services/category/helper';
 import type { CommonProductModel } from 'backend/services/product/helper';
 import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
   CATEGORIES_API_ROUTE,
+  CATEGORY_DETAIL_API_ROUTE,
   HOT_PRODUCTS_API_ROUTE,
   NEW_PRODUCTS_API_ROUTE,
   PRODUCTS_API_ROUTE,
 } from 'constants/routes.api.constant';
-import type {
-  FullyPopulatedProductCategoryModel,
-  ProductCategoryModel,
-} from 'models/productCategory.model';
+import type { ProductCategoryModel } from 'models/productCategory.model';
+import type { GetInfinitePaginationResult } from 'types/pagination';
+import { insertId } from 'utils/middleware.helper';
 
 export const allCategory: ProductCategoryModel = {
   id: '',
@@ -28,7 +29,9 @@ const getAllCategories = async (): Promise<ProductCategoryModel[]> => {
   return response.data.data;
 };
 
-const getAllProducts = async (page: number): Promise<CommonProductModel[]> => {
+const getAllProducts = async (
+  page: number,
+): Promise<GetInfinitePaginationResult<CommonProductModel>> => {
   const response = await axiosInstance.get<JSSuccess<CommonProductModel[]>>(
     PRODUCTS_API_ROUTE,
     {
@@ -37,19 +40,24 @@ const getAllProducts = async (page: number): Promise<CommonProductModel[]> => {
       },
     },
   );
-  return response.data.data;
+  const nextPageNum = response.headers['x-next-page'];
+  console.log('file: index.ts:47 - nextPageNum:', nextPageNum);
+  const totalDocs = response.headers['x-total-count'];
+  console.log('file: index.ts:49 - totalDocs:', totalDocs);
+
+  return {
+    docs: response.data.data,
+    nextPageNum,
+    totalDocs,
+  };
 };
 
 const getCategoryWithProducts = async (
   categoryId: string,
-): Promise<FullyPopulatedProductCategoryModel> => {
-  const response = await axiosInstance.get<
-    JSSuccess<FullyPopulatedProductCategoryModel>
-  >(PRODUCTS_API_ROUTE, {
-    params: {
-      category: categoryId,
-    },
-  });
+): Promise<CategoryWithProducts> => {
+  const response = await axiosInstance.get<JSSuccess<CategoryWithProducts>>(
+    insertId(CATEGORY_DETAIL_API_ROUTE, categoryId),
+  );
   return response.data.data;
 };
 

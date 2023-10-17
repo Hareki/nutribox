@@ -112,7 +112,7 @@ const Topbar: FC<TopbarProps> = ({ bgColor }) => {
             handler={
               <TouchRipple className='handler marginRight'>
                 <Span className='menuTitle'>
-                  {language === 'en' ? 'EN' : 'DE'}
+                  {language === 'en' ? 'EN' : 'VN'}
                 </Span>
                 <ExpandMore fontSize='inherit' />
               </TouchRipple>
@@ -150,7 +150,7 @@ const socialLinks = [
 
 const languageList = [
   { title: 'EN', value: 'en' },
-  { title: 'DE', value: 'de' },
+  { title: 'VN', value: 'vn' },
 ];
 
 export default Topbar;

@@ -1,16 +1,15 @@
 import { useMemo } from 'react';
 
-import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IExpiration } from 'api/models/Expiration.model/types';
-import { getMaxUpeQuantity } from 'helpers/product.helper';
+import { getMaxProductQuantity } from 'helpers/product.helper';
+import type { ImportOrderModel } from 'models/importOder.model';
 
 export function useQuantityLimitation(
-  expirations: IExpiration[],
-  cartItem: IPopulatedCartItem,
+  importOrders: ImportOrderModel[],
+  cartItem: { quantity: number } | undefined,
 ) {
   const maxQuantity = useMemo(
-    () => getMaxUpeQuantity(expirations),
-    [expirations],
+    () => getMaxProductQuantity(importOrders),
+    [importOrders],
   );
   const inStock = maxQuantity > 0;
   const disableAddToCart = (cartItem?.quantity || 0) >= maxQuantity;

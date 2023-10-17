@@ -1,4 +1,10 @@
-export const services = [
+export type Service = {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+};
+export const services: Service[] = [
   {
     id: 'b774ce8e-439e-44be-9516-129e0ad8be18',
     icon: 'AlarmClock',

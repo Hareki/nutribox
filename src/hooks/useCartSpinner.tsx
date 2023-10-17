@@ -3,16 +3,16 @@ import { useEffect, useState } from 'react';
 
 import { useQuantityLimitation } from './useQuantityLimitation';
 
-import type { IUpeProduct } from 'api/models/Product.model/types';
+import type { CommonProductModel } from 'backend/services/product/helper';
 import NumberSpinner from 'components/common/input/NumberSpinnerInput';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
 
-export const useCartSpinner = (product: IUpeProduct) => {
+export const useCartSpinner = (product: CommonProductModel) => {
   const { cartItem, updateCartAmount } = useCart(product.id);
   const [firstTimeRender, setFirstTimeRender] = useState(true);
   const { maxQuantity, disableAddToCart, inStock } = useQuantityLimitation(
-    product.expirations,
+    product.importOrders,
     cartItem,
   );
 

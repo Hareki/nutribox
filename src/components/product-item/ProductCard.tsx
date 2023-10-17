@@ -4,10 +4,12 @@ import ShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Box, Button, styled } from '@mui/material';
 import Link from 'next/link';
 import type { FC } from 'react';
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 
-import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IUpeProduct } from 'api/models/Product.model/types';
+import type {
+  CommonCartItem,
+  CommonProductModel,
+} from 'backend/services/product/helper';
 import { H3, Span } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
@@ -18,6 +20,7 @@ import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
 import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
+import { getSlug } from 'utils/string.helper';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   height: '100%',
@@ -91,7 +94,7 @@ const ContentWrapper = styled(FlexBox)({
 });
 
 type ProductCardProps = {
-  product: IUpeProduct;
+  product: CommonProductModel;
   onPreview?: () => void;
 };
 
@@ -99,9 +102,11 @@ type ProductCardProps = {
 
 const ProductCard: FC<ProductCardProps> = (props) => {
   const {
-    product: { id, imageUrls, retailPrice, name, slug, expirations },
+    product: { id, productImages, retailPrice, name, importOrders },
     onPreview,
   } = props;
+
+  const slug = getSlug(name, id);
 
   const { cartState, updateCartAmount } = useCart();
   const [openModal, setOpenModal] = useState(false);
@@ -111,13 +116,18 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     setOpenModal((open) => !open);
   }, [onPreview]);
 
-  const cartItem: IPopulatedCartItem | undefined = cartState.cart.find(
+  const cartItem: CommonCartItem | undefined = cartState.cart.find(
     (item) => item.product.id === id,
   );
 
   const { inStock, disableAddToCart } = useQuantityLimitation(
-    expirations,
+    importOrders,
     cartItem,
+  );
+
+  const imageUrls = useMemo(
+    () => productImages.map((item) => item.imageUrl),
+    [productImages],
   );
 
   const handleCartAmountChange = (amount: number, type: CartItemActionType) => {
@@ -159,7 +169,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           <Span
             aria-disabled={disableAddToCart}
             onClick={() =>
-              handleCartAmountChange(cartItem?.quantity + 1, 'add')
+              handleCartAmountChange(cartItem?.quantity || 0 + 1, 'add')
             }
           >
             <ShoppingCartIcon />
@@ -212,7 +222,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             variant='outlined'
             sx={{ padding: '3px', borderRadius: '50%' }}
             onClick={() =>
-              handleCartAmountChange(cartItem?.quantity + 1, 'add')
+              handleCartAmountChange(cartItem?.quantity || 0 + 1, 'add')
             }
           >
             <Add fontSize='small' />

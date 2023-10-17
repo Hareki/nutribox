@@ -18,7 +18,7 @@ import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
-import { getMaxUpeQuantity } from 'helpers/product.helper';
+import { getMaxProductQuantity } from 'helpers/product.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
@@ -40,7 +40,7 @@ const tableHeading = [
 const mapProductToRow = (item: ICdsUpeProduct) => ({
   id: item.id,
   // shelfLife: item.shelfLife,
-  unexpiredAmount: getMaxUpeQuantity(item.expirations),
+  unexpiredAmount: getMaxProductQuantity(item.expirations),
   imageUrls: item.imageUrls,
   name: item.name,
   category: item.category.name,

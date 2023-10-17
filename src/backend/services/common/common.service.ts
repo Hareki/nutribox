@@ -70,7 +70,7 @@ export class CommonService {
   public static async getRecords<E extends ObjectLiteral>(
     input: GetRecordsInputs<E>,
     transactionRepo?: Repository<E>,
-  ): Promise<[E[], number]> {
+  ): Promise<[E[], number, number, number]> {
     const {
       entity,
       paginationParams,
@@ -140,7 +140,10 @@ export class CommonService {
     const records = await queryBuilder.getMany();
     const totalRecords = await queryBuilder.getCount();
 
-    return [records, totalRecords];
+    const totalPages = Math.ceil(totalRecords / limit);
+    const nextPageNum = page < totalPages ? page + 1 : -1;
+
+    return [records, totalRecords, nextPageNum, totalPages];
   }
 
   public static async getRecordsByKeyword<E extends ObjectLiteral>(

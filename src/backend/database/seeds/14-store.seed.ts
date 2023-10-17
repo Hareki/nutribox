@@ -2,12 +2,13 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { StoreEntity } from 'backend/entities/store.entity';
+import { STORE_ID } from 'constants/temp.constant';
 
 type StoreSeed = Omit<StoreEntity, 'createdAt' | 'storeWorkTimes'>;
 
 const storeSeeds: StoreSeed[] = [
   {
-    id: 'ce78d779-98f5-5b55-9ee3-926739703cc7',
+    id: STORE_ID,
     email: 'store@gmail.com',
     phone: '0338758008',
     provinceCode: '79',

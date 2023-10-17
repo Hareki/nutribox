@@ -14,11 +14,10 @@ import {
   Skeleton,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import type { IStore } from 'api/models/Store.model/types';
 import Link from 'next/link';
 import type { FC } from 'react';
 
-import apiCaller from 'api-callers/admin/store';
+import apiCaller from 'api-callers/stores';
 import { H3 } from 'components/abstract/Typography';
 import Image from 'components/common/input/MuiImage';
 import { FlexBox } from 'components/flex-box';
@@ -27,12 +26,13 @@ import Google from 'components/icons/Google';
 import Instagram from 'components/icons/Instagram';
 import Twitter from 'components/icons/Twitter';
 import Youtube from 'components/icons/Youtube';
+import { STORE_ID } from 'constants/temp.constant';
 import { getFullAddress } from 'helpers/address.helper';
 import {
   getDayOfWeekLabel,
   getStoreHoursLabel,
 } from 'helpers/storeHours.helper';
-import { StoreId } from 'utils/constants';
+import type { PopulateStoreFields } from 'models/store.model';
 
 const StyledHeader = styled(H3)({
   fontSize: '28px',
@@ -42,13 +42,13 @@ const StyledHeader = styled(H3)({
 });
 
 interface FooterProps {
-  initialStoreInfo?: IStore;
+  initialStoreInfo?: PopulateStoreFields<'storeWorkTimes'>;
 }
 
 const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
   const { data: storeInfo, isLoading } = useQuery({
-    queryKey: ['store', StoreId],
-    queryFn: () => apiCaller.getStoreInfo(StoreId),
+    queryKey: ['stores', STORE_ID],
+    queryFn: () => apiCaller.getStoreInfo(STORE_ID),
     // FIXME causing weird error saying
     // Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["store","641ff62a1af60afc9423cbea"]
     initialData: initialStoreInfo ?? null,
@@ -171,7 +171,7 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
                     }
                     spacing={2}
                   >
-                    {storeInfo.storeHours.map((item, index) => (
+                    {storeInfo.storeWorkTimes.map((item, index) => (
                       <FlexBox key={index} justifyContent='space-between'>
                         <Typography color='grey.600'>
                           {getDayOfWeekLabel(item.dayOfWeek)}
@@ -194,37 +194,6 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
     </footer>
   );
 };
-
-const workHours = [
-  {
-    day: 'Thứ 2',
-    time: '8:00 - 18:00',
-  },
-  {
-    day: 'Thứ 3',
-    time: '8:00 - 18:00',
-  },
-  {
-    day: 'Thứ 4',
-    time: '8:00 - 18:00',
-  },
-  {
-    day: 'Thứ 5',
-    time: '8:00 - 18:00',
-  },
-  {
-    day: 'Thứ 6',
-    time: '8:00 - 18:00',
-  },
-  {
-    day: 'Thứ 7',
-    time: '8:00 - 18:00',
-  },
-  {
-    day: 'Chủ nhật',
-    time: '8:00 - 18:00',
-  },
-];
 
 const iconList = [
   { icon: Facebook, url: 'https://www.facebook.com' },

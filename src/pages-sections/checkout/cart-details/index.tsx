@@ -2,6 +2,8 @@ import { LoadingButton } from '@mui/lab';
 import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useQuery } from '@tanstack/react-query';
+import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import type { IAccount } from 'api/models/Account.model/types';
 import { useFormik } from 'formik';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
@@ -20,8 +22,9 @@ import SelectAddressDialog from './SelectAddressDialog';
 import type { CheckoutFormValues } from './yup';
 import { checkoutFormSchema, getInitialValues } from './yup';
 
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
-import type { IAccount } from 'api/models/Account.model/types';
+import apiCaller from 'api-callers/checkout';
+import type { AddressAPI } from 'api-callers/profile/addresses';
+import storeApiCaller from 'api-callers/stores';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
 import PhoneInput from 'components/common/input/PhoneInput';
@@ -40,9 +43,6 @@ import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
-import storeApiCaller from 'api-callers/admin/store';
-import apiCaller from 'api-callers/checkout';
-import type { AddressAPI } from 'api-callers/profile/addresses';
 import { PREPARATION_TIME, StoreId } from 'utils/constants';
 
 interface CartDetailsProps {

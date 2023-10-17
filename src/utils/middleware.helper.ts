@@ -78,7 +78,7 @@ export function isAuthorized(
   return false;
 }
 
-export const removeQueryParameters = (urlString) => {
+export const removeQueryParameters = (urlString: string) => {
   const url = new URL(urlString);
   return url.origin + url.pathname;
 };

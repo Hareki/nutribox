@@ -24,6 +24,7 @@ import {
   MAX_DELIVERY_DURATION,
   MAX_DELIVERY_RANGE,
 } from 'constants/delivery.constant';
+import { STORE_ID } from 'constants/temp.constant';
 import type { CustomerOrderModel } from 'models/customerOrder.model';
 import type { PopulateCustomerOrderItemIdFields } from 'models/customerOrderItem.model';
 import type { ExportOrderModel } from 'models/exportOrder.model';
@@ -63,7 +64,7 @@ export class CustomerOrderService {
   ): Promise<CheckoutValidation> {
     const store = (await CommonService.getRecord({
       entity: StoreEntity,
-      filter: { id: 'ce78d779-98f5-5b55-9ee3-926739703cc7' },
+      filter: { id: STORE_ID },
       relations: ['storeWorkTimes'],
     })) as PopulateStoreFields<'storeWorkTimes'>;
 

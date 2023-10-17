@@ -9,40 +9,43 @@ import {
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState, useMemo, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import {
-  getAllCategories,
-  getAllProducts,
-  getHotProducts,
-  getNewProducts,
-  getStore,
-} from 'api/base/server-side-modules';
-import connectToDB from 'api/database/databaseConnection';
-import { serialize } from 'api/helpers/object.helper';
-import type { IUpeProduct } from 'api/models/Product.model/types';
-import type { IStore } from 'api/models/Store.model/types';
-import type { GetInfinitePaginationResult } from 'api/types/pagination.type';
+import homePageCaller from 'api-callers';
+import { Mock } from 'api-callers/mock';
+import searchApiCaller from 'api-callers/product/search';
+import type { Service } from 'backend/database/mock/services';
+import type { Testimonial } from 'backend/database/mock/testimonials';
+import { ProductEntity } from 'backend/entities/product.entity';
+import { ProductCategoryEntity } from 'backend/entities/productCategory.entity';
+import { CommonService } from 'backend/services/common/common.service';
+import type { CommonProductModel } from 'backend/services/product/helper';
+import { CommonProductRelations } from 'backend/services/product/helper';
+import { ProductService } from 'backend/services/product/product.service';
+import { StoreService } from 'backend/services/store/store.service';
 import SEO from 'components/abstract/SEO';
 import { Footer } from 'components/common/layout/footer';
 import { getPageLayout } from 'components/layouts/PageLayout';
-// MobileNavigationBar2
 import { MobileNavigationBar } from 'components/mobile-navigation';
 import CategoryNavbar from 'components/page-sidenav/CategoryNavbar';
 import SideNavContainer from 'components/side-nav/SidenavContainer';
-import type { MainCarouselItem } from 'models/Grocery-3.model';
-import type Service from 'models/Service.model';
+import {
+  DEFAULT_DOCS_PER_PAGE,
+  DEFAULT_HOT_PRODUCTS_LIMIT,
+  DEFAULT_NEW_PRODUCTS_LIMIT,
+  DEFAULT_PAGE,
+} from 'constants/pagination.constant';
+import type { PopulateStoreFields, StoreModel } from 'models/store.model';
 import LoginDialog from 'pages-sections/auth/LoginDialog';
 import AllProducts from 'pages-sections/home-page/AllProducts';
 import HeroSection from 'pages-sections/home-page/HeroSection';
 import ProductCarousel from 'pages-sections/home-page/ProductCarousel';
 import ServicesSection from 'pages-sections/home-page/ServicesSection';
 import TestimonialsSection from 'pages-sections/home-page/TestimonialsSection';
-import homePageCaller from 'api-callers';
-import searchApiCaller from 'api-callers/product/search';
-import { ProfileInfiniteProductConstant, StoreId } from 'utils/constants';
-import api from 'utils/mock-data/home-page';
+import type { GetInfinitePaginationResult } from 'types/pagination';
+import { serialize } from 'utils/string.helper';
 
-function getElementHeightIncludingMargin(element: HTMLElement) {
+function getElementHeightIncludingMargin(element: HTMLElement | null) {
   if (!element) return 0;
   const styles = window.getComputedStyle(element);
   const marginTop = parseFloat(styles.marginTop);
@@ -52,23 +55,23 @@ function getElementHeightIncludingMargin(element: HTMLElement) {
 }
 
 type HomePageProps = {
-  hotProducts: IUpeProduct[];
-  newProducts: IUpeProduct[];
-
   serviceList: Service[];
-  mainCarouselData: MainCarouselItem[];
-  testimonials: any[];
-
-  initialStoreInfo: IStore;
+  testimonials: Testimonial[];
+  initialStoreInfo: PopulateStoreFields<'storeWorkTimes'>;
 };
 
 HomePage.getLayout = getPageLayout;
 HomePage.haveOwnFooter = true;
 
 function HomePage(props: HomePageProps) {
-  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const { t } = useTranslation();
+  const [selectedCategoryId, setSelectedCategoryId] = useState<
+    string | undefined
+  >('');
   const [selectedCategoryName, setSelectedCategoryName] = useState('');
-  const [filterProducts, setFilterProducts] = useState<IUpeProduct[]>([]);
+  const [filterProducts, setFilterProducts] = useState<CommonProductModel[]>(
+    [],
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [sideNavBottomOffset, setSideNavBottomOffset] = useState('0px');
   const router = useRouter();
@@ -93,7 +96,7 @@ function HomePage(props: HomePageProps) {
 
   useEffect(() => {
     if (searchQuery) {
-      setSelectedCategoryId(null);
+      setSelectedCategoryId(undefined);
       setSelectedCategoryName('Tất cả');
     }
   }, [searchQuery]);
@@ -122,12 +125,10 @@ function HomePage(props: HomePageProps) {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery<GetInfinitePaginationResult<IUpeProduct>>({
+  } = useInfiniteQuery<GetInfinitePaginationResult<CommonProductModel>>({
     queryKey: ['products', 'infinite', { categoryId: undefined }],
-    // CAN access the initial pageParam here, if initial pageParam is NOT specified, it will be NULL
-    // Can NOT set a default value for pageParam like this ({ pageParam = 1}). Because default value has no effect with NULL, only with UNDEFINED.
     queryFn: ({ pageParam }) => {
-      if (!pageParam) pageParam = 1; // Even with this, it will still be NULL in pageParams, if initial pageParam is not specified.
+      if (!pageParam) pageParam = 1;
       return homePageCaller.getAllProducts(pageParam);
     },
     getNextPageParam: (lastPage) =>
@@ -135,9 +136,11 @@ function HomePage(props: HomePageProps) {
   });
 
   const allProducts = useMemo(() => {
-    return allProductsPagination?.pages?.reduce(
-      (acc, page) => [...acc, ...page.docs],
-      [],
+    return (
+      allProductsPagination?.pages.reduce<CommonProductModel[]>(
+        (acc, page) => [...acc, ...page.docs],
+        [],
+      ) || []
     );
   }, [allProductsPagination?.pages]);
 
@@ -152,9 +155,11 @@ function HomePage(props: HomePageProps) {
   });
 
   const categoryQueries = useMemo(() => {
-    return categoryNavigation?.filter((category) => {
-      return category.id !== '';
-    });
+    return (
+      categoryNavigation?.filter((category) => {
+        return category.id !== '';
+      }) || []
+    );
   }, [categoryNavigation]);
 
   const results = useQueries({
@@ -178,7 +183,7 @@ function HomePage(props: HomePageProps) {
     const category = results.find(
       (result) => result.data?.id === selectedCategoryId,
     );
-    setFilterProducts(category?.data?.products);
+    setFilterProducts(category?.data?.products || []);
   }, [selectedCategoryId, results]);
 
   // FIXME Kinda buggy, but it works
@@ -194,11 +199,15 @@ function HomePage(props: HomePageProps) {
   const SideNav = useCallback(
     () => (
       <CategoryNavbar
-        navList={categoryNavigation}
+        navList={categoryNavigation || []}
         handleSelect={handleSelectCategory}
       />
     ),
     [categoryNavigation, handleSelectCategory],
+  );
+  console.log(
+    'file: index.tsx:212 - HomePage - props.serviceList:',
+    props.serviceList,
   );
 
   return (
@@ -235,20 +244,20 @@ function HomePage(props: HomePageProps) {
                 <ProductCarousel
                   title='Các sản phẩm mới'
                   subtitle='Trải nghiệm thử các sản phẩm mới đến từ Nutribox!'
-                  products={newProducts}
+                  products={newProducts || []}
                 />
 
                 <ProductCarousel
                   title='Các sản phẩm bán chạy'
                   subtitle='Khám phá các sản phẩm được nhiều khách hàng săn đón!'
-                  products={hotProducts}
+                  products={hotProducts || []}
                 />
 
                 <AllProducts
-                  products={allProducts}
+                  products={allProducts || []}
                   pagination={{
                     fetchNextPage,
-                    hasNextPage,
+                    hasNextPage: !hasNextPage,
                     isFetchingNextPage,
                   }}
                 />
@@ -260,7 +269,7 @@ function HomePage(props: HomePageProps) {
       </SideNavContainer>
 
       <MobileNavigationBar>
-        <CategoryNavbar navList={categoryNavigation} />
+        <CategoryNavbar navList={categoryNavigation || []} />
       </MobileNavigationBar>
       <LoginDialog />
       <Footer initialStoreInfo={props.initialStoreInfo} />
@@ -269,44 +278,70 @@ function HomePage(props: HomePageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  await connectToDB();
-
-  const serviceList = await api.getServices();
-  const testimonials = await api.getTestimonials();
+  const serviceList = await Mock.getServices();
+  const testimonials = await Mock.getTestimonials();
 
   const queryClient = new QueryClient();
 
+  const getAllCategories = async () => {
+    const [categories] = await CommonService.getRecords({
+      entity: ProductCategoryEntity,
+    });
+
+    categories.unshift({
+      available: true,
+      createdAt: new Date(),
+      id: '',
+      name: 'Tất cả',
+      products: [],
+    });
+
+    return categories;
+  };
+
+  const getPaginatedProducts = async (): Promise<
+    GetInfinitePaginationResult<CommonProductModel>
+  > => {
+    const [data, totalDocs, nextPageNum] = await CommonService.getRecords({
+      entity: ProductEntity,
+      relations: CommonProductRelations,
+      paginationParams: {
+        limit: DEFAULT_DOCS_PER_PAGE,
+        page: DEFAULT_PAGE,
+      },
+    });
+
+    return {
+      nextPageNum,
+      totalDocs,
+      docs: data as CommonProductModel[],
+    };
+  };
+
   await queryClient.prefetchQuery({
-    queryKey: ['products', 'category-navigation'],
-    queryFn: () => getAllCategories(),
+    queryKey: ['categories'],
+    queryFn: getAllCategories,
   });
 
   await queryClient.prefetchQuery({
     queryKey: ['products', 'hot'],
-    queryFn: () => getHotProducts(),
+    queryFn: () => ProductService.getHotProducts(DEFAULT_HOT_PRODUCTS_LIMIT),
   });
 
   await queryClient.prefetchQuery({
     queryKey: ['products', 'new'],
-    queryFn: () => getNewProducts(),
+    queryFn: () => ProductService.getNewProducts(DEFAULT_NEW_PRODUCTS_LIMIT),
   });
 
-  const initialStoreInfo = await getStore(StoreId);
+  const initialStoreInfo = await StoreService.getStoreInfo();
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['products', 'infinite', { categoryId: undefined }],
     initialData: {
-      // declare the initial pageParam, used to fetch the FIRST page in useInfiniteQuery
       pageParams: [1],
       pages: [],
     },
-    // Can NOT access the initial pageParam here, it will be UNDEFINED. Specify the initial pageParam or not, it's always be UNDEFINED
-    queryFn: () =>
-      getAllProducts(
-        ProfileInfiniteProductConstant.docsPerPage.toString(),
-        '1',
-        [],
-      ),
+    queryFn: getPaginatedProducts,
   });
 
   return {

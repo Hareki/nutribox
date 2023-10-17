@@ -1,22 +1,25 @@
 import { Add, Close, Remove } from '@mui/icons-material';
 import { Avatar, Box, Button, IconButton, useTheme } from '@mui/material';
 import Link from 'next/link';
-import type { FC } from 'react';
+import { useMemo, type FC } from 'react';
 
 import { H5, Paragraph, Span, Tiny } from '../abstract/Typography';
 import { FlexBox } from '../flex-box';
 
-import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IUpeProduct } from 'api/models/Product.model/types';
+import type {
+  CommonCartItem,
+  CommonProductModel,
+} from 'backend/services/product/helper';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
 import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
+import { getSlug } from 'utils/string.helper';
 
 type CartDrawerItemProps = {
-  cartItem: IPopulatedCartItem;
+  cartItem: CommonCartItem;
   handleCartAmountChange: (
     amount: number,
-    product: IUpeProduct,
+    product: CommonProductModel,
     type: CartItemActionType,
   ) => () => void;
 };
@@ -28,8 +31,13 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
   console.log('cartItem', cartItem);
 
   const { maxQuantity, disableAddToCart, overLimit } = useQuantityLimitation(
-    cartItem.product.expirations,
+    cartItem.product.importOrders,
     cartItem,
+  );
+
+  const imageUrls = useMemo(
+    () => cartItem.product.productImages.map((item) => item.imageUrl),
+    [cartItem.product.productImages],
   );
 
   return (
@@ -73,7 +81,7 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
           <Avatar
             variant='square'
             alt={cartItem.product.name}
-            src={cartItem.product.imageUrls[0]}
+            src={imageUrls[0]}
             sx={{
               mx: 2,
               width: 76,
@@ -94,7 +102,12 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
             textOverflow: 'ellipsis',
           }}
         >
-          <Link href={`/product/${cartItem.product.slug}`}>
+          <Link
+            href={`/product/${getSlug(
+              cartItem.product.name,
+              cartItem.product.id,
+            )}`}
+          >
             <H5 ellipsis fontSize='14px' className='title'>
               {cartItem.product.name}
             </H5>
