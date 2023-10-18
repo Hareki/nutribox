@@ -3,9 +3,10 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { ImportOrderEntity } from 'backend/entities/importOrder.entity';
+import type { ImportOrderModel } from 'models/importOder.model';
 
 type ImportOrderSeed = Omit<
-  ImportOrderEntity,
+  ImportOrderModel,
   'createdAt' | 'product' | 'exportOrders' | 'supplier'
 > & {
   product: {
@@ -98,6 +99,7 @@ const importOrderSeeds: ImportOrderSeed[] = [
 export default class createImportOrders implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const customerOrderItemRepo = connection.getRepository(ImportOrderEntity);
-    await customerOrderItemRepo.save(importOrderSeeds);
+    const res = customerOrderItemRepo.create(importOrderSeeds);
+    await customerOrderItemRepo.save(res);
   }
 }

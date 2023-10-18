@@ -1,11 +1,14 @@
 import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
+import type { AddressNameKeys } from './03-customerAddress.seed';
+
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
+import type { CustomerOrderModel } from 'models/customerOrder.model';
 
 type CustomerOrderSeed = Omit<
-  CustomerOrderEntity,
+  CustomerOrderModel,
   | 'account'
   | 'createdAt'
   | 'updatedAt'
@@ -14,6 +17,7 @@ type CustomerOrderSeed = Omit<
   | 'customerOrderItems'
   | 'deliveredOn'
   | 'cancellationReason'
+  | AddressNameKeys
 > & {
   customer: { id: string };
 };
@@ -27,9 +31,6 @@ const customerOrderSeeds: CustomerOrderSeed[] = [
     provinceCode: 79,
     districtCode: 769,
     wardCode: 26812,
-    provinceName: 'Thành phố Hồ Chí Minh',
-    districtName: 'Thành phố Thủ Đức',
-    wardName: 'Phường Hiệp Bình Chánh',
     streetAddress: '12/12 Đường 49',
     note: 'This is note',
     updatedBy: 'e31e759a-edb9-40e8-bb2a-fb6b9e65d986',
@@ -44,6 +45,7 @@ const customerOrderSeeds: CustomerOrderSeed[] = [
 export default class createCustomerOrders implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const customerOrderRepo = connection.getRepository(CustomerOrderEntity);
-    await customerOrderRepo.save(customerOrderSeeds);
+    const res = customerOrderRepo.create(customerOrderSeeds);
+    await customerOrderRepo.save(res);
   }
 }

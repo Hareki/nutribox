@@ -3,8 +3,9 @@ import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { AccountEntity } from 'backend/entities/account.entity';
 import { hashPassword } from 'backend/helpers/auth.helper';
+import type { AccountModel } from 'models/account.model';
 
-type AccountSeed = Pick<AccountEntity, 'email' | 'password' | 'verified'> & {
+type AccountSeed = Pick<AccountModel, 'email' | 'password' | 'verified'> & {
   employee?: {
     id: string;
   };
@@ -35,6 +36,7 @@ const accountSeeds: AccountSeed[] = [
 export default class createAccounts implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const accountRepo = connection.getRepository(AccountEntity);
-    await accountRepo.save(accountSeeds);
+    const res = accountRepo.create(accountSeeds);
+    await accountRepo.save(res);
   }
 }

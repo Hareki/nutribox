@@ -7,6 +7,7 @@ import { H1, Paragraph } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
+import { HOME_PAGE_ROUTE, ORDERS_ROUTE } from 'constants/routes.ui.constant';
 
 // custom styled components
 const Wrapper = styled(BazaarCard)({
@@ -32,12 +33,12 @@ function OrderCompleted() {
 
     if (type === 'tracking') {
       setTrackingContent('Đang chuyển hướng...');
-      router.replace('/profile/order');
+      router.replace(ORDERS_ROUTE);
       return;
     }
 
     setShoppingContent('Đang chuyển hướng...');
-    router.replace('/');
+    router.replace(HOME_PAGE_ROUTE);
   };
   return (
     <Fragment>

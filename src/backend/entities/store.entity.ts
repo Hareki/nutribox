@@ -1,11 +1,11 @@
 import type { Relation } from 'typeorm';
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { AbstractEntity } from './abstract.entity';
+import { AddressAbstractEntity } from './addressAbstract.entity';
 import { StoreWorkTimeEntity } from './storeWorkTime.entity';
 
 @Entity({ name: 'store' })
-export class StoreEntity extends AbstractEntity {
+export class StoreEntity extends AddressAbstractEntity {
   @OneToMany(() => StoreWorkTimeEntity, (storeWorkTime) => storeWorkTime.store)
   storeWorkTimes: Relation<StoreWorkTimeEntity>[] | string[];
 

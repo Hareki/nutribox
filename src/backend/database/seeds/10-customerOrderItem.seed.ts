@@ -2,9 +2,10 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { CustomerOrderItemEntity } from 'backend/entities/customerOrderItem.entity';
+import type { CustomerOrderItemModel } from 'models/customerOrderItem.model';
 
 type CustomerOrderItemSeed = Omit<
-  CustomerOrderItemEntity,
+  CustomerOrderItemModel,
   | 'createdAt'
   | 'customer'
   | 'customerOrder'
@@ -53,6 +54,7 @@ export default class createCustomerOrderItems implements Seeder {
     const customerOrderItemRepo = connection.getRepository(
       CustomerOrderItemEntity,
     );
-    await customerOrderItemRepo.save(customerOrderItemSeeds);
+    const res = customerOrderItemRepo.create(customerOrderItemSeeds);
+    await customerOrderItemRepo.save(res);
   }
 }

@@ -2,9 +2,10 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { ExportOrderEntity } from 'backend/entities/exportOrder.entity';
+import type { ExportOrderModel } from 'models/exportOrder.model';
 
 type ExportOrderSeed = Omit<
-  ExportOrderEntity,
+  ExportOrderModel,
   'createdAt' | 'importOrder' | 'customerOrderItem'
 > & {
   importOrder: {
@@ -51,6 +52,7 @@ const importOrderSeeds: ExportOrderSeed[] = [
 export default class createExportOrders implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const exportOrderRepo = connection.getRepository(ExportOrderEntity);
-    await exportOrderRepo.save(importOrderSeeds);
+    const res = exportOrderRepo.create(importOrderSeeds);
+    await exportOrderRepo.save(res);
   }
 }

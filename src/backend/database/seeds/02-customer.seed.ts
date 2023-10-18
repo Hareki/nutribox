@@ -2,9 +2,10 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { CustomerEntity } from 'backend/entities/customer.entity';
+import type { CustomerModel } from 'models/customer.model';
 
 const customerSeeds: Omit<
-  CustomerEntity,
+  CustomerModel,
   'account' | 'createdAt' | 'customerAddresses' | 'customerOrders' | 'cartItems'
 >[] = [
   {
@@ -20,6 +21,7 @@ const customerSeeds: Omit<
 export default class createCustomers implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const customerRepo = connection.getRepository(CustomerEntity);
-    await customerRepo.save(customerSeeds);
+    const res = customerRepo.create(customerSeeds);
+    await customerRepo.save(res);
   }
 }

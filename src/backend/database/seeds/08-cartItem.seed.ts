@@ -2,9 +2,10 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { CartItemEntity } from 'backend/entities/cartItem.entity';
+import type { CartItemModel } from 'models/cartItem.model';
 
 type CartItemSeed = Omit<
-  CartItemEntity,
+  CartItemModel,
   'createdAt' | 'customer' | 'product'
 > & {
   customer: {
@@ -31,6 +32,7 @@ const cartItemSeeds: CartItemSeed[] = [
 export default class createCartItems implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const cartItemRepo = connection.getRepository(CartItemEntity);
-    await cartItemRepo.save(cartItemSeeds);
+    const res = cartItemRepo.create(cartItemSeeds);
+    await cartItemRepo.save(res);
   }
 }

@@ -1,11 +1,11 @@
 import type { Relation } from 'typeorm';
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { AbstractEntity } from './abstract.entity';
+import { AddressAbstractEntity } from './addressAbstract.entity';
 import { ImportOrderEntity } from './importOrder.entity';
 
 @Entity({ name: 'supplier' })
-export class SupplierEntity extends AbstractEntity {
+export class SupplierEntity extends AddressAbstractEntity {
   @OneToMany(() => ImportOrderEntity, (importOrder) => importOrder.supplier)
   importOrders: Relation<ImportOrderEntity>[] | string[];
 
@@ -19,25 +19,4 @@ export class SupplierEntity extends AbstractEntity {
 
   @Column()
   email: string;
-
-  @Column('int')
-  provinceCode: number;
-
-  @Column('int')
-  districtCode: number;
-
-  @Column('int')
-  wardCode: number;
-
-  @Column('text')
-  provinceName: string;
-
-  @Column('text')
-  districtName: string;
-
-  @Column('text')
-  wardName: string;
-
-  @Column()
-  streetAddress: string;
 }

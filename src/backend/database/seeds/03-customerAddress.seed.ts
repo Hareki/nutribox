@@ -3,10 +3,13 @@ import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
 import { CustomerAddressType } from 'backend/enums/entities.enum';
+import type { CustomerAddressModel } from 'models/customerAddress.model';
+
+export type AddressNameKeys = 'provinceName' | 'districtName' | 'wardName';
 
 type CustomerAddressSeed = Omit<
-  CustomerAddressEntity,
-  'createdAt' | 'customer'
+  CustomerAddressModel,
+  'createdAt' | 'customer' | AddressNameKeys
 > & {
   customer: {
     id: string;
@@ -23,9 +26,6 @@ const customerAddressSeeds: CustomerAddressSeed[] = [
     provinceCode: 79,
     districtCode: 769,
     wardCode: 26812,
-    provinceName: 'Thành phố Hồ Chí Minh',
-    districtName: 'Thành phố Thủ Đức',
-    wardName: 'Phường Hiệp Bình Chánh',
     streetAddress: '12/12 Đường 49',
     type: CustomerAddressType.HOME,
   },
@@ -38,9 +38,6 @@ const customerAddressSeeds: CustomerAddressSeed[] = [
     provinceCode: 79,
     districtCode: 760,
     wardCode: 26734,
-    provinceName: 'Thành phố Hồ Chí Minh',
-    districtName: 'Quận 1',
-    wardName: 'Phường Tân Định',
     streetAddress: '227 Trần Quang Khải',
     type: CustomerAddressType.OFFICE,
   },
@@ -49,6 +46,7 @@ const customerAddressSeeds: CustomerAddressSeed[] = [
 export default class createCustomerAddresses implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const customerAddressRepo = connection.getRepository(CustomerAddressEntity);
-    await customerAddressRepo.save(customerAddressSeeds);
+    const res = customerAddressRepo.create(customerAddressSeeds);
+    await customerAddressRepo.save(res);
   }
 }

@@ -7,14 +7,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { AbstractEntity } from './abstract.entity';
+import { AddressAbstractEntity } from './addressAbstract.entity';
 import { CustomerEntity } from './customer.entity';
 import { CustomerOrderItemEntity } from './customerOrderItem.entity';
 
 import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum';
 
 @Entity({ name: 'customer_order' })
-export class CustomerOrderEntity extends AbstractEntity {
+export class CustomerOrderEntity extends AddressAbstractEntity {
   @ManyToOne(() => CustomerEntity, (customer) => customer.customerOrders, {
     nullable: true,
   })
@@ -34,27 +34,6 @@ export class CustomerOrderEntity extends AbstractEntity {
 
   @Column({ type: 'enum', enum: PaymentMethod, nullable: true })
   paidOnlineVia?: PaymentMethod;
-
-  @Column('int')
-  provinceCode: number;
-
-  @Column('int')
-  districtCode: number;
-
-  @Column('int')
-  wardCode: number;
-
-  @Column('text')
-  provinceName: string;
-
-  @Column('text')
-  districtName: string;
-
-  @Column('text')
-  wardName: string;
-
-  @Column()
-  streetAddress: string;
 
   @Column({ nullable: true })
   note?: string;

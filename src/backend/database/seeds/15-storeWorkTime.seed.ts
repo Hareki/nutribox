@@ -4,8 +4,9 @@ import type { Factory, Seeder } from 'typeorm-seeding';
 import { StoreWorkTimeEntity } from 'backend/entities/storeWorkTime.entity';
 import { DayOfWeek } from 'backend/enums/entities.enum';
 import { STORE_ID } from 'constants/temp.constant';
+import type { StoreWorkTimeModel } from 'models/storeWorkTime.model';
 
-type StoreWorkTimeSeed = Omit<StoreWorkTimeEntity, 'createdAt' | 'store'> & {
+type StoreWorkTimeSeed = Omit<StoreWorkTimeModel, 'createdAt' | 'store'> & {
   store: {
     id: string;
   };
@@ -80,6 +81,7 @@ const storeWorkTimeSeeds: StoreWorkTimeSeed[] = [
 export default class createStoreWorkTimes implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const customerOrderItemRepo = connection.getRepository(StoreWorkTimeEntity);
-    await customerOrderItemRepo.save(storeWorkTimeSeeds);
+    const res = customerOrderItemRepo.create(storeWorkTimeSeeds);
+    await customerOrderItemRepo.save(res);
   }
 }

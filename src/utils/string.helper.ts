@@ -1,3 +1,5 @@
+import { CustomerAddressType } from 'backend/enums/entities.enum';
+
 export const serialize = (data: any) => {
   return JSON.parse(JSON.stringify(data));
 };
@@ -36,4 +38,15 @@ export const removeAccents = (vnStr: string): string => {
 export const getSlug = (name = '', id = '') => {
   const transformedName = name.trim().toLowerCase().replace(/\s+/g, '-');
   return removeAccents(transformedName) + '-' + id;
+};
+
+export const getAddressTypeLabel = (type: CustomerAddressType) => {
+  switch (type) {
+    case CustomerAddressType.HOME:
+      return 'Nhà riêng';
+    case CustomerAddressType.OFFICE:
+      return 'Cơ quan';
+    default:
+      return '';
+  }
 };

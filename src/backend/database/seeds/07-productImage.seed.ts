@@ -2,8 +2,9 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { ProductImageEntity } from 'backend/entities/productImage.entity';
+import type { ProductImageModel } from 'models/productImage.model';
 
-type ProductImageSeed = Omit<ProductImageEntity, 'createdAt' | 'product'> & {
+type ProductImageSeed = Omit<ProductImageModel, 'createdAt' | 'product'> & {
   product: {
     id: string;
   };
@@ -610,6 +611,7 @@ const productSeeds: ProductImageSeed[] = [
 export default class createProducts implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const productImageRepo = connection.getRepository(ProductImageEntity);
-    await productImageRepo.save(productSeeds);
+    const res = productImageRepo.create(productSeeds);
+    await productImageRepo.save(res);
   }
 }

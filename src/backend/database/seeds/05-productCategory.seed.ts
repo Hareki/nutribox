@@ -2,9 +2,10 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { ProductCategoryEntity } from 'backend/entities/productCategory.entity';
+import type { ProductCategoryModel } from 'models/productCategory.model';
 
 type ProductCategorySeed = Omit<
-  ProductCategoryEntity,
+  ProductCategoryModel,
   'createdAt' | 'products' | 'available'
 >;
 
@@ -34,6 +35,7 @@ const accountSeeds: ProductCategorySeed[] = [
 export default class createProductCategories implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const productCategoryRepo = connection.getRepository(ProductCategoryEntity);
-    await productCategoryRepo.save(accountSeeds);
+    const res = productCategoryRepo.create(accountSeeds);
+    await productCategoryRepo.save(res);
   }
 }

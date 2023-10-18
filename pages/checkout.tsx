@@ -60,22 +60,20 @@ function Checkout(): ReactElement {
           </Grid>
         </Box>
 
-        {account ? (
-          selectedStep === 1 ? (
-            <CartDetails nextStep={nextStep} account={account} />
-          ) : (
-            <Payment
-              step1Data={step1Data!}
-              prevStep={prevStep}
-              nextStep={nextStep}
-              account={account}
-            />
-          )
-        ) : (
-          <CircularProgressBlock />
-        )}
+        {!account && <CircularProgressBlock />}
 
-        {selectedStep === 3 && <OrderCompleted />}
+        {account && selectedStep === 1 && (
+          <CartDetails nextStep={nextStep} account={account} />
+        )}
+        {account && selectedStep === 2 && (
+          <Payment
+            step1Data={step1Data!}
+            prevStep={prevStep}
+            nextStep={nextStep}
+            account={account}
+          />
+        )}
+        {account && selectedStep === 3 && <OrderCompleted />}
       </Container>
     </Fragment>
   );

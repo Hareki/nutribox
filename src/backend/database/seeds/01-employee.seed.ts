@@ -3,9 +3,10 @@ import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { EmployeeEntity } from 'backend/entities/employee.entity';
 import { EmployeeRole } from 'backend/enums/entities.enum';
+import type { EmployeeModel } from 'models/employee.model';
 
 const employeeSeeds: Omit<
-  EmployeeEntity,
+  EmployeeModel,
   'account' | 'reviewResponses' | 'createdAt'
 >[] = [
   {
@@ -23,6 +24,7 @@ const employeeSeeds: Omit<
 export default class createEmployees implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const employeeRepo = connection.getRepository(EmployeeEntity);
-    await employeeRepo.save(employeeSeeds);
+    const res = employeeRepo.create(employeeSeeds);
+    await employeeRepo.save(res);
   }
 }
