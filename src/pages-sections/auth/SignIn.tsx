@@ -18,6 +18,7 @@ import {
   FORGOT_PASSWORD_ROUTE,
   SIGN_UP_ROUTE,
 } from 'constants/routes.ui.constant';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 const fbStyle = { background: '#3B5998', color: 'white' };
@@ -46,18 +47,16 @@ export const Wrapper = styled<FC<WrapperProps & CardProps>>(
 interface SignInProps {
   handleFormSubmit: (values: any) => void;
   loading: boolean;
-  incorrect: boolean;
-  verified: boolean;
+  errorMessage: string;
 }
 
 const SignIn: FC<SignInProps> = ({
   handleFormSubmit,
   loading = false,
-  incorrect = false,
-  verified = true,
+  errorMessage,
 }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-
+  const { t } = useCustomTranslation(['account']);
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible);
   }, []);
@@ -94,7 +93,7 @@ const SignIn: FC<SignInProps> = ({
           label='Email'
           placeholder='example@gmail.com'
           error={!!touched.email && !!errors.email}
-          helperText={(touched.email && errors.email) as string}
+          helperText={t((touched.email && errors.email) as string)}
         />
 
         <CustomTextField
@@ -111,7 +110,7 @@ const SignIn: FC<SignInProps> = ({
           placeholder='*********'
           type={passwordVisibility ? 'text' : 'password'}
           error={!!touched.password && !!errors.password}
-          helperText={(touched.password && errors.password) as string}
+          helperText={t((touched.password && errors.password) as string)}
           InputProps={{
             endAdornment: (
               <EyeToggleButton
@@ -136,15 +135,9 @@ const SignIn: FC<SignInProps> = ({
         </LoadingButton>
       </form>
 
-      {incorrect && (
+      {!!errorMessage && (
         <H4 mt={2} mb={4} textAlign='center' color='error.500'>
-          Sai thông tin đăng nhập, vui lòng kiểm tra lại
-        </H4>
-      )}
-
-      {!verified && (
-        <H4 mt={2} mb={4} textAlign='center' color='error.500'>
-          Email chưa được xác thực, vui lòng kiểm tra lại
+          {t('Account.Credentials.Invalid')}
         </H4>
       )}
 

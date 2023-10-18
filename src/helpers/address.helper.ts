@@ -51,8 +51,9 @@ export const transformAccountAddressToFormikValue = (
 
 export const transformFormikValueToIAddress = (
   values: CheckoutFormValues,
-): IAddress => {
+): IAddress | null => {
   const { province, district, ward, streetAddress } = values;
+  if (!province || !district || !ward) return null;
   return {
     streetAddress,
     provinceCode: province.code,
@@ -108,8 +109,9 @@ export const getFullAddress = async ({
   return `${streetAddress}, ${wardName}, ${districtName}, ${provinceName}, Việt Nam`;
 };
 
-export const getFullAddress2 = (address?: IAddress): string => {
+export const getFullAddress2 = (address: Partial<IAddress> | null): string => {
   if (!address) return '';
   const { provinceName, districtName, wardName, streetAddress } = address;
+  if (!provinceName || !districtName || !wardName || !streetAddress) return '';
   return `${streetAddress}, ${wardName}, ${districtName}, ${provinceName}, Việt Nam`;
 };

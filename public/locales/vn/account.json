@@ -10,6 +10,7 @@
   "Account.Password.Max": "Mật khẩu không được vượt quá 50 ký tự.",
   "Account.Password.InvalidFormat": "Mật khẩu phải chứa ít nhất 1 chữ cái viết hóa và 1 kí tự đặc biệt",
   "Account.ConfirmPassword.NotMatch": "Mật khẩu và xác nhận mật khẩu không khớp.",
+  "Account.ConfirmPassword.Required": "Vui lòng nhập xác nhận mật khẩu.",
   "Account.OldPassword.Invalid": "Mật khẩu cũ không đúng",
   "Account.VerificationToken.Invalid": "Liên kết xác thực đã hết hạn hoặc không hợp lệ",
   "Account.AvatarUrl.Min": "URL ảnh đại diện phải có ít nhất 1 ký tự",
@@ -23,5 +24,6 @@
   "Account.VerificationTokenExpiry.InvalidFormat": "Định dạng thời gian hết hạn của token xác thực không hợp lệ.",
   "Account.ForgotPasswordToken.Min": "Token quên mật khẩu phải có ít nhất 1 ký tự",
   "Account.ForgotPasswordToken.Max": "Token quên mật khẩu không được vượt quá 500 ký tự.",
-  "Account.ForgotPasswordTokenExpiry.InvalidFormat": "Định dạng thời gian hết hạn của token quên mật khẩu không hợp lệ."
+  "Account.ForgotPasswordTokenExpiry.InvalidFormat": "Định dạng thời gian hết hạn của token quên mật khẩu không hợp lệ.",
+  "Account.Credentials.Invalid": "Sai tài khoản hoặc mật khẩu"
 }

@@ -15,8 +15,7 @@ const SignInDialog = () => {
     checkingCredentials,
     handleFormSubmit,
     signInResponse,
-    incorrect,
-    verified,
+    errorMessage,
   } = useLoginForm();
 
   useEffect(() => {
@@ -36,8 +35,7 @@ const SignInDialog = () => {
       <SignIn
         loading={checkingCredentials}
         handleFormSubmit={handleFormSubmit}
-        incorrect={incorrect}
-        verified={verified}
+        errorMessage={errorMessage}
       />
     </Dialog>
   );

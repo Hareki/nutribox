@@ -9,6 +9,7 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useCallback, useEffect, useState, useMemo, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -276,7 +277,7 @@ function HomePage(props: HomePageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const serviceList = await Mock.getServices();
   const testimonials = await Mock.getTestimonials();
 
@@ -336,12 +337,15 @@ export const getStaticProps: GetStaticProps = async () => {
     queryFn: getPaginatedProducts,
   });
 
+  const locales = await serverSideTranslations(locale ?? 'vn', ['account']);
+
   return {
     props: {
       serviceList,
       testimonials,
       initialStoreInfo: serialize(initialStoreInfo),
       dehydratedState: serialize(dehydrate(queryClient)),
+      ...locales,
     },
   };
 };

@@ -1,9 +1,7 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { getServerSession } from 'next-auth';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect, useState } from 'react';
-
-import { authOptions } from './api/auth/[...nextauth]';
 
 import SEO from 'components/abstract/SEO';
 import { FlexRowCenter } from 'components/flex-box';
@@ -17,8 +15,7 @@ const LoginPage: NextPage = () => {
     checkingCredentials,
     handleFormSubmit,
     signInResponse,
-    incorrect,
-    verified,
+    errorMessage,
   } = useLoginForm();
   const [redirecting, setRedirecting] = useState(false);
 
@@ -31,35 +28,20 @@ const LoginPage: NextPage = () => {
 
   return (
     <FlexRowCenter flexDirection='column' minHeight='100vh'>
-      <SEO title='Login' />
+      <SEO title='Đăng nhập' />
       <SignIn
         loading={checkingCredentials || redirecting}
         handleFormSubmit={handleFormSubmit}
-        incorrect={incorrect}
-        verified={verified}
+        errorMessage={errorMessage}
       />
     </FlexRowCenter>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', ['account']);
 
-  if (session) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // };
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: { session },
-  };
+  return { props: { ...locales } };
 };
 
 export default LoginPage;

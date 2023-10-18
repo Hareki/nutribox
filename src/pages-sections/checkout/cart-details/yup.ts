@@ -29,29 +29,29 @@ export const getInitialValues = (
 // export type CheckoutFormValues = ReturnType<typeof getInitialValues>;
 
 // FIXME
-export const checkoutFormSchema = yup.object().shape({
-  note: yup.string().max(500, 'Lời nhắn không được quá 500 ký tự'),
-  phone: yup
-    .string()
-    .required('Vui lòng nhập số điện thoại')
-    // .transform((value, originalValue) => {
-    //   if (originalValue && typeof originalValue === 'string') {
-    //     return originalValue.replace(/-/g, '');
-    //   }
-    //   return value;
-    // })
-    .matches(MASK_PHONE_REGEX, 'Định dạng số điện thoại không hợp lệ'),
-  province: yup
-    .object()
-    .typeError('Vui lòng nhập Tỉnh/Thành Phố')
-    .required('Vui lòng nhập Tỉnh/Thành Phố'),
-  district: yup
-    .object()
-    .typeError('Vui lòng nhập Quận/Huyện')
-    .required('Vui lòng nhập Quận/Huyện'),
-  ward: yup
-    .object()
-    .typeError('Vui lòng nhập Phường/Xã')
-    .required('Vui lòng nhập Phường/Xã'),
-  streetAddress: yup.string().required('Vui lòng nhập Số nhà, tên đường'),
-});
+// export const checkoutFormSchema = yup.object().shape({
+//   note: yup.string().max(500, 'Lời nhắn không được quá 500 ký tự'),
+//   phone: yup
+//     .string()
+//     .required('Vui lòng nhập số điện thoại')
+//     // .transform((value, originalValue) => {
+//     //   if (originalValue && typeof originalValue === 'string') {
+//     //     return originalValue.replace(/-/g, '');
+//     //   }
+//     //   return value;
+//     // })
+//     .matches(MASK_PHONE_REGEX, 'Định dạng số điện thoại không hợp lệ'),
+//   province: yup
+//     .object()
+//     .typeError('Vui lòng nhập Tỉnh/Thành Phố')
+//     .required('Vui lòng nhập Tỉnh/Thành Phố'),
+//   district: yup
+//     .object()
+//     .typeError('Vui lòng nhập Quận/Huyện')
+//     .required('Vui lòng nhập Quận/Huyện'),
+//   ward: yup
+//     .object()
+//     .typeError('Vui lòng nhập Phường/Xã')
+//     .required('Vui lòng nhập Phường/Xã'),
+//   streetAddress: yup.string().required('Vui lòng nhập Số nhà, tên đường'),
+// });

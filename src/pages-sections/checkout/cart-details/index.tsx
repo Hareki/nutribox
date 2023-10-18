@@ -3,6 +3,8 @@ import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
+import type { GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
@@ -17,11 +19,14 @@ import {
   checkTime,
 } from './confirmValidation';
 import SelectAddressDialog from './SelectAddressDialog';
-import { checkoutFormSchema, getInitialValues } from './yup';
+import { getInitialValues } from './yup';
 
 import apiCaller from 'api-callers/checkout';
 import storeApiCaller from 'api-callers/stores';
-import type { CheckoutFormValues } from 'backend/dtos/checkout.dto';
+import {
+  CheckoutFormSchema,
+  type CheckoutFormValues,
+} from 'backend/dtos/checkout.dto';
 import type { CheckoutValidation } from 'backend/services/customerOrder/helper';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
@@ -39,17 +44,19 @@ import {
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import ProductCartItem from 'components/product-item/ProductCartItem';
 import { STORE_ID } from 'constants/temp.constant';
-import { getFullAddress } from 'helpers/address.helper';
+import { getFullAddress2 } from 'helpers/address.helper';
 import {
   transformAccountAddressToFormikValue,
   transformFormikValueToIAddress,
 } from 'helpers/address.helper';
 import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { formatCurrency, formatDateTime } from 'lib';
 import type { CommonCustomerAccountModel } from 'models/account.model';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 interface CartDetailsProps {
   nextStep: (data: Step1Data, currentStep: number) => void;
@@ -79,6 +86,8 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     queryKey: ['store', STORE_ID],
     queryFn: () => storeApiCaller.getStoreInfo(STORE_ID),
   });
+
+  const { t } = useCustomTranslation(['customerOrder']);
 
   const total = useMemo(
     () =>
@@ -173,6 +182,9 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
   const handleNextStep = () => {
     const address = transformFormikValueToIAddress(values);
+    console.log('file: index.tsx:176 - handleNextStep - address:', address);
+    if (!address) return;
+
     const {
       estimatedDeliveryInfo: { distance, deliveryTime },
     } = checkoutValidation!;
@@ -203,20 +215,23 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     handleChange,
     handleSubmit,
     setFieldValue,
+    setFieldTouched,
   } = useFormik<CheckoutFormValues>({
     initialValues: getInitialValues(account),
     onSubmit: handleFormSubmit,
-    validationSchema: checkoutFormSchema,
+    validationSchema: toFormikValidationSchema(CheckoutFormSchema),
   });
 
   useEffect(() => {
-    if (values?.province?.code) {
-      const addressInputs = transformFormikValueToIAddress(values);
-      getFullAddress(addressInputs).then((fullAddress) => {
-        setCurrentFullAddress(fullAddress);
-      });
-    }
+    const address = transformFormikValueToIAddress(values);
+    setCurrentFullAddress(getFullAddress2(address));
   }, [values, touched, errors]);
+
+  const handleTouchedBlur = (fieldName: string) => {
+    return () => {
+      setFieldTouched(fieldName, true);
+    };
+  };
 
   const {
     provinces,
@@ -263,7 +278,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={!!touched.note && !!errors.note}
-                helperText={(touched.note && errors.note) as string}
+                helperText={t((touched.note && errors.note) as string)}
                 rows={6}
                 fullWidth
                 multiline
@@ -283,7 +298,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={!!touched.phone && !!errors.phone}
-                helperText={(touched.phone && errors.phone) as string}
+                helperText={t((touched.phone && errors.phone) as string)}
                 size='small'
                 variant='outlined'
                 placeholder='Dùng để liên hệ khi giao hàng'
@@ -329,12 +344,15 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                   setFieldValue('district', null);
                   setFieldValue('ward', null);
                 }}
+                onBlur={handleTouchedBlur('province')}
                 renderInput={(params) => (
                   <TextField
                     label='Tỉnh/Thành phố'
                     placeholder='Chọn Tỉnh/Thành phố'
                     error={!!touched.province && !!errors.province}
-                    helperText={(touched.province && errors.province) as string}
+                    helperText={t(
+                      (touched.province && errors.province) as string,
+                    )}
                     {...params}
                   />
                 )}
@@ -351,12 +369,15 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                   setFieldValue('district', value);
                   setFieldValue('ward', null);
                 }}
+                onBlur={handleTouchedBlur('district')}
                 renderInput={(params) => (
                   <TextField
                     label='Quận/Huyện'
                     placeholder='Chọn Quận/Huyện'
                     error={!!touched.district && !!errors.district}
-                    helperText={(touched.district && errors.district) as string}
+                    helperText={t(
+                      (touched.district && errors.district) as string,
+                    )}
                     {...params}
                   />
                 )}
@@ -370,12 +391,13 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 value={values.ward}
                 getOptionLabel={(option) => (option as any).name}
                 onChange={(_, value) => setFieldValue('ward', value)}
+                onBlur={handleTouchedBlur('province')}
                 renderInput={(params) => (
                   <TextField
                     label='Phường/Xã'
                     placeholder='Chọn Phường/Xã'
                     error={!!touched.ward && !!errors.ward}
-                    helperText={(touched.ward && errors.ward) as string}
+                    helperText={t((touched.ward && errors.ward) as string)}
                     {...params}
                   />
                 )}
@@ -390,17 +412,16 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 value={values.streetAddress}
                 onChange={handleChange}
                 error={!!touched.streetAddress && !!errors.streetAddress}
-                helperText={
-                  (touched.streetAddress && errors.streetAddress) as string
-                }
+                helperText={t(
+                  (touched.streetAddress && errors.streetAddress) as string,
+                )}
               />
 
               <LoadingButton
                 disabled={
                   hasOverLimitItem ||
                   cartItems.length === 0 ||
-                  isLoadingStoreInfo ||
-                  !currentFullAddress
+                  isLoadingStoreInfo
                 }
                 loading={isEstimating}
                 variant='contained'

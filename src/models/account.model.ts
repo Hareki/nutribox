@@ -53,7 +53,7 @@ const AccountSchema = z.object({
 export const PasswordConfirmationSchema = z
   .object({
     password: zodPassword('Account.Password'),
-    confirmPassword: zodPassword('Account.ConfirmPassword'),
+    confirmPassword: zodString('Account.ConfirmPassword', 1, 50),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Account.ConfirmPassword.NotMatch',

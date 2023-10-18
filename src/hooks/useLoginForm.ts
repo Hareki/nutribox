@@ -12,9 +12,8 @@ export interface LoginRequestBody {
 
 export const useLoginForm = () => {
   const [signInResponse, setSignInResponse] = useState<SignInResponse>();
-  const [incorrect, setIncorrect] = useState(false);
-  const [verified, setVerified] = useState(true);
 
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const { mutate: invokeSignIn, isLoading } = useMutation<
     SignInResponse | undefined,
     any,
@@ -31,12 +30,10 @@ export const useLoginForm = () => {
         const notVerified = result?.error?.includes('Account.Verified.Invalid');
         const notFound = result?.error?.includes('CredentialsSignin');
         if (notVerified) {
-          setVerified(false);
-          setIncorrect(false);
+          setErrorMessage('Account.Verified.Invalid');
         }
         if (notFound) {
-          setIncorrect(true);
-          setVerified(true);
+          setErrorMessage('Account.Credentials.Invalid');
         }
 
         return;
@@ -54,7 +51,6 @@ export const useLoginForm = () => {
     checkingCredentials: isLoading,
     handleFormSubmit,
     signInResponse,
-    incorrect,
-    verified,
+    errorMessage,
   };
 };

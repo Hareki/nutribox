@@ -72,22 +72,22 @@ const PaymentForm: FC<PaymentFormProps> = ({
         <Divider sx={{ mb: 3, mx: -4 }} />
 
         <FormControlLabel
-          name='MoMo'
+          name='PayPal'
           sx={{ mb: 3 }}
           onChange={handlePaymentMethodChange}
           label={
             <FlexBox gap={1} alignItems='center'>
-              <Paragraph fontWeight={600}>Thanh toán với MoMo</Paragraph>
+              <Paragraph fontWeight={600}>Thanh toán với PayPal</Paragraph>
               <MuiImage
-                src='assets/images/payment-card/MoMo.png'
-                alt='MoMo'
-                height={25}
+                src='assets/images/payment-card/PayPal.png'
+                alt='PayPal'
+                height={20}
               />
             </FlexBox>
           }
           control={
             <Radio
-              checked={paymentMethod === 'MoMo'}
+              checked={paymentMethod === 'PayPal'}
               color='primary'
               size='small'
             />
@@ -108,7 +108,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
           </Fragment>
         )} */}
 
-        <FormControlLabel
+        {/* <FormControlLabel
           sx={{ mb: 3 }}
           name='credit-card'
           onChange={handlePaymentMethodChange}
@@ -131,7 +131,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
               size='small'
             />
           }
-        />
+        /> */}
 
         <Divider sx={{ mb: 3, mx: -4 }} />
 

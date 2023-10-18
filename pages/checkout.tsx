@@ -1,6 +1,8 @@
 import { CircularProgress, Grid } from '@mui/material';
 import { Box, Container } from '@mui/system';
+import type { GetStaticProps } from 'next';
 import { useSession } from 'next-auth/react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { ReactElement } from 'react';
 import { useState, Fragment } from 'react';
 
@@ -83,5 +85,13 @@ const stepperList = [
   { title: 'Chi tiết đơn hàng', disabled: false },
   { title: 'Thanh toán', disabled: false },
 ];
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'customerOrder',
+  ]);
+
+  return { props: { ...locales } };
+};
 
 export default Checkout;

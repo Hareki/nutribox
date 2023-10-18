@@ -76,6 +76,7 @@ const CustomerUserMenu: FC<AccountMenuProps> = () => {
       setAnchorEl(event.currentTarget);
       return;
     }
+    document.getElementById('account-menu-button')?.blur();
     setLoginDialogOpen(true);
   };
 

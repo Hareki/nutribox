@@ -70,7 +70,7 @@ const SignUpPage: NextPage = () => {
   return (
     <>
       <FlexRowCenter flexDirection='column' minHeight='100vh'>
-        <SEO title='Sign up' />
+        <SEO title='Đăng ký' />
         <SignUp
           loading={isLoading}
           disabled={isRedirecting}
