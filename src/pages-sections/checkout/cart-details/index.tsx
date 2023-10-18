@@ -22,7 +22,7 @@ import { checkoutFormSchema, getInitialValues } from './yup';
 import apiCaller from 'api-callers/checkout';
 import storeApiCaller from 'api-callers/stores';
 import type { CheckoutFormValues } from 'backend/dtos/checkout.dto';
-import { type EstimatedDeliveryInfo } from 'backend/helpers/address.helper';
+import type { CheckoutValidation } from 'backend/services/customerOrder/helper';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
 import PhoneInput from 'components/common/input/PhoneInput';
@@ -38,10 +38,11 @@ import {
 } from 'components/dialog/info-dialog/reducer';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import ProductCartItem from 'components/product-item/ProductCartItem';
+import { STORE_ID } from 'constants/temp.constant';
 import { getFullAddress } from 'helpers/address.helper';
 import {
   transformAccountAddressToFormikValue,
-  transformFormikValueToAddress,
+  transformFormikValueToIAddress,
 } from 'helpers/address.helper';
 import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
@@ -49,7 +50,6 @@ import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { formatCurrency, formatDateTime } from 'lib';
 import type { CommonCustomerAccountModel } from 'models/account.model';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
-import { StoreId } from 'utils/constants';
 
 interface CartDetailsProps {
   nextStep: (data: Step1Data, currentStep: number) => void;
@@ -59,7 +59,8 @@ interface CartDetailsProps {
 function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
   const addresses = account.customer.customerAddresses;
 
-  const [estimated, setEstimated] = useState<EstimatedDeliveryInfo>();
+  const [checkoutValidation, setCheckoutValidation] =
+    useState<CheckoutValidation>();
   const [currentFullAddress, setCurrentFullAddress] = useState('');
   const [isEstimating, setIsEstimating] = useState(false);
   const [selectAddressDialogOpen, setSelectAddressDialogOpen] = useState(false);
@@ -75,43 +76,33 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
   );
 
   const { data: storeInfo, isLoading: isLoadingStoreInfo } = useQuery({
-    queryKey: ['store', StoreId],
-    queryFn: () => storeApiCaller.getStoreInfo(StoreId),
+    queryKey: ['store', STORE_ID],
+    queryFn: () => storeApiCaller.getStoreInfo(STORE_ID),
   });
-
-  const cartList = cartItems;
 
   const total = useMemo(
     () =>
-      cartList.reduce(
+      cartItems.reduce(
         (accumulate, item) =>
           accumulate + item.product.retailPrice * item.quantity,
         0,
       ),
-    [cartList],
+    [cartItems],
   );
 
-  useEffect(() => {
-    if (isLoadingStoreInfo) return;
-    if (!currentFullAddress) return;
-
-    setIsEstimating(true);
-    apiCaller.getCheckoutValidation(currentFullAddress).then((deliveryInfo) => {
-      setEstimated(deliveryInfo);
-      setIsEstimating(false);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentFullAddress, isLoadingStoreInfo]);
-
-  const showDeliveryInfoConfirmation = async () => {
+  const showDeliveryInfoConfirmation = async (
+    checkoutValidation: CheckoutValidation,
+  ) => {
     if (
-      !checkTime(dispatchInfo, storeInfo) ||
+      !checkTime(dispatchInfo, storeInfo!) ||
       !checkCurrentFullAddress(dispatchInfo, currentFullAddress)
     ) {
       return;
     }
 
-    const { deliveryTime, distance, heavyTraffic } = estimated!;
+    const {
+      estimatedDeliveryInfo: { deliveryTime, distance, heavyTraffic },
+    } = checkoutValidation;
 
     if (!checkDistance(dispatchInfo, distance)) return;
     if (!checkDuration(dispatchInfo, deliveryTime)) return;
@@ -153,9 +144,19 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     });
   };
 
-  const handleFormSubmit = (values: CheckoutFormValues) => {
+  const handleFormSubmit = async (values: CheckoutFormValues) => {
     console.log(values);
-    showDeliveryInfoConfirmation();
+
+    // if (isLoadingStoreInfo || !currentFullAddress) return;
+
+    setIsEstimating(true);
+    apiCaller
+      .getCheckoutValidation(currentFullAddress)
+      .then((checkoutValidationResponse) => {
+        setIsEstimating(false);
+        setCheckoutValidation(checkoutValidationResponse);
+        showDeliveryInfoConfirmation(checkoutValidationResponse);
+      });
   };
 
   const handleSelectAddress = async (address: CustomerAddressModel) => {
@@ -171,19 +172,21 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
   };
 
   const handleNextStep = () => {
-    const address = transformFormikValueToAddress(values);
-    const { distance, deliveryTime } = estimated!;
+    const address = transformFormikValueToIAddress(values);
+    const {
+      estimatedDeliveryInfo: { distance, deliveryTime },
+    } = checkoutValidation!;
 
-    const cartItems = cartList;
     const note = values.note;
     const phone = values.phone;
 
     nextStep(
       {
-        cartItems,
+        // FIXME should let the user select which items to buy
+        selectedCartItems: cartItems,
         note,
         phone,
-        address: address!,
+        address,
         total,
         deliveryTime,
         distance,
@@ -200,24 +203,19 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     handleChange,
     handleSubmit,
     setFieldValue,
-    setValues,
   } = useFormik<CheckoutFormValues>({
-    initialValues: {} as any,
+    initialValues: getInitialValues(account),
     onSubmit: handleFormSubmit,
     validationSchema: checkoutFormSchema,
   });
 
   useEffect(() => {
-    getInitialValues(account).then((initialValues) => {
-      setValues(initialValues);
-    });
-  }, [account, setValues]);
-
-  useEffect(() => {
-    const addressInputs = transformFormikValueToAddress(values);
-    getFullAddress(addressInputs).then((fullAddress) => {
-      setCurrentFullAddress(fullAddress);
-    });
+    if (values?.province?.code) {
+      const addressInputs = transformFormikValueToIAddress(values);
+      getFullAddress(addressInputs).then((fullAddress) => {
+        setCurrentFullAddress(fullAddress);
+      });
+    }
   }, [values, touched, errors]);
 
   const {
@@ -236,7 +234,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
       <Grid container spacing={3}>
         {/* CART PRODUCT LIST */}
         <Grid item md={8} xs={12}>
-          {cartList.map((item) => (
+          {cartItems.map((item) => (
             <ProductCartItem key={item.product.id} {...item} />
           ))}
         </Grid>
@@ -398,7 +396,12 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
               />
 
               <LoadingButton
-                disabled={hasOverLimitItem || cartList.length === 0}
+                disabled={
+                  hasOverLimitItem ||
+                  cartItems.length === 0 ||
+                  isLoadingStoreInfo ||
+                  !currentFullAddress
+                }
                 loading={isEstimating}
                 variant='contained'
                 color='primary'

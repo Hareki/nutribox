@@ -15,7 +15,7 @@ const employeeSeeds: Omit<
     email: 'admin@gmail.com',
     phone: '034238790',
     birthday: new Date('2000-09-13'),
-    personalId: '0123456789',
+    personalId: '0338758008',
     role: EmployeeRole.MANAGER,
   },
 ];

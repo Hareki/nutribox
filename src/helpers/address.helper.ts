@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { assertNever } from './assertion.helper';
 
+import type { CheckoutFormValues } from 'backend/dtos/checkout.dto';
 import type {
   AddressType,
   ProvinceApiElement,
@@ -10,23 +11,30 @@ import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 export interface IAddress {
   streetAddress: string;
-  provinceCode: string;
-  districtCode: string;
-  wardCode: string;
+  provinceCode: number;
+  districtCode: number;
+  wardCode: number;
+
+  provinceName: string;
+  districtName: string;
+  wardName: string;
 }
 
-export const transformAddressToFormikValue = async (address: IAddress) => {
-  const { streetAddress, provinceCode, districtCode, wardCode } = address;
-  const [province, district, ward] = await Promise.all([
-    getAddressName('province', provinceCode),
-    getAddressName('district', districtCode),
-    getAddressName('ward', wardCode),
-  ]);
+export const transformAddressToFormikValue = (address: IAddress) => {
+  const {
+    streetAddress,
+    provinceName,
+    districtName,
+    wardName,
+    provinceCode,
+    districtCode,
+    wardCode,
+  } = address;
 
   return {
-    province: { name: province, code: provinceCode },
-    district: { name: district, code: districtCode },
-    ward: { name: ward, code: wardCode },
+    province: { name: provinceName, code: provinceCode },
+    district: { name: districtName, code: districtCode },
+    ward: { name: wardName, code: wardCode },
     streetAddress,
   };
 };
@@ -41,20 +49,23 @@ export const transformAccountAddressToFormikValue = (
   };
 };
 
-export const transformFormikValueToAddress = (
-  values: any,
-): GetFullAddressInputs => {
+export const transformFormikValueToIAddress = (
+  values: CheckoutFormValues,
+): IAddress => {
   const { province, district, ward, streetAddress } = values;
   return {
     streetAddress,
     provinceCode: province.code,
     districtCode: district.code,
     wardCode: ward.code,
+    districtName: district.name,
+    provinceName: province.name,
+    wardName: ward.name,
   };
 };
 export const getAddressName = async <U extends AddressType>(
   addressType: U,
-  code: string,
+  code: number,
 ) => {
   let prefix: 'p' | 'd' | 'w' = 'p';
   switch (addressType) {
@@ -79,9 +90,9 @@ export const getAddressName = async <U extends AddressType>(
 };
 
 export type GetFullAddressInputs = {
-  provinceCode: string;
-  districtCode: string;
-  wardCode: string;
+  provinceCode: number;
+  districtCode: number;
+  wardCode: number;
   streetAddress: string;
 };
 
@@ -94,5 +105,11 @@ export const getFullAddress = async ({
   const provinceName = await getAddressName('province', provinceCode);
   const districtName = await getAddressName('district', districtCode);
   const wardName = await getAddressName('ward', wardCode);
+  return `${streetAddress}, ${wardName}, ${districtName}, ${provinceName}, Việt Nam`;
+};
+
+export const getFullAddress2 = (address?: IAddress): string => {
+  if (!address) return '';
+  const { provinceName, districtName, wardName, streetAddress } = address;
   return `${streetAddress}, ${wardName}, ${districtName}, ${provinceName}, Việt Nam`;
 };

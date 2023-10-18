@@ -1,18 +1,20 @@
 import { Grid } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import type { ReactElement } from 'react';
 
-import type { CheckoutRequestBody } from '../../../../pages/api/checkout';
-import type { Step1Data, Step2Data } from '../../../../pages/checkout';
+import type { Step1Data } from '../../../../pages/checkout';
 
 import PaymentForm from './PaymentForm';
 import PaymentSummary from './PaymentSummary';
 
-import type { IAccount } from 'api/models/Account.model/types';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import PageLayout from 'components/layouts/PageLayout';
-import { convertCartToOrderRb } from 'helpers/product.helper';
 import apiCaller from 'api-callers/checkout';
+import type { CheckoutDto } from 'backend/dtos/checkout.dto';
+import type { CommonCartItem } from 'backend/services/product/helper';
+import PageLayout from 'components/layouts/PageLayout';
+import type { CommonCustomerAccountModel } from 'models/account.model';
+import type { CustomerOrderModel } from 'models/customerOrder.model';
+import type { Id } from 'types/common';
 
 Payment.getLayout = function getLayout(page: ReactElement) {
   return <PageLayout>{page}</PageLayout>;
@@ -22,50 +24,46 @@ interface PaymentProps {
   step1Data: Step1Data;
   prevStep: (currentStep: number) => void;
   nextStep: (data: undefined, currentStep: number) => void;
-  account: IAccount;
+  account: CommonCustomerAccountModel;
 }
 
-type ConvertInput = {
-  data1: Step1Data;
-  data2: Step2Data;
-};
-
-const convertDataToRequestBody = (input: ConvertInput): CheckoutRequestBody => {
-  const requestBody: CheckoutRequestBody = {
-    ...input.data1,
-    ...input.data1.address,
-    items: input.data1.cartItems.map(convertCartToOrderRb),
-    accountId: input.data2.accountId,
-    paid: input.data2.paid,
-  };
-  delete (requestBody as any).cartItems;
-
-  return requestBody;
-};
-
 function Payment({
-  account,
   prevStep,
   nextStep,
+  account,
   step1Data,
 }: PaymentProps): ReactElement {
   const queryClient = useQueryClient();
 
   const { mutate: completeOrder, isLoading } = useMutation<
-    ICustomerOrder,
-    unknown,
-    Step2Data
+    CustomerOrderModel,
+    unknown
   >({
-    mutationFn: (step2Data) => {
-      const requestBody = convertDataToRequestBody({
-        data1: step1Data,
-        data2: step2Data,
-      });
-      console.log('file: index.tsx:62 - Payment - requestBody:', requestBody);
-      return apiCaller.checkout(requestBody);
+    mutationFn: () => {
+      const { note, address, phone, selectedCartItems } = step1Data;
+
+      const allCartItems = queryClient.getQueryData([
+        'cart',
+        account.customer.id,
+      ]) as (CommonCartItem & Id)[];
+      const selectedProductIds = selectedCartItems.map(
+        (item) => item.product.id,
+      );
+      const selectedCartItemIds = allCartItems
+        .filter((item) => selectedProductIds.includes(item.product.id))
+        .map((item) => item.id);
+
+      const dto: CheckoutDto = {
+        cartItems: selectedCartItemIds,
+        note,
+        phone: phone.replace(/-/g, ''),
+        ...address,
+      };
+
+      return apiCaller.checkout(dto);
     },
     onSuccess: () => {
-      queryClient.refetchQueries(['cart', account.id]);
+      queryClient.refetchQueries(['cart', account.customer.id]);
       nextStep(undefined, 2);
     },
   });
@@ -75,7 +73,6 @@ function Payment({
         <PaymentForm
           prevStep={prevStep}
           completeOrder={completeOrder}
-          account={account}
           isLoading={isLoading}
         />
       </Grid>

@@ -2,6 +2,9 @@ import { differenceInMinutes } from 'date-fns';
 import ceil from 'lodash/ceil';
 import getConfig from 'next/config';
 
+import type { DateLike } from 'utils/date.helper';
+import { getDateObject } from 'utils/date.helper';
+
 /**
  * GET THE DIFFERENCE DATE FORMAT
  * @param  date - which is created comment data
@@ -102,7 +105,8 @@ function calculateEndTime(duration: number): Date {
   return endTime;
 }
 
-function formatDateTime(date: Date): string {
+function formatDateTime(date: DateLike): string {
+  const dateObject = getDateObject(date);
   const formatter = new Intl.DateTimeFormat('vi-VN', {
     hour: '2-digit',
     minute: '2-digit',
@@ -111,20 +115,21 @@ function formatDateTime(date: Date): string {
     year: 'numeric',
     hour12: false,
   });
-  const formattedDateTime = formatter.format(date);
+  const formattedDateTime = formatter.format(dateObject);
   const formattedTime = formattedDateTime.slice(0, 5);
   const formattedDate = formattedDateTime.slice(6);
   return `${formattedTime} - ${formattedDate}`;
 }
 
-function getUtcDate(date: Date) {
+function getUtcDate(date: DateLike) {
+  const dateObject = getDateObject(date);
   const utcDate = new Date(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDate(),
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCSeconds(),
+    dateObject.getUTCFullYear(),
+    dateObject.getUTCMonth(),
+    dateObject.getUTCDate(),
+    dateObject.getUTCHours(),
+    dateObject.getUTCMinutes(),
+    dateObject.getUTCSeconds(),
   );
   return utcDate;
 }

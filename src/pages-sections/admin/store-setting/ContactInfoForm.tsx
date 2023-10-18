@@ -13,11 +13,11 @@ import type { UpdateStoreContactInfoRb } from '../../../../pages/api/admin/store
 import apiCaller from 'api-callers/stores';
 import AddressForm from 'components/AddressForm';
 import PhoneInput from 'components/common/input/PhoneInput';
+import { STORE_ID } from 'constants/temp.constant';
 import {
   transformAddressToFormikValue,
-  transformFormikValueToAddress,
+  transformFormikValueToIAddress,
 } from 'helpers/address.helper';
-import { StoreId } from 'utils/constants';
 
 interface ContactInfoFormProps {
   initialStoreInfo: IStore;
@@ -54,9 +54,9 @@ export default function ContactInfoForm({
   type ShopInfoFormValues = ReturnType<typeof getInitialValues>;
 
   const handleFormSubmit = (values: ShopInfoFormValues) => {
-    const address: IAddress = transformFormikValueToAddress(values);
+    const address: IAddress = transformFormikValueToIAddress(values);
     const input: UpdateStoreContactInfoRb = {
-      id: StoreId,
+      id: STORE_ID,
       ...address,
       phone: values.phone,
       email: values.email,

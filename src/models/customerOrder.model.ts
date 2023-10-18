@@ -26,15 +26,21 @@ const CustomerOrderSchema = z.object({
 
   paidOnlineVia: z.nativeEnum(PaymentMethod).optional(),
 
-  provinceCode: zodString('CustomerOrder.ProvinceCode', 1, 5),
+  provinceCode: zodNumber('CustomerAddress.ProvinceCode', 'int', 1, 10_000),
 
-  districtCode: zodString('CustomerOrder.DistrictCode', 1, 5),
+  districtCode: zodNumber('CustomerAddress.DistrictCode', 'int', 1, 10_000),
 
-  wardCode: zodString('CustomerOrder.WardCode', 1, 5),
+  wardCode: zodNumber('CustomerAddress.WardCode', 'int', 1, 100_000),
+
+  provinceName: zodString('CustomerAddress.ProvinceName', 1, 50),
+
+  districtName: zodString('CustomerAddress.ProvinceName', 1, 50),
+
+  wardName: zodString('CustomerAddress.ProvinceName', 1, 50),
 
   streetAddress: zodString('CustomerOrder.StreetAddress', 1, 100),
 
-  note: zodString('CustomerOrder.Note', 1, 500).optional(),
+  note: zodString('CustomerOrder.Note', 0, 500).optional(),
 
   profit: zodNumber('CustomerOrder.Profit', 'float', 0),
 

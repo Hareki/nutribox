@@ -1,7 +1,4 @@
 import { Container, styled, Tabs } from '@mui/material';
-import type { GetStaticPaths, GetStaticProps } from 'next';
-import { Fragment } from 'react';
-
 import {
   getProduct,
   getProductSlugs,
@@ -12,15 +9,18 @@ import connectToDB from 'api/database/databaseConnection';
 import { serialize } from 'api/helpers/object.helper';
 import type { IUpeProduct } from 'api/models/Product.model/types';
 import type { IStore } from 'api/models/Store.model/types';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import { Fragment } from 'react';
+
 import SEO from 'components/abstract/SEO';
 import { H2 } from 'components/abstract/Typography';
 import { Footer } from 'components/common/layout/footer';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
+import { STORE_ID } from 'constants/temp.constant';
 import { extractIdFromSlug } from 'helpers/product.helper';
 import SignInDialog from 'pages-sections/auth/SignInDialog';
-import { StoreId } from 'utils/constants';
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -75,7 +75,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }));
 
   return {
-    paths: paths,
+    paths,
     fallback: 'blocking',
   };
 };
@@ -92,7 +92,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const relatedProducts = await getRelatedProducts(productId, categoryId);
 
-  const initialStoreInfo = await getStore(StoreId);
+  const initialStoreInfo = await getStore(STORE_ID);
 
   if (!product?.available) {
     return {

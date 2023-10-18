@@ -9,7 +9,7 @@ import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
 
 export const useCartSpinner = (product: CommonProductModel) => {
-  const { cartItem, updateCartAmount } = useCart(product.id);
+  const { existingCartItem: cartItem, updateCartAmount } = useCart(product.id);
   const [firstTimeRender, setFirstTimeRender] = useState(true);
   const { maxQuantity, disableAddToCart, inStock } = useQuantityLimitation(
     product.importOrders,

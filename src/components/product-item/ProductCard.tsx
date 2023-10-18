@@ -6,10 +6,7 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 
-import type {
-  CommonCartItem,
-  CommonProductModel,
-} from 'backend/services/product/helper';
+import type { CommonProductModel } from 'backend/services/product/helper';
 import { H3, Span } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
@@ -107,10 +104,8 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   } = props;
 
   const slug = getSlug(name, id);
-  console.log('file: ProductCard.tsx:110 - id:', id);
 
-  const { updateCartAmount, cartItem } = useCart(id);
-  console.log('file: ProductCard.tsx:112 - cartItem:', cartItem);
+  const { updateCartAmount, existingCartItem: cartItem } = useCart(id);
   const [openModal, setOpenModal] = useState(false);
 
   const toggleDialog = useCallback(() => {
@@ -129,13 +124,6 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   );
 
   const handleCartAmountChange = (amount: number, type: CartItemActionType) => {
-    console.log(
-      'file: ProductCard.tsx:132 - handleCartAmountChange - amount:',
-      amount,
-    );
-    console.log('file: ProductCard.tsx:124 - cartItem:', cartItem);
-    console.log('??', cartItem?.quantity);
-
     if (type === 'add' && disableAddToCart) return;
 
     if (isNaN(amount)) amount = 1;

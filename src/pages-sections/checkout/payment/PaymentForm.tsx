@@ -7,9 +7,6 @@ import type { FC } from 'react';
 import { Fragment, useState } from 'react';
 import * as yup from 'yup';
 
-import type { Step2Data } from '../../../../pages/checkout';
-
-import type { IAccount } from 'api/models/Account.model/types';
 import { Paragraph } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
 import CardCvcInput from 'components/common/input/CardCvcInput';
@@ -17,8 +14,8 @@ import CardExpDateInput from 'components/common/input/CardExpirationDateInput';
 import CardNumberInput from 'components/common/input/CardNumberInput';
 import MuiImage from 'components/common/input/MuiImage';
 import { FlexBox } from 'components/flex-box';
-import { nameRegex } from 'helpers/regex.helper';
-import useWindowSize from 'hooks/useWindowSize';
+import { NAME_REGEX } from 'constants/regex.constant';
+import type { CommonCustomerAccountModel } from 'models/account.model';
 
 const initialValues = {
   card_no: '',
@@ -31,31 +28,27 @@ type FormValues = typeof initialValues;
 
 interface PaymentFormProps {
   prevStep: (currentStep: number) => void;
-  completeOrder: (data: Step2Data) => void;
-  account: IAccount;
+  completeOrder: () => void;
   isLoading: boolean;
 }
 const PaymentForm: FC<PaymentFormProps> = ({
   prevStep,
   completeOrder,
-  account,
   isLoading,
 }) => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
 
-  const width = useWindowSize();
   const router = useRouter();
-  const isMobile = width < 769;
 
-  const handleFormSubmit = async (values: any) => router.push('/payment');
+  const handleFormSubmit = async () => router.push('/payment');
 
   const handlePaymentMethodChange = ({ target: { name } }: any) => {
     setPaymentMethod(name);
   };
 
   const handleCheckout = () => {
-    const paid = paymentMethod === 'cod' ? false : true;
-    completeOrder({ accountId: account.id, paid });
+    // const paid = paymentMethod === 'cod' ? false : true;
+    completeOrder();
   };
 
   return (
@@ -277,7 +270,7 @@ const checkoutSchema = yup.object().shape({
     .string()
     .required('Vui lòng nhập tên chủ thẻ')
     .max(50, 'Tên tối đa 50 ký tự')
-    .matches(nameRegex, 'Tên không hợp lệ'),
+    .matches(NAME_REGEX, 'Tên không hợp lệ'),
   exp_date: yup.string().required('Vui lòng nhập ngày hết hạn'),
   cvc: yup
     .string()

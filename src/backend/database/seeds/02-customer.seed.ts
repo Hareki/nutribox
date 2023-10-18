@@ -12,7 +12,7 @@ const customerSeeds: Omit<
     firstName: 'Phúc',
     lastName: 'Trần Minh',
     email: 'customer@gmail.com',
-    phone: '0123456789',
+    phone: '0338758008',
     birthday: new Date('2000-01-01'),
   },
 ];

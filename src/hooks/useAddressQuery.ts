@@ -32,19 +32,19 @@ export function useAddressQuery(values: AddressValues) {
 
   const convertedProvinces: AddressAPI[] =
     provinces?.map((province) => ({
-      code: province.code.toString(),
+      code: province.code,
       name: province.name,
     })) || ([] as AddressAPI[]);
 
   const convertedDistricts: AddressAPI[] =
     districts?.map((district) => ({
-      code: district.code.toString(),
+      code: district.code,
       name: district.name,
     })) || ([] as AddressAPI[]);
 
   const convertedWards: AddressAPI[] =
     wards?.map((ward) => ({
-      code: ward.code.toString(),
+      code: ward.code,
       name: ward.name,
     })) || ([] as AddressAPI[]);
 

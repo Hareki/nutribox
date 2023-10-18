@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-import type { ProvinceApiElement } from 'backend/helpers/address.helper';
 import { CustomerSchema } from 'models/customer.model';
 import { CustomerOrderSchema } from 'models/customerOrder.model';
 export const CheckoutDtoSchema = z.intersection(
@@ -22,7 +21,7 @@ export const CheckoutDtoSchema = z.intersection(
 export type CheckoutDto = z.infer<typeof CheckoutDtoSchema>;
 
 export type AddressAPI = {
-  code: string;
+  code: number;
   name: string;
 };
 

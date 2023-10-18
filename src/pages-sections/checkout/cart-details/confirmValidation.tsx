@@ -1,7 +1,5 @@
 import { differenceInMinutes } from 'date-fns';
 
-import type { IStoreHour } from 'api/models/Store.model/StoreHour.schema/types';
-import type { IStore } from 'api/models/Store.model/types';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import type { InfoDialogAction } from 'components/dialog/info-dialog/reducer';
 import {
@@ -13,17 +11,21 @@ import {
   getLocalTimeInVietnam,
   getTodaysDayOfWeekAllCaps,
 } from 'lib';
+import type { PopulateStoreFields } from 'models/store.model';
+import type { StoreWorkTimeModel } from 'models/storeWorkTime.model';
 import { MAX_DELIVERY_DURATION, MAX_DELIVERY_RANGE } from 'utils/constants';
+import { getTodayDayOfWeek } from 'utils/date.helper';
 
 export const checkTime = (
   dispatchInfo: (value: InfoDialogAction) => void,
-  storeInfo: IStore,
+  storeInfo: PopulateStoreFields<'storeWorkTimes'>,
 ): boolean => {
   const now = getLocalTimeInVietnam();
   const todayDayOfWeekAllCaps = getTodaysDayOfWeekAllCaps();
-  const getTodayStoreHours: IStoreHour = storeInfo.storeHours.find(
-    (item) => item.dayOfWeek === todayDayOfWeekAllCaps,
-  );
+  const getTodayStoreHours: StoreWorkTimeModel = storeInfo.storeWorkTimes.find(
+    (item) => item.dayOfWeek === getTodayDayOfWeek(),
+  ) as StoreWorkTimeModel;
+
   const todayOpenTime = new Date(getTodayStoreHours.openTime);
   const todayCloseTime = new Date(getTodayStoreHours.closeTime);
   const tooEarly = compareTimes(now, todayOpenTime) === -1;

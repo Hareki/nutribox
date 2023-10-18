@@ -23,7 +23,7 @@ const AccountSchema = z.object({
 
   password: zodPassword('Account.Password'),
 
-  avatarUrl: zodString('Account.AvatarUrl', 1, 500).optional(),
+  avatarUrl: zodString('Account.AvatarUrl', 0, 500).optional(),
 
   disabled: z.boolean({
     required_error: 'Account.Disabled.Required',
@@ -33,7 +33,7 @@ const AccountSchema = z.object({
     required_error: 'Account.Verified.Required',
   }),
 
-  verificationToken: zodString('Account.VerificationToken', 1, 500).optional(),
+  verificationToken: zodString('Account.VerificationToken', 0, 500).optional(),
 
   verificationTokenExpiry: zodDate(
     'Account.VerificationTokenExpiry',
@@ -82,6 +82,10 @@ type FullyPopulatedAccountModel = PopulateAccountFields<AccountReferenceKeys>;
 export { AccountSchema };
 export type { AccountModel, FullyPopulatedAccountModel, PopulateAccountFields };
 
-export type CommonCustomerAccountModel = Omit<AccountModel, 'customer'> & {
+export type CommonCustomerAccountModel = Omit<
+  AccountModel,
+  'customer' | 'password'
+> & {
   customer: CommonCustomerModel;
+  password?: string;
 };

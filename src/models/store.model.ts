@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { zodDate, zodString, zodUuid } from './helper';
+import { zodDate, zodNumber, zodString, zodUuid } from './helper';
 import type { StoreWorkTimeModel } from './storeWorkTime.model';
 
 import { PHONE_REGEX } from 'constants/regex.constant';
@@ -20,11 +20,17 @@ const StoreSchema = z.object({
     message: 'Store.Phone.InvalidFormat',
   }),
 
-  provinceCode: zodString('Store.ProvinceCode', 1, 5),
+  provinceCode: zodNumber('CustomerAddress.ProvinceCode', 'int', 1, 10_000),
 
-  districtCode: zodString('Store.DistrictCode', 1, 5),
+  districtCode: zodNumber('CustomerAddress.DistrictCode', 'int', 1, 10_000),
 
-  wardCode: zodString('Store.WardCode', 1, 5),
+  wardCode: zodNumber('CustomerAddress.WardCode', 'int', 1, 100_000),
+
+  provinceName: zodString('CustomerAddress.ProvinceName', 1, 50),
+
+  districtName: zodString('CustomerAddress.ProvinceName', 1, 50),
+
+  wardName: zodString('CustomerAddress.ProvinceName', 1, 50),
 
   streetAddress: zodString('Store.StreetAddress', 1, 100),
 });

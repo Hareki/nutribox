@@ -20,14 +20,23 @@ export class SupplierEntity extends AbstractEntity {
   @Column()
   email: string;
 
-  @Column()
-  provinceCode: string;
+  @Column('int')
+  provinceCode: number;
 
-  @Column()
-  districtCode: string;
+  @Column('int')
+  districtCode: number;
 
-  @Column()
-  wardCode: string;
+  @Column('int')
+  wardCode: number;
+
+  @Column('text')
+  provinceName: string;
+
+  @Column('text')
+  districtName: string;
+
+  @Column('text')
+  wardName: string;
 
   @Column()
   streetAddress: string;

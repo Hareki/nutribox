@@ -7,19 +7,19 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import { useSnackbar } from 'notistack';
 import type { FC } from 'react';
 import { useReducer, useState } from 'react';
 
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import addressCaller from 'api-callers/profile/addresses';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
 import ConfirmDialog from 'components/dialog/confirm-dialog';
 import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { getFullAddress } from 'helpers/address.helper';
-import addressCaller from 'api-callers/profile/addresses';
+import { getFullAddress, getFullAddress2 } from 'helpers/address.helper';
 
 type AddressViewerProps = {
   isLoading: boolean;
@@ -131,7 +131,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
             </Typography>
 
             <Typography flex='1 1 260px !important' m={0.75} textAlign='left'>
-              {getFullAddress(address)}
+              {getFullAddress2(address)}
             </Typography>
 
             <Typography whiteSpace='pre' textAlign='center' color='grey.600'>

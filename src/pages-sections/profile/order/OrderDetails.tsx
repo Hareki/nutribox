@@ -9,11 +9,12 @@ import {
   styled,
 } from '@mui/material';
 import { useQueries } from '@tanstack/react-query';
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { format } from 'date-fns';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import apiCaller from 'api-callers/product/[slug]';
 import { H5, H6, Paragraph } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
@@ -23,10 +24,9 @@ import PackageBox from 'components/icons/PackageBox';
 import TruckFilled from 'components/icons/TruckFilled';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { getFullAddress } from 'helpers/address.helper';
+import { getFullAddress, getFullAddress2 } from 'helpers/address.helper';
 import useWindowSize from 'hooks/useWindowSize';
 import { formatCurrency } from 'lib';
-import apiCaller from 'api-callers/product/[slug]';
 
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
   flexWrap: 'wrap',
@@ -229,7 +229,7 @@ const OrderDetails: FC<Props> = ({ order, setOrderDetails }) => {
             </H5>
 
             <Paragraph fontSize={14} my={0}>
-              {getFullAddress(order)}
+              {getFullAddress2(order)}
             </Paragraph>
           </Card>
         </Grid>

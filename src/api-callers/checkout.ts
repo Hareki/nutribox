@@ -1,5 +1,5 @@
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
-import type { EstimatedDeliveryInfo } from 'backend/helpers/address.helper';
+import type { CheckoutValidation } from 'backend/services/customerOrder/helper';
 import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
@@ -10,7 +10,7 @@ import type { CustomerOrderModel } from 'models/customerOrder.model';
 
 export const getCheckoutValidation = async (
   address: string,
-): Promise<EstimatedDeliveryInfo> => {
+): Promise<CheckoutValidation> => {
   const response = await axiosInstance.get(CHECKOUT_VALIDATION_API_ROUTE, {
     params: {
       address,
@@ -19,8 +19,9 @@ export const getCheckoutValidation = async (
   return response.data.data;
 };
 
-type CheckoutResponse = JSSuccess<CustomerOrderModel>;
-export const checkout = async (dto: CheckoutDto): Promise<CheckoutResponse> => {
+export const checkout = async (
+  dto: CheckoutDto,
+): Promise<CustomerOrderModel> => {
   const response = await axiosInstance.post(CHECKOUT_API_ROUTE, dto);
   return response.data.data;
 };

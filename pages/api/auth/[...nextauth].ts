@@ -2,9 +2,7 @@ import type { AuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { AccountEntity } from 'backend/entities/account.entity';
 import { AccountService } from 'backend/services/account/account.service';
-import { CommonService } from 'backend/services/common/common.service';
 import type { CredentialInputs } from 'backend/types/auth';
 import type { FullyPopulatedAccountModel } from 'models/account.model';
 
@@ -23,20 +21,19 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      const account = (await CommonService.getRecord({
-        entity: AccountEntity,
-        filter: {
-          id: token.accountId,
-        },
-        relations: ['customer', 'employee'],
-      })) as FullyPopulatedAccountModel;
+      if (token.accountId) {
+        const account = await AccountService.getAccount(
+          { id: token.accountId },
+          'customer',
+        );
 
-      session.account = account;
-      delete session.account.password;
-      delete session.account.verificationToken;
-      delete session.account.verificationTokenExpiry;
-      delete session.account.forgotPasswordToken;
-      delete session.account.forgotPasswordTokenExpiry;
+        session.account = account!;
+        delete session.account.password;
+        delete session.account.verificationToken;
+        delete session.account.verificationTokenExpiry;
+        delete session.account.forgotPasswordToken;
+        delete session.account.forgotPasswordTokenExpiry;
+      }
 
       return session;
     },

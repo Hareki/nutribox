@@ -35,14 +35,23 @@ export class CustomerOrderEntity extends AbstractEntity {
   @Column({ type: 'enum', enum: PaymentMethod, nullable: true })
   paidOnlineVia?: PaymentMethod;
 
-  @Column()
-  provinceCode: string;
+  @Column('int')
+  provinceCode: number;
 
-  @Column()
-  districtCode: string;
+  @Column('int')
+  districtCode: number;
 
-  @Column()
-  wardCode: string;
+  @Column('int')
+  wardCode: number;
+
+  @Column('text')
+  provinceName: string;
+
+  @Column('text')
+  districtName: string;
+
+  @Column('text')
+  wardName: string;
 
   @Column()
   streetAddress: string;

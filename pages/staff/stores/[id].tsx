@@ -1,16 +1,16 @@
 import { Box, Card, Divider } from '@mui/material';
-import type { GetServerSideProps } from 'next';
-import type { ReactElement } from 'react';
-
 import { getStore } from 'api/base/server-side-modules';
 import { checkContextCredentials } from 'api/helpers/auth.helper';
 import { serialize } from 'api/helpers/object.helper';
 import type { IStore } from 'api/models/Store.model/types';
+import type { GetServerSideProps } from 'next';
+import type { ReactElement } from 'react';
+
 import { H3, Paragraph } from 'components/abstract/Typography';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
+import { STORE_ID } from 'constants/temp.constant';
 import ContactInfoForm from 'pages-sections/admin/store-setting/ContactInfoForm';
 import StoreHoursForm from 'pages-sections/admin/store-setting/StoreHoursForm';
-import { StoreId } from 'utils/constants';
 
 StoreSetting.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -44,12 +44,11 @@ function StoreSetting({ initialStoreInfo }: StoreSettingProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } = await checkContextCredentials(
-    context,
-  );
+  const { isNotAuthorized, blockingResult } =
+    await checkContextCredentials(context);
   if (isNotAuthorized) return blockingResult;
 
-  const initialStoreInfo = await getStore(StoreId);
+  const initialStoreInfo = await getStore(STORE_ID);
   return { props: { initialStoreInfo: serialize(initialStoreInfo) } };
 };
 

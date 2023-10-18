@@ -9,9 +9,9 @@ import {
 
 import { DayOfWeek } from 'backend/enums/entities.enum';
 
-type DateLike = Date | string | number;
+export type DateLike = Date | string | number;
 
-const getDateObject = (date: DateLike) =>
+export const getDateObject = (date: DateLike) =>
   date instanceof Date ? date : new Date(date);
 
 export const isDateTimeBeforeOrEqual = (date1: DateLike, date2: DateLike) => {
@@ -105,4 +105,8 @@ export const getDayOfWeek = (day: number): DayOfWeek => {
     DayOfWeek.SATURDAY,
   ];
   return weekday[day];
+};
+
+export const getTodayDayOfWeek = (): DayOfWeek => {
+  return getDayOfWeek(new Date().getDay());
 };

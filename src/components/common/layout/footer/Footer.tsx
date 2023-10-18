@@ -27,7 +27,7 @@ import Instagram from 'components/icons/Instagram';
 import Twitter from 'components/icons/Twitter';
 import Youtube from 'components/icons/Youtube';
 import { STORE_ID } from 'constants/temp.constant';
-import { getFullAddress } from 'helpers/address.helper';
+import { getFullAddress, getFullAddress2 } from 'helpers/address.helper';
 import {
   getDayOfWeekLabel,
   getStoreHoursLabel,
@@ -53,16 +53,6 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
     // Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["store","641ff62a1af60afc9423cbea"]
     initialData: initialStoreInfo ?? null,
   });
-
-  const [storeAddress, setStoreAddress] = useState('Đang tải...');
-
-  useEffect(() => {
-    if (storeInfo) {
-      getFullAddress(storeInfo).then((address) => {
-        setStoreAddress(address);
-      });
-    }
-  }, [storeInfo]);
 
   // Set the initialData will prevent isLoading from being true, need to figure out another way to determine if the it is loading or not
   return (
@@ -134,7 +124,7 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
                   <FlexBox gap={2} flexDirection='column'>
                     <FlexBox alignItems='center' color='grey.700' gap={1}>
                       <LocationOnIcon />
-                      <Typography>{storeAddress}</Typography>
+                      <Typography>{getFullAddress2(storeInfo)}</Typography>
                     </FlexBox>
 
                     <FlexBox alignItems='center' color='grey.700' gap={1}>

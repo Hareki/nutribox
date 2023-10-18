@@ -1,11 +1,11 @@
 import { Box, Divider } from '@mui/material';
-import type { FC } from 'react';
+import { type FC } from 'react';
 
 import type { Step1Data } from '../../../../pages/checkout';
 
 import { Paragraph, Span } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
-import { getFullAddress } from 'helpers/address.helper';
+import { getFullAddress2 } from 'helpers/address.helper';
 import { formatCurrency } from 'lib';
 
 interface PaymentSummaryProps {
@@ -19,7 +19,7 @@ const PaymentSummary: FC<PaymentSummaryProps> = ({ step1Data }) => {
         Chi tiết đơn hàng
       </Paragraph>
 
-      {step1Data.cartItems.map((item) => (
+      {step1Data.selectedCartItems.map((item) => (
         <FlexBetween mb={1.5} key={item.product.name}>
           <Paragraph>
             <Span fontWeight='700' fontSize='14px'>
@@ -49,7 +49,7 @@ const PaymentSummary: FC<PaymentSummaryProps> = ({ step1Data }) => {
 
       <Box mb={1.5}>
         <Paragraph color='grey.600'>Địa chỉ</Paragraph>
-        <Paragraph>{getFullAddress(step1Data.address)}</Paragraph>
+        <Paragraph>{getFullAddress2(step1Data.address)}</Paragraph>
       </Box>
 
       <Box>

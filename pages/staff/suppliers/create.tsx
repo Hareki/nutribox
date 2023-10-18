@@ -16,7 +16,7 @@ import type { JSendFailResponse } from 'api/types/response.type';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
-import { transformFormikValueToAddress } from 'helpers/address.helper';
+import { transformFormikValueToIAddress } from 'helpers/address.helper';
 import { getMessageList } from 'helpers/feedback.helper';
 import type { SupplierInfoFormValues } from 'pages-sections/admin/supplier/SupplierForm';
 import SupplierForm from 'pages-sections/admin/supplier/SupplierForm';
@@ -70,7 +70,7 @@ export default function AdminSupplierCreate() {
   });
 
   const handleFormSubmit = (values: SupplierInfoFormValues) => {
-    const addressRb = transformFormikValueToAddress(values);
+    const addressRb = transformFormikValueToIAddress(values);
     const requestBody: CreateSupplierRb = {
       name: values.name,
       phone: values.phone,

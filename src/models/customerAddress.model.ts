@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import type { CustomerModel } from './customer.model';
-import { zodDate, zodString, zodUuid } from './helper';
+import { zodDate, zodNumber, zodString, zodUuid } from './helper';
 
 import { CustomerAddressType } from 'backend/enums/entities.enum';
 
@@ -12,11 +12,17 @@ const CustomerAddressSchema = z.object({
 
   customer: zodUuid('CustomerAddress.CustomerId'),
 
-  provinceCode: zodString('CustomerAddress.ProvinceCode', 1, 50),
+  provinceCode: zodNumber('CustomerAddress.ProvinceCode', 'int', 1, 10_000),
 
-  districtCode: zodString('CustomerAddress.DistrictCode', 1, 50),
+  districtCode: zodNumber('CustomerAddress.DistrictCode', 'int', 1, 10_000),
 
-  wardCode: zodString('CustomerAddress.WardCode', 1, 50),
+  wardCode: zodNumber('CustomerAddress.WardCode', 'int', 1, 100_000),
+
+  provinceName: zodString('CustomerAddress.ProvinceName', 1, 50),
+
+  districtName: zodString('CustomerAddress.ProvinceName', 1, 50),
+
+  wardName: zodString('CustomerAddress.ProvinceName', 1, 50),
 
   streetAddress: zodString('CustomerAddress.StreetAddress', 1, 500),
 

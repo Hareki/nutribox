@@ -3,13 +3,12 @@ import type {
   AccountWithPopulatedSide,
   CredentialInputs,
 } from 'backend/types/auth';
-import type { FullyPopulatedAccountModel } from 'models/account.model';
+import type { CommonCustomerAccountModel } from 'models/account.model';
 
 declare module 'next-auth' {
   interface Session {
-    account: Omit<FullyPopulatedAccountModel, 'password'> & {
-      password?: string;
-    };
+    // TODO: this should be named customerAccount
+    account: CommonCustomerAccountModel;
   }
 
   interface User extends AccountWithPopulatedSide {}

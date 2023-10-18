@@ -36,7 +36,7 @@ interface ProductCartItemProps extends CommonCartItem {}
 
 const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
   const { productImages, name, retailPrice, id } = product;
-  const { updateCartAmount, cartItem } = useCart(product.id);
+  const { updateCartAmount, existingCartItem: cartItem } = useCart(product.id);
   const { setLoginDialogOpen } = useLoginDialog();
   const { status } = useSession();
   const { overLimit, maxQuantity, disableAddToCart } = useQuantityLimitation(

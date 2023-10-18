@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDebounce } from 'usehooks-ts';
 
 import useLoginDialog from './useLoginDialog';
 
@@ -13,6 +15,7 @@ type MutateCartItemType = {
   type: CartItemActionType;
 };
 
+const DEBOUNCE_DELAY = 400;
 export type CartItemActionType = 'add' | 'remove' | 'update';
 
 const useCart = (productId?: string) => {
@@ -30,6 +33,15 @@ const useCart = (productId?: string) => {
     initialData: [],
   });
 
+  const [tempQuantity, setTempQuantity] = useState<number | null>(null);
+  const [lastActionType, setLastActionType] = useState<
+    CartItemActionType | undefined
+  >(undefined);
+  const debouncedQuantity = useDebounce(tempQuantity, DEBOUNCE_DELAY);
+  const [debouncedItem, setDebouncedItem] = useState<
+    CommonCartItem | undefined
+  >();
+
   const { mutate: mutateCartItem } = useMutation<
     CommonCartItem[],
     unknown,
@@ -44,6 +56,8 @@ const useCart = (productId?: string) => {
       queryClient.setQueryData(['cart', customerId], cartItems);
       queryClient.invalidateQueries(['cart', customerId]);
 
+      setTempQuantity(null);
+
       switch (type) {
         case 'add':
           enqueueSnackbar('Đã thêm vào giỏ hàng', { variant: 'success' });
@@ -57,35 +71,74 @@ const useCart = (productId?: string) => {
     },
   });
 
-  const updateCartAmount = (item: CommonCartItem, type: CartItemActionType) => {
-    if (status === 'authenticated') {
-      // const inStock = item.product.expirations.length > 0;
-      // if (!inStock && type === 'add') return;
+  const updateCartAmount = useCallback(
+    (item: CommonCartItem, type?: CartItemActionType) => {
+      if (!type) return;
+      if (status === 'authenticated') {
+        // const inStock = item.product.expirations.length > 0;
+        // if (!inStock && type === 'add') return;
 
-      mutateCartItem({
-        cart: {
-          product: item.product.id,
-          quantity: item.quantity,
-        },
-        type,
-      });
+        mutateCartItem({
+          cart: {
+            product: item.product.id,
+            quantity: item.quantity,
+          },
+          type,
+        });
+      } else {
+        setLoginDialogOpen(true);
+      }
+    },
+    [mutateCartItem, setLoginDialogOpen, status],
+  );
+
+  const handleUpdateCartAmount = (
+    item: CommonCartItem,
+    type: CartItemActionType,
+  ) => {
+    if (status === 'authenticated') {
+      setTempQuantity(item.quantity); // Reflect the change instantly to tempQuantity
+      setLastActionType(type);
+      setDebouncedItem(item);
     } else {
       setLoginDialogOpen(true);
     }
   };
 
-  let cartItem: CommonCartItem | undefined;
-  if (productId) {
-    cartItem = cartItems?.find((item) => {
-      return item.product.id === productId;
-    });
-  }
+  const existingCartItem: CommonCartItem | undefined = useMemo(() => {
+    if (productId) {
+      return cartItems?.find((item) => {
+        return item.product.id === productId;
+      });
+    }
+    return undefined;
+  }, [cartItems, productId]);
+
+  useEffect(() => {
+    if (debouncedQuantity !== null && debouncedItem) {
+      updateCartAmount(
+        { ...debouncedItem, quantity: debouncedQuantity },
+        lastActionType,
+      );
+      setLastActionType(undefined);
+      setDebouncedItem(undefined);
+    }
+  }, [
+    debouncedQuantity,
+    existingCartItem,
+    updateCartAmount,
+    lastActionType,
+    debouncedItem,
+  ]);
 
   return {
-    cartItem,
+    existingCartItem: {
+      ...existingCartItem,
+      quantity: tempQuantity || existingCartItem?.quantity || 0, // Override quantity with tempQuantity if available
+    },
     cartItems,
     isLoading,
-    updateCartAmount,
+    updateCartAmount: handleUpdateCartAmount,
   };
 };
 
