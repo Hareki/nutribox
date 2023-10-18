@@ -1,24 +1,32 @@
 import * as yup from 'yup';
 
-import type { IAccount } from 'api/models/Account.model/types';
+import type { CheckoutFormValues } from 'backend/dtos/checkout.dto';
+import { PHONE_REGEX } from 'constants/regex.constant';
 import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
-import { phoneRegex } from 'helpers/regex.helper';
+import type { CommonCustomerAccountModel } from 'models/account.model';
 
-export const getInitialValues = (account: IAccount) => {
-  const defaultAddress = account.addresses.find((address) => address.isDefault);
-  const transformedAddressValues =
-    transformAccountAddressToFormikValue(defaultAddress);
-  if (transformedAddressValues) {
-    delete transformedAddressValues.title;
-  }
+export const getInitialValues = async (
+  account: CommonCustomerAccountModel,
+): Promise<CheckoutFormValues> => {
+  const defaultAddress = account.customer.customerAddresses.find(
+    (address) => address.isDefault,
+  );
+  const transformedAddressValues = await transformAccountAddressToFormikValue(
+    defaultAddress!,
+  );
+
+  // if (transformedAddressValues) {
+  //   delete transformedAddressValues.type;
+  // }
 
   return {
+    cartItems: account.customer.cartItems.map((item) => item.id),
     note: '',
-    phone: account.phone,
+    phone: account.customer.phone,
     ...transformedAddressValues,
-  };
+  } as CheckoutFormValues;
 };
-export type CheckoutFormValues = ReturnType<typeof getInitialValues>;
+// export type CheckoutFormValues = ReturnType<typeof getInitialValues>;
 
 export const checkoutFormSchema = yup.object().shape({
   note: yup.string().max(500, 'Lời nhắn không được quá 500 ký tự'),
@@ -31,7 +39,7 @@ export const checkoutFormSchema = yup.object().shape({
       }
       return value;
     })
-    .matches(phoneRegex, 'Định dạng số điện thoại không hợp lệ'),
+    .matches(PHONE_REGEX, 'Định dạng số điện thoại không hợp lệ'),
   province: yup
     .object()
     .typeError('Vui lòng nhập Tỉnh/Thành Phố')

@@ -32,7 +32,7 @@ type Props = { children?: ReactNode };
 
 const MobileNavigationBar: FC<Props> = ({ children }) => {
   const width = useWindowSize();
-  const { cartState } = useCart();
+  const { cartItems } = useCart();
   const [childrenDrawerOpen, setChildrenDrawerOpen] = useState(false);
 
   const { mobileNavHeight, topbarHeight } = LayoutConstant;
@@ -68,7 +68,7 @@ const MobileNavigationBar: FC<Props> = ({ children }) => {
             return (
               <StyledNavLink href={item.href} key={item.title}>
                 {item.title === 'Cart' && (
-                  <Badge badgeContent={cartState.cart.length} color='primary'>
+                  <Badge badgeContent={cartItems.length} color='primary'>
                     <item.icon fontSize='small' sx={iconStyle} />
                   </Badge>
                 )}
@@ -93,7 +93,7 @@ const MobileNavigationBar: FC<Props> = ({ children }) => {
                 )}
                 {item.title === 'Cart' && (
                   <StyledBox onClick={() => toggleCartDrawer()}>
-                    <Badge badgeContent={cartState.cart.length} color='primary'>
+                    <Badge badgeContent={cartItems.length} color='primary'>
                       <item.icon fontSize='small' sx={iconStyle} />
                     </Badge>
 

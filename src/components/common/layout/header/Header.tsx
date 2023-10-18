@@ -12,9 +12,9 @@ import type { FC, ReactElement } from 'react';
 import { Fragment, useState } from 'react';
 
 import { Paragraph } from 'components/abstract/Typography';
-import CustomerUserMenu from 'components/CustomerUserMenu';
 import CartDrawer from 'components/cart-drawer/CartDrawer';
 import Image from 'components/common/input/MuiImage';
+import CustomerUserMenu from 'components/CustomerUserMenu';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Icon from 'components/icons';
 import ShoppingBagOutlined from 'components/icons/ShoppingBagOutlined';
@@ -54,7 +54,7 @@ type HeaderProps = {
 const Header: FC<HeaderProps> = ({ className, searchInput }) => {
   const theme = useTheme();
   const router = useRouter();
-  const { cartState } = useCart();
+  const { cartItems } = useCart();
 
   const { cartDrawerState, toggleCartDrawer } = useCartDrawer();
   // const { setLoginDialogOpen } = useLoginDialog();
@@ -128,7 +128,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
               </Box>
 
               <Box component={IconButton} onClick={toggleCartDrawer}>
-                <Badge badgeContent={cartState.cart.length} color='primary'>
+                <Badge badgeContent={cartItems.length} color='primary'>
                   <Icon.CartBag sx={ICON_STYLE} />
                 </Badge>
               </Box>
@@ -185,7 +185,7 @@ const Header: FC<HeaderProps> = ({ className, searchInput }) => {
           </Box>
 
           {!isCheckingOut && (
-            <Badge badgeContent={cartState.cart.length} color='primary'>
+            <Badge badgeContent={cartItems.length} color='primary'>
               <Box
                 p={1.25}
                 bgcolor='grey.200'

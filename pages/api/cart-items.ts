@@ -8,11 +8,11 @@ import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { CartItemService } from 'backend/services/cartItem/cartItem.service';
 import { createValidationGuard } from 'backend/services/common/common.guard';
+import type { CommonCartItem } from 'backend/services/product/helper';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
-import type { CartItemModel } from 'models/cartItem.model';
 
-type SuccessResponse = JSSuccess<CartItemModel[]>;
-type FailResponse = JSFail<CartItemModel[]>;
+type SuccessResponse = JSSuccess<CommonCartItem[]>;
+type FailResponse = JSFail<CommonCartItem[]>;
 
 const handler = nc<
   NextApiRequest,

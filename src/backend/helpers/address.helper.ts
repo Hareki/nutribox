@@ -1,11 +1,11 @@
+// @ts-ignore
 import type { ClientResponse } from '@google/maps';
-import axios from 'axios';
+import { addMinutes } from 'date-fns';
 
-import { assertNever } from '../../helpers/assertion.helper';
-
+import { PREPARATION_TIME } from 'constants/delivery.constant';
 import { GOOGLE_MAPS_CLIENT } from 'constants/google.constant';
 
-type AddressType = 'province' | 'district' | 'ward';
+export type AddressType = 'province' | 'district' | 'ward';
 
 export type ProvinceApiElement<T extends AddressType> = {
   name: string;
@@ -25,12 +25,13 @@ export type ProvinceApiElement<T extends AddressType> = {
     ? { districts: ProvinceApiElement<'district'>[] }
     : T extends 'district'
     ? { wards: ProvinceApiElement<'ward'>[] }
-    : never);
+    : {});
 
 export interface EstimatedDeliveryInfo {
   distance: number;
   durationInTraffic: number;
   heavyTraffic: boolean;
+  deliveryTime: Date;
 }
 
 export async function getEstimatedDeliveryInfo(
@@ -71,8 +72,12 @@ export async function getEstimatedDeliveryInfo(
         const durationInTraffic = element.duration_in_traffic.value / 60; // Convert seconds to minutes
 
         const heavyTraffic = durationInTraffic > duration * 1.5;
+        const deliveryTime = addMinutes(
+          new Date(),
+          durationInTraffic + PREPARATION_TIME,
+        );
 
-        return { distance, durationInTraffic, heavyTraffic };
+        return { distance, durationInTraffic, heavyTraffic, deliveryTime };
       }
     }
 
@@ -82,48 +87,3 @@ export async function getEstimatedDeliveryInfo(
     throw error;
   }
 }
-
-export const getAddressName = async <U extends AddressType>(
-  addressType: U,
-  code: string,
-) => {
-  let prefix: 'p' | 'd' | 'w' = 'p';
-  switch (addressType) {
-    case 'province':
-      prefix = 'p';
-      break;
-    case 'district':
-      prefix = 'd';
-      break;
-    case 'ward':
-      prefix = 'w';
-      break;
-    default: {
-      assertNever(addressType);
-    }
-  }
-
-  const url = `${process.env.NEXT_PUBLIC_PROVINCE_API_URL}/${prefix}/${code}`;
-
-  const { data } = await axios.get<ProvinceApiElement<U>>(url);
-  return data.name;
-};
-
-export type GetFullAddressInputs = {
-  provinceCode: string;
-  districtCode: string;
-  wardCode: string;
-  streetAddress: string;
-};
-
-export const getFullAddress = async ({
-  provinceCode,
-  districtCode,
-  wardCode,
-  streetAddress,
-}: GetFullAddressInputs) => {
-  const provinceName = await getAddressName('province', provinceCode);
-  const districtName = await getAddressName('district', districtCode);
-  const wardName = await getAddressName('ward', wardCode);
-  return `${streetAddress}, ${wardName}, ${districtName}, ${provinceName}, Việt Nam`;
-};

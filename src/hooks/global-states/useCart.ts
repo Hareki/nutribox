@@ -2,18 +2,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
 
-import type { CartItemRequestBody } from '../../../pages/api/cart/[accountId]';
-
 import useLoginDialog from './useLoginDialog';
 
-import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
 import apiCaller from 'api-callers/global/cart';
-
-export type CartState = { cart: IPopulatedCartItem[] };
+import type { CartItemDto } from 'backend/dtos/cartItem.dto';
+import type { CommonCartItem } from 'backend/services/product/helper';
 
 type MutateCartItemType = {
-  cart: CartItemRequestBody;
+  cart: CartItemDto;
   type: CartItemActionType;
 };
 
@@ -25,30 +21,28 @@ const useCart = (productId?: string) => {
   const { data: session, status } = useSession();
   const { enqueueSnackbar } = useSnackbar();
 
-  const accountId = session ? session.user.id : null;
+  const customerId = session?.account.customer.id;
 
-  const { data: cartState, isLoading } = useQuery({
-    queryKey: ['cart', accountId],
-    queryFn: () => apiCaller.getCartItems(accountId),
-    enabled: !!accountId,
-    initialData: { cart: [] },
+  const { data: cartItems, isLoading } = useQuery({
+    queryKey: ['cart', customerId],
+    queryFn: () => apiCaller.getCartItems(),
+    enabled: !!customerId,
+    initialData: [],
   });
 
   const { mutate: mutateCartItem } = useMutation<
-    IPopulatedCartItemsAccount,
+    CommonCartItem[],
     unknown,
     MutateCartItemType
   >({
     mutationFn: ({ cart }) =>
-      apiCaller.updateCartItem(accountId, {
-        productId: cart.productId,
+      apiCaller.updateCartItem({
+        product: cart.product,
         quantity: cart.quantity,
       }),
-    onSuccess: (account, { type }) => {
-      queryClient.setQueryData(['cart', accountId], {
-        cart: account.cartItems,
-      });
-      queryClient.invalidateQueries(['cart', accountId]);
+    onSuccess: (cartItems, { type }) => {
+      queryClient.setQueryData(['cart', customerId], cartItems);
+      queryClient.invalidateQueries(['cart', customerId]);
 
       switch (type) {
         case 'add':
@@ -63,17 +57,14 @@ const useCart = (productId?: string) => {
     },
   });
 
-  const updateCartAmount = (
-    item: IPopulatedCartItem,
-    type: CartItemActionType,
-  ) => {
+  const updateCartAmount = (item: CommonCartItem, type: CartItemActionType) => {
     if (status === 'authenticated') {
       // const inStock = item.product.expirations.length > 0;
       // if (!inStock && type === 'add') return;
 
       mutateCartItem({
         cart: {
-          productId: item.product.id,
+          product: item.product.id,
           quantity: item.quantity,
         },
         type,
@@ -83,16 +74,16 @@ const useCart = (productId?: string) => {
     }
   };
 
-  let cartItem: IPopulatedCartItem;
+  let cartItem: CommonCartItem | undefined;
   if (productId) {
-    cartItem = cartState.cart.find((item) => {
+    cartItem = cartItems?.find((item) => {
       return item.product.id === productId;
     });
   }
 
   return {
     cartItem,
-    cartState,
+    cartItems,
     isLoading,
     updateCartAmount,
   };

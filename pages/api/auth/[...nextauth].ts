@@ -64,11 +64,11 @@ export const authOptions: AuthOptions = {
 
         const castedCredentials = credentials as CredentialInputs;
         const { email, password, userType } = castedCredentials;
-        const account = await AccountService.checkCredentials(
+        const account = await AccountService.getAccount(
           {
             email,
+            password,
           },
-          password,
           userType,
         );
 

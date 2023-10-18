@@ -3,13 +3,18 @@ import { signOut } from 'next-auth/react';
 import { useReducer, useState } from 'react';
 
 import ConfirmDialog from 'components/dialog/confirm-dialog';
-import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
+import {
+  confirmDialogReducer,
+  initConfirmDialogState,
+} from 'components/dialog/confirm-dialog/reducer';
+import { SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
 
 const useSignOutDialog = () => {
   const router = useRouter();
-  const [confirmState, dispatchConfirm] = useReducer(confirmDialogReducer, {
-    open: false,
-  });
+  const [confirmState, dispatchConfirm] = useReducer(
+    confirmDialogReducer,
+    initConfirmDialogState,
+  );
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const dialog = (
@@ -22,7 +27,7 @@ const useSignOutDialog = () => {
       handleConfirm={async () => {
         await signOut({ redirect: false });
         setIsRedirecting(true);
-        router.replace('/login');
+        router.replace(SIGN_IN_ROUTE);
       }}
     />
   );

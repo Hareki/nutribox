@@ -11,7 +11,7 @@ import SEO from 'components/abstract/SEO';
 import InfoDialog from 'components/dialog/info-dialog';
 import {
   infoDialogReducer,
-  initDialogState,
+  initInfoDialogState,
 } from 'components/dialog/info-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
 import { extractErrorMessages } from 'helpers/error.helper';
@@ -19,7 +19,7 @@ import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import SignUp from 'pages-sections/auth/SignUp';
 
 const SignUpPage: NextPage = () => {
-  const [state, dispatch] = useReducer(infoDialogReducer, initDialogState);
+  const [state, dispatch] = useReducer(infoDialogReducer, initInfoDialogState);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [hasError, setHasError] = useState(false);
   const router = useRouter();

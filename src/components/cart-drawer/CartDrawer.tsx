@@ -5,8 +5,10 @@ import type { FC } from 'react';
 
 import CartDrawerItem from './CartDrawerItem';
 
-import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IUpeProduct } from 'api/models/Product.model/types';
+import type {
+  CommonCartItem,
+  CommonProductModel,
+} from 'backend/services/product/helper';
 import { Paragraph } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
@@ -19,11 +21,12 @@ import { formatCurrency } from 'lib';
 type CartDrawerProps = { toggleCartDrawer: () => void };
 
 const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
-  const { cartState, updateCartAmount } = useCart();
-  const cartList = cartState.cart;
+  const { cartItems, updateCartAmount } = useCart();
+  const cartList = cartItems;
 
   const handleCartAmountChange =
-    (amount: number, product: IUpeProduct, type: CartItemActionType) => () => {
+    (amount: number, product: CommonProductModel, type: CartItemActionType) =>
+    () => {
       updateCartAmount({ product, quantity: amount }, type);
     };
 
@@ -84,9 +87,9 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
           </FlexBox>
         )}
 
-        {cartList.map((item: IPopulatedCartItem) => (
+        {cartList.map((item: CommonCartItem) => (
           <CartDrawerItem
-            key={item.id}
+            key={item.product.id}
             cartItem={item}
             handleCartAmountChange={handleCartAmountChange}
           />

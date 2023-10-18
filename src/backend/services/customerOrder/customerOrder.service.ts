@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { addMinutes } from 'date-fns';
 import type { Repository } from 'typeorm';
 import { MoreThan, getManager } from 'typeorm';
 
 import {
-  getFullAddress,
   type EstimatedDeliveryInfo,
+  getEstimatedDeliveryInfo,
 } from '../../helpers/address.helper';
 import { CommonService } from '../common/common.service';
 
@@ -23,8 +24,10 @@ import { OrderStatus } from 'backend/enums/entities.enum';
 import {
   MAX_DELIVERY_DURATION,
   MAX_DELIVERY_RANGE,
+  PREPARATION_TIME,
 } from 'constants/delivery.constant';
 import { STORE_ID } from 'constants/temp.constant';
+import { getFullAddress } from 'helpers/address.helper';
 import type { CustomerOrderModel } from 'models/customerOrder.model';
 import type { PopulateCustomerOrderItemIdFields } from 'models/customerOrderItem.model';
 import type { ExportOrderModel } from 'models/exportOrder.model';
@@ -41,12 +44,14 @@ export class CustomerOrderService {
       distance: 9.44,
       durationInTraffic: 4.123,
       heavyTraffic: true,
+      deliveryTime: addMinutes(new Date(), 4.123 + PREPARATION_TIME),
     };
 
     const invalidDummyInfo: EstimatedDeliveryInfo = {
       distance: 12,
       durationInTraffic: 50,
       heavyTraffic: true,
+      deliveryTime: addMinutes(new Date(), 50 + PREPARATION_TIME),
     };
 
     // const estimatedDeliveryInfo = await getEstimatedDeliveryInfo(

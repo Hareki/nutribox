@@ -8,7 +8,7 @@ import { CustomerOrderService } from './customerOrder.service';
 
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
 import { CartItemEntity } from 'backend/entities/cartItem.entity';
-import { getFullAddress } from 'backend/helpers/address.helper';
+import { getFullAddress } from 'helpers/address.helper';
 import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 

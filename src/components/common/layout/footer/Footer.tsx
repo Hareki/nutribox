@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import type { FC } from 'react';
+import { type FC, useEffect, useState } from 'react';
 
 import apiCaller from 'api-callers/stores';
 import { H3 } from 'components/abstract/Typography';
@@ -53,6 +53,17 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
     // Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: ["store","641ff62a1af60afc9423cbea"]
     initialData: initialStoreInfo ?? null,
   });
+
+  const [storeAddress, setStoreAddress] = useState('Đang tải...');
+
+  useEffect(() => {
+    if (storeInfo) {
+      getFullAddress(storeInfo).then((address) => {
+        setStoreAddress(address);
+      });
+    }
+  }, [storeInfo]);
+
   // Set the initialData will prevent isLoading from being true, need to figure out another way to determine if the it is loading or not
   return (
     <footer>
@@ -123,7 +134,7 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
                   <FlexBox gap={2} flexDirection='column'>
                     <FlexBox alignItems='center' color='grey.700' gap={1}>
                       <LocationOnIcon />
-                      <Typography>{getFullAddress(storeInfo)}</Typography>
+                      <Typography>{storeAddress}</Typography>
                     </FlexBox>
 
                     <FlexBox alignItems='center' color='grey.700' gap={1}>

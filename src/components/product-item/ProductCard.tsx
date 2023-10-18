@@ -107,18 +107,16 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   } = props;
 
   const slug = getSlug(name, id);
+  console.log('file: ProductCard.tsx:110 - id:', id);
 
-  const { cartState, updateCartAmount } = useCart();
+  const { updateCartAmount, cartItem } = useCart(id);
+  console.log('file: ProductCard.tsx:112 - cartItem:', cartItem);
   const [openModal, setOpenModal] = useState(false);
 
   const toggleDialog = useCallback(() => {
     onPreview?.();
     setOpenModal((open) => !open);
   }, [onPreview]);
-
-  const cartItem: CommonCartItem | undefined = cartState.cart.find(
-    (item) => item.product.id === id,
-  );
 
   const { inStock, disableAddToCart } = useQuantityLimitation(
     importOrders,
@@ -131,6 +129,13 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   );
 
   const handleCartAmountChange = (amount: number, type: CartItemActionType) => {
+    console.log(
+      'file: ProductCard.tsx:132 - handleCartAmountChange - amount:',
+      amount,
+    );
+    console.log('file: ProductCard.tsx:124 - cartItem:', cartItem);
+    console.log('??', cartItem?.quantity);
+
     if (type === 'add' && disableAddToCart) return;
 
     if (isNaN(amount)) amount = 1;
@@ -169,7 +174,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           <Span
             aria-disabled={disableAddToCart}
             onClick={() =>
-              handleCartAmountChange(cartItem?.quantity || 0 + 1, 'add')
+              handleCartAmountChange((cartItem?.quantity || 0) + 1, 'add')
             }
           >
             <ShoppingCartIcon />
@@ -222,7 +227,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             variant='outlined'
             sx={{ padding: '3px', borderRadius: '50%' }}
             onClick={() =>
-              handleCartAmountChange(cartItem?.quantity || 0 + 1, 'add')
+              handleCartAmountChange((cartItem?.quantity || 0) + 1, 'add')
             }
           >
             <Add fontSize='small' />

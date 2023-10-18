@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { AddressAPI } from 'api-callers/profile/addresses';
 import addressCaller from 'api-callers/profile/addresses';
+import type { AddressAPI } from 'backend/dtos/checkout.dto';
 
 type AddressValues = {
-  province: AddressAPI | null;
-  district: AddressAPI | null;
-  ward: AddressAPI | null;
+  province: AddressAPI;
+  district: AddressAPI;
+  ward: AddressAPI;
 };
 
 export function useAddressQuery(values: AddressValues) {
@@ -30,12 +30,30 @@ export function useAddressQuery(values: AddressValues) {
     enabled: hasDistrict,
   });
 
+  const convertedProvinces: AddressAPI[] =
+    provinces?.map((province) => ({
+      code: province.code.toString(),
+      name: province.name,
+    })) || ([] as AddressAPI[]);
+
+  const convertedDistricts: AddressAPI[] =
+    districts?.map((district) => ({
+      code: district.code.toString(),
+      name: district.name,
+    })) || ([] as AddressAPI[]);
+
+  const convertedWards: AddressAPI[] =
+    wards?.map((ward) => ({
+      code: ward.code.toString(),
+      name: ward.name,
+    })) || ([] as AddressAPI[]);
+
   return {
-    provinces,
+    provinces: convertedProvinces,
     isLoadingProvince,
-    districts,
+    districts: convertedDistricts,
     isLoadingDistricts,
-    wards,
+    wards: convertedWards,
     isLoadingWards,
     hasProvince,
     hasDistrict,

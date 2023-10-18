@@ -1,60 +1,98 @@
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
-import type { IAddress } from 'api/types/schema.type';
+import axios from 'axios';
 
-export const getFullAddress = (address: IAddress) => {
-  if (!address) return null;
-  const { province, district, ward, streetAddress } = address;
-  return `${streetAddress}, ${ward}, ${district}, ${province}, Việt Nam`;
-};
+import { assertNever } from './assertion.helper';
 
-export const transformAddressToFormikValue = (address: IAddress) => {
-  if (!address)
-    return {
-      province: null,
-      district: null,
-      ward: null,
-      streetAddress: '',
-    };
-  const {
-    streetAddress,
-    ward,
-    district,
-    province,
-    wardId,
-    districtId,
-    provinceId,
-  } = address;
+import type {
+  AddressType,
+  ProvinceApiElement,
+} from 'backend/helpers/address.helper';
+import type { CustomerAddressModel } from 'models/customerAddress.model';
+
+export interface IAddress {
+  streetAddress: string;
+  provinceCode: string;
+  districtCode: string;
+  wardCode: string;
+}
+
+export const transformAddressToFormikValue = async (address: IAddress) => {
+  const { streetAddress, provinceCode, districtCode, wardCode } = address;
+  const [province, district, ward] = await Promise.all([
+    getAddressName('province', provinceCode),
+    getAddressName('district', districtCode),
+    getAddressName('ward', wardCode),
+  ]);
+
   return {
-    province: { name: province, code: provinceId },
-    district: { name: district, code: districtId },
-    ward: { name: ward, code: wardId },
+    province: { name: province, code: provinceCode },
+    district: { name: district, code: districtCode },
+    ward: { name: ward, code: wardCode },
     streetAddress,
   };
 };
 
 export const transformAccountAddressToFormikValue = (
-  address: IAccountAddress,
+  address: CustomerAddressModel,
 ) => {
-  if (!address) {
-    return null;
-  }
-  const { title, ...otherInfo } = address;
+  const { type, ...otherInfo } = address;
   return {
-    title,
+    type,
     ...transformAddressToFormikValue(otherInfo),
   };
 };
 
-export const transformFormikValueToAddress = (values: any): IAddress => {
+export const transformFormikValueToAddress = (
+  values: any,
+): GetFullAddressInputs => {
   const { province, district, ward, streetAddress } = values;
-  if (!province || !district || !ward) return null;
   return {
-    province: province.name,
-    district: district.name,
-    ward: ward.name,
     streetAddress,
-    provinceId: province.code,
-    districtId: district.code,
-    wardId: ward.code,
+    provinceCode: province.code,
+    districtCode: district.code,
+    wardCode: ward.code,
   };
+};
+export const getAddressName = async <U extends AddressType>(
+  addressType: U,
+  code: string,
+) => {
+  let prefix: 'p' | 'd' | 'w' = 'p';
+  switch (addressType) {
+    case 'province':
+      prefix = 'p';
+      break;
+    case 'district':
+      prefix = 'd';
+      break;
+    case 'ward':
+      prefix = 'w';
+      break;
+    default: {
+      assertNever(addressType);
+    }
+  }
+
+  const url = `${process.env.NEXT_PUBLIC_PROVINCE_API_URL}/${prefix}/${code}`;
+
+  const { data } = await axios.get<ProvinceApiElement<U>>(url);
+  return data.name;
+};
+
+export type GetFullAddressInputs = {
+  provinceCode: string;
+  districtCode: string;
+  wardCode: string;
+  streetAddress: string;
+};
+
+export const getFullAddress = async ({
+  provinceCode,
+  districtCode,
+  wardCode,
+  streetAddress,
+}: GetFullAddressInputs) => {
+  const provinceName = await getAddressName('province', provinceCode);
+  const districtName = await getAddressName('district', districtCode);
+  const wardName = await getAddressName('ward', wardCode);
+  return `${streetAddress}, ${wardName}, ${districtName}, ${provinceName}, Việt Nam`;
 };

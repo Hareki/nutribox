@@ -1,37 +1,35 @@
 import { Grid } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import type { GetServerSideProps } from 'next';
-import { useState, Fragment } from 'react';
 import type { ReactElement } from 'react';
+import { useState, Fragment } from 'react';
 
-import { getAccount } from 'api/base/server-side-modules';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
-import type { IPopulatedCartItem } from 'api/models/Account.model/CartItem.schema/types';
-import type { IAccount } from 'api/models/Account.model/types';
-import type { IAddress } from 'api/types/schema.type';
+import type { CommonCartItem } from 'backend/services/product/helper';
 import SEO from 'components/abstract/SEO';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
+import type { IAddress } from 'helpers/address.helper';
+import type { PopulateAccountFields } from 'models/account.model';
 import CartDetails from 'pages-sections/checkout/cart-details';
 import OrderCompleted from 'pages-sections/checkout/order-completed';
 import Payment from 'pages-sections/checkout/payment';
+import { serialize } from 'utils/string.helper';
 
 Checkout.getLayout = getPageLayout;
 
 interface CheckoutProps {
-  initialAccount: IAccount;
+  initialAccount: PopulateAccountFields<'customer'>;
 }
 
 export interface Step1Data {
-  cartItems: IPopulatedCartItem[];
+  cartItems: CommonCartItem[];
   total: number;
-  note: string;
+  note?: string;
   phone: string;
   address: IAddress;
 
-  estimatedDeliveryTime: Date;
-  estimatedDistance: number;
+  deliveryTime: Date;
+  distance: number;
 }
 
 export interface Step2Data {
@@ -75,7 +73,7 @@ function Checkout({ initialAccount }: CheckoutProps): ReactElement {
 
         {selectedStep === 2 && (
           <Payment
-            step1Data={step1Data}
+            step1Data={step1Data!}
             prevStep={prevStep}
             nextStep={nextStep}
             account={initialAccount}
@@ -88,11 +86,7 @@ function Checkout({ initialAccount }: CheckoutProps): ReactElement {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult, session } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
-
+export const getServerSideProps: GetServerSideProps = async () => {
   const initialAccount = await getAccount(session.user.id);
   return { props: { initialAccount: serialize(initialAccount) } };
 };

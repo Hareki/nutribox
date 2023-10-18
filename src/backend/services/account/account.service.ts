@@ -23,33 +23,46 @@ import type {
 } from 'models/account.model';
 import type { CustomerModel } from 'models/customer.model';
 export class AccountService {
-  public static async checkCredentials<U extends UserType>(
+  public static async getAccount<U extends UserType>(
     identifier: CredentialsIdentifier,
-    password: string,
     userSide: U,
   ): Promise<AccountWithPopulatedSide<U> | null> {
     const accountRepo = await getRepo(AccountEntity);
 
-    const { email, id } = identifier;
-    const hashedPassword = hashPassword(password);
+    const { email, id, password } = identifier;
 
-    let identifierFilter: typeof identifier | undefined = undefined;
-    if (email) identifierFilter = { email: email.toLowerCase() };
-    if (id) identifierFilter = { id };
+    if (!email && !id) return null;
 
-    if (!identifierFilter) return null;
+    let query = accountRepo.createQueryBuilder('account');
+
+    if (id) {
+      query = query.where('account.id = :id', { id });
+    } else if (email) {
+      const hashedPassword = hashPassword(password);
+      query = query
+        .where('LOWER(account.email) = LOWER(:email)', { email })
+        .andWhere('account.password = :hashedPassword', { hashedPassword });
+    } else {
+      return null;
+    }
+
+    // Always join and select customer and employee
+    query = query
+      .leftJoinAndSelect('account.customer', 'customer')
+      .leftJoinAndSelect('account.employee', 'employee');
+
+    // If userSide is customer, join and select the customerAddresses and cartItems
+    if (userSide === 'customer') {
+      query = query
+        .leftJoinAndSelect('customer.customerAddresses', 'customerAddresses')
+        .leftJoinAndSelect('customer.cartItems', 'cartItems');
+    }
 
     try {
-      const account = (await accountRepo
-        .createQueryBuilder('account')
-        .where('LOWER(account.email) = LOWER(:email)', { email })
-        .andWhere('account.password = :hashedPassword', { hashedPassword })
-        .leftJoinAndSelect('account.customer', 'customer')
-        .leftJoinAndSelect('account.employee', 'employee')
-        .getOne()) as FullyPopulatedAccountModel;
+      const account = (await query.getOne()) as AccountWithPopulatedSide<U>;
 
-      const isCustomer = userSide === 'customer' && account?.customer;
-      const isEmployee = userSide === 'employee' && account?.employee;
+      const isCustomer = userSide === 'customer' && (account as any)?.customer;
+      const isEmployee = userSide === 'employee' && (account as any)?.employee;
 
       if (isCustomer || isEmployee) {
         return account;
@@ -82,11 +95,14 @@ export class AccountService {
         },
       });
 
-      return {
-        ...account,
-        customer,
-        password: '',
-      };
+      const populatedAccount = await this.getAccount(
+        {
+          id: account.id,
+        },
+        'customer',
+      );
+
+      return { ...populatedAccount!, password: '' };
     } catch (error) {
       if (isDuplicateError(error)) {
         throw new DuplicationError('email', 'Account.Email.Duplicate');

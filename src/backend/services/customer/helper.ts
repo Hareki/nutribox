@@ -1,5 +1,5 @@
 import { OrderStatus } from 'backend/enums/entities.enum';
-import type { CustomerModel } from 'models/customer.model';
+import type { CommonCustomerModel } from 'models/customer.model';
 
 export type OrderStatusCount = {
   total: number;
@@ -9,7 +9,7 @@ export type OrderStatusCount = {
   shipped: number;
 };
 
-export type DashboardInfo = CustomerModel & {
+export type DashboardInfo = CommonCustomerModel & {
   orderStatusCount: OrderStatusCount;
 };
 

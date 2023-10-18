@@ -5,13 +5,14 @@ import useCart from './global-states/useCart';
 import { getMaxProductQuantity } from 'helpers/product.helper';
 
 export function useGlobalQuantityLimitation() {
-  const { cartState } = useCart();
+  const { cartItems } = useCart();
 
   const hasOverLimitItem = useMemo(() => {
-    return cartState.cart.some(
-      (item) => item.quantity > getMaxProductQuantity(item.product.expirations),
+    return cartItems.some(
+      (item) =>
+        item.quantity > getMaxProductQuantity(item.product.importOrders),
     );
-  }, [cartState.cart]);
+  }, [cartItems]);
 
   return { hasOverLimitItem };
 }

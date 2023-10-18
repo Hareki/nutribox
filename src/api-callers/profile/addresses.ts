@@ -77,7 +77,7 @@ export const getProvinces = async (): Promise<GetProvincesResponse> => {
 
 type GetDistrictsResponse = ProvinceApiElement<'district'>[];
 export const getDistricts = async (
-  provinceId: number,
+  provinceId: string,
 ): Promise<GetDistrictsResponse> => {
   const response = await axios.get<ProvinceApiElement<'province'>>(
     `${process.env.NEXT_PUBLIC_PROVINCE_API_URL}/p/${provinceId}`,
@@ -92,7 +92,7 @@ export const getDistricts = async (
 
 type GetWardsResponse = ProvinceApiElement<'ward'>[];
 export const getWards = async (
-  districtId: number,
+  districtId: string,
 ): Promise<GetWardsResponse> => {
   const response = await axios.get<ProvinceApiElement<'district'>>(
     `${process.env.NEXT_PUBLIC_PROVINCE_API_URL}/d/${districtId}`,

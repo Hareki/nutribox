@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import type { CustomerModel } from './customer.model';
+import type {
+  CommonCustomerModel,
+  CustomerModel,
+  PopulateCustomerFields,
+} from './customer.model';
 import type { EmployeeModel } from './employee.model';
 import { zodDate, zodPassword, zodString, zodUuid } from './helper';
 
@@ -77,3 +81,7 @@ type FullyPopulatedAccountModel = PopulateAccountFields<AccountReferenceKeys>;
 
 export { AccountSchema };
 export type { AccountModel, FullyPopulatedAccountModel, PopulateAccountFields };
+
+export type CommonCustomerAccountModel = Omit<AccountModel, 'customer'> & {
+  customer: CommonCustomerModel;
+};

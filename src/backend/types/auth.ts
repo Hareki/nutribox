@@ -1,6 +1,9 @@
 import type { CustomerEntity } from 'backend/entities/customer.entity';
 import type { EmployeeEntity } from 'backend/entities/employee.entity';
-import type { FullyPopulatedAccountModel } from 'models/account.model';
+import type {
+  CommonCustomerAccountModel,
+  FullyPopulatedAccountModel,
+} from 'models/account.model';
 
 export type UserType = 'customer' | 'employee';
 export type UserEntity = typeof CustomerEntity | typeof EmployeeEntity;
@@ -11,5 +14,5 @@ export type CredentialInputs = {
 };
 
 export type AccountWithPopulatedSide<U extends UserType> = U extends 'customer'
-  ? Omit<FullyPopulatedAccountModel, 'employee'>
+  ? CommonCustomerAccountModel
   : Omit<FullyPopulatedAccountModel, 'customer'>;

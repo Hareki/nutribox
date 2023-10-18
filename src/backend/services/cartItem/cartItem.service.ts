@@ -1,14 +1,16 @@
 import { CommonService } from '../common/common.service';
+import type { CommonCartItem, CommonProductModel } from '../product/helper';
+import { CommonProductRelations } from '../product/helper';
 
 import { CartItemEntity } from 'backend/entities/cartItem.entity';
-import { getRepo } from 'backend/helpers/database.helper';
+import { ProductEntity } from 'backend/entities/product.entity';
 import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 import type { CartItemModel } from 'models/cartItem.model';
 
 export class CartItemService {
   public static async getCartItems(
     customerId: string,
-  ): Promise<CartItemModel[]> {
+  ): Promise<CommonCartItem[]> {
     const [cartItems] = await CommonService.getRecords({
       entity: CartItemEntity,
       filter: {
@@ -18,14 +20,35 @@ export class CartItemService {
       },
     });
 
-    return cartItems as CartItemModel[];
+    const commonProductIds = cartItems.map(
+      (cartItem) => cartItem.product as string,
+    );
+    const [commonProducts] = await CommonService.getRecords({
+      entity: ProductEntity,
+      whereInIds: commonProductIds,
+      relations: CommonProductRelations,
+    });
+
+    const castedCartItems = cartItems as CartItemModel[];
+    const castedCommonProducts = commonProducts as CommonProductModel[];
+
+    return castedCartItems.map((cartItem) => {
+      const commonProduct = castedCommonProducts.find(
+        (product) => product.id === cartItem.product,
+      );
+
+      return {
+        ...cartItem,
+        product: commonProduct!,
+      };
+    });
   }
 
   public static async updateCartItem(
     customerId: string,
     productId: string,
     quantity: number,
-  ): Promise<CartItemModel[]> {
+  ): Promise<CommonCartItem[]> {
     // const cartItemRepository = await getRepo(CartItemEntity);
 
     try {

@@ -8,6 +8,7 @@ import { CustomerSchema } from 'models/customer.model';
 
 export const SignUpDtoSchema = AccountSchema.pick({
   email: true,
+  password: true,
 })
   .required()
   .and(

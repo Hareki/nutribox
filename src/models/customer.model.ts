@@ -49,7 +49,7 @@ type CustomerReferenceKeys = keyof Pick<
 
 type PopulateField<K extends keyof CustomerModel> = K extends 'account'
   ? AccountModel
-  : K extends 'addresses'
+  : K extends 'customerAddresses'
   ? CustomerAddressModel[]
   : K extends 'customerOrders'
   ? CustomerOrderModel[]
@@ -67,9 +67,14 @@ type PopulateCustomerFields<K extends CustomerReferenceKeys> = Omit<
 type FullyPopulatedCustomerModel =
   PopulateCustomerFields<CustomerReferenceKeys>;
 
+type CommonCustomerModel = PopulateCustomerFields<
+  'customerAddresses' | 'cartItems'
+>;
+
 export { CustomerSchema };
 export type {
   CustomerModel,
+  CommonCustomerModel,
   FullyPopulatedCustomerModel,
   PopulateCustomerFields,
 };

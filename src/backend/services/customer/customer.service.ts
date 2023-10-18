@@ -12,7 +12,7 @@ import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
 import { getRepo } from 'backend/helpers/database.helper';
-import type { CustomerModel } from 'models/customer.model';
+import type { CommonCustomerModel, CustomerModel } from 'models/customer.model';
 
 export class CustomerService {
   private static async _getOrderStatusCount(
@@ -51,11 +51,25 @@ export class CustomerService {
     };
   }
 
+  public static async getCommonCustomer(
+    id: string,
+  ): Promise<CommonCustomerModel> {
+    const queryBuilder = (await getRepo(CustomerEntity)).createQueryBuilder(
+      'customer',
+    );
+    queryBuilder.where('account.id = :id', { id });
+    queryBuilder.leftJoinAndSelect('customer.cartItems', 'cartItems');
+    queryBuilder.leftJoinAndSelect(
+      'customer.customerAddresses',
+      'customerAddresses',
+    );
+
+    const customer = (await queryBuilder.getOne()) as CommonCustomerModel;
+    return customer;
+  }
+
   public static async getDashboardInfo(id: string): Promise<DashboardInfo> {
-    const customer = (await CommonService.getRecord({
-      entity: CustomerEntity,
-      filter: { id },
-    })) as CustomerModel;
+    const customer = await this.getCommonCustomer(id);
 
     const orderStatusCount = await this._getOrderStatusCount(id);
     return {

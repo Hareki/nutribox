@@ -33,7 +33,7 @@ export const infoDialogReducer = (
   }
 };
 
-export const initDialogState: InfoDialogState = {
+export const initInfoDialogState: InfoDialogState = {
   open: false,
   variant: 'info',
   title: '',

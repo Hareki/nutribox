@@ -10,7 +10,10 @@ import {
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { CommonService } from 'backend/services/common/common.service';
 import type { CommonArgs } from 'backend/services/common/helper';
-import type { CommonProductModel } from 'backend/services/product/helper';
+import {
+  CommonProductRelations,
+  type CommonProductModel,
+} from 'backend/services/product/helper';
 import type { JSSuccess } from 'backend/types/jsend';
 
 type SuccessResponse = JSSuccess<CommonProductModel[]>;
@@ -26,7 +29,7 @@ handler.get(async (req, res) => {
 
   const commonArgs: CommonArgs<ProductEntity> = {
     entity: ProductEntity,
-    relations: ['productImages', 'productCategory', 'importOrders'],
+    relations: CommonProductRelations,
     filter: {
       ...(category && { productCategory: { id: category } }),
     },

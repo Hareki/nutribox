@@ -2,8 +2,6 @@ import { LoadingButton } from '@mui/lab';
 import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useQuery } from '@tanstack/react-query';
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
-import type { IAccount } from 'api/models/Account.model/types';
 import { useFormik } from 'formik';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
@@ -19,66 +17,69 @@ import {
   checkTime,
 } from './confirmValidation';
 import SelectAddressDialog from './SelectAddressDialog';
-import type { CheckoutFormValues } from './yup';
 import { checkoutFormSchema, getInitialValues } from './yup';
 
 import apiCaller from 'api-callers/checkout';
-import type { AddressAPI } from 'api-callers/profile/addresses';
 import storeApiCaller from 'api-callers/stores';
+import type { CheckoutFormValues } from 'backend/dtos/checkout.dto';
+import { type EstimatedDeliveryInfo } from 'backend/helpers/address.helper';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
 import PhoneInput from 'components/common/input/PhoneInput';
 import ConfirmDialog from 'components/dialog/confirm-dialog';
-import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
+import {
+  confirmDialogReducer,
+  initConfirmDialogState,
+} from 'components/dialog/confirm-dialog/reducer';
 import InfoDialog from 'components/dialog/info-dialog';
-import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
+import {
+  infoDialogReducer,
+  initInfoDialogState,
+} from 'components/dialog/info-dialog/reducer';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import ProductCartItem from 'components/product-item/ProductCartItem';
+import { getFullAddress } from 'helpers/address.helper';
 import {
-  getFullAddress,
   transformAccountAddressToFormikValue,
   transformFormikValueToAddress,
 } from 'helpers/address.helper';
 import useCart from 'hooks/global-states/useCart';
 import { useAddressQuery } from 'hooks/useAddressQuery';
 import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
-import { calculateEndTime, formatCurrency, formatDateTime } from 'lib';
-import { PREPARATION_TIME, StoreId } from 'utils/constants';
+import { formatCurrency, formatDateTime } from 'lib';
+import type { CommonCustomerAccountModel } from 'models/account.model';
+import type { CustomerAddressModel } from 'models/customerAddress.model';
+import { StoreId } from 'utils/constants';
 
 interface CartDetailsProps {
   nextStep: (data: Step1Data, currentStep: number) => void;
-  account: IAccount;
-}
-
-interface EstimatedInfo {
-  heavyTraffic: boolean;
-  estimatedDuration: number;
-  estimatedDistance: number;
-  estimatedDeliveryTime: Date;
+  account: CommonCustomerAccountModel;
 }
 
 function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
-  const addresses = account.addresses;
+  const addresses = account.customer.customerAddresses;
 
-  const [estimated, setEstimated] = useState<EstimatedInfo>();
+  const [estimated, setEstimated] = useState<EstimatedDeliveryInfo>();
   const [currentFullAddress, setCurrentFullAddress] = useState('');
   const [isEstimating, setIsEstimating] = useState(false);
   const [selectAddressDialogOpen, setSelectAddressDialogOpen] = useState(false);
-  const { cartState } = useCart();
+  const { cartItems } = useCart();
   const { hasOverLimitItem } = useGlobalQuantityLimitation();
-  const [infoState, dispatchInfo] = useReducer(infoDialogReducer, {
-    open: false,
-  });
-  const [confirmState, dispatchConfirm] = useReducer(confirmDialogReducer, {
-    open: false,
-  });
+  const [infoState, dispatchInfo] = useReducer(
+    infoDialogReducer,
+    initInfoDialogState,
+  );
+  const [confirmState, dispatchConfirm] = useReducer(
+    confirmDialogReducer,
+    initConfirmDialogState,
+  );
 
   const { data: storeInfo, isLoading: isLoadingStoreInfo } = useQuery({
     queryKey: ['store', StoreId],
     queryFn: () => storeApiCaller.getStoreInfo(StoreId),
   });
 
-  const cartList = cartState.cart;
+  const cartList = cartItems;
 
   const total = useMemo(
     () =>
@@ -95,20 +96,10 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     if (!currentFullAddress) return;
 
     setIsEstimating(true);
-    apiCaller
-      .getCheckoutValidation(currentFullAddress, getFullAddress(storeInfo))
-      .then((deliveryInfo) => {
-        setEstimated({
-          heavyTraffic: deliveryInfo.heavyTraffic,
-
-          estimatedDuration: deliveryInfo.durationInTraffic,
-          estimatedDistance: deliveryInfo.distance,
-          estimatedDeliveryTime: calculateEndTime(
-            PREPARATION_TIME + deliveryInfo.durationInTraffic,
-          ),
-        });
-        setIsEstimating(false);
-      });
+    apiCaller.getCheckoutValidation(currentFullAddress).then((deliveryInfo) => {
+      setEstimated(deliveryInfo);
+      setIsEstimating(false);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFullAddress, isLoadingStoreInfo]);
 
@@ -120,14 +111,10 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
       return;
     }
 
-    const {
-      estimatedDistance,
-      estimatedDeliveryTime,
-      heavyTraffic: heavyInTraffic,
-    } = estimated;
+    const { deliveryTime, distance, heavyTraffic } = estimated!;
 
-    if (!checkDistance(dispatchInfo, estimatedDistance)) return;
-    if (!checkDuration(dispatchInfo, estimatedDeliveryTime)) return;
+    if (!checkDistance(dispatchInfo, distance)) return;
+    if (!checkDuration(dispatchInfo, deliveryTime)) return;
 
     const confirmContent = (
       <Fragment>
@@ -141,16 +128,14 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
           }}
         >
           <li>
-            Quãng đường: <Span fontWeight={600}>{estimatedDistance} km</Span>
+            Quãng đường: <Span fontWeight={600}>{distance} km</Span>
           </li>
           <li>
             Thời gian giao hàng dự kiến:{' '}
-            <Span fontWeight={600}>
-              {formatDateTime(estimatedDeliveryTime)}
-            </Span>
+            <Span fontWeight={600}>{formatDateTime(deliveryTime)}</Span>
           </li>
         </ul>
-        {heavyInTraffic && (
+        {heavyTraffic && (
           <Paragraph color='grey.600' fontStyle='italic' mt={2} fontSize={13}>
             Lưu ý: Thời gian giao hàng lâu hơn thông thường do tình trạng giao
             thông ùn tắc, xin quý khách thông cảm vì sự bất tiện này.
@@ -173,17 +158,21 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     showDeliveryInfoConfirmation();
   };
 
-  const handleSelectAddress = (address: IAccountAddress) => {
+  const handleSelectAddress = async (address: CustomerAddressModel) => {
     setSelectAddressDialogOpen(false);
-    const transformedAddress = transformAccountAddressToFormikValue(address);
+    const transformedAddress =
+      await transformAccountAddressToFormikValue(address);
     for (const key in transformedAddress) {
-      setFieldValue(key, transformedAddress[key]);
+      setFieldValue(
+        key,
+        transformedAddress[key as keyof typeof transformedAddress],
+      );
     }
   };
 
   const handleNextStep = () => {
     const address = transformFormikValueToAddress(values);
-    const { estimatedDeliveryTime, estimatedDistance } = estimated;
+    const { distance, deliveryTime } = estimated!;
 
     const cartItems = cartList;
     const note = values.note;
@@ -194,10 +183,10 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
         cartItems,
         note,
         phone,
-        address,
+        address: address!,
         total,
-        estimatedDeliveryTime,
-        estimatedDistance,
+        deliveryTime,
+        distance,
       },
       1,
     );
@@ -211,15 +200,24 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     handleChange,
     handleSubmit,
     setFieldValue,
+    setValues,
   } = useFormik<CheckoutFormValues>({
-    initialValues: getInitialValues(account),
+    initialValues: {} as any,
     onSubmit: handleFormSubmit,
     validationSchema: checkoutFormSchema,
   });
 
   useEffect(() => {
-    const address = transformFormikValueToAddress(values);
-    setCurrentFullAddress(getFullAddress(address));
+    getInitialValues(account).then((initialValues) => {
+      setValues(initialValues);
+    });
+  }, [account, setValues]);
+
+  useEffect(() => {
+    const addressInputs = transformFormikValueToAddress(values);
+    getFullAddress(addressInputs).then((fullAddress) => {
+      setCurrentFullAddress(fullAddress);
+    });
   }, [values, touched, errors]);
 
   const {
@@ -239,7 +237,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
         {/* CART PRODUCT LIST */}
         <Grid item md={8} xs={12}>
           {cartList.map((item) => (
-            <ProductCartItem key={item.id} {...item} />
+            <ProductCartItem key={item.product.id} {...item} />
           ))}
         </Grid>
         {/* CHECKOUT FORM */}
@@ -327,7 +325,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 options={provinces || []}
                 disabled={isLoadingProvince}
                 value={values.province}
-                getOptionLabel={(option) => (option as AddressAPI).name}
+                getOptionLabel={(option) => (option as any).name}
                 onChange={(_, value) => {
                   setFieldValue('province', value);
                   setFieldValue('district', null);
@@ -350,7 +348,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
                 options={districts || []}
                 disabled={!hasProvince || isLoadingDistricts}
                 value={values.district}
-                getOptionLabel={(option) => (option as AddressAPI).name}
+                getOptionLabel={(option) => (option as any).name}
                 onChange={(_, value) => {
                   setFieldValue('district', value);
                   setFieldValue('ward', null);
@@ -369,10 +367,10 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
               <Autocomplete
                 fullWidth
                 sx={{ mb: 3 }}
-                options={wards || []}
+                options={wards || ([] as any[])}
                 disabled={!hasDistrict || isLoadingWards}
                 value={values.ward}
-                getOptionLabel={(option) => (option as AddressAPI).name}
+                getOptionLabel={(option) => (option as any).name}
                 onChange={(_, value) => setFieldValue('ward', value)}
                 renderInput={(params) => (
                   <TextField

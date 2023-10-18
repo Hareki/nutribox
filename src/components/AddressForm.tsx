@@ -2,14 +2,14 @@ import { Autocomplete, Grid, TextField } from '@mui/material';
 import type { FormikHandlers, FormikHelpers } from 'formik';
 import { Fragment } from 'react';
 
+import type { AddressAPI } from 'backend/dtos/checkout.dto';
 import { useAddressQuery } from 'hooks/useAddressQuery';
-import type { AddressAPI } from 'api-callers/profile/addresses';
 
 type AddressFormProps = {
   values: {
-    province: AddressAPI | null;
-    district: AddressAPI | null;
-    ward: AddressAPI | null;
+    province: AddressAPI;
+    district: AddressAPI;
+    ward: AddressAPI;
     streetAddress: string;
   };
   touched: any;

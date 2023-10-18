@@ -12,7 +12,10 @@ export const CommonProductRelations: (keyof ProductEntity)[] = [
   'importOrders',
 ];
 
-export type CommonCartItem = Omit<CartItemModel, 'product'> & {
+export type CommonCartItem = Omit<
+  CartItemModel,
+  'product' | 'customer' | 'id' | 'createdAt'
+> & {
   product: CommonProductModel;
 };
 

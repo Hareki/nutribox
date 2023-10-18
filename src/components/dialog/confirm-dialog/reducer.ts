@@ -1,8 +1,9 @@
 import type { ConfirmDialogProps } from '.';
 
 export interface ConfirmDialogState
-  extends Partial<
-    Omit<ConfirmDialogProps, 'handleConfirm' | 'handleCancel' | 'isLoading'>
+  extends Omit<
+    ConfirmDialogProps,
+    'handleConfirm' | 'handleCancel' | 'isLoading'
   > {}
 
 interface OpenDialogAction {
@@ -42,4 +43,10 @@ export const confirmDialogReducer = (
     default:
       return state;
   }
+};
+
+export const initConfirmDialogState: ConfirmDialogState = {
+  open: false,
+  title: '',
+  content: '',
 };

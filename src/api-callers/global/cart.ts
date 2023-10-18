@@ -1,22 +1,21 @@
-import type { CartItemRequestBody } from '../../../../pages/api/cart/[accountId]';
-
-import type { IPopulatedCartItemsAccount } from 'api/models/Account.model/types';
-import type { CartState } from 'hooks/global-states/useCart';
+import type { CartItemDto } from 'backend/dtos/cartItem.dto';
+import type { CommonCartItem } from 'backend/services/product/helper';
 import axiosInstance from 'constants/axiosFe.constant';
+import { CART_ITEMS_API_ROUTE } from 'constants/routes.api.constant';
 
-export const updateCartItem = async (
-  accountId: string,
-  { productId, quantity }: CartItemRequestBody,
-): Promise<IPopulatedCartItemsAccount> => {
-  const response = await axiosInstance.put(`/cart/${accountId}`, {
-    productId,
+export const updateCartItem = async ({
+  product,
+  quantity,
+}: CartItemDto): Promise<CommonCartItem[]> => {
+  const response = await axiosInstance.post(CART_ITEMS_API_ROUTE, {
+    product,
     quantity,
   });
   return response.data.data;
 };
 
-export const getCartItems = async (accountId: string): Promise<CartState> => {
-  const response = await axiosInstance.get(`/cart/${accountId}`);
+export const getCartItems = async (): Promise<CommonCartItem[]> => {
+  const response = await axiosInstance.get(CART_ITEMS_API_ROUTE);
   return response.data.data;
 };
 
