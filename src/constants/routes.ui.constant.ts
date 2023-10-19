@@ -26,6 +26,14 @@ export const PublicRoutes = [
   TRANSLATION_ROUTE,
 ];
 
+export const NoAuthenticationOnlyRoutes = [
+  SIGN_UP_ROUTE,
+  SIGN_IN_ROUTE,
+  VERIFICATION_RESULT_ROUTE,
+  FORGOT_PASSWORD_ROUTE,
+  RESET_PASSWORD_ROUTE,
+];
+
 export const PROFILE_ROUTE = `${BASE_ROUTE}/profile`;
 export const ADDRESSES_ROUTE = `${PROFILE_ROUTE}/addresses`;
 export const ADDRESS_DETAIL_ROUTE = `${PROFILE_ROUTE}/addresses/:id`;

@@ -1,25 +1,36 @@
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Container, TextField, styled } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { getUserByToken } from 'api/base/server-side-modules';
-import connectToDB from 'api/database/databaseConnection';
 import { useFormik } from 'formik';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Fragment, useCallback, useReducer, useState } from 'react';
-import * as yup from 'yup';
+import { MoreThan } from 'typeorm';
 
+import mailCaller from 'api-callers/mail';
+import type { ResetPasswordFormValues } from 'backend/dtos/password/resetPassword.dto';
+import { AccountEntity } from 'backend/entities/account.entity';
+import { CommonService } from 'backend/services/common/common.service';
 import SEO from 'components/abstract/SEO';
 import { H1, Paragraph } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import InfoDialog from 'components/dialog/info-dialog';
-import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
+import {
+  infoDialogReducer,
+  initInfoDialogState,
+} from 'components/dialog/info-dialog/reducer';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import LazyImage from 'components/LazyImage';
-import { isValidPassword } from 'helpers/password.helper';
+import { SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import {
+  PasswordConfirmationSchema,
+  type FullyPopulatedAccountModel,
+} from 'models/account.model';
 import EyeToggleButton from 'pages-sections/auth/EyeToggleButton';
-import mailCaller from 'api-callers/mail';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 ChangePassword.getLayout = getPageLayout;
 
@@ -35,31 +46,32 @@ interface ChangePasswordProps {
   token: string;
 }
 
-const initialValues = { password: '', re_password: '' };
-type FormValues = typeof initialValues;
+const initialValues: ResetPasswordFormValues = {
+  password: '',
+  confirmPassword: '',
+};
 
 function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
   const router = useRouter();
   const [buttonContent, setButtonContent] = useState('Khôi phục');
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const [state, dispatch] = useReducer(infoDialogReducer, {
-    open: false,
-  });
+  const [state, dispatch] = useReducer(infoDialogReducer, initInfoDialogState);
+  const { t } = useCustomTranslation(['account']);
 
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible);
   }, []);
 
   const { mutate: resetPassword, isLoading } = useMutation<
-    string,
+    FullyPopulatedAccountModel,
     unknown,
     string
   >({
     mutationFn: (password) =>
       mailCaller.resetPassword({
-        newPassword: password,
-        token,
+        password,
+        forgotPasswordToken: token,
       }),
     onSuccess: () => {
       dispatch({
@@ -85,7 +97,7 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
     },
   });
 
-  const handleFormSubmit = async (values: FormValues) => {
+  const handleFormSubmit = async (values: ResetPasswordFormValues) => {
     console.log(values);
     console.log(token);
     setButtonContent('Đang khôi phục...');
@@ -93,9 +105,9 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
   };
 
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik<FormValues>({
+    useFormik<ResetPasswordFormValues>({
       initialValues,
-      validationSchema,
+      validationSchema: toFormikValidationSchema(PasswordConfirmationSchema),
       onSubmit: handleFormSubmit,
     });
 
@@ -125,7 +137,9 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
                   value={values.password}
                   onChange={handleChange}
                   error={Boolean(touched.password && errors.password)}
-                  helperText={touched.password && errors.password}
+                  helperText={t(
+                    (touched.password && errors.password) as string,
+                  )}
                   InputProps={{
                     endAdornment: (
                       <EyeToggleButton
@@ -141,14 +155,19 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
                     mb: 3,
                   }}
                   size='medium'
-                  name='re_password'
+                  name='confirmPassword'
                   type={passwordVisibility ? 'text' : 'password'}
                   label='Xác nhận mật khẩu mới'
                   onBlur={handleBlur}
-                  value={values.re_password}
+                  value={values.confirmPassword}
                   onChange={handleChange}
-                  error={Boolean(touched.re_password && errors.re_password)}
-                  helperText={touched.re_password && errors.re_password}
+                  error={Boolean(
+                    touched.confirmPassword && errors.confirmPassword,
+                  )}
+                  helperText={t(
+                    (touched.confirmPassword &&
+                      errors.confirmPassword) as string,
+                  )}
                   InputProps={{
                     endAdornment: (
                       <EyeToggleButton
@@ -178,7 +197,7 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
               handleClose={() => {
                 dispatch({ type: 'close_dialog' });
                 setIsRedirecting(true);
-                router.push('/login');
+                router.push(SIGN_IN_ROUTE);
               }}
               title={state.title}
               content={state.content}
@@ -209,31 +228,32 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  await connectToDB();
-  const { token } = context.query;
-  const user = await getUserByToken(token as string, 'forgotPassword');
+  const token = context.query.token as string;
+  let isValidToken = true;
+  try {
+    await CommonService.getRecord({
+      entity: AccountEntity,
+      filter: {
+        forgotPasswordToken: token,
+        forgotPasswordTokenExpiry: MoreThan(new Date()),
+      },
+      relations: ['customer', 'employee'],
+    });
+  } catch (error) {
+    isValidToken = false;
+  }
+
+  const locales = await serverSideTranslations(context.locale ?? 'vn', [
+    'account',
+  ]);
 
   return {
     props: {
-      isValidToken: !!user,
+      isValidToken,
       token: token || '',
+      ...locales,
     },
   };
 };
-
-const validationSchema = yup.object().shape({
-  password: yup
-    .string()
-    .required('Vui lòng nhập mật khẩu')
-    .test(
-      'isValidPassword',
-      'Chứa ít nhất 10 ký tự, gồm ký tự đặc biệt và số',
-      (value) => isValidPassword(value),
-    ),
-  re_password: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Xác nhận mật khẩu không khớp')
-    .required('Vui lòng nhập xác nhận mật khẩu'),
-});
 
 export default ChangePassword;

@@ -6,7 +6,10 @@ import { CommonService } from '../common/common.service';
 import { generateToken } from './helper';
 
 import { AccountEntity } from 'backend/entities/account.entity';
-import { VERIFICATION_RESULT_ROUTE } from 'constants/routes.ui.constant';
+import {
+  RESET_PASSWORD_ROUTE,
+  VERIFICATION_RESULT_ROUTE,
+} from 'constants/routes.ui.constant';
 
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -45,7 +48,7 @@ export class MailerService {
       from: process.env.MAILER_EMAIL,
       to: account.email,
       subject: 'Nutribox - Khôi phục mật khẩu',
-      text: `Vui lòng nhấp vào đường dẫn này để khôi phục mật khẩu: ${process.env.NEXT_PUBLIC_DOMAIN_URL}/reset-password?token=${token}. Nếu bạn không yêu cầu khôi phục mật khẩu, vui lòng bỏ qua email này.`,
+      text: `Vui lòng nhấp vào đường dẫn này để khôi phục mật khẩu: ${RESET_PASSWORD_ROUTE}?token=${token}. Nếu bạn không yêu cầu khôi phục mật khẩu, vui lòng bỏ qua email này.`,
     };
 
     return transporter.sendMail(mailOptions);

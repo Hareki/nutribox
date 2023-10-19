@@ -8,13 +8,16 @@ import { useSnackbar } from 'notistack';
 import { useReducer, useState } from 'react';
 import * as yup from 'yup';
 
+import mailCaller from 'api-callers/mail';
 import SEO from 'components/abstract/SEO';
 import { H1, H6 } from 'components/abstract/Typography';
 import InfoDialog from 'components/dialog/info-dialog';
-import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
+import {
+  infoDialogReducer,
+  initInfoDialogState,
+} from 'components/dialog/info-dialog/reducer';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import { getPageLayout } from 'components/layouts/PageLayout';
-import mailCaller from 'api-callers/mail';
 
 const initialValues = {
   email: '',
@@ -29,24 +32,21 @@ function ResetPassword() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  const [state, dispatch] = useReducer(infoDialogReducer, {
-    open: false,
-  });
+  const [state, dispatch] = useReducer(infoDialogReducer, initInfoDialogState);
 
   const { mutate: resetPasswordRequest, isLoading } = useMutation<
-    string,
+    undefined,
     unknown,
     string
   >({
-    mutationFn: (email) => mailCaller.forgotPassword(email),
+    mutationFn: (email) => mailCaller.forgotPassword({ email }),
     onError: (error) => {
       console.log(error);
       enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
         variant: 'error',
       });
     },
-    onSuccess: (token) => {
-      console.log(token);
+    onSuccess: () => {
       dispatch({
         type: 'open_dialog',
         payload: {

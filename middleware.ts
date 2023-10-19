@@ -5,7 +5,12 @@ import { withAuth } from 'next-auth/middleware';
 
 import type { RequestMethod } from 'backend/types/utils';
 import { API_BASE_ROUTE, PublicApiRoutes } from 'constants/routes.api.constant';
-import { NOT_FOUND_ROUTE, PublicRoutes } from 'constants/routes.ui.constant';
+import {
+  HOME_PAGE_ROUTE,
+  NOT_FOUND_ROUTE,
+  NoAuthenticationOnlyRoutes,
+  PublicRoutes,
+} from 'constants/routes.ui.constant';
 import type { Role } from 'utils/middleware.helper';
 import {
   isAuthorized,
@@ -15,12 +20,16 @@ import {
 } from 'utils/middleware.helper';
 
 const PublicRoutePatterns = PublicRoutes.map(routeToRegexPattern);
+const NoAuthenticationOnlyRoutePatterns =
+  NoAuthenticationOnlyRoutes.map(routeToRegexPattern);
 
 export default withAuth(
   async function middleware(req) {
     const { url: rawUrl, method } = req;
     const { token } = req.nextauth;
     const url = removeQueryParameters(rawUrl);
+    const hasValidToken = !!token && fromUnixTime(token.exp || 0) > new Date();
+    const employeeRole = token?.employeeRole;
 
     if (
       PublicRoutePatterns.some((pattern) => pattern.test(url)) ||
@@ -30,11 +39,16 @@ export default withAuth(
           routePair.methods.includes(method as RequestMethod),
       )
     ) {
+      if (
+        NoAuthenticationOnlyRoutePatterns.some((pattern) =>
+          pattern.test(url),
+        ) &&
+        hasValidToken
+      ) {
+        return NextResponse.redirect(HOME_PAGE_ROUTE);
+      }
       return undefined;
     }
-
-    const employeeRole = token?.employeeRole;
-    const hasValidToken = !!token && fromUnixTime(token.exp || 0) > new Date();
 
     if (hasValidToken) {
       if (
