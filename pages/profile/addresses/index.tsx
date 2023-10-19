@@ -5,40 +5,41 @@ import { useSession } from 'next-auth/react';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import addressCaller from 'api-callers/profile/addresses';
+import CircularProgressBlock from 'components/common/CiruclarProgressBlock';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
+import type { CustomerAddressModel } from 'models/customerAddress.model';
 import AddressEditor from 'pages-sections/profile/address/AddressEditor';
 import AddressViewer from 'pages-sections/profile/address/AddressViewer';
-import addressCaller from 'api-callers/profile/addresses';
 
 function Address(): ReactElement {
-  const { data: session, status } = useSession();
-  const sessionUserId = session?.user?.id;
+  const { data: session } = useSession();
+  const sessionUserId = session?.account.customer.id;
 
-  const [editingAddress, setEditingAddress] = useState<IAccountAddress>();
+  const [editingAddress, setEditingAddress] = useState<CustomerAddressModel>();
   const [isAddMode, setIsAddMode] = useState(false);
 
   const { data: addresses, isLoading } = useQuery({
     queryKey: ['addresses', sessionUserId],
-    queryFn: () => addressCaller.getAddresses(sessionUserId),
+    queryFn: () => addressCaller.getAddresses(),
   });
 
-  if (status === 'loading') return <CircularProgress />;
+  if (!sessionUserId || !addresses) return <CircularProgressBlock />;
 
   return (
     <>
       {isAddMode || editingAddress ? (
         <AddressEditor
-          accountId={sessionUserId}
+          accountId={sessionUserId!}
           setIsAddMode={setIsAddMode}
           setEditingAddress={setEditingAddress}
           isAddMode={isAddMode}
-          editingAddress={editingAddress}
+          editingAddress={editingAddress!}
         />
       ) : (
         <AddressViewer
           isLoading={isLoading}
-          accountId={sessionUserId}
+          accountId={sessionUserId!}
           setIsAddMode={setIsAddMode}
           setEditingAddress={setEditingAddress}
           addresses={addresses}

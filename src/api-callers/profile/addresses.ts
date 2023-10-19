@@ -13,55 +13,48 @@ import {
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 import { insertId } from 'utils/middleware.helper';
 
-type GetAddressesResponse = JSSuccess<CustomerAddressModel[]>;
-export const getAddresses = async (): Promise<GetAddressesResponse> => {
+export const getAddresses = async (): Promise<CustomerAddressModel[]> => {
   const response =
-    await appAxios.get<GetAddressesResponse>(ADDRESSES_API_ROUTE);
-  return response.data;
+    await appAxios.get<JSSuccess<CustomerAddressModel[]>>(ADDRESSES_API_ROUTE);
+  return response.data.data;
 };
 
-type AddAddressResponse = JSSuccess<CustomerAddressModel>;
 export const addAddress = async (
   dto: NewCustomerAddressDto,
-): Promise<AddAddressResponse> => {
-  const response = await appAxios.post<AddAddressResponse>(
+): Promise<CustomerAddressModel[]> => {
+  const response = await appAxios.post<JSSuccess<CustomerAddressModel[]>>(
     ADDRESSES_API_ROUTE,
     dto,
   );
-  return response.data;
+  return response.data.data;
 };
 
-type UpdateAddressResponse = JSSuccess<CustomerAddressModel>;
 export const updateAddress = async (
-  // TODO this should accept addressId, not accountId
   id: string,
   dto: UpdateCustomerAddressDto,
-): Promise<UpdateAddressResponse> => {
-  const response = await appAxios.put<UpdateAddressResponse>(
+): Promise<CustomerAddressModel[]> => {
+  const response = await appAxios.put<JSSuccess<CustomerAddressModel[]>>(
     insertId(ADDRESS_DETAIL_API_ROUTE, id),
     dto,
   );
-  return response.data;
+  return response.data.data;
 };
 
-type SetDefaultAddressResponse = JSSuccess<CustomerAddressModel>;
 export const setDefaultAddress = async (
-  // TODO this should accept addressId, not accountId
   id: string,
   dto: SetDefaultCustomerAddressDto,
-): Promise<SetDefaultAddressResponse> => {
-  const response = await appAxios.put<UpdateAddressResponse>(
+): Promise<CustomerAddressModel[]> => {
+  const response = await appAxios.put<JSSuccess<CustomerAddressModel[]>>(
     insertId(ADDRESS_DETAIL_API_ROUTE, id),
     dto,
   );
-  return response.data;
+  return response.data.data;
 };
 
-type DeleteAddressResponse = JSSuccess<undefined>;
 export const deleteAddress = async (
   id: string,
-): Promise<DeleteAddressResponse> => {
-  const response = await appAxios.delete(
+): Promise<CustomerAddressModel[]> => {
+  const response = await appAxios.delete<JSSuccess<CustomerAddressModel[]>>(
     insertId(ADDRESS_DETAIL_API_ROUTE, id),
   );
   return response.data.data;

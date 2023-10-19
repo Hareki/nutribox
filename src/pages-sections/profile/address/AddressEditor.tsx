@@ -5,27 +5,30 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import type { NextPage } from 'next';
 import { useSnackbar } from 'notistack';
-import * as yup from 'yup';
 
-import type { AddAddressRequestBody } from '../../../../pages/api/profile/address/[accountId]';
-
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
+import addressCaller from 'api-callers/profile/addresses';
+import {
+  CustomerAddressFormSchema,
+  type CustomerAddressFormValues,
+  type NewCustomerAddressDto,
+} from 'backend/dtos/profile/addresses/newCustomerAddress.dto';
 import AddressForm from 'components/AddressForm';
 import Card1 from 'components/common/Card1';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
-import addressCaller from 'api-callers/profile/addresses';
+import type { CustomerAddressModel } from 'models/customerAddress.model';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 type MutateAddressVariables = {
   type: 'add' | 'edit';
-  baseBody: AddAddressRequestBody;
+  baseBody: NewCustomerAddressDto;
 };
 
 type AddressEditorProps = {
   accountId: string;
-  editingAddress: IAccountAddress;
-  setEditingAddress: (info: IAccountAddress) => void;
+  editingAddress: CustomerAddressModel;
+  setEditingAddress: (info: CustomerAddressModel | undefined) => void;
   isAddMode: boolean;
   setIsAddMode: (isAddMode: boolean) => void;
 };
@@ -39,7 +42,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
 }) => {
   const goBack = () => {
     setIsAddMode(false);
-    setEditingAddress(null);
+    setEditingAddress(undefined);
   };
 
   const HEADER_LINK = (
@@ -52,32 +55,26 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     </Button>
   );
 
-  const getInitialValues = (editingAddress: IAccountAddress) => {
-    console.log(
-      'file: AddressEditor.tsx:75 - getInitialValues - editingAddress:',
-      editingAddress,
-    );
-
+  const getInitialValues = (editingAddress: CustomerAddressModel) => {
     if (editingAddress) {
       return transformAccountAddressToFormikValue(editingAddress);
     } else {
       return {
+        isDefault: false,
         title: '',
-        province: null,
-        district: null,
-        ward: null,
+        province: null as any,
+        district: null as any,
+        ward: null as any,
         streetAddress: '',
       };
     }
   };
 
-  type AddressFormValues = ReturnType<typeof getInitialValues>;
-
-  const handleFormSubmit = async (values: AddressFormValues) => {
+  const handleFormSubmit = async (values: CustomerAddressFormValues) => {
     const type = isAddMode ? 'add' : 'edit';
     let isDefault = false;
     if (isAddMode) {
-      const addresses = await addressCaller.getAddresses(accountId);
+      const addresses = await addressCaller.getAddresses();
       isDefault = addresses.length === 0;
     }
     const body = {
@@ -87,12 +84,11 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
       ward: values.ward.name,
       streetAddress: values.streetAddress,
 
-      provinceId: values.province.code,
-      districtId: values.district.code,
-      wardId: values.ward.code,
+      provinceCode: values.province.code,
+      districtCode: values.district.code,
+      wardCode: values.ward.code,
       isDefault,
     };
-    console.log('file: AddressEditor.tsx:48 - handleFormSubmit - body:', body);
 
     mutateAddress({ type, baseBody: body });
   };
@@ -105,27 +101,24 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     handleBlur,
     handleSubmit,
     setFieldValue,
-  } = useFormik<AddressFormValues>({
+  } = useFormik<CustomerAddressFormValues>({
     initialValues: getInitialValues(editingAddress),
-    validationSchema: addressSchema,
+    validationSchema: toFormikValidationSchema(CustomerAddressFormSchema),
     onSubmit: handleFormSubmit,
   });
 
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: mutateAddress, isLoading: isMutating } = useMutation<
-    IAccountAddress[],
+    CustomerAddressModel[],
     unknown,
     MutateAddressVariables
   >({
     mutationFn: ({ type, baseBody: body }) => {
       if (type === 'add') {
-        return addressCaller.addAddress(accountId, body);
+        return addressCaller.addAddress(body);
       } else {
-        return addressCaller.updateAddress(accountId, {
-          ...body,
-          id: editingAddress.id,
-        });
+        return addressCaller.updateAddress(editingAddress.id, body);
       }
     },
     onSuccess: (newAddresses) => {
@@ -187,6 +180,16 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
             type='submit'
             variant='contained'
             color='primary'
+            onClick={() =>
+              console.log(
+                'values: ',
+                values,
+                'errors: ',
+                errors,
+                'touched: ',
+                touched,
+              )
+            }
           >
             {isAddMode ? 'Thêm địa chỉ' : 'Cập nhật địa chỉ'}
           </LoadingButton>
@@ -195,22 +198,5 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     </>
   );
 };
-
-const addressSchema = yup.object().shape({
-  title: yup.string().required('Vui lòng nhập tên địa chỉ'),
-  province: yup
-    .object()
-    .typeError('Vui lòng nhập Tỉnh/Thành Phố')
-    .required('Vui lòng nhập Tỉnh/Thành Phố'),
-  district: yup
-    .object()
-    .typeError('Vui lòng nhập Quận/Huyện')
-    .required('Vui lòng nhập Quận/Huyện'),
-  ward: yup
-    .object()
-    .typeError('Vui lòng nhập Phường/Xã')
-    .required('Vui lòng nhập Phường/Xã'),
-  streetAddress: yup.string().required('Vui lòng nhập Số nhà, tên đường'),
-});
 
 export default AddressEditor;

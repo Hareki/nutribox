@@ -7,7 +7,6 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { IAccountAddress } from 'api/models/Account.model/AccountAddress.schema/types';
 import { useSnackbar } from 'notistack';
 import type { FC } from 'react';
 import { useReducer, useState } from 'react';
@@ -16,17 +15,21 @@ import addressCaller from 'api-callers/profile/addresses';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
 import ConfirmDialog from 'components/dialog/confirm-dialog';
-import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
-import { FlexRowCenter } from 'components/flex-box';
+import {
+  confirmDialogReducer,
+  initConfirmDialogState,
+} from 'components/dialog/confirm-dialog/reducer';
+import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { getFullAddress, getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddress2 } from 'helpers/address.helper';
+import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 type AddressViewerProps = {
   isLoading: boolean;
   accountId: string;
-  addresses: IAccountAddress[];
+  addresses: CustomerAddressModel[];
   setIsAddMode: (isAddMode: boolean) => void;
-  setEditingAddress: (info: IAccountAddress) => void;
+  setEditingAddress: (info: CustomerAddressModel) => void;
 };
 
 const AddressViewer: FC<AddressViewerProps> = ({
@@ -36,9 +39,10 @@ const AddressViewer: FC<AddressViewerProps> = ({
   setIsAddMode,
   setEditingAddress,
 }) => {
-  const [state, dispatch] = useReducer(confirmDialogReducer, {
-    open: false,
-  });
+  const [state, dispatch] = useReducer(
+    confirmDialogReducer,
+    initConfirmDialogState,
+  );
   const { enqueueSnackbar } = useSnackbar();
 
   const [deleteAddressId, setDeleteAddressId] = useState<string>();
@@ -46,12 +50,11 @@ const AddressViewer: FC<AddressViewerProps> = ({
   const queryClient = useQueryClient();
 
   const { mutate: deleteAddress } = useMutation<
-    IAccountAddress[],
+    CustomerAddressModel[],
     unknown,
     string
   >({
-    mutationFn: (addressId) =>
-      addressCaller.deleteAddress(accountId, { addressId }),
+    mutationFn: (addressId) => addressCaller.deleteAddress(addressId),
     onSuccess: (newAddresses) => {
       enqueueSnackbar('Xoá địa chỉ đã chọn thành công', { variant: 'success' });
       queryClient.invalidateQueries(['addresses', accountId]);
@@ -65,27 +68,29 @@ const AddressViewer: FC<AddressViewerProps> = ({
     },
   });
 
-  const { mutate: setDefaultAddress } = useMutation<
-    IAccountAddress[],
-    unknown,
-    string
-  >({
-    mutationFn: (addressId) =>
-      addressCaller.setDefaultAddress(accountId, addressId),
-    onSuccess: (newAddresses) => {
-      enqueueSnackbar('Đặt làm địa chỉ mặc định thành công', {
-        variant: 'success',
-      });
-      queryClient.invalidateQueries(['addresses', accountId]);
-      queryClient.setQueryData(['addresses', accountId], newAddresses);
-    },
-    onError: (err) => {
-      console.log(err);
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-        variant: 'error',
-      });
-    },
-  });
+  const { mutate: setDefaultAddress, isLoading: isSettingDefault } =
+    useMutation<CustomerAddressModel[], unknown, CustomerAddressModel>({
+      mutationFn: ({ id, ...address }) =>
+        addressCaller.setDefaultAddress(id, {
+          ...address,
+          isDefault: true,
+        }),
+      onSuccess: (newAddresses) => {
+        enqueueSnackbar('Đặt làm địa chỉ mặc định thành công', {
+          variant: 'success',
+        });
+        queryClient.invalidateQueries(['addresses', accountId]);
+        queryClient.setQueryData(['addresses', accountId], newAddresses);
+        console.log('file: AddressViewer.tsx:86 - accountId:', accountId);
+        console.log('file: AddressViewer.tsx:88 - newAddresses:', newAddresses);
+      },
+      onError: (err) => {
+        console.log(err);
+        enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+          variant: 'error',
+        });
+      },
+    });
 
   const HEADER_BUTTON = (
     <Button
@@ -97,9 +102,9 @@ const AddressViewer: FC<AddressViewerProps> = ({
     </Button>
   );
 
-  const handleSetDefaultAddressRequest = (address: IAccountAddress) => {
+  const handleSetDefaultAddressRequest = (address: CustomerAddressModel) => {
     if (address.isDefault) return;
-    setDefaultAddress(address.id);
+    setDefaultAddress(address);
   };
 
   const handleAddressDeleteRequest = (id: string) => {
@@ -135,31 +140,37 @@ const AddressViewer: FC<AddressViewerProps> = ({
             </Typography>
 
             <Typography whiteSpace='pre' textAlign='center' color='grey.600'>
-              <IconButton
-                color={address.isDefault ? 'primary' : 'inherit'}
-                onClick={() => {
-                  handleSetDefaultAddressRequest(address);
-                }}
-              >
-                <LocalShippingIcon fontSize='small' color='inherit' />
-              </IconButton>
+              <FlexBox alignItems='center' justifyContent='flex-end'>
+                {isSettingDefault ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <IconButton
+                    color={address.isDefault ? 'primary' : 'inherit'}
+                    onClick={() => {
+                      handleSetDefaultAddressRequest(address);
+                    }}
+                  >
+                    <LocalShippingIcon fontSize='small' color='inherit' />
+                  </IconButton>
+                )}
 
-              <IconButton
-                onClick={() => {
-                  setEditingAddress(address);
-                }}
-              >
-                <Edit fontSize='small' color='inherit' />
-              </IconButton>
+                <IconButton
+                  onClick={() => {
+                    setEditingAddress(address);
+                  }}
+                >
+                  <Edit fontSize='small' color='inherit' />
+                </IconButton>
 
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddressDeleteRequest(address.id);
-                }}
-              >
-                <Delete fontSize='small' color='inherit' />
-              </IconButton>
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddressDeleteRequest(address.id);
+                  }}
+                >
+                  <Delete fontSize='small' color='inherit' />
+                </IconButton>
+              </FlexBox>
             </Typography>
           </TableRow>
         ))
@@ -173,7 +184,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
         open={state.open}
         handleConfirm={() => {
           console.log('confirm');
-          deleteAddress(deleteAddressId);
+          deleteAddress(deleteAddressId!);
           dispatch({ type: 'confirm_dialog' });
         }}
         handleCancel={() => {

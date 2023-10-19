@@ -11,7 +11,7 @@ import { CustomerAddressService } from 'backend/services/customerAddress/custome
 import type { JSSuccess } from 'backend/types/jsend';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
-type SuccessResponse = JSSuccess<CustomerAddressModel[] | CustomerAddressModel>;
+type SuccessResponse = JSSuccess<CustomerAddressModel[]>;
 
 const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
   DEFAULT_NC_CONFIGS,
@@ -36,13 +36,14 @@ handler
 
       const dto = req.body as NewCustomerAddressDto;
 
-      const address = await CustomerAddressService.addAddress(
-        account.customer.id,
-        dto,
+      await CustomerAddressService.addAddress(account.customer.id, dto);
+
+      const data = await CustomerAddressService.getAddresses(
+        account?.customer.id || '',
       );
       res.status(StatusCodes.CREATED).json({
         status: 'success',
-        data: address,
+        data,
       });
     },
   );

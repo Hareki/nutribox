@@ -3,8 +3,6 @@ import { z } from 'zod';
 import type { CustomerModel } from './customer.model';
 import { zodDate, zodNumber, zodString, zodUuid } from './helper';
 
-import { CustomerAddressType } from 'backend/enums/entities.enum';
-
 const CustomerAddressSchema = z.object({
   id: zodUuid('CustomerAddress.Id'),
 
@@ -30,9 +28,7 @@ const CustomerAddressSchema = z.object({
     required_error: 'CustomerAddress.IsDefault.Required',
   }),
 
-  type: z.nativeEnum(CustomerAddressType, {
-    required_error: 'CustomerAddress.Type.Required',
-  }),
+  title: zodString('CustomerAddress.Title', 1, 50),
 });
 
 type CustomerAddressModel = z.infer<typeof CustomerAddressSchema>;

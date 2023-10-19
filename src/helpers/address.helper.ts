@@ -42,9 +42,10 @@ export const transformAddressToFormikValue = (address: IAddress) => {
 export const transformAccountAddressToFormikValue = (
   address: CustomerAddressModel,
 ) => {
-  const { type, ...otherInfo } = address;
+  const { title, ...otherInfo } = address;
   return {
-    type,
+    title,
+    isDefault: address.isDefault,
     ...transformAddressToFormikValue(otherInfo),
   };
 };

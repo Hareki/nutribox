@@ -40,13 +40,13 @@ export const getSlug = (name = '', id = '') => {
   return removeAccents(transformedName) + '-' + id;
 };
 
-export const getAddressTypeLabel = (type: CustomerAddressType) => {
-  switch (type) {
-    case CustomerAddressType.HOME:
-      return 'Nhà riêng';
-    case CustomerAddressType.OFFICE:
-      return 'Cơ quan';
-    default:
-      return '';
-  }
-};
+// export const getAddressTypeLabel = (type: CustomerAddressType) => {
+//   switch (type) {
+//     case CustomerAddressType.HOME:
+//       return 'Nhà riêng';
+//     case CustomerAddressType.OFFICE:
+//       return 'Cơ quan';
+//     default:
+//       return '';
+//   }
+// };

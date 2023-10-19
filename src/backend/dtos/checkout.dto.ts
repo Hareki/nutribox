@@ -29,13 +29,7 @@ export type AddressAPI = {
   name: string;
 };
 
-export const CheckoutFormSchema = BaseValidation.omit({
-  phone: true,
-  provinceCode: true,
-  districtCode: true,
-  wardCode: true,
-}).extend({
-  phone: zodPhone('CustomerOrder.Phone'),
+export const BaseAddressSchema = z.object({
   province: z.object(
     {
       code: CustomerOrderSchema.shape.provinceCode,
@@ -67,6 +61,17 @@ export const CheckoutFormSchema = BaseValidation.omit({
     },
   ),
 });
+
+export const CheckoutFormSchema = BaseValidation.omit({
+  phone: true,
+  provinceCode: true,
+  districtCode: true,
+  wardCode: true,
+})
+  .extend({
+    phone: zodPhone('CustomerOrder.Phone'),
+  })
+  .and(BaseAddressSchema);
 
 export type CheckoutFormValues = z.infer<typeof CheckoutFormSchema>;
 

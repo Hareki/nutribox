@@ -7,10 +7,16 @@ import { useSession } from 'next-auth/react';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
+import menuCountCaller from 'api-callers/profile/menu-count';
 import { FlexBox } from 'components/flex-box';
 import type { NavLinkProps } from 'components/nav-link/NavLink';
 import NavLink from 'components/nav-link/NavLink';
-import menuCountCaller from 'api-callers/profile/menu-count';
+import {
+  ADDRESSES_ROUTE,
+  ORDERS_ROUTE,
+  PROFILE_ROUTE,
+} from 'constants/routes.ui.constant';
+import { shortenUrl } from 'utils/middleware.helper';
 
 // custom styled components
 const MainContainer = styled(Card)(({ theme }) => ({
@@ -48,12 +54,12 @@ const StyledNavLink = styled<FC<StyledNavLinkProps & NavLinkProps>>(
 
 const Navigations = () => {
   const { pathname } = useRouter();
-  console.log('file: Navigations.tsx:51 - Navigations - pathname:', pathname);
+  console.log('file: Navigations.tsx:56 - Navigations - pathname:', pathname);
   const { data: session, status } = useSession();
 
   const { data: count } = useQuery({
-    queryKey: ['count', session?.user?.id],
-    queryFn: () => menuCountCaller.countAddressAndOrder(session.user.id),
+    queryKey: ['count', session?.account.customer.id],
+    queryFn: () => menuCountCaller.countAddressAndOrder(),
     enabled: status === 'authenticated' && !!session,
   });
 
@@ -73,8 +79,8 @@ const Navigations = () => {
                 key={item.title}
                 // FIXME shouldn't be hard coded the [id] path
                 isCurrentPath={
-                  pathname.endsWith(`${item.href}/[id]`) ||
-                  pathname.endsWith(`${item.href}`)
+                  pathname.endsWith(`${shortenUrl(item.href)}/[id]`) ||
+                  pathname.endsWith(`${shortenUrl(item.href)}`)
                 }
               >
                 <FlexBox alignItems='center' gap={1}>
@@ -103,10 +109,10 @@ const linkList = [
   {
     title: 'QUẢN LÝ TÀI KHOẢN',
     list: [
-      { href: '/profile', title: 'Hồ sơ của tôi', icon: Person },
-      { href: '/profile/address', title: 'Địa chỉ', icon: Place },
+      { href: PROFILE_ROUTE, title: 'Hồ sơ của tôi', icon: Person },
+      { href: ADDRESSES_ROUTE, title: 'Địa chỉ', icon: Place },
       {
-        href: '/profile/order',
+        href: ORDERS_ROUTE,
         title: 'Đơn hàng',
         icon: ShoppingBag,
       },

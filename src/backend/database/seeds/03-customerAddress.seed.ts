@@ -2,7 +2,6 @@ import type { Connection } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 
 import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
-import { CustomerAddressType } from 'backend/enums/entities.enum';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 export type AddressNameKeys = 'provinceName' | 'districtName' | 'wardName';
@@ -27,7 +26,7 @@ const customerAddressSeeds: CustomerAddressSeed[] = [
     districtCode: 769,
     wardCode: 26812,
     streetAddress: '12/12 Đường 49',
-    type: CustomerAddressType.HOME,
+    title: 'Nhà riêng',
   },
   {
     id: '8436bf71-a247-5552-85b4-165e12c0b979',
@@ -39,7 +38,7 @@ const customerAddressSeeds: CustomerAddressSeed[] = [
     districtCode: 760,
     wardCode: 26734,
     streetAddress: '227 Trần Quang Khải',
-    type: CustomerAddressType.OFFICE,
+    title: 'Cơ quan',
   },
 ];
 

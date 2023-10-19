@@ -16,5 +16,5 @@
   "CustomerAddress.StreetAddress.Min": "Vui lòng nhập Địa chỉ đường.",
   "CustomerAddress.StreetAddress.Max": "Địa chỉ đường không được vượt quá 500 ký tự.",
   "CustomerAddress.IsDefault.Required": "Vui lòng nhập trạng thái Mặc định.",
-  "CustomerAddress.Type.Required": "Vui lòng nhập Loại địa chỉ."
+  "CustomerAddress.Type.Required": "Vui lòng nhập Tên địa chỉ."
 }

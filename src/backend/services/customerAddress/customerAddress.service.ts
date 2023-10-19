@@ -79,7 +79,7 @@ export class CustomerAddressService {
     })) as CustomerAddressModel;
 
     if (address.isDefault) {
-      this._setOtherAddressesAsNotDefault(address.id, customerId);
+      await this._setOtherAddressesAsNotDefault(address.id, customerId);
     }
 
     return address;
@@ -102,9 +102,9 @@ export class CustomerAddressService {
     )) as CustomerAddressModel;
 
     if (wasDefault && !address.isDefault) {
-      this._setFirstAddressAsDefault(id, customerId);
+      await this._setFirstAddressAsDefault(id, customerId);
     } else if (!wasDefault && address.isDefault) {
-      this._setOtherAddressesAsNotDefault(id, customerId);
+      await this._setOtherAddressesAsNotDefault(id, customerId);
     }
 
     return address;
@@ -120,7 +120,7 @@ export class CustomerAddressService {
     });
 
     if (address.isDefault) {
-      this._setFirstAddressAsDefault(id, customerId);
+      await this._setFirstAddressAsDefault(id, customerId);
     }
 
     await CommonService.deleteRecord(CustomerAddressEntity, id);
