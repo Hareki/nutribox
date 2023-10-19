@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DATE_REGEX } from 'constants/regex.constant';
+import { DATE_REGEX, MASK_PHONE_REGEX } from 'constants/regex.constant';
 export type RefinementParameters<T> = [
   (data: T) => boolean,
   { message: string; path: string[] },
@@ -123,3 +123,12 @@ export const zodPassword = (prefix: string) =>
       message: `${prefix}.InvalidFormat`,
     },
   );
+
+export const zodPhone = (prefix: string) =>
+  zodString('prefix', 1, 50)
+    .regex(MASK_PHONE_REGEX, {
+      message: `${prefix}.InvalidFormat`,
+    })
+    .transform((value) => {
+      return value.replace(/-/g, '');
+    });

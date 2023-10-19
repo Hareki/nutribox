@@ -1,16 +1,16 @@
 import { Button, Container, styled } from '@mui/material';
-import { verifyAccount } from 'api/base/server-side-modules';
-import connectToDB from 'api/database/databaseConnection';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 
+import { AccountService } from 'backend/services/account/account.service';
 import SEO from 'components/abstract/SEO';
 import { H1, Paragraph } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBox } from 'components/flex-box';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import LazyImage from 'components/LazyImage';
+import { SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
 
 const Wrapper = styled(BazaarCard)({
   margin: 'auto',
@@ -27,17 +27,17 @@ const StyledButton = styled(Button)({
 VerificationResult.getLayout = getPageLayout;
 
 interface VerificationProps {
-  success: boolean;
+  verified: boolean;
 }
 
-function VerificationResult({ success }: VerificationProps) {
+function VerificationResult({ verified }: VerificationProps) {
   const router = useRouter();
   const [buttonContent, setButtonContent] = useState('Tới trang đăng nhập');
   const [isRedirecting, setRedirecting] = useState(false);
 
   return (
     <Fragment>
-      <SEO title={success ? 'Xác thực thành công' : 'Xác thực thất bại'} />
+      <SEO title={verified ? 'Xác thực thành công' : 'Xác thực thất bại'} />
 
       <Container sx={{ mt: 6, mb: 20 }}>
         <Wrapper>
@@ -46,29 +46,29 @@ function VerificationResult({ success }: VerificationProps) {
             height={116}
             alt='complete'
             src={
-              success
+              verified
                 ? '/assets/images/illustrations/party-popper.svg'
                 : '/assets/images/logos/shopping-bag.svg'
             }
           />
           <H1 lineHeight={1.1} mt='1.5rem'>
-            {success ? 'Xác thực thành công' : 'Xác thực thất bại'}
+            {verified ? 'Xác thực thành công' : 'Xác thực thất bại'}
           </H1>
 
           <Paragraph color='grey.800' mt='0.3rem'>
-            {success
+            {verified
               ? 'Bạn giờ có thể đăng nhập vào tài khoản đã đăng ký'
               : 'Đường dẫn đã hết hạn hoặc không tồn tại'}
           </Paragraph>
 
-          {success && (
+          {verified && (
             <FlexBox gap={2} justifyContent='center'>
               <StyledButton
                 disabled={isRedirecting}
                 onClick={() => {
                   setButtonContent('Đang chuyển hướng...');
                   setRedirecting(true);
-                  router.replace('/login');
+                  router.replace(SIGN_IN_ROUTE);
                 }}
                 color='primary'
                 disableElevation
@@ -86,12 +86,17 @@ function VerificationResult({ success }: VerificationProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  await connectToDB();
-  const { token } = context.query;
-  const success = await verifyAccount(token as string);
+  let verified = true;
+  const token = context.query.token as string;
+  try {
+    await AccountService.verifyEmail(token);
+  } catch (error) {
+    verified = false;
+  }
+
   return {
     props: {
-      success,
+      verified,
     },
   };
 };

@@ -140,6 +140,7 @@ export class AccountService {
         password: '',
       } as FullyPopulatedAccountModel;
     } catch (error) {
+      console.log('failed:', error);
       if (isEntityNotFoundError(error)) {
         throw new BadRequestError(
           'verificationToken',

@@ -1,9 +1,8 @@
 import { z } from 'zod';
 
-import { MASK_PHONE_REGEX } from 'constants/regex.constant';
 import { CustomerSchema } from 'models/customer.model';
 import { CustomerOrderSchema } from 'models/customerOrder.model';
-import { zodString } from 'models/helper';
+import { zodPhone } from 'models/helper';
 
 const BaseValidation = CustomerOrderSchema.pick({
   phone: true,
@@ -36,9 +35,7 @@ export const CheckoutFormSchema = BaseValidation.omit({
   districtCode: true,
   wardCode: true,
 }).extend({
-  phone: zodString('CustomerOrder.Phone', 1, 50).regex(MASK_PHONE_REGEX, {
-    message: 'CustomerOrder.Phone.InvalidFormat',
-  }),
+  phone: zodPhone('CustomerOrder.Phone'),
   province: z.object(
     {
       code: CustomerOrderSchema.shape.provinceCode,

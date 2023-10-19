@@ -2,20 +2,32 @@ import crypto from 'crypto-js';
 import type { ValueTransformer } from 'typeorm';
 
 export class StringEncryptionTransformer implements ValueTransformer {
+  private static readonly IV = crypto.enc.Hex.parse(process.env.CRYPTOJS_IV!); // Example IV
+
   // Upon insertion.
   to(value: string | null): string | null {
     if (value === null) return null;
 
-    const secretKey = process.env.CRYPTOJS_SECRET!;
-    return crypto.AES.encrypt(value, secretKey).toString();
+    const secretKey = crypto.enc.Utf8.parse(process.env.CRYPTOJS_SECRET!);
+    const encrypted = crypto.AES.encrypt(value, secretKey, {
+      iv: StringEncryptionTransformer.IV,
+      mode: crypto.mode.CBC,
+      padding: crypto.pad.Pkcs7,
+    });
+    return encrypted.toString();
   }
 
   // Upon extraction.
   from(value: string | null): string | null {
     if (value === null) return null;
 
-    const secretKey = process.env.CRYPTOJS_SECRET!;
-    return crypto.AES.decrypt(value, secretKey).toString(crypto.enc.Utf8);
+    const secretKey = crypto.enc.Utf8.parse(process.env.CRYPTOJS_SECRET!);
+    const decrypted = crypto.AES.decrypt(value, secretKey, {
+      iv: StringEncryptionTransformer.IV,
+      mode: crypto.mode.CBC,
+      padding: crypto.pad.Pkcs7,
+    });
+    return decrypted.toString(crypto.enc.Utf8);
   }
 }
 

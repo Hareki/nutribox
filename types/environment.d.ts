@@ -15,6 +15,7 @@ declare global {
       NEXTAUTH_SECRET: string;
 
       CRYPTOJS_SECRET: string;
+      CRYPTOJS_IV: string;
 
       NEXT_PUBLIC_IK_ENDPOINT_URL: string;
       NEXT_PUBLIC_IK_PUBLIC_KEY: string;

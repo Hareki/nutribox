@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
-import { zodDate, zodNumber, zodString, zodUuid } from './helper';
+import { zodDate, zodNumber, zodPhone, zodString, zodUuid } from './helper';
 import type { ImportOrderModel } from './importOder.model';
-
-import { PHONE_REGEX } from 'constants/regex.constant';
 
 const SupplierSchema = z.object({
   id: zodUuid('Supplier.Id'),
@@ -14,9 +12,7 @@ const SupplierSchema = z.object({
 
   name: zodString('Supplier.Name', 3, 50),
 
-  phone: zodString('Supplier.Phone').regex(PHONE_REGEX, {
-    message: 'Supplier.Phone.InvalidFormat',
-  }),
+  phone: zodPhone('Supplier.Phone'),
 
   email: zodString('Supplier.Email').email({
     message: 'Supplier.Email.InvalidFormat',

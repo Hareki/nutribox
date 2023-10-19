@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 import type { AccountModel } from './account.model';
-import { zodDate, zodString, zodUuid } from './helper';
+import { zodDate, zodPhone, zodString, zodUuid } from './helper';
 import type { ReviewResponseModel } from './reviewResponse.model';
 
 import { EmployeeRole } from 'backend/enums/entities.enum';
-import { NAME_REGEX, PHONE_REGEX, PID_REGEX } from 'constants/regex.constant';
+import { NAME_REGEX, PID_REGEX } from 'constants/regex.constant';
 
 const EmployeeSchema = z.object({
   id: zodUuid('Employee.Id'),
@@ -36,9 +36,7 @@ const EmployeeSchema = z.object({
     message: 'Employee.Email.InvalidFormat',
   }),
 
-  phone: zodString('Employee.Phone').regex(PHONE_REGEX, {
-    message: 'Employee.Phone.InvalidFormat',
-  }),
+  phone: zodPhone('Employee.Phone'),
 
   birthday: zodDate('Employee.Birthday'),
 });

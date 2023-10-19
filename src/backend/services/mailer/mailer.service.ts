@@ -6,6 +6,7 @@ import { CommonService } from '../common/common.service';
 import { generateToken } from './helper';
 
 import { AccountEntity } from 'backend/entities/account.entity';
+import { VERIFICATION_RESULT_ROUTE } from 'constants/routes.ui.constant';
 
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -62,7 +63,7 @@ export class MailerService {
       from: process.env.MAILER_EMAIL,
       to: account.email,
       subject: 'Nutribox - Xác nhận tài khoản',
-      text: `Vui lòng nhấp vào đường dẫn này để xác nhận tài khoản: ${process.env.NEXT_PUBLIC_DOMAIN_URL}/verify-email?token=${token}. Nếu bạn không yêu cầu xác nhận tài khoản, vui lòng bỏ qua email này.`,
+      text: `Vui lòng nhấp vào đường dẫn này để xác nhận tài khoản: ${VERIFICATION_RESULT_ROUTE}?token=${token}. Nếu bạn không yêu cầu xác nhận tài khoản, vui lòng bỏ qua email này.`,
     };
 
     return transporter.sendMail(mailOptions);

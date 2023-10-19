@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
-import { zodDate, zodNumber, zodString, zodUuid } from './helper';
+import { zodDate, zodNumber, zodPhone, zodString, zodUuid } from './helper';
 import type { StoreWorkTimeModel } from './storeWorkTime.model';
-
-import { PHONE_REGEX } from 'constants/regex.constant';
 
 const StoreSchema = z.object({
   id: zodUuid('Store.Id'),
@@ -16,9 +14,7 @@ const StoreSchema = z.object({
     message: 'Store.Email.InvalidFormat',
   }),
 
-  phone: zodString('Store.Phone').regex(PHONE_REGEX, {
-    message: 'Store.Phone.InvalidFormat',
-  }),
+  phone: zodPhone('Store.Phone'),
 
   provinceCode: zodNumber('CustomerAddress.ProvinceCode', 'int', 1, 10_000),
 

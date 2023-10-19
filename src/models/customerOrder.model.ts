@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import type { AccountModel } from './account.model';
 import type { CustomerModel } from './customer.model';
-import { zodDate, zodNumber, zodString, zodUuid } from './helper';
+import { zodDate, zodNumber, zodPhone, zodString, zodUuid } from './helper';
 
 import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum'; // Assuming enums are defined somewhere
 import { PHONE_REGEX } from 'constants/regex.constant';
@@ -20,9 +20,7 @@ const CustomerOrderSchema = z.object({
     required_error: 'CustomerOrder.Status.Required',
   }),
 
-  phone: zodString('CustomerOrder.Phone').regex(PHONE_REGEX, {
-    message: 'CustomerOrder.Phone.InvalidFormat',
-  }),
+  phone: zodPhone('CustomerOrder.Phone'),
 
   paidOnlineVia: z.nativeEnum(PaymentMethod).optional(),
 
