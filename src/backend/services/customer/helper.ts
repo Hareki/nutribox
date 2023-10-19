@@ -7,6 +7,7 @@ export type OrderStatusCount = {
   processing: number;
   shipping: number;
   shipped: number;
+  cancelled: number;
 };
 
 export type DashboardInfo = CommonCustomerModel & {

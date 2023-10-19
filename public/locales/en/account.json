@@ -25,5 +25,6 @@
   "Account.ForgotPasswordToken.Min": "Forgot Password Token must be at least 1 character.",
   "Account.ForgotPasswordToken.Max": "Forgot Password Token must not exceed 500 characters.",
   "Account.ForgotPasswordTokenExpiry.InvalidFormat": "Invalid expiry date format for Forgot Password Token.",
-  "Account.Credentials.Invalid": "Wrong email or password."
+  "Account.Credentials.Invalid": "Wrong email or password.",
+  "Account.OldPassword.Same": "Old password and new password must be different"
 }

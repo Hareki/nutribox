@@ -39,6 +39,8 @@ const EmployeeSchema = z.object({
   phone: zodPhone('Employee.Phone'),
 
   birthday: zodDate('Employee.Birthday'),
+
+  avatarUrl: zodString('Account.AvatarUrl', 0, 500).optional(),
 });
 
 type EmployeeModel = z.infer<typeof EmployeeSchema>;

@@ -88,7 +88,7 @@ function formatNumber(num: number) {
 }
 
 // FIXME inconsistent input type, should be date object
-function formatDate(date: string) {
+function formatDate(date: DateLike) {
   const realDate = new Date(date);
   const formatter = new Intl.DateTimeFormat('vi-VN', {
     day: '2-digit',

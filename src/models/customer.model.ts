@@ -36,6 +36,8 @@ const CustomerSchema = z.object({
   phone: zodPhone('Customer.Phone'),
 
   birthday: zodDate('Customer.Birthday'),
+
+  avatarUrl: zodString('Account.AvatarUrl', 0, 500).optional(),
 });
 
 type CustomerModel = z.infer<typeof CustomerSchema>;

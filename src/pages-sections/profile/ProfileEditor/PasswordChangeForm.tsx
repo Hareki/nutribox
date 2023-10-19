@@ -5,35 +5,35 @@ import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import { Fragment, useState } from 'react';
-import * as yup from 'yup';
 
-import type { IAccount } from 'api/models/Account.model/types';
+import profileCaller from 'api-callers/profile';
+import {
+  ChangePasswordFormValueSchema,
+  type ChangePasswordFormValues,
+} from 'backend/dtos/password/changePassword.dto';
 import { H5 } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
-import { isValidPassword } from 'helpers/password.helper';
+import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
+import type { FullyPopulatedAccountModel } from 'models/account.model';
 import EyeToggleButton from 'pages-sections/auth/EyeToggleButton';
-import profileCaller from 'api-callers/profile';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
-const initialValues = {
+const initialValues: ChangePasswordFormValues = {
   oldPassword: '',
-  newPassword: '',
-  confirmNewPassword: '',
+  password: '',
+  confirmPassword: '',
 };
 
-type FormValues = typeof initialValues;
-
-interface PasswordChangeFormProps {
-  account: IAccount;
-  toggleEditing: () => void;
-}
-const PasswordChangeForm = ({
-  account,
-  toggleEditing,
-}: PasswordChangeFormProps) => {
+const PasswordChangeForm = () => {
   const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const { errorDialog: ErrorDialog, dispatchErrorDialog } =
+    useServerSideErrorDialog({
+      namespaces: ['customer', 'account'],
+      title: 'Đổi mật khẩu thất bại',
+    });
 
   const togglePasswordVisibility = (type: 'old' | 'new') => {
     if (type === 'old') {
@@ -44,13 +44,14 @@ const PasswordChangeForm = ({
   };
 
   const { mutate: changePassword, isLoading: isChangingPassword } = useMutation<
-    IAccount,
-    unknown,
-    void
+    FullyPopulatedAccountModel,
+    Record<string, string>,
+    ChangePasswordFormValues
   >({
-    mutationFn: () =>
-      profileCaller.updateAccount(account.id, {
-        password: values.newPassword,
+    mutationFn: (values) =>
+      profileCaller.changePassword({
+        oldPassword: values.oldPassword,
+        newPassword: values.password,
       }),
     onSuccess: () => {
       setIsEditing(false);
@@ -59,61 +60,26 @@ const PasswordChangeForm = ({
       });
       resetForm();
     },
-    onError: (err) => {
-      console.log(err);
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-        variant: 'error',
-      });
+    onError: (error) => {
+      dispatchErrorDialog(error);
     },
   });
 
-  const { mutate: checkPassword, isLoading: isCheckingPassword } = useMutation<
-    boolean,
-    unknown,
-    void
-  >({
-    mutationFn: () =>
-      profileCaller.checkOldPassword(account.id, values.oldPassword),
-    onSuccess: (isOldPasswordValid) => {
-      if (!isOldPasswordValid) {
-        errors.oldPassword = 'Mật khẩu cũ không đúng';
-        return;
-      }
-
-      if (values.newPassword === values.oldPassword) {
-        enqueueSnackbar('Mật khẩu mới không được trùng với mật khẩu cũ', {
-          variant: 'error',
-        });
-        return;
-      }
-
-      changePassword();
-    },
-    onError: (err) => {
-      console.log(err);
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-        variant: 'error',
-      });
-    },
-  });
-
-  const handleFormSubmit = (values: FormValues) => {
-    console.log(values);
-    checkPassword();
+  const handleFormSubmit = (values: ChangePasswordFormValues) => {
+    changePassword(values);
   };
 
   const {
     resetForm,
     values,
-    setFieldValue,
     errors,
     touched,
     handleChange,
     handleBlur,
     handleSubmit,
-  } = useFormik<FormValues>({
+  } = useFormik<ChangePasswordFormValues>({
     initialValues,
-    validationSchema,
+    validationSchema: toFormikValidationSchema(ChangePasswordFormValueSchema),
     onSubmit: handleFormSubmit,
   });
 
@@ -151,17 +117,17 @@ const PasswordChangeForm = ({
             <TextField
               disabled={!isEditing}
               fullWidth
-              name='newPassword'
+              name='password'
               size='small'
               type={newPasswordVisible ? 'text' : 'password'}
               label='Mật khẩu mới'
               variant='outlined'
               onBlur={handleBlur}
-              value={values.newPassword}
+              value={values.password}
               onChange={handleChange}
               // placeholder='********'
-              error={!!touched.newPassword && !!errors.newPassword}
-              helperText={(touched.newPassword && errors.newPassword) as string}
+              error={!!touched.password && !!errors.password}
+              helperText={(touched.password && errors.password) as string}
               InputProps={{
                 endAdornment: (
                   <EyeToggleButton
@@ -177,21 +143,18 @@ const PasswordChangeForm = ({
             <TextField
               disabled={!isEditing}
               fullWidth
-              name='confirmNewPassword'
+              name='confirmPassword'
               size='small'
               type={newPasswordVisible ? 'text' : 'password'}
               label='Xác nhận mật khẩu mới'
               variant='outlined'
               onBlur={handleBlur}
-              value={values.confirmNewPassword}
+              value={values.confirmPassword}
               onChange={handleChange}
               // placeholder='********'
-              error={
-                !!touched.confirmNewPassword && !!errors.confirmNewPassword
-              }
+              error={!!touched.confirmPassword && !!errors.confirmPassword}
               helperText={
-                (touched.confirmNewPassword &&
-                  errors.confirmNewPassword) as string
+                (touched.confirmPassword && errors.confirmPassword) as string
               }
               InputProps={{
                 endAdornment: (
@@ -209,7 +172,7 @@ const PasswordChangeForm = ({
           {isEditing ? (
             <Fragment>
               <LoadingButton
-                loading={isChangingPassword || isCheckingPassword}
+                loading={isChangingPassword}
                 variant='contained'
                 color='primary'
                 type='submit'
@@ -244,23 +207,8 @@ const PasswordChangeForm = ({
           )}
         </Grid>
       </form>
+      <ErrorDialog />
     </Card1>
   );
 };
-
-const validationSchema = yup.object().shape({
-  oldPassword: yup.string().required('Vui lòng nhập mật khẩu cũ'),
-  newPassword: yup
-    .string()
-    .required('Vui lòng nhập mật khẩu')
-    .test(
-      'isValidPassword',
-      'Mật khẩu phải chứa ít nhất 10 ký tự, gồm ký tự đặc biệt và số',
-      (value) => isValidPassword(value),
-    ),
-  confirmNewPassword: yup
-    .string()
-    .oneOf([yup.ref('newPassword'), null], 'Xác nhận mật khẩu không khớp')
-    .required('Vui lòng nhập xác nhận mật khẩu'),
-});
 export default PasswordChangeForm;

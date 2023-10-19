@@ -25,5 +25,6 @@
   "Account.ForgotPasswordToken.Min": "Token quên mật khẩu phải có ít nhất 1 ký tự",
   "Account.ForgotPasswordToken.Max": "Token quên mật khẩu không được vượt quá 500 ký tự.",
   "Account.ForgotPasswordTokenExpiry.InvalidFormat": "Định dạng thời gian hết hạn của token quên mật khẩu không hợp lệ.",
-  "Account.Credentials.Invalid": "Sai tài khoản hoặc mật khẩu"
+  "Account.Credentials.Invalid": "Sai tài khoản hoặc mật khẩu",
+  "Account.OldPassword.Same": "Mật khẩu cũ và mới phải khác nhau"
 }

@@ -39,6 +39,10 @@ export class CustomerService {
         `SUM(CASE WHEN order.status = '${OrderStatus.SHIPPED}' THEN 1 ELSE 0 END)`,
         'shipped',
       )
+      .addSelect(
+        `SUM(CASE WHEN order.status = '${OrderStatus.SHIPPED}' THEN 1 ELSE 0 END)`,
+        'cancelled',
+      )
       .where('order.customer = :customerId', { customerId })
       .getRawOne();
 
@@ -48,6 +52,7 @@ export class CustomerService {
       processing: parseInt(results.processing),
       shipping: parseInt(results.shipping),
       shipped: parseInt(results.shipped),
+      cancelled: parseInt(results.cancelled),
     };
   }
 
@@ -57,6 +62,7 @@ export class CustomerService {
     const queryBuilder = (await getRepo(CustomerEntity)).createQueryBuilder(
       'customer',
     );
+    queryBuilder.leftJoinAndSelect('customer.account', 'account');
     queryBuilder.where('account.id = :id', { id });
     queryBuilder.leftJoinAndSelect('customer.cartItems', 'cartItems');
     queryBuilder.leftJoinAndSelect(
@@ -64,6 +70,7 @@ export class CustomerService {
       'customerAddresses',
     );
 
+    const test = queryBuilder.getQueryAndParameters();
     const customer = (await queryBuilder.getOne()) as CommonCustomerModel;
     return customer;
   }

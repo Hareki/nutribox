@@ -1,4 +1,3 @@
-// TODO: Đây là trang dùng để edit profile
 import { CameraEnhance } from '@mui/icons-material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { LoadingButton } from '@mui/lab';
@@ -15,26 +14,32 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Formik } from 'formik';
+import { useFormik } from 'formik';
 import { IKUpload } from 'imagekitio-react';
 import { useSnackbar } from 'notistack';
-import { useState, useRef, Fragment } from 'react';
-import * as yup from 'yup';
+import { useState, useRef, Fragment, useMemo, useEffect } from 'react';
 
-import type { UpdateAccountRequestBody } from '../../../../pages/api/profile/[id]';
-
-import type { IAccount } from 'api/models/Account.model/types';
+import profileCaller from 'api-callers/profile';
+import type {
+  UpdateProfileFormValues,
+  UpdateProfileAvatarDto,
+} from 'backend/dtos/profile/profile.dto';
+import {
+  UpdateProfileDtoSchema,
+  type UpdateProfileDto,
+} from 'backend/dtos/profile/profile.dto';
 import { H5 } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
 import PhoneInput from 'components/common/input/PhoneInput';
 import { FlexBox } from 'components/flex-box';
+import { IKPublicContext } from 'constants/imagekit.constant';
 import { getAvatarUrl } from 'helpers/account.helper';
-import { phoneRegex } from 'helpers/regex.helper';
 import { reloadSession } from 'helpers/session.helper';
-import profileCaller from 'api-callers/profile';
-import { IKPublicContext } from 'utils/constants';
+import type { CommonCustomerAccountModel } from 'models/account.model';
+import type { CustomerModel } from 'models/customer.model';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 interface ProfileFormProps {
-  account: IAccount;
+  account: CommonCustomerAccountModel;
   toggleEditing: () => void;
 }
 
@@ -42,7 +47,7 @@ interface UploadSuccessResponse {
   url: string;
 }
 
-const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
+const ProfileForm = ({ account }: ProfileFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { palette } = useTheme();
   const { enqueueSnackbar } = useSnackbar();
@@ -51,11 +56,11 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const { mutate: updateAccount, isLoading } = useMutation<
-    IAccount,
+    CustomerModel,
     any,
-    UpdateAccountRequestBody
+    UpdateProfileDto
   >({
-    mutationFn: (body) => profileCaller.updateAccount(account.id, body),
+    mutationFn: (body) => profileCaller.updateAccount(body),
     onSuccess: () => {
       reloadSession();
       enqueueSnackbar('Chỉnh sửa thông tin thành công', { variant: 'success' });
@@ -72,19 +77,18 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
   });
 
   const { mutate: updateAvatar } = useMutation<
-    IAccount,
+    CustomerModel,
     any,
-    UpdateAccountRequestBody
+    UpdateProfileAvatarDto
   >({
     mutationFn: ({ avatarUrl }) => {
-      console.log('avatarUrl', avatarUrl);
-      return profileCaller.updateAccount(account.id, { avatarUrl });
+      return profileCaller.updateAvatar({ avatarUrl });
     },
     onSuccess: (response) => {
       setIsUploadingImage(false);
       reloadSession();
       queryClient.invalidateQueries(['account']);
-      queryClient.setQueryData(['account'], (oldData: IAccount) => {
+      queryClient.setQueryData(['account'], (oldData: CustomerModel) => {
         return {
           ...oldData,
           avatarUrl: response.avatarUrl,
@@ -103,18 +107,38 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
     },
   });
 
-  const INITIAL_VALUES = {
-    email: account.email || '',
-    phone: account.phone || '',
-    lastName: account.lastName || '',
-    firstName: account.firstName || '',
-    birthday: account.birthday || new Date(),
-  };
+  const initialValues: UpdateProfileFormValues = useMemo(
+    () => ({
+      email: account.customer.email || '',
+      phone: account.customer.phone || '',
+      lastName: account.customer.lastName || '',
+      firstName: account.customer.firstName || '',
+      birthday: account.customer.birthday || new Date(),
+    }),
+    [account],
+  );
 
-  const handleFormSubmit = async (values: any) => {
-    console.log(values);
+  const handleFormSubmit = async (values: UpdateProfileFormValues) => {
+    delete values.email;
     updateAccount(values);
   };
+
+  const {
+    resetForm,
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik({
+    enableReinitialize: true,
+    onSubmit: handleFormSubmit,
+    initialValues,
+    validationSchema: toFormikValidationSchema(UpdateProfileDtoSchema),
+  });
+
   return (
     <Card1>
       <H5 mb={2}>Thông tin cá nhân</H5>
@@ -123,7 +147,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
           <CircularProgress size={40} />
         ) : (
           <Avatar
-            src={getAvatarUrl(account)}
+            src={getAvatarUrl(account.customer)}
             sx={{ height: 64, width: 64, objectFit: 'contain' }}
           />
         )}
@@ -155,7 +179,7 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
           <IKUpload
             {...IKPublicContext}
             accept='image/*'
-            inputRef={uploadRef}
+            inputRef={uploadRef as any}
             fileName={account.id}
             useUniqueFileName={false}
             responseFields={['url']}
@@ -189,196 +213,150 @@ const ProfileForm = ({ account, toggleEditing }: ProfileFormProps) => {
         </Box>
       </FlexBox>
 
-      <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={INITIAL_VALUES}
-        validationSchema={validationSchema}
-      >
-        {({
-          resetForm,
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <Box mb={4}>
-              <Grid container spacing={3}>
-                <Grid item md={6} xs={12}>
-                  <TextField
-                    fullWidth
-                    name='lastName'
-                    label='Họ và tên lót'
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.lastName}
-                    error={!!touched.lastName && !!errors.lastName}
-                    helperText={(touched.lastName && errors.lastName) as string}
-                    InputProps={{
-                      readOnly: !isEditing,
-                    }}
-                  />
-                </Grid>
-
-                <Grid item md={6} xs={12}>
-                  <TextField
-                    fullWidth
-                    name='firstName'
-                    label='Tên'
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.firstName}
-                    error={!!touched.firstName && !!errors.firstName}
-                    helperText={
-                      (touched.firstName && errors.firstName) as string
-                    }
-                    InputProps={{
-                      readOnly: !isEditing,
-                    }}
-                  />
-                </Grid>
-
-                <Grid item md={6} xs={12}>
-                  <TextField
-                    fullWidth
-                    disabled
-                    sx={{
-                      '& .Mui-disabled': {
-                        color: palette.grey[500],
-                        WebkitTextFillColor: palette.grey[500],
-                      },
-                    }}
-                    name='email'
-                    type='email'
-                    label='Email'
-                    onBlur={handleBlur}
-                    value={values.email}
-                    onChange={handleChange}
-                    error={!!touched.email && !!errors.email}
-                    helperText={(touched.email && errors.email) as string}
-                  />
-                </Grid>
-
-                <Grid item md={6} xs={12}>
-                  <TextField
-                    fullWidth
-                    label='Số điện thoại'
-                    name='phone'
-                    onBlur={handleBlur}
-                    value={values.phone}
-                    onChange={handleChange}
-                    error={!!touched.phone && !!errors.phone}
-                    helperText={(touched.phone && errors.phone) as string}
-                    InputProps={{
-                      inputComponent: PhoneInput as any,
-                      readOnly: !isEditing,
-                    }}
-                  />
-                </Grid>
-
-                <Grid item md={6} xs={12}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      label='Ngày sinh'
-                      disableFuture
-                      value={values.birthday}
-                      inputFormat='dd/MM/yyyy'
-                      renderInput={(props) => (
-                        <TextField
-                          fullWidth
-                          size='small'
-                          helperText={
-                            (touched.birthday && errors.birthday) as string
-                          }
-                          error={
-                            (!!touched.birthday && !!errors.birthday) ||
-                            props.error
-                          }
-                          {...props}
-                        />
-                      )}
-                      onChange={(newValue) =>
-                        setFieldValue('birthday', newValue)
-                      }
-                      InputProps={{
-                        readOnly: !isEditing,
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-              </Grid>
-            </Box>
-
-            <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
-              {isEditing ? (
-                <Fragment>
-                  <LoadingButton
-                    loading={isLoading}
-                    variant='contained'
-                    color='primary'
-                    type='submit'
-                  >
-                    Lưu thay đổi
-                  </LoadingButton>
-                  <Button
-                    variant='outlined'
-                    color='primary'
-                    type='submit'
-                    onClick={() => {
-                      setIsEditing(false);
-                      resetForm();
-                    }}
-                    sx={{
-                      px: 3,
-                    }}
-                  >
-                    Huỷ
-                  </Button>
-                </Fragment>
-              ) : (
-                <Button
-                  startIcon={<EditRoundedIcon />}
-                  variant='contained'
-                  color='primary'
-                  type='submit'
-                  onClick={() => setIsEditing(true)}
-                >
-                  Chỉnh sửa
-                </Button>
-              )}
+      <form onSubmit={handleSubmit}>
+        <Box mb={4}>
+          <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                name='lastName'
+                label='Họ và tên lót'
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.lastName}
+                error={!!touched.lastName && !!errors.lastName}
+                helperText={(touched.lastName && errors.lastName) as string}
+                InputProps={{
+                  readOnly: !isEditing,
+                }}
+              />
             </Grid>
-          </form>
-        )}
-      </Formik>
+
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                name='firstName'
+                label='Tên'
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.firstName}
+                error={!!touched.firstName && !!errors.firstName}
+                helperText={(touched.firstName && errors.firstName) as string}
+                InputProps={{
+                  readOnly: !isEditing,
+                }}
+              />
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                disabled
+                sx={{
+                  '& .Mui-disabled': {
+                    color: palette.grey[500],
+                    WebkitTextFillColor: palette.grey[500],
+                  },
+                }}
+                name='email'
+                type='email'
+                label='Email'
+                onBlur={handleBlur}
+                value={values.email}
+                onChange={handleChange}
+                error={!!touched.email && !!errors.email}
+                helperText={(touched.email && errors.email) as string}
+              />
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label='Số điện thoại'
+                name='phone'
+                onBlur={handleBlur}
+                value={values.phone}
+                onChange={handleChange}
+                error={!!touched.phone && !!errors.phone}
+                helperText={(touched.phone && errors.phone) as string}
+                InputProps={{
+                  inputComponent: PhoneInput as any,
+                  readOnly: !isEditing,
+                }}
+              />
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label='Ngày sinh'
+                  disableFuture
+                  value={values.birthday}
+                  inputFormat='dd/MM/yyyy'
+                  renderInput={(props) => (
+                    <TextField
+                      fullWidth
+                      size='small'
+                      helperText={
+                        (touched.birthday && errors.birthday) as string
+                      }
+                      error={
+                        (!!touched.birthday && !!errors.birthday) || props.error
+                      }
+                      {...props}
+                    />
+                  )}
+                  onChange={(newValue) => setFieldValue('birthday', newValue)}
+                  InputProps={{
+                    readOnly: !isEditing,
+                  }}
+                />
+              </LocalizationProvider>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
+          {isEditing ? (
+            <Fragment>
+              <LoadingButton
+                loading={isLoading}
+                variant='contained'
+                color='primary'
+                type='submit'
+              >
+                Lưu thay đổi
+              </LoadingButton>
+              <Button
+                variant='outlined'
+                color='primary'
+                type='submit'
+                onClick={() => {
+                  setIsEditing(false);
+                  resetForm();
+                }}
+                sx={{
+                  px: 3,
+                }}
+              >
+                Hủy
+              </Button>
+            </Fragment>
+          ) : (
+            <Button
+              startIcon={<EditRoundedIcon />}
+              variant='contained'
+              color='primary'
+              type='submit'
+              onClick={() => setIsEditing(true)}
+            >
+              Chỉnh sửa
+            </Button>
+          )}
+        </Grid>
+      </form>
     </Card1>
   );
 };
-
-const validationSchema = yup.object().shape({
-  lastName: yup.string().required('Vui lòng nhập họ và tên lót'),
-  firstName: yup.string().required('Vui lòng nhập tên'),
-  email: yup
-    .string()
-    .email('Định dạng email không hợp lệ')
-    .required('Vui lòng nhập email'),
-  phone: yup
-    .string()
-    .required('Vui lòng nhập số điện thoại')
-    .transform((value, originalValue) => {
-      if (originalValue && typeof originalValue === 'string') {
-        const result = originalValue.replace(/-/g, '');
-        return result;
-      }
-      return value;
-    })
-    .matches(phoneRegex, 'Định dạng số điện thoại không hợp lệ'),
-  birthday: yup
-    .date()
-    .typeError('Vui lòng nhập định dạng ngày sinh hợp lệ')
-    .required('Vui lòng nhập ngày sinh'),
-});
 
 export default ProfileForm;

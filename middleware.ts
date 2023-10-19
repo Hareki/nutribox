@@ -7,9 +7,9 @@ import type { RequestMethod } from 'backend/types/utils';
 import { API_BASE_ROUTE, PublicApiRoutes } from 'constants/routes.api.constant';
 import {
   HOME_PAGE_ROUTE,
-  NOT_FOUND_ROUTE,
   NoAuthenticationOnlyRoutes,
   PublicRoutes,
+  SIGN_IN_ROUTE,
 } from 'constants/routes.ui.constant';
 import type { Role } from 'utils/middleware.helper';
 import {
@@ -64,7 +64,7 @@ export default withAuth(
 
     const isApiRoute = url.startsWith(API_BASE_ROUTE);
     if (!isApiRoute) {
-      return NextResponse.redirect(NOT_FOUND_ROUTE);
+      return NextResponse.redirect(SIGN_IN_ROUTE);
     }
 
     return new NextResponse(

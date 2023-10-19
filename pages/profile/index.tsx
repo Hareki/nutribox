@@ -1,31 +1,24 @@
-import { useQuery } from '@tanstack/react-query';
-import type { GetServerSideProps } from 'next';
+import type { GetStaticProps } from 'next';
+import { useSession } from 'next-auth/react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 
-import { getAccount } from 'api/base/server-side-modules';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
-import type { IAccount } from 'api/models/Account.model/types';
+import CircularProgressBlock from 'components/common/CiruclarProgressBlock';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
-import profileCaller from 'api-callers/profile';
 
 Profile.getLayout = getCustomerDashboardLayout;
 
-type ProfileProps = { initialAccount: IAccount };
-function Profile({ initialAccount }: ProfileProps): ReactElement {
+function Profile(): ReactElement {
+  const { data: session } = useSession();
+  const account = session?.account;
+
   const [isEditing, setIsEditing] = useState(false);
   const toggleEditing = () => setIsEditing((prev) => !prev);
 
-  const { data: account } = useQuery({
-    queryKey: ['account', initialAccount.id],
-    queryFn: () => profileCaller.getAccount(initialAccount.id),
-    // FIXME onError bị lặp giữa các useMutation
-    onError: (err) => console.log(err),
-    initialData: initialAccount,
-  });
+  if (!account) return <CircularProgressBlock />;
 
   return (
     <>
@@ -43,13 +36,13 @@ function Profile({ initialAccount }: ProfileProps): ReactElement {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult, session } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'account',
+    'customer',
+  ]);
 
-  const initialAccount = await getAccount(session.user.id);
-  return { props: { initialAccount: serialize(initialAccount) } };
+  return { props: { ...locales } };
 };
 
 export default Profile;

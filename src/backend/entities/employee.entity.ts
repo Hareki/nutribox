@@ -51,4 +51,10 @@ export class EmployeeEntity extends AbstractEntity {
 
   @Column('text', { transformer: new DateEncryptionTransformer() })
   birthday: Date;
+
+  @Column({
+    nullable: true,
+    transformer: new StringEncryptionTransformer(),
+  })
+  avatarUrl?: string;
 }

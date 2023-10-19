@@ -8,5 +8,14 @@ export const UpdateProfileDtoSchema = CustomerSchema.pick({
   birthday: true,
   phone: true,
 }).required();
-
 export type UpdateProfileDto = z.infer<typeof UpdateProfileDtoSchema>;
+export type UpdateProfileFormValues = UpdateProfileDto & {
+  email?: string;
+};
+
+export const UpdateProfileAvatarDtoSchema = CustomerSchema.pick({
+  avatarUrl: true,
+}).required();
+export type UpdateProfileAvatarDto = z.infer<
+  typeof UpdateProfileAvatarDtoSchema
+>;

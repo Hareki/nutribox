@@ -1,6 +1,5 @@
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
 import type { CheckoutValidation } from 'backend/services/customerOrder/helper';
-import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
   CHECKOUT_API_ROUTE,

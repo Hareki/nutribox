@@ -5,12 +5,12 @@ import type { NextPage } from 'next';
 import PasswordChangeForm from './PasswordChangeForm';
 import ProfileForm from './ProfileForm';
 
-import type { IAccount } from 'api/models/Account.model/types';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
+import type { CommonCustomerAccountModel } from 'models/account.model';
 
 type Props = {
-  account: IAccount;
+  account: CommonCustomerAccountModel;
   toggleEditing: () => void;
 };
 

@@ -1,10 +1,6 @@
 import { z } from 'zod';
 
-import type {
-  CommonCustomerModel,
-  CustomerModel,
-  PopulateCustomerFields,
-} from './customer.model';
+import type { CommonCustomerModel, CustomerModel } from './customer.model';
 import type { EmployeeModel } from './employee.model';
 import { zodDate, zodPassword, zodString, zodUuid } from './helper';
 
@@ -22,8 +18,6 @@ const AccountSchema = z.object({
   }),
 
   password: zodPassword('Account.Password'),
-
-  avatarUrl: zodString('Account.AvatarUrl', 0, 500).optional(),
 
   disabled: z.boolean({
     required_error: 'Account.Disabled.Required',
@@ -59,7 +53,6 @@ export const PasswordConfirmationSchema = z
     message: 'Account.ConfirmPassword.NotMatch',
     path: ['confirmPassword'],
   });
-
 type AccountModel = z.infer<typeof AccountSchema>;
 
 type AccountReferenceKeys = keyof Pick<AccountModel, 'customer' | 'employee'>;

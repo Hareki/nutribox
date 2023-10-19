@@ -1,13 +1,11 @@
-import { AllStatusIdArray, OrderStatus } from 'utils/constants';
+import { assertNever } from './assertion.helper';
+
+import { OrderStatus } from 'backend/enums/entities.enum';
+import type { OrderStatusCount } from 'backend/services/customer/helper';
+import { AllStatusIdArray } from 'utils/constants';
 
 export function translateOrderStatusCountLabel(
-  orderStatusName:
-    | 'total'
-    | 'pending'
-    | 'processing'
-    | 'delivering'
-    | 'delivered'
-    | 'cancelled',
+  orderStatusName: keyof OrderStatusCount,
 ) {
   let name = '';
   switch (orderStatusName) {
@@ -15,20 +13,23 @@ export function translateOrderStatusCountLabel(
       name = 'tất cả';
       break;
     case 'pending':
-      name = OrderStatus.Pending.name;
+      name = 'chờ xác nhận';
       break;
     case 'processing':
-      name = OrderStatus.Processing.name;
+      name = 'đang xử lý';
       break;
-    case 'delivering':
-      name = OrderStatus.Delivering.name;
+    case 'shipping':
+      name = 'đang giao';
       break;
-    case 'delivered':
-      name = OrderStatus.Delivered.name;
+    case 'shipped':
+      name = 'đã giao';
       break;
     case 'cancelled':
-      name = OrderStatus.Cancelled.name;
+      name = 'đã hủy';
       break;
+    default: {
+      assertNever(orderStatusName);
+    }
   }
 
   return `Đơn ${name.toLowerCase()}`;

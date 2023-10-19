@@ -76,6 +76,7 @@ export const PublicApiRoutes: MethodRoutePair[] = [
 ];
 
 export const PROFILE_API_ROUTE = `${API_BASE_ROUTE}/profile`;
+export const PROFILE_AVATAR_API_ROUTE = `${API_BASE_ROUTE}/profile/avatar`;
 export const MENU_COUNT_API_ROUTE = `${PROFILE_API_ROUTE}/menu-count`;
 export const ADDRESSES_API_ROUTE = `${PROFILE_API_ROUTE}/addresses`;
 export const ADDRESS_DETAIL_API_ROUTE = `${ADDRESSES_API_ROUTE}/:id`;
@@ -91,6 +92,10 @@ export const CustomerApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET', 'PUT', 'PATCH'],
     route: PROFILE_API_ROUTE,
+  },
+  {
+    methods: ['PUT'],
+    route: PROFILE_AVATAR_API_ROUTE,
   },
   {
     methods: ['GET'],

@@ -30,12 +30,6 @@ export class AccountEntity extends AbstractEntity {
   password: string;
 
   @Column({
-    nullable: true,
-    transformer: new StringEncryptionTransformer(),
-  })
-  avatarUrl?: string;
-
-  @Column({
     default: false,
   })
   disabled: boolean;
