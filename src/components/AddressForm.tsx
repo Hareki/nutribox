@@ -33,7 +33,7 @@ const AddressForm = ({
   medium = false,
   isEditing = true,
 }: AddressFormProps) => {
-  const { t } = useCustomTranslation(['customerAddress']);
+  const { t } = useCustomTranslation(['customerAddress', 'customerOrder']);
 
   const {
     provinces,

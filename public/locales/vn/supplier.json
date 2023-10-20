@@ -9,9 +9,9 @@
   "Supplier.Phone.InvalidFormat": "Định dạng số điện thoại của nhà cung cấp không hợp lệ.",
   "Supplier.Email.Required": "Vui lòng nhập email của nhà cung cấp.",
   "Supplier.Email.InvalidFormat": "Định dạng email của nhà cung cấp không hợp lệ.",
-  "Supplier.ProvinceCode.Required": "Vui lòng nhập mã tỉnh.",
-  "Supplier.DistrictCode.Required": "Vui lòng nhập mã huyện.",
-  "Supplier.WardCode.Required": "Vui lòng nhập mã xã/phường.",
+  "Supplier.ProvinceCode.Required": "Vui lòng nhập Thành phố/Tỉnh.",
+  "Supplier.DistrictCode.Required": "Vui lòng nhập Quận/Huyện.",
+  "Supplier.WardCode.Required": "Vui lòng nhập mã Phường/Xã.",
   "Supplier.StreetAddress.Required": "Vui lòng nhập địa chỉ đường phố.",
   "Supplier.StreetAddress.Min": "Địa chỉ đường phố phải có ít nhất 1 ký tự.",
   "Supplier.StreetAddress.Max": "Địa chỉ đường phố không được vượt quá 100 ký tự."

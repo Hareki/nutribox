@@ -46,7 +46,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     setEditingAddress(undefined);
   };
 
-  const { t } = useCustomTranslation(['customerAddress']);
+  const { t } = useCustomTranslation(['customerOrder', 'customerAddress']);
 
   const HEADER_LINK = (
     <Button

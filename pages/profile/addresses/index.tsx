@@ -55,6 +55,7 @@ function Address(): ReactElement {
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const locales = await serverSideTranslations(locale ?? 'vn', [
     'customerAddress',
+    'customerOrder',
   ]);
 
   return { props: { ...locales } };

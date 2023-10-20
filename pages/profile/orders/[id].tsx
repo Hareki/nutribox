@@ -35,6 +35,7 @@ import UserDashboardHeader from 'components/common/layout/header/UserDashboardHe
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import Navigations from 'components/layouts/customer-dashboard/Navigations';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
+import { ORDERS_ROUTE } from 'constants/routes.ui.constant';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import type { PopulateCustomerOrderFields } from 'models/customerOrder.model';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
@@ -78,7 +79,11 @@ function ProfileOrderDetails() {
   }) as UseQueryResult<CommonProductModel, unknown>[];
 
   const HEADER_BUTTON = (
-    <Button color='primary' sx={{ bgcolor: 'primary.light', px: 3 }}>
+    <Button
+      color='primary'
+      sx={{ bgcolor: 'primary.light', px: 3 }}
+      onClick={() => router.push(ORDERS_ROUTE)}
+    >
       Quay lại
     </Button>
   );
