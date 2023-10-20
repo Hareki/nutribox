@@ -2,9 +2,10 @@ import type { AuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+import type { AuthenticatedAccount } from '../../../types/next-auth';
+
 import { AccountService } from 'backend/services/account/account.service';
 import type { CredentialInputs } from 'backend/types/auth';
-import type { FullyPopulatedAccountModel } from 'models/account.model';
 
 export const authOptions: AuthOptions = {
   pages: {
@@ -13,26 +14,39 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
-      const castedUser = user as FullyPopulatedAccountModel;
+      const castedUser = user as AuthenticatedAccount;
       if (castedUser) {
         token.accountId = castedUser.id;
-        token.employeeRole = castedUser.employee?.role;
+        token.userType = castedUser.userType;
+        token.employeeRole = (castedUser?.employee as any)?.role;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token.accountId) {
-        const account = await AccountService.getAccount(
-          { id: token.accountId },
-          'customer',
-        );
-
-        session.account = account!;
-        delete session.account.password;
-        delete session.account.verificationToken;
-        delete session.account.verificationTokenExpiry;
-        delete session.account.forgotPasswordToken;
-        delete session.account.forgotPasswordTokenExpiry;
+      if (token.accountId && token.userType) {
+        if (token.userType === 'customer') {
+          const account = await AccountService.getAccount(
+            { id: token.accountId },
+            'customer',
+          );
+          session.account = account!;
+          delete session.account.password;
+          delete session.account.verificationToken;
+          delete session.account.verificationTokenExpiry;
+          delete session.account.forgotPasswordToken;
+          delete session.account.forgotPasswordTokenExpiry;
+        } else {
+          const account = await AccountService.getAccount(
+            { id: token.accountId },
+            'employee',
+          );
+          session.employeeAccount = account!;
+          delete session.employeeAccount.password;
+          delete session.employeeAccount.verificationToken;
+          delete session.employeeAccount.verificationTokenExpiry;
+          delete session.employeeAccount.forgotPasswordToken;
+          delete session.employeeAccount.forgotPasswordTokenExpiry;
+        }
       }
 
       return session;
@@ -74,7 +88,10 @@ export const authOptions: AuthOptions = {
         if (!account.verified) throw new Error('Account.Verified.Invalid');
         if (account.disabled) throw new Error('Account.Disabled.True');
 
-        return account;
+        return {
+          ...account,
+          userType,
+        };
       },
     }),
   ],

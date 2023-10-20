@@ -155,6 +155,8 @@ export const SUPPLIER_DETAIL_API_STAFF_ROUTE = `${SUPPLIERS_API_STAFF_ROUTE}/:id
 export const STORE_DETAIL_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/stores/:id`;
 export const COUNTER_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/counter`;
 
+export const StaffRestrictedApiRoutes: MethodRoutePair[] = [];
+
 export const ManagerApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET'],

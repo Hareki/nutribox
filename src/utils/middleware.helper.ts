@@ -1,3 +1,5 @@
+import { NextResponse } from 'next/server';
+
 import type { EmployeeRole } from 'backend/enums/entities.enum';
 import type { MethodRoutePair, RequestMethod } from 'backend/types/utils';
 import {
@@ -11,7 +13,10 @@ import {
   BASE_ROUTE,
   CashierRoutes,
   CustomerRoutes,
+  DASHBOARD_STAFF_ROUTE,
+  HOME_PAGE_ROUTE,
   ManagerRoutes,
+  ORDERS_STAFF_ROUTE,
   ShipperRoutes,
   WarehouseManagerRoutes,
 } from 'constants/routes.ui.constant';
@@ -76,6 +81,22 @@ export function isAuthorized(
   }
 
   return false;
+}
+
+export function redirectToDefaultCustomerRoute() {
+  return NextResponse.redirect(HOME_PAGE_ROUTE);
+}
+
+export function redirectToDefaultStaffRoute(
+  employeeRole: Exclude<Role, 'CUSTOMER'>,
+) {
+  const defaultStaffRoute: Record<Exclude<Role, 'CUSTOMER'>, string> = {
+    ['MANAGER']: DASHBOARD_STAFF_ROUTE,
+    ['CASHIER']: DASHBOARD_STAFF_ROUTE,
+    ['WAREHOUSE_MANAGER']: ORDERS_STAFF_ROUTE,
+    ['SHIPPER']: ORDERS_STAFF_ROUTE,
+  };
+  return NextResponse.redirect(defaultStaffRoute[employeeRole]);
 }
 
 export const removeQueryParameters = (urlString: string) => {

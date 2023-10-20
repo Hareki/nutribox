@@ -82,3 +82,11 @@ export type CommonCustomerAccountModel = Omit<
   customer: CommonCustomerModel;
   password?: string;
 };
+
+export type CommonEmployeeAccountModel = Omit<
+  AccountModel,
+  'employee' | 'password'
+> & {
+  employee: EmployeeModel;
+  password?: string;
+};

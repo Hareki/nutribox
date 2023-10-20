@@ -16,7 +16,7 @@ const SignInDialog = () => {
     handleFormSubmit,
     signInResponse,
     errorMessage,
-  } = useLoginForm();
+  } = useLoginForm('customer');
 
   useEffect(() => {
     if (signInResponse && signInResponse.ok) {
@@ -33,6 +33,7 @@ const SignInDialog = () => {
       sx={{ zIndex: 9999 }}
     >
       <SignIn
+        userType='customer'
         loading={checkingCredentials}
         handleFormSubmit={handleFormSubmit}
         errorMessage={errorMessage}

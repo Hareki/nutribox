@@ -8,4 +8,5 @@ import { authOptions } from '../../../pages/api/auth/[...nextauth]';
 export const getSessionAccount = async (
   req: NextApiRequest,
   res: NextApiResponse,
-) => ((await getServerSession(req, res, authOptions)) as Session).account;
+  accountType: 'account' | 'employeeAccount' = 'account',
+) => ((await getServerSession(req, res, authOptions)) as Session)[accountType];

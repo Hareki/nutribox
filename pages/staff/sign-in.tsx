@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import SEO from 'components/abstract/SEO';
 import { FlexRowCenter } from 'components/flex-box';
+import { TESTING_ROUTE } from 'constants/routes.ui.constant';
 import { useLoginForm } from 'hooks/useLoginForm';
 import SignIn from 'pages-sections/auth/SignIn';
 
@@ -16,13 +17,13 @@ const LoginPage: NextPage = () => {
     handleFormSubmit,
     signInResponse,
     errorMessage,
-  } = useLoginForm('customer');
+  } = useLoginForm('employee');
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     if (signInResponse && signInResponse.ok) {
       setRedirecting(true);
-      router.push('/');
+      router.push(TESTING_ROUTE);
     }
   }, [signInResponse, router]);
 
@@ -38,7 +39,7 @@ const LoginPage: NextPage = () => {
     >
       <SEO title='Đăng nhập' />
       <SignIn
-        userType='customer'
+        userType='employee'
         loading={checkingCredentials || redirecting}
         handleFormSubmit={handleFormSubmit}
         errorMessage={errorMessage}

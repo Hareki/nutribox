@@ -4,13 +4,14 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 import type { SignInDto } from 'backend/dtos/signIn.dto';
+import type { UserType } from 'backend/types/auth';
 
 export interface LoginRequestBody {
   email: string;
   password: string;
 }
 
-export const useLoginForm = () => {
+export const useLoginForm = (userType: UserType) => {
   const [signInResponse, setSignInResponse] = useState<SignInResponse>();
 
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,7 +24,7 @@ export const useLoginForm = () => {
       signIn('credentials', {
         redirect: false,
         ...values,
-        userType: 'customer',
+        userType,
       }),
     onSuccess: (result) => {
       if (!result?.ok) {

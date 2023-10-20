@@ -10,6 +10,7 @@ import EyeToggleButton from './EyeToggleButton';
 
 import type { SignInDto } from 'backend/dtos/signIn.dto';
 import { SignInDtoSchema } from 'backend/dtos/signIn.dto';
+import type { UserType } from 'backend/types/auth';
 import { H1, H4, H6 } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
 import MuiImage from 'components/common/input/MuiImage';
@@ -48,12 +49,14 @@ interface SignInProps {
   handleFormSubmit: (values: any) => void;
   loading: boolean;
   errorMessage: string;
+  userType: UserType;
 }
 
 const SignIn: FC<SignInProps> = ({
   handleFormSubmit,
   loading = false,
   errorMessage,
+  userType,
 }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const { t } = useCustomTranslation(['account']);
@@ -77,7 +80,7 @@ const SignIn: FC<SignInProps> = ({
         />
 
         <H1 textAlign='center' mt={1} mb={4} fontSize={16}>
-          Chào mừng đến với Nutribox
+          Hệ thống quản trị Nutribox
         </H1>
 
         <CustomTextField
@@ -143,16 +146,18 @@ const SignIn: FC<SignInProps> = ({
 
       {/* <SocialButtons /> */}
 
-      <FlexRowCenter mt='1.25rem'>
-        <Box>Chưa có tài khoản?</Box>
-        <Link href={SIGN_UP_ROUTE} passHref legacyBehavior>
-          <a>
-            <H6 ml={1} borderBottom='1px solid' borderColor='grey.900'>
-              Đăng ký
-            </H6>
-          </a>
-        </Link>
-      </FlexRowCenter>
+      {userType === 'customer' && (
+        <FlexRowCenter mt='1.25rem'>
+          <Box>Chưa có tài khoản?</Box>
+          <Link href={SIGN_UP_ROUTE} passHref legacyBehavior>
+            <a>
+              <H6 ml={1} borderBottom='1px solid' borderColor='grey.900'>
+                Đăng ký
+              </H6>
+            </a>
+          </Link>
+        </FlexRowCenter>
+      )}
 
       <FlexBox
         justifyContent='center'

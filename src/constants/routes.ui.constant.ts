@@ -1,9 +1,11 @@
 export const BASE_ROUTE = process.env.NEXT_PUBLIC_DOMAIN_URL; // Public route as well
 export const BASE_STAFF_ROUTE = `${BASE_ROUTE}/staff`;
 
-export const HOME_PAGE_ROUTE = `${BASE_ROUTE}`;
+export const HOME_PAGE_ROUTE = `${BASE_ROUTE}/`;
 export const SIGN_UP_ROUTE = `${BASE_ROUTE}/sign-up`;
 export const SIGN_IN_ROUTE = `${BASE_ROUTE}/sign-in`;
+export const SIGN_IN_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/sign-in`;
+
 export const NOT_FOUND_ROUTE = `${BASE_ROUTE}/404`;
 export const VERIFICATION_RESULT_ROUTE = `${BASE_ROUTE}/verification-result`;
 export const FORGOT_PASSWORD_ROUTE = `${BASE_ROUTE}/forgot-password`;
@@ -17,6 +19,7 @@ export const PublicRoutes = [
   HOME_PAGE_ROUTE,
   SIGN_UP_ROUTE,
   SIGN_IN_ROUTE,
+  SIGN_IN_STAFF_ROUTE,
   NOT_FOUND_ROUTE,
   VERIFICATION_RESULT_ROUTE,
   FORGOT_PASSWORD_ROUTE,
@@ -78,6 +81,8 @@ export const NEW_SUPPLIER_ROUTE = `${SUPPLIERS_STAFF_ROUTE}/new`;
 export const STORE_DETAIL_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/stores/:id`;
 export const COUNTER_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/counter`;
 
+export const NoStaffRoutes = [HOME_PAGE_ROUTE, PRODUCT_DETAIL_ROUTE];
+
 export const ManagerRoutes = [
   DASHBOARD_STAFF_ROUTE,
   PROFILE_STAFF_ROUTE,
@@ -122,9 +127,10 @@ export const WarehouseManagerRoutes = [
 ];
 
 export const CashierRoutes = [
+  ORDERS_STAFF_ROUTE,
+
   PROFILE_STAFF_ROUTE,
 
-  ORDERS_STAFF_ROUTE,
   ORDERS_DETAIL_STAFF_ROUTE,
 
   PRODUCTS_STAFF_ROUTE,
@@ -134,8 +140,9 @@ export const CashierRoutes = [
 ];
 
 export const ShipperRoutes = [
+  ORDERS_STAFF_ROUTE,
+
   PROFILE_STAFF_ROUTE,
 
-  ORDERS_STAFF_ROUTE,
   ORDERS_DETAIL_STAFF_ROUTE,
 ];

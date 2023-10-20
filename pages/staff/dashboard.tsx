@@ -1,8 +1,6 @@
 import { Box, Grid } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import { useQuery } from '@tanstack/react-query';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
 import type { GetServerSideProps } from 'next';
 import type { Session } from 'next-auth';
 import type { ReactElement } from 'react';
@@ -17,9 +15,9 @@ import StatisticProductCard from 'pages-sections/dashboard/StatisticProductCard'
 import StockOutProducts from 'pages-sections/dashboard/StockOutProducts';
 import TodayCard from 'pages-sections/dashboard/TodayCard';
 
-VendorDashboard.getLayout = function getLayout(page: ReactElement) {
-  return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
-};
+// VendorDashboard.getLayout = function getLayout(page: ReactElement) {
+//   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
+// };
 type DashboardProps = {
   cardList: any[];
   recentPurchase: any[];
@@ -29,7 +27,7 @@ type DashboardProps = {
 };
 
 export default function VendorDashboard(props: DashboardProps) {
-  const { user } = props;
+  // const {data:}
   const { data: statisticData, isLoading } = useQuery({
     queryKey: ['statistic'],
     queryFn: () => apiCaller.getStatisticData(),
@@ -71,119 +69,111 @@ export default function VendorDashboard(props: DashboardProps) {
     />
   );
 
-  return (
-    <Box py={4}>
-      <Grid container spacing={3}>
-        <Grid item md={6} xs={12}>
-          {isLoading ? (
-            todayCardSkeleton
-          ) : (
-            <TodayCard
-              adminFirstName={user?.user?.firstName}
-              todayOrderNumber={statisticData.todayOrderNumber}
-              todayProfit={statisticData.todayProfit}
-            />
-          )}
-        </Grid>
+  // return (
+  //   <Box py={4}>
+  //     <Grid container spacing={3}>
+  //       <Grid item md={6} xs={12}>
+  //         {isLoading ? (
+  //           todayCardSkeleton
+  //         ) : (
+  //           <TodayCard
+  //             adminFirstName={user?.user?.firstName}
+  //             todayOrderNumber={statisticData.todayOrderNumber}
+  //             todayProfit={statisticData.todayProfit}
+  //           />
+  //         )}
+  //       </Grid>
 
-        <Grid container item md={6} xs={12} spacing={3}>
-          <Grid item md={6} sm={6} xs={12}>
-            {isLoading ? (
-              cardSkeleton
-            ) : (
-              <StatisticCard
-                title='Doanh thu tháng này'
-                amount={formatCurrency(thisMonthProfit)}
-                subAmount={prevMonthProfit}
-                percentage={calculatePercentageDifference(
-                  thisMonthProfit,
-                  prevMonthProfit,
-                )}
-                status={thisMonthProfit > prevMonthProfit ? 'up' : 'down'}
-              />
-            )}
-          </Grid>
-          <Grid item md={6} sm={6} xs={12}>
-            {isLoading ? (
-              cardSkeleton
-            ) : (
-              <StatisticCard
-                title='Số đơn hàng tháng này'
-                amount={thisMonthOrderNumber}
-                subAmount={prevMonthOrderNumber}
-                percentage={calculatePercentageDifference(
-                  thisMonthOrderNumber,
-                  prevMonthOrderNumber,
-                )}
-                status={
-                  thisMonthOrderNumber > prevMonthOrderNumber ? 'up' : 'down'
-                }
-              />
-            )}
-          </Grid>
-          <Grid item md={6} sm={6} xs={12}>
-            {isLoading ? (
-              cardSkeleton
-            ) : (
-              <StatisticProductCard
-                title='Sản phẩm bán chạy nhất'
-                soldProducts={statisticData.mostSoldProducts}
-                type='most'
-              />
-            )}
-          </Grid>
-          <Grid item md={6} sm={6} xs={12}>
-            {isLoading ? (
-              cardSkeleton
-            ) : (
-              <StatisticProductCard
-                title='Sản phẩm bán chậm nhất'
-                soldProducts={statisticData.leastSoldProducts}
-                type='least'
-              />
-            )}
-          </Grid>
-        </Grid>
+  //       <Grid container item md={6} xs={12} spacing={3}>
+  //         <Grid item md={6} sm={6} xs={12}>
+  //           {isLoading ? (
+  //             cardSkeleton
+  //           ) : (
+  //             <StatisticCard
+  //               title='Doanh thu tháng này'
+  //               amount={formatCurrency(thisMonthProfit)}
+  //               subAmount={prevMonthProfit}
+  //               percentage={calculatePercentageDifference(
+  //                 thisMonthProfit,
+  //                 prevMonthProfit,
+  //               )}
+  //               status={thisMonthProfit > prevMonthProfit ? 'up' : 'down'}
+  //             />
+  //           )}
+  //         </Grid>
+  //         <Grid item md={6} sm={6} xs={12}>
+  //           {isLoading ? (
+  //             cardSkeleton
+  //           ) : (
+  //             <StatisticCard
+  //               title='Số đơn hàng tháng này'
+  //               amount={thisMonthOrderNumber}
+  //               subAmount={prevMonthOrderNumber}
+  //               percentage={calculatePercentageDifference(
+  //                 thisMonthOrderNumber,
+  //                 prevMonthOrderNumber,
+  //               )}
+  //               status={
+  //                 thisMonthOrderNumber > prevMonthOrderNumber ? 'up' : 'down'
+  //               }
+  //             />
+  //           )}
+  //         </Grid>
+  //         <Grid item md={6} sm={6} xs={12}>
+  //           {isLoading ? (
+  //             cardSkeleton
+  //           ) : (
+  //             <StatisticProductCard
+  //               title='Sản phẩm bán chạy nhất'
+  //               soldProducts={statisticData.mostSoldProducts}
+  //               type='most'
+  //             />
+  //           )}
+  //         </Grid>
+  //         <Grid item md={6} sm={6} xs={12}>
+  //           {isLoading ? (
+  //             cardSkeleton
+  //           ) : (
+  //             <StatisticProductCard
+  //               title='Sản phẩm bán chậm nhất'
+  //               soldProducts={statisticData.leastSoldProducts}
+  //               type='least'
+  //             />
+  //           )}
+  //         </Grid>
+  //       </Grid>
 
-        <Grid item xs={12}>
-          {isLoading ? (
-            tableSkeleton
-          ) : (
-            <Analytics monthlyProfits={statisticData.monthlyProfits} />
-          )}
-        </Grid>
+  //       <Grid item xs={12}>
+  //         {isLoading ? (
+  //           tableSkeleton
+  //         ) : (
+  //           <Analytics monthlyProfits={statisticData.monthlyProfits} />
+  //         )}
+  //       </Grid>
 
-        <Grid item md={6} xs={12}>
-          {isLoading ? (
-            tableSkeleton
-          ) : (
-            <RecentOrders data={statisticData.fiveMostRecentOrders} />
-          )}
-        </Grid>
+  //       <Grid item md={6} xs={12}>
+  //         {isLoading ? (
+  //           tableSkeleton
+  //         ) : (
+  //           <RecentOrders data={statisticData.fiveMostRecentOrders} />
+  //         )}
+  //       </Grid>
 
-        <Grid item md={6} xs={12}>
-          {isLoading ? (
-            tableSkeleton
-          ) : (
-            <StockOutProducts
-              data={statisticData.fiveAlmostOutOfStockProducts}
-            />
-          )}
-        </Grid>
-      </Grid>
-    </Box>
-  );
+  //       <Grid item md={6} xs={12}>
+  //         {isLoading ? (
+  //           tableSkeleton
+  //         ) : (
+  //           <StockOutProducts
+  //             data={statisticData.fiveAlmostOutOfStockProducts}
+  //           />
+  //         )}
+  //       </Grid>
+  //     </Grid>
+  //   </Box>
+  // );
+
+  return <div>asd</div>;
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult, session } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
-
-  return {
-    props: { user: serialize(session) },
-  };
-};
 
 function calculatePercentageDifference(
   thisMonthValue: number,
