@@ -9,6 +9,9 @@ import { useDebounce } from 'usehooks-ts';
 import { SearchOutlinedIcon, SearchResultCard } from './styled';
 
 import apiCaller from 'api-callers/product/search';
+import { PRODUCT_DETAIL_ROUTE } from 'constants/routes.ui.constant';
+import { insertId } from 'utils/middleware.helper';
+import { getSlug } from 'utils/string.helper';
 
 const SearchInput: FC = () => {
   const parentRef = useRef();
@@ -98,30 +101,34 @@ const SearchInput: FC = () => {
 
       {searchResult.length > 0 && (
         <SearchResultCard elevation={2}>
-          {searchResult.map((item) => (
-            <Link
-              href={`/product/${item.slug}`}
-              key={item.id}
-              passHref
-              legacyBehavior
-            >
-              <MenuItem
-                onClick={() => {
-                  setSearchQuery('');
-                }}
+          {searchResult.map((item) => {
+            const slug = getSlug(item.name, item.id);
+            const imageUrl = item.productImages[0].imageUrl || '';
+            return (
+              <Link
+                href={insertId(PRODUCT_DETAIL_ROUTE, slug)}
                 key={item.id}
+                passHref
+                legacyBehavior
               >
-                <ListItemIcon
-                  sx={{
-                    mr: 1,
+                <MenuItem
+                  onClick={() => {
+                    setSearchQuery('');
                   }}
+                  key={item.id}
                 >
-                  <img src={item.imageUrls[0]} alt={item.name} width={40} />
-                </ListItemIcon>
-                {item.name}
-              </MenuItem>
-            </Link>
-          ))}
+                  <ListItemIcon
+                    sx={{
+                      mr: 1,
+                    }}
+                  >
+                    <img src={imageUrl} alt={item.name} width={40} />
+                  </ListItemIcon>
+                  {item.name}
+                </MenuItem>
+              </Link>
+            );
+          })}
         </SearchResultCard>
       )}
     </Box>
