@@ -35,6 +35,7 @@ import { FlexBox } from 'components/flex-box';
 import { IKPublicContext } from 'constants/imagekit.constant';
 import { getAvatarUrl } from 'helpers/account.helper';
 import { reloadSession } from 'helpers/session.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import type { CommonCustomerAccountModel } from 'models/account.model';
 import type { CustomerModel } from 'models/customer.model';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
@@ -52,6 +53,8 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
   const { palette } = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
+  const { t } = useCustomTranslation(['customer']);
+
   const uploadRef = useRef<HTMLInputElement>();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
@@ -225,7 +228,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
                 onChange={handleChange}
                 value={values.lastName}
                 error={!!touched.lastName && !!errors.lastName}
-                helperText={(touched.lastName && errors.lastName) as string}
+                helperText={t((touched.lastName && errors.lastName) as string)}
                 InputProps={{
                   readOnly: !isEditing,
                 }}
@@ -241,7 +244,9 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
                 onChange={handleChange}
                 value={values.firstName}
                 error={!!touched.firstName && !!errors.firstName}
-                helperText={(touched.firstName && errors.firstName) as string}
+                helperText={t(
+                  (touched.firstName && errors.firstName) as string,
+                )}
                 InputProps={{
                   readOnly: !isEditing,
                 }}
@@ -265,7 +270,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
                 value={values.email}
                 onChange={handleChange}
                 error={!!touched.email && !!errors.email}
-                helperText={(touched.email && errors.email) as string}
+                helperText={t((touched.email && errors.email) as string)}
               />
             </Grid>
 
@@ -278,7 +283,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
                 value={values.phone}
                 onChange={handleChange}
                 error={!!touched.phone && !!errors.phone}
-                helperText={(touched.phone && errors.phone) as string}
+                helperText={t((touched.phone && errors.phone) as string)}
                 InputProps={{
                   inputComponent: PhoneInput as any,
                   readOnly: !isEditing,
@@ -297,9 +302,9 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
                     <TextField
                       fullWidth
                       size='small'
-                      helperText={
-                        (touched.birthday && errors.birthday) as string
-                      }
+                      helperText={t(
+                        (touched.birthday && errors.birthday) as string,
+                      )}
                       error={
                         (!!touched.birthday && !!errors.birthday) || props.error
                       }

@@ -17,6 +17,7 @@ import Card1 from 'components/common/Card1';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
@@ -44,6 +45,8 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
     setIsAddMode(false);
     setEditingAddress(undefined);
   };
+
+  const { t } = useCustomTranslation(['customerAddress']);
 
   const HEADER_LINK = (
     <Button
@@ -160,7 +163,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
                   value={values.title}
                   onChange={handleChange}
                   error={!!touched.title && !!errors.title}
-                  helperText={(touched.title && errors.title) as string}
+                  helperText={t((touched.title && errors.title) as string)}
                 />
               </Grid>
 

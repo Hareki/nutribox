@@ -15,6 +15,7 @@ export interface ConfirmDialogProps {
   handleCancel: () => void;
   isLoading?: boolean;
   color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
+  fullWidth?: boolean;
 }
 
 const ConfirmDialog: FC<ConfirmDialogProps> = ({
@@ -25,9 +26,11 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
   content,
   isLoading = false,
   color = 'error',
+  fullWidth = false,
 }) => {
   return (
     <Dialog
+      fullWidth={fullWidth}
       open={open}
       onClose={handleCancel}
       aria-labelledby='alert-dialog-title'

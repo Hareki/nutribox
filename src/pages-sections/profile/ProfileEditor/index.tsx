@@ -36,7 +36,7 @@ const ProfileEditor: NextPage<Props> = ({ account, toggleEditing }) => {
 
       <ProfileForm account={account} toggleEditing={toggleEditing} />
       <Box my={3} />
-      <PasswordChangeForm account={account} toggleEditing={toggleEditing} />
+      <PasswordChangeForm />
     </>
   );
 };

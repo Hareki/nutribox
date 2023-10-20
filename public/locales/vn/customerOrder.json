@@ -32,5 +32,6 @@
   "CustomerOrder.UpdatedBy.Required": "Vui lòng nhập Mã người cập nhật.",
   "CustomerOrder.UpdatedAt.Required": "Vui lòng nhập ngày cập nhật.",
   "CustomerOrder.UpdatedAt.InvalidFormat": "Định dạng ngày cập nhật không hợp lệ.",
-  "CustomerOrder.NotCancellable.Client": "Đã quá hạn để hủy đơn hàng này."
+  "CustomerOrder.NotCancellable.Client": "Đã quá hạn để hủy đơn hàng này.",
+  "CustomerOrder.CancellationReason.Required": "Vui lòng nhập lý do hủy đơn"
 }

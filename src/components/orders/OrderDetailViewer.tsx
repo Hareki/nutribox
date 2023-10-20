@@ -107,11 +107,6 @@ const OrderDetailsViewer = ({
   const imageUrls = productsOfOrders.map(
     (item) => item.data?.productImages[0].imageUrl,
   );
-  console.log('file: OrderDetailViewer.tsx:107 - imageUrls:', imageUrls);
-  console.log(
-    'file: OrderDetailViewer.tsx:107 - productsOfOrders:',
-    productsOfOrders,
-  );
 
   return (
     <Fragment>
@@ -424,7 +419,6 @@ const OrderDetailsViewer = ({
         {!isAdmin && !isCancel && canCancel && (
           <LoadingButton
             onClick={() => cancelOrderCallback?.()}
-            loading={isCancelling}
             loadingPosition='center'
             color='error'
             variant='contained'

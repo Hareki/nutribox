@@ -1,5 +1,13 @@
 import { ShoppingBag } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@mui/material';
 import type { UseQueryResult } from '@tanstack/react-query';
 import {
   useMutation,
@@ -7,48 +15,54 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSnackbar } from 'notistack';
-import { Fragment, useMemo, useReducer } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 
 import productApiCaller from 'api-callers/product/[slug]';
 import orderApiCaller from 'api-callers/profile/orders';
+import {
+  CustomerCancelOrderDtoSchema,
+  type CustomerCancelOrderDto,
+} from 'backend/dtos/profile/orders/cancelOrder.dto';
 import type { CommonProductModel } from 'backend/services/product/helper';
+import { Small } from 'components/abstract/Typography';
 import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
-import ConfirmDialog from 'components/dialog/confirm-dialog';
-import {
-  confirmDialogReducer,
-  initConfirmDialogState,
-} from 'components/dialog/confirm-dialog/reducer';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import Navigations from 'components/layouts/customer-dashboard/Navigations';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import type { PopulateCustomerOrderFields } from 'models/customerOrder.model';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 function ProfileOrderDetails() {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const id = router.query.id as string;
+  const { t } = useCustomTranslation(['customerOrder']);
 
   const { data: order } = useQuery({
     queryKey: ['order', id],
     queryFn: () => orderApiCaller.getOrder(id),
   });
 
-  const [confirmState, dispatchConfirm] = useReducer(
-    confirmDialogReducer,
-    initConfirmDialogState,
-  );
-
-  const { mutate: cancelOrder, isLoading } = useMutation({
-    mutationFn: () =>
+  const { mutate: cancelOrder, isLoading: isCancellingOrder } = useMutation<
+    PopulateCustomerOrderFields<'customerOrderItems'>,
+    unknown,
+    CustomerCancelOrderDto
+  >({
+    mutationFn: ({ cancellationReason }) =>
       orderApiCaller.cancelOrder(order!.id, {
-        // TODO
-        cancellationReason: 'Lý do hủy của khách hàng',
+        cancellationReason,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries(['order', order!.id]);
+      setOpenDialog(false);
       enqueueSnackbar('Huỷ đơn hàng thành công', {
         variant: 'success',
       });
@@ -74,11 +88,20 @@ function ProfileOrderDetails() {
     [productsOfOrders],
   );
 
-  // console.log(
-  //   'file: [id].tsx:79 - ProfileOrderDetails - isLoadingProductsOfOrders:',
-  //   isLoadingProductsOfOrders,
-  // );
-  console.log('file: [id].tsx:79 - ProfileOrderDetails - order:', order);
+  const handleSubmitCancellationForm = (values: CustomerCancelOrderDto) => {
+    cancelOrder(values);
+  };
+
+  const { values, handleSubmit, handleBlur, handleChange, touched, errors } =
+    useFormik<CustomerCancelOrderDto>({
+      initialValues: {
+        cancellationReason: '',
+      },
+      validationSchema: toFormikValidationSchema(CustomerCancelOrderDtoSchema),
+      onSubmit: handleSubmitCancellationForm,
+    });
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   if (!order || isLoadingProductsOfOrders) return <CircularProgressBlock />;
   return (
@@ -92,30 +115,78 @@ function ProfileOrderDetails() {
       <OrderDetailsViewer
         order={order}
         productsOfOrders={productsOfOrders}
-        isCancelling={isLoading}
-        cancelOrderCallback={() =>
-          dispatchConfirm({
-            type: 'open_dialog',
-            payload: {
-              content: 'Bạn có chắc chắn muốn huỷ đơn hàng này không?',
-              title: 'Huỷ đơn hàng',
-            },
-          })
-        }
+        isCancelling={isCancellingOrder}
+        cancelOrderCallback={() => setOpenDialog(true)}
       />
-      <ConfirmDialog
-        open={confirmState.open}
-        content={confirmState.content}
-        title={confirmState.title}
-        handleCancel={() => dispatchConfirm({ type: 'cancel_dialog' })}
-        handleConfirm={() => {
-          cancelOrder();
-          dispatchConfirm({ type: 'confirm_dialog' });
-        }}
-      />
+
+      <Dialog fullWidth open={openDialog}>
+        <DialogTitle>Hủy đơn hàng</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              marginTop: '12px',
+            }}
+          >
+            <form onSubmit={handleSubmit}>
+              <Small
+                display='block'
+                mb={1}
+                textAlign='left'
+                fontWeight='600'
+                color='grey.700'
+              >
+                Vui lòng nhập lý do hủy đơn:
+              </Small>
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                name='cancellationReason'
+                size='small'
+                type='text'
+                variant='outlined'
+                onBlur={handleBlur}
+                value={values.cancellationReason}
+                onChange={handleChange}
+                error={
+                  !!touched.cancellationReason && !!errors.cancellationReason
+                }
+                helperText={t(
+                  (touched.cancellationReason &&
+                    errors.cancellationReason) as string,
+                )}
+              />
+            </form>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <LoadingButton
+            loading={isCancellingOrder}
+            onClick={() => handleSubmit()}
+            color='error'
+          >
+            Xác nhận
+          </LoadingButton>
+          <Button
+            disabled={isCancellingOrder}
+            onClick={() => setOpenDialog(false)}
+            color='error'
+          >
+            Huỷ bỏ
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Fragment>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'customerOrder',
+  ]);
+
+  return { props: { ...locales } };
+};
 
 ProfileOrderDetails.getLayout = getCustomerDashboardLayout;
 

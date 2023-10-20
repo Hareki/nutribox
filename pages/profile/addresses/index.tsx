@@ -1,7 +1,8 @@
-import { CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import type { GetStaticProps } from 'next';
 import { useSession } from 'next-auth/react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 
@@ -50,6 +51,14 @@ function Address(): ReactElement {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'customerAddress',
+  ]);
+
+  return { props: { ...locales } };
+};
 
 Address.getLayout = getCustomerDashboardLayout;
 export default Address;

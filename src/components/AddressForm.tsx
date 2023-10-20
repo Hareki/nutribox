@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 
 import type { AddressAPI } from 'backend/dtos/checkout.dto';
 import { useAddressQuery } from 'hooks/useAddressQuery';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 
 type AddressFormProps = {
   values: {
@@ -32,6 +33,8 @@ const AddressForm = ({
   medium = false,
   isEditing = true,
 }: AddressFormProps) => {
+  const { t } = useCustomTranslation(['customerAddress']);
+
   const {
     provinces,
     isLoadingProvince,
@@ -63,7 +66,7 @@ const AddressForm = ({
               label='Tỉnh/Thành phố'
               placeholder='Chọn Tỉnh/Thành phố'
               error={!!touched.province && !!errors.province}
-              helperText={(touched.province && errors.province) as string}
+              helperText={t((touched.province && errors.province) as string)}
               {...params}
               size={medium ? 'medium' : 'small'}
             />
@@ -88,7 +91,7 @@ const AddressForm = ({
               label='Quận/Huyện'
               placeholder='Chọn Quận/Huyện'
               error={!!touched.district && !!errors.district}
-              helperText={(touched.district && errors.district) as string}
+              helperText={t((touched.district && errors.district) as string)}
               {...params}
               size={medium ? 'medium' : 'small'}
             />
@@ -110,7 +113,7 @@ const AddressForm = ({
               label='Phường/Xã'
               placeholder='Chọn Phường/Xã'
               error={!!touched.ward && !!errors.ward}
-              helperText={(touched.ward && errors.ward) as string}
+              helperText={t((touched.ward && errors.ward) as string)}
               {...params}
               size={medium ? 'medium' : 'small'}
             />
@@ -128,7 +131,9 @@ const AddressForm = ({
           value={values.streetAddress}
           onChange={handleChange}
           error={!!touched.streetAddress && !!errors.streetAddress}
-          helperText={(touched.streetAddress && errors.streetAddress) as string}
+          helperText={t(
+            (touched.streetAddress && errors.streetAddress) as string,
+          )}
           InputProps={{
             readOnly: !isEditing,
           }}
