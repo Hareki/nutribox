@@ -13,9 +13,12 @@ import {
 } from 'backend/services/customer/customer.guard';
 import { CustomerOrderService } from 'backend/services/customerOrder/customerOrder.service';
 import type { JSSuccess } from 'backend/types/jsend';
-import type { CustomerOrderModel } from 'models/customerOrder.model';
+import type { PopulateCustomerOrderFields } from 'models/customerOrder.model';
 
-type SuccessResponse = JSSuccess<CustomerOrderModel[] | CustomerOrderModel>;
+type SuccessResponse = JSSuccess<
+  | PopulateCustomerOrderFields<'customerOrderItems'>[]
+  | PopulateCustomerOrderFields<'customerOrderItems'>
+>;
 
 const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
   DEFAULT_NC_CONFIGS,

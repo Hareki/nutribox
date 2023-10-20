@@ -1,16 +1,14 @@
 import { Chip } from '@mui/material';
 import { useMemo } from 'react';
 
+import { OrderStatus } from 'backend/enums/entities.enum';
 import { getOrderStatusName } from 'helpers/order.helper';
-import { OrderStatus } from 'utils/constants';
 
 interface OrderStatusChipProps {
-  // This should be Types.ObjectId in mongoose, but since it's too large to import
-  // I just use any because I'm not sure does it affect performance or not
-  statusObjId: any;
+  statusObjId: OrderStatus;
 }
 const OrderStatusChip = ({ statusObjId }: OrderStatusChipProps) => {
-  const statusName = getOrderStatusName(statusObjId.toString());
+  const statusName = getOrderStatusName(statusObjId);
   const statusId = useMemo(() => {
     return statusObjId.toString();
   }, [statusObjId]);
@@ -34,19 +32,19 @@ const OrderStatusChip = ({ statusObjId }: OrderStatusChipProps) => {
 
 const getColor = (statusId: string) => {
   switch (statusId) {
-    case OrderStatus.Pending.id:
+    case OrderStatus.PENDING:
       return 'secondary';
 
-    case OrderStatus.Processing.id:
+    case OrderStatus.PROCESSING:
       return 'warning';
 
-    case OrderStatus.Delivered.id:
+    case OrderStatus.SHIPPED:
       return 'success';
 
-    case OrderStatus.Cancelled.id:
+    case OrderStatus.CANCELLED:
       return 'error';
 
-    case OrderStatus.Delivering.id:
+    case OrderStatus.SHIPPING:
       return 'paste';
 
     default:

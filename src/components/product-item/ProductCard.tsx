@@ -1,22 +1,25 @@
 // Product Card 13
-import { Add, Remove, RemoveRedEye } from '@mui/icons-material';
+import { RemoveRedEye } from '@mui/icons-material';
 import ShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Box, Button, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import Link from 'next/link';
 import type { FC } from 'react';
-import { Fragment, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import type { CommonProductModel } from 'backend/services/product/helper';
 import { H3, Span } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
+import ProductSpinner from 'components/common/input/ProductSpinner';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import LazyImage from 'components/LazyImage';
 import OutOfStockChip from 'components/products/OutOfStockChip';
 import ProductViewDialog from 'components/products/ProductViewDialog';
+import { PRODUCT_DETAIL_ROUTE } from 'constants/routes.ui.constant';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
 import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
+import { insertId } from 'utils/middleware.helper';
 import { getSlug } from 'utils/string.helper';
 
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
@@ -105,7 +108,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
 
   const slug = getSlug(name, id);
 
-  const { updateCartAmount, existingCartItem: cartItem } = useCart(id);
+  const { updateCartAmount, existingCartItem } = useCart(id);
   const [openModal, setOpenModal] = useState(false);
 
   const toggleDialog = useCallback(() => {
@@ -115,7 +118,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
 
   const { inStock, disableAddToCart } = useQuantityLimitation(
     importOrders,
-    cartItem,
+    existingCartItem,
   );
 
   const imageUrls = useMemo(
@@ -134,7 +137,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     <StyledBazaarCard hoverEffect>
       <ImageWrapper>
         {!inStock && <OutOfStockChip />}
-        <Link href={`/product/${slug}`}>
+        <Link href={insertId(PRODUCT_DETAIL_ROUTE, slug)}>
           <LazyImage
             alt={name}
             width={190}
@@ -162,7 +165,10 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           <Span
             aria-disabled={disableAddToCart}
             onClick={() =>
-              handleCartAmountChange((cartItem?.quantity || 0) + 1, 'add')
+              handleCartAmountChange(
+                (existingCartItem?.quantity || 0) + 1,
+                'add',
+              )
             }
           >
             <ShoppingCartIcon />
@@ -202,44 +208,12 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           </FlexBox>
         </Box>
 
-        <FlexBox
-          width='30px'
-          alignItems='center'
-          className='add-cart'
-          flexDirection='column-reverse'
-          justifyContent={cartItem?.quantity ? 'space-between' : 'flex-start'}
-        >
-          <Button
-            disabled={disableAddToCart}
-            color='primary'
-            variant='outlined'
-            sx={{ padding: '3px', borderRadius: '50%' }}
-            onClick={() =>
-              handleCartAmountChange((cartItem?.quantity || 0) + 1, 'add')
-            }
-          >
-            <Add fontSize='small' />
-          </Button>
-
-          {!!cartItem?.quantity && (
-            <Fragment>
-              <Box color='text.primary' fontWeight='600'>
-                {cartItem?.quantity}
-              </Box>
-
-              <Button
-                color='primary'
-                variant='outlined'
-                sx={{ padding: '3px', borderRadius: '50%' }}
-                onClick={() =>
-                  handleCartAmountChange(cartItem?.quantity - 1, 'remove')
-                }
-              >
-                <Remove fontSize='small' />
-              </Button>
-            </Fragment>
-          )}
-        </FlexBox>
+        <ProductSpinner
+          quantity={existingCartItem?.quantity}
+          direction='vertical'
+          disabledAddToCart={disableAddToCart}
+          handleCartAmountChange={handleCartAmountChange}
+        />
       </ContentWrapper>
     </StyledBazaarCard>
   );

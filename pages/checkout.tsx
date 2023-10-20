@@ -8,7 +8,7 @@ import { useState, Fragment } from 'react';
 
 import type { CommonCartItem } from 'backend/services/product/helper';
 import SEO from 'components/abstract/SEO';
-import CircularProgressBlock from 'components/common/CiruclarProgressBlock';
+import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import Stepper from 'components/Stepper';
 import type { IAddress } from 'helpers/address.helper';

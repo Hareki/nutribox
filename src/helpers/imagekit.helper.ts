@@ -1,6 +1,6 @@
 import { IKCore } from 'imagekitio-react';
 
-import { IKPublicContext } from 'utils/constants';
+import { IKPublicContext } from 'constants/imagekit.constant';
 
 interface HandleUpload {
   folderName: string;
@@ -23,12 +23,12 @@ export const handleUpload = async (
   onUploadStart?.();
   const imagekit = new IKCore(IKPublicContext);
 
-  const uploadPromises = [];
+  const uploadPromises = [] as any[];
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
 
     const uploadPromise = imagekit.upload({
-      file: file,
+      file,
       fileName: file.name,
       folder: folderName,
       responseFields: ['url'],

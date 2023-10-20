@@ -21,7 +21,7 @@ interface NumberSpinnerProps {
 const NumberSpinner = forwardRef<HTMLInputElement, NumberSpinnerProps>(
   ({ steps = 1, min = 0, max = 100, value, setValue, initialValue }, ref) => {
     const [internalValue, setInternalValue] = useState(initialValue);
-    const [mouseDirection, setMouseDirection] = useState<MouseDirection>(null);
+    const [mouseDirection, setMouseDirection] = useState<MouseDirection>();
 
     useInterval(
       () => handleButtonChange(mouseDirection),

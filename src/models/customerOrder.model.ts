@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import type { AccountModel } from './account.model';
 import type { CustomerModel } from './customer.model';
+import type { CustomerOrderItemModel } from './customerOrderItem.model';
 import { zodDate, zodNumber, zodPhone, zodString, zodUuid } from './helper';
 
 import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum'; // Assuming enums are defined somewhere
@@ -61,13 +62,15 @@ type CustomerOrderModel = z.infer<typeof CustomerOrderSchema>;
 
 type CustomerOrderReferenceKeys = keyof Pick<
   CustomerOrderModel,
-  'customer' | 'updatedBy'
+  'customer' | 'updatedBy' | 'customerOrderItems'
 >;
 
 type PopulateField<K extends keyof CustomerOrderModel> = K extends 'customer'
   ? CustomerModel
   : K extends 'updatedBy'
   ? AccountModel
+  : K extends 'customerOrderItems'
+  ? CustomerOrderItemModel[]
   : never;
 
 type PopulateCustomerOrderFields<K extends CustomerOrderReferenceKeys> = Omit<

@@ -1,7 +1,20 @@
+import pluralize from 'pluralize';
+import { snakeCase } from 'typeorm/util/StringUtils';
+
 import { CustomerAddressType } from 'backend/enums/entities.enum';
 
 export const serialize = (data: any) => {
   return JSON.parse(JSON.stringify(data));
+};
+
+export const toTableName = (str: string): string => {
+  // Convert from camelCase to snake_case
+  let snake = snakeCase(str);
+
+  // Convert from plural to singular
+  snake = pluralize.singular(snake);
+
+  return snake;
 };
 
 export const snakeCaseToCamelCase = (str: string) => {
@@ -37,7 +50,7 @@ export const removeAccents = (vnStr: string): string => {
 
 export const getSlug = (name = '', id = '') => {
   const transformedName = name.trim().toLowerCase().replace(/\s+/g, '-');
-  return removeAccents(transformedName) + '-' + id;
+  return removeAccents(transformedName) + '_' + id;
 };
 
 // export const getAddressTypeLabel = (type: CustomerAddressType) => {

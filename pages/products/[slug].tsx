@@ -1,26 +1,22 @@
 import { Container, styled, Tabs } from '@mui/material';
-import {
-  getProduct,
-  getProductSlugs,
-  getRelatedProducts,
-  getStore,
-} from 'api/base/server-side-modules';
-import connectToDB from 'api/database/databaseConnection';
-import { serialize } from 'api/helpers/object.helper';
-import type { IUpeProduct } from 'api/models/Product.model/types';
-import type { IStore } from 'api/models/Store.model/types';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { Fragment } from 'react';
 
+import type { CommonProductModel } from 'backend/services/product/helper';
+import { ProductService } from 'backend/services/product/product.service';
+import { StoreService } from 'backend/services/store/store.service';
 import SEO from 'components/abstract/SEO';
 import { H2 } from 'components/abstract/Typography';
 import { Footer } from 'components/common/layout/footer';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import ProductIntro from 'components/products/ProductIntro';
 import RelatedProductsSection from 'components/products/RelatedProductsSection';
+import { DEFAULT_RELATED_PRODUCTS_LIMIT } from 'constants/pagination.constant';
 import { STORE_ID } from 'constants/temp.constant';
 import { extractIdFromSlug } from 'helpers/product.helper';
+import type { PopulateStoreFields } from 'models/store.model';
 import SignInDialog from 'pages-sections/auth/SignInDialog';
+import { serialize } from 'utils/string.helper';
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -36,9 +32,9 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
 }));
 
 type ProductDetailsProps = {
-  product: IUpeProduct;
-  relatedProducts: IUpeProduct[];
-  initialStoreInfo: IStore;
+  product: CommonProductModel;
+  relatedProducts: CommonProductModel[];
+  initialStoreInfo: PopulateStoreFields<'storeWorkTimes'>;
 };
 
 ProductDetails.getLayout = getPageLayout;
@@ -66,9 +62,7 @@ function ProductDetails(props: ProductDetailsProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  await connectToDB();
-
-  const productSlugs = await getProductSlugs();
+  const productSlugs = await ProductService.getProductSlugs();
 
   const paths = productSlugs.map((slug) => ({
     params: { slug },
@@ -81,18 +75,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  await connectToDB();
+  const id = extractIdFromSlug(params?.slug as string);
 
-  const id = extractIdFromSlug(params.slug as string);
+  const { relatedProducts, ...product } =
+    await ProductService.getProductWithRelatedProducts(
+      id,
+      DEFAULT_RELATED_PRODUCTS_LIMIT,
+    );
 
-  const product = await getProduct(id);
-
-  const productId = product.id;
-  const categoryId = product.category.toString();
-
-  const relatedProducts = await getRelatedProducts(productId, categoryId);
-
-  const initialStoreInfo = await getStore(STORE_ID);
+  const initialStoreInfo = await StoreService.getStoreInfo(STORE_ID);
 
   if (!product?.available) {
     return {

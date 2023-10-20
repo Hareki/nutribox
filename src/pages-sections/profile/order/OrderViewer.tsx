@@ -1,9 +1,9 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { Pagination, Skeleton } from '@mui/material';
+import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H5 } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
@@ -20,8 +20,7 @@ type OrderProps = {
 
 const OrderViewer: FC<OrderProps> = ({
   isLoading,
-  accountId,
-  setOrderDetails,
+
   orderList,
 }) => {
   return (

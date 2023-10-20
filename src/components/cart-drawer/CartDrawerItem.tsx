@@ -42,7 +42,7 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
 
   return (
     <Box borderBottom={`1px solid ${palette.divider}`}>
-      <FlexBox py={2} px={2.5} key={cartItem.id} alignItems='center'>
+      <FlexBox py={2} px={2.5} key={cartItem.product.id} alignItems='center'>
         <FlexBox alignItems='center' flexDirection='column'>
           <Button
             disabled={disableAddToCart}

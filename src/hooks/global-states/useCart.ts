@@ -15,7 +15,7 @@ type MutateCartItemType = {
   type: CartItemActionType;
 };
 
-const DEBOUNCE_DELAY = 400;
+const DEBOUNCE_DELAY = 300;
 export type CartItemActionType = 'add' | 'remove' | 'update';
 
 const useCart = (productId?: string) => {

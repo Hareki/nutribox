@@ -29,8 +29,9 @@ export enum OrderStatus {
 
 export enum PaymentMethod {
   COD = 'COD',
-  MoMo = 'MoMo',
-  VNPAY = 'VNPAY',
+  // MoMo = 'MoMo',
+  // VNPAY = 'VNPAY',
+  PayPal = 'PayPal',
 }
 
 export enum DayOfWeek {

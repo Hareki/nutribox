@@ -1,33 +1,27 @@
 import type { SxProps, Theme } from '@mui/material';
 import { Box, Button, Grid, useTheme } from '@mui/material';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { FlexBox, FlexRowCenter } from '../flex-box';
 
-import type { IUpeProduct } from 'api/models/Product.model/types';
+import type { CommonProductModel } from 'backend/services/product/helper';
 import { H1, H2, H6 } from 'components/abstract/Typography';
 import LazyImage from 'components/LazyImage';
 import { useCartSpinner } from 'hooks/useCartSpinner';
 import { formatCurrency } from 'lib';
-import axiosInstance from 'constants/axiosFe.constant';
 
-type ProductIntroProps = { product: IUpeProduct; sx?: SxProps<Theme> };
+type ProductIntroProps = { product: CommonProductModel; sx?: SxProps<Theme> };
 
 const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
-  const { retailPrice, name, imageUrls, description, category } = product;
+  const { retailPrice, name, description, productCategory } = product;
 
   const { palette } = useTheme();
-  const [categoryName, setCategoryName] = useState('đang tải...');
 
-  useEffect(() => {
-    if (categoryName === 'đang tải...') {
-      console.log('axiosInstance.getUri()', axiosInstance.getUri());
-      axiosInstance.get(`/category/${category}`).then((res) => {
-        setCategoryName(res.data.data.name);
-      });
-    }
-  }, [category, categoryName]);
+  const imageUrls = useMemo(
+    () => product.productImages.map((image) => image.imageUrl),
+    [product.productImages],
+  );
 
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -97,7 +91,7 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
 
           <FlexBox alignItems='center' mb={1}>
             <Box>Danh mục: &nbsp;</Box>
-            <H6>{categoryName}</H6>
+            <H6>{productCategory.name}</H6>
           </FlexBox>
 
           <Box pt={1} mb={3}>
@@ -113,22 +107,24 @@ const ProductIntro: FC<ProductIntroProps> = ({ product, sx }) => {
             </Box>
           </Box>
 
-          {!cartItem?.quantity ? (
-            <Button
-              disabled={disableAddToCart}
-              color='primary'
-              variant='contained'
-              onClick={() => {
-                handleCartAmountChange(1, 'add');
-              }}
-              sx={{ mb: 4.5, px: '1.75rem', height: 40 }}
-            >
-              {disableAddToCart ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
-            </Button>
-          ) : (
-            // legacyQuantityInput
-            quantitySpinner
-          )}
+          <Box>
+            {!cartItem?.quantity ? (
+              <Button
+                disabled={disableAddToCart}
+                color='primary'
+                variant='contained'
+                onClick={() => {
+                  handleCartAmountChange(1, 'add');
+                }}
+                sx={{ mb: 4.5, px: '1.75rem', height: 40 }}
+              >
+                {disableAddToCart ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
+              </Button>
+            ) : (
+              // legacyQuantityInput
+              quantitySpinner
+            )}
+          </Box>
         </Grid>
       </Grid>
     </Box>

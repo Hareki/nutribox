@@ -1,8 +1,10 @@
 import { assertNever } from './assertion.helper';
 
-import { OrderStatus } from 'backend/enums/entities.enum';
-import type { OrderStatusCount } from 'backend/services/customer/helper';
-import { AllStatusIdArray } from 'utils/constants';
+import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum';
+import {
+  CustomerOrderStatusOrders,
+  type OrderStatusCount,
+} from 'backend/services/customer/helper';
 
 export function translateOrderStatusCountLabel(
   orderStatusName: keyof OrderStatusCount,
@@ -35,33 +37,54 @@ export function translateOrderStatusCountLabel(
   return `Đơn ${name.toLowerCase()}`;
 }
 
-export function getOrderStatusName(orderStatusId: string) {
-  for (const status in OrderStatus) {
-    if (OrderStatus[status].id === orderStatusId) {
-      return OrderStatus[status].name;
+export function getOrderStatusName(orderStatus: OrderStatus) {
+  let name = '';
+  switch (orderStatus) {
+    case OrderStatus.PENDING:
+      name = 'Chờ xác nhận';
+      break;
+    case OrderStatus.PROCESSING:
+      name = 'Đang xử lý';
+      break;
+    case OrderStatus.SHIPPING:
+      name = 'Đang giao';
+      break;
+    case OrderStatus.SHIPPED:
+      name = 'Đã giao';
+      break;
+    case OrderStatus.CANCELLED:
+      name = 'Đã hủy';
+      break;
+    default: {
+      assertNever(orderStatus);
     }
   }
-  return null;
+
+  return name;
 }
 
-export function getNextOrderStatusId(currentId: string) {
-  const index = AllStatusIdArray.indexOf(currentId);
+export const getPaymentMethodName = (paymentMethod: PaymentMethod) => {
+  switch (paymentMethod) {
+    case PaymentMethod.COD:
+      return 'Tiền mặt';
+    case PaymentMethod.PayPal:
+      return 'PayPal';
+    default:
+      return '';
+  }
+};
+
+export function getNextOrderStatusId(currentOrderStatus: OrderStatus) {
+  const index = CustomerOrderStatusOrders.indexOf(currentOrderStatus);
   if (index === -1) {
     throw new Error('Invalid order status id');
   }
-  return AllStatusIdArray[index + 1];
+  return CustomerOrderStatusOrders[index + 1];
 }
 
-export function getNextOrderStatusName(currentId: string) {
-  console.log(
-    'file: order.helper.ts:55 - getNextOrderStatusName - currentId:',
-    currentId,
-  );
-  const nextOrderStatusId = getNextOrderStatusId(currentId);
-  console.log(
-    'file: order.helper.ts:56 - getNextOrderStatusName - nextOrderStatusId:',
-    nextOrderStatusId,
-  );
+export function getNextOrderStatusName(currentOrderStatus: OrderStatus) {
+  const nextOrderStatusId = getNextOrderStatusId(currentOrderStatus);
+
   if (!nextOrderStatusId) return null;
   return getOrderStatusName(nextOrderStatusId);
 }

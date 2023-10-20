@@ -28,7 +28,10 @@ import {
 } from 'constants/delivery.constant';
 import { STORE_ID } from 'constants/temp.constant';
 import { getFullAddress } from 'helpers/address.helper';
-import type { CustomerOrderModel } from 'models/customerOrder.model';
+import type {
+  CustomerOrderModel,
+  PopulateCustomerOrderFields,
+} from 'models/customerOrder.model';
 import type { PopulateCustomerOrderItemIdFields } from 'models/customerOrderItem.model';
 import type { ExportOrderModel } from 'models/exportOrder.model';
 import type { PopulateStoreFields } from 'models/store.model';
@@ -384,9 +387,11 @@ export class CustomerOrderService {
     customerOrderId: string,
     updatedBy: string,
     dto: CustomerCancelOrderDto,
-  ): Promise<CustomerOrderModel> {
+  ): Promise<PopulateCustomerOrderFields<'customerOrderItems'>> {
     const transactionalEntityManager = getManager();
-    let updatedOrder: CustomerOrderModel | undefined = undefined;
+    let updatedOrder:
+      | PopulateCustomerOrderFields<'customerOrderItems'>
+      | undefined = undefined;
 
     await transactionalEntityManager.transaction(async (transactionalEM) => {
       const customerOrderRepo: Repository<CustomerOrderEntity> =
@@ -398,7 +403,7 @@ export class CustomerOrderService {
       const importOrderRepo: Repository<ImportOrderEntity> =
         transactionalEM.getRepository(ImportOrderEntity);
 
-      updatedOrder = (await CommonService.updateRecord(
+      (await CommonService.updateRecord(
         CustomerOrderEntity,
         customerOrderId,
         {
@@ -408,6 +413,15 @@ export class CustomerOrderService {
         },
         customerOrderRepo,
       )) as CustomerOrderModel;
+
+      updatedOrder = (await CommonService.getRecord(
+        {
+          entity: CustomerOrderEntity,
+          filter: { id: customerOrderId },
+          relations: ['customerOrderItems'],
+        },
+        customerOrderRepo,
+      )) as PopulateCustomerOrderFields<'customerOrderItems'>;
 
       this._refundsProduct(
         customerOrderId,

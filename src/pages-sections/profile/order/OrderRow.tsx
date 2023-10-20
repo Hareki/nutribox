@@ -3,18 +3,20 @@ import { Box, IconButton, Typography } from '@mui/material';
 import Link from 'next/link';
 import type { FC } from 'react';
 
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
 import { H5 } from 'components/abstract/Typography';
 import TableRow from 'components/data-table/TableRow';
 import OrderStatusChip from 'components/orders/OrderStatusChip';
+import { ORDER_DETAIL_ROUTE } from 'constants/routes.ui.constant';
 import { formatCurrency, formatDateTime } from 'lib';
+import type { CustomerOrderModel } from 'models/customerOrder.model';
+import { insertId } from 'utils/middleware.helper';
 
 type OrderRowProps = {
-  order: ICustomerOrder;
+  order: CustomerOrderModel;
 };
 const OrderRow: FC<OrderRowProps> = ({ order }) => {
   return (
-    <Link href={`/profile/order/${order.id}`} passHref>
+    <Link href={insertId(ORDER_DETAIL_ROUTE, order.id)} passHref>
       <TableRow sx={{ my: '1rem', padding: '6px 18px' }}>
         <H5 m={0.75} textAlign='left'>
           {order.id.slice(-6)}

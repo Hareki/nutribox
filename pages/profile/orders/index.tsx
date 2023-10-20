@@ -1,38 +1,46 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { Skeleton } from '@mui/material';
-import type { GetServerSideProps } from 'next';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useSession } from 'next-auth/react';
 import type { ReactElement } from 'react';
 import { Fragment } from 'react';
 
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import orderCaller from 'api-callers/profile/orders';
 import { H5 } from 'components/abstract/Typography';
+import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
 import { FlexBox } from 'components/flex-box';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import usePaginationQuery from 'hooks/usePaginationQuery';
+import type { CustomerOrderModel } from 'models/customerOrder.model';
 import OrderRow from 'pages-sections/profile/order/OrderRow';
-import orderCaller from 'api-callers/profile/orders';
 
 Order.getLayout = getCustomerDashboardLayout;
 
-interface AddressProps {
-  sessionUserId: string;
-}
+function Order(): ReactElement {
+  const { data: session } = useSession();
+  const sessionUserId = session?.account.customer.id;
 
-function Order({ sessionUserId }: AddressProps): ReactElement {
   const {
     isLoading,
     paginationData: orderListPagination,
     paginationComponent,
-  } = usePaginationQuery<ICustomerOrder>({
+  } = usePaginationQuery<CustomerOrderModel>({
     baseQueryKey: ['orders', sessionUserId],
     // FIXME confusing custom hook
     getPaginationDataFn: orderCaller.getOrders,
     otherArgs: sessionUserId,
   });
+
+  if (!sessionUserId || orderListPagination?.docs === undefined)
+    return (
+      <>
+        <CircularProgressBlock />
+        <ReactQueryDevtools />
+      </>
+    );
 
   return (
     <Fragment>
@@ -96,15 +104,9 @@ function Order({ sessionUserId }: AddressProps): ReactElement {
       <FlexBox justifyContent='center' mt={5}>
         {paginationComponent}
       </FlexBox>
+      <ReactQueryDevtools />
     </Fragment>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult, session } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
-
-  return { props: { sessionUserId: session.user.id } };
-};
 export default Order;

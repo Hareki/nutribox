@@ -6,7 +6,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 import addressCaller from 'api-callers/profile/addresses';
-import CircularProgressBlock from 'components/common/CiruclarProgressBlock';
+import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 import AddressEditor from 'pages-sections/profile/address/AddressEditor';

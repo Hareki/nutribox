@@ -20,18 +20,22 @@ import { Fragment, useEffect, useState } from 'react';
 
 import OrderPaymentChip from './OrderPaymentChip';
 
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import type { IProduct } from 'api/models/Product.model/types';
+import { PaymentMethod } from 'backend/enums/entities.enum';
+import { CustomerOrderStatusOrders } from 'backend/services/customer/helper';
+import type { CommonProductModel } from 'backend/services/product/helper';
 import { H5, H6, Paragraph, Span } from 'components/abstract/Typography';
 import TableRow from 'components/data-table/TableRow';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Delivery from 'components/icons/Delivery';
 import PackageBox from 'components/icons/PackageBox';
 import TruckFilled from 'components/icons/TruckFilled';
-import { getFullAddress } from 'helpers/address.helper';
+import { PRODUCT_DETAIL_ROUTE } from 'constants/routes.ui.constant';
+import { getFullAddress2 } from 'helpers/address.helper';
 import { getOrderStatusName } from 'helpers/order.helper';
 import { formatCurrency, formatDateTime } from 'lib';
-import { AllStatusIdArray, CancelIndexThreshHold } from 'utils/constants';
+import type { PopulateCustomerOrderFields } from 'models/customerOrder.model';
+import { CancelIndexThreshHold } from 'utils/constants';
+import { insertId } from 'utils/middleware.helper';
 
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
   flexWrap: 'wrap',
@@ -49,12 +53,13 @@ const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
 const stepIconList = [DescriptionSharpIcon, PackageBox, TruckFilled, Delivery];
 const cancelIconList = [DescriptionSharpIcon, CancelIcon];
 const cancelIndex = 4;
-const getCurrentStatusIndex = (order: ICustomerOrder) =>
-  AllStatusIdArray.indexOf(order.status.toString());
+const getCurrentStatusIndex = (
+  order: PopulateCustomerOrderFields<'customerOrderItems'>,
+) => CustomerOrderStatusOrders.indexOf(order.status);
 
 interface OrderDetailsViewerProps {
-  order: ICustomerOrder;
-  productsOfOrders: UseQueryResult<IProduct, unknown>[];
+  order: PopulateCustomerOrderFields<'customerOrderItems'>;
+  productsOfOrders: UseQueryResult<CommonProductModel, unknown>[];
   isCancelling?: boolean;
   cancelOrderCallback?: () => void;
   isUpdating?: boolean;
@@ -99,6 +104,15 @@ const OrderDetailsViewer = ({
     iconList = cancelIconList;
   }
 
+  const imageUrls = productsOfOrders.map(
+    (item) => item.data?.productImages[0].imageUrl,
+  );
+  console.log('file: OrderDetailViewer.tsx:107 - imageUrls:', imageUrls);
+  console.log(
+    'file: OrderDetailViewer.tsx:107 - productsOfOrders:',
+    productsOfOrders,
+  );
+
   return (
     <Fragment>
       <Card sx={{ p: '2rem 1.5rem', mb: '30px' }}>
@@ -113,8 +127,8 @@ const OrderDetailsViewer = ({
                 // open
                 title={
                   !isCancel
-                    ? getOrderStatusName(AllStatusIdArray[index])
-                    : getOrderStatusName(AllStatusIdArray[cancelIndex])
+                    ? getOrderStatusName(CustomerOrderStatusOrders[index])
+                    : getOrderStatusName(CustomerOrderStatusOrders[cancelIndex])
                 }
                 placement='top'
               >
@@ -199,7 +213,7 @@ const OrderDetailsViewer = ({
                 title={
                   !(isCancel || delivered) &&
                   `Thăng cấp lên ${getOrderStatusName(
-                    AllStatusIdArray[getCurrentStatusIndex(order) + 1],
+                    CustomerOrderStatusOrders[getCurrentStatusIndex(order) + 1],
                   )}`
                 }
               >
@@ -238,9 +252,7 @@ const OrderDetailsViewer = ({
             >
               Giao hàng dự kiến{' '}
               <Span fontWeight={600}>
-                {formatDateTime(
-                  new Date(order.estimatedDeliveryTime as string),
-                )}
+                {formatDateTime(order.estimatedDeliveryTime)}
               </Span>
             </Typography>
           </Grid>
@@ -319,7 +331,7 @@ const OrderDetailsViewer = ({
                 <FlexBox flex='2 2 260px' m={0.75} alignItems='center'>
                   <Avatar
                     variant='square'
-                    src={product.imageUrls[0]}
+                    src={imageUrls[index]}
                     sx={{
                       height: 64,
                       width: 64,
@@ -329,16 +341,27 @@ const OrderDetailsViewer = ({
                     }}
                   />
                   <Box ml={2.5}>
-                    <H6 my='0px'>{product.name}</H6>
+                    <H6 my='0px'>{product!.name}</H6>
 
                     <Typography fontSize='14px' color='grey.600'>
-                      {formatCurrency(product.retailPrice)} x{' '}
-                      {order.items[index].quantity}
+                      {formatCurrency(product!.retailPrice)} x{' '}
+                      {order.customerOrderItems[index].quantity}
                     </Typography>
                   </Box>
                 </FlexBox>
 
-                <Button variant='text' color='primary'>
+                <Button
+                  variant='text'
+                  color='primary'
+                  onClick={() =>
+                    router.push(
+                      insertId(
+                        PRODUCT_DETAIL_ROUTE,
+                        order.customerOrderItems[index].product,
+                      ),
+                    )
+                  }
+                >
                   <Typography fontSize='14px'>Thông tin sản phẩm</Typography>
                 </Button>
               </FlexBox>
@@ -356,7 +379,7 @@ const OrderDetailsViewer = ({
             </H5>
 
             <Paragraph fontSize={14} my={0}>
-              {getFullAddress(order)}
+              {getFullAddress2(order)}
             </Paragraph>
           </Card>
         </Grid>
@@ -379,7 +402,9 @@ const OrderDetailsViewer = ({
                   Thanh toán
                 </H5>
 
-                <OrderPaymentChip paid={order.paid} />
+                <OrderPaymentChip
+                  paymentMethod={order.paidOnlineVia || PaymentMethod.COD}
+                />
               </Grid>
             </Grid>
           </Card>

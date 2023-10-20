@@ -20,7 +20,7 @@ const ProductSchema = z.object({
 
   productCategory: zodUuid('Product.ProductCategoryId'),
 
-  productImages: z.array(z.string().uuid()).optional(),
+  productImages: z.array(z.string().uuid()),
 
   cartItems: z.array(z.string().uuid()).optional(),
 

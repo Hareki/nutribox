@@ -19,6 +19,14 @@ export const CustomerCancellableOrderStatuses = [
   OrderStatus.PROCESSING,
 ];
 
+export const CustomerOrderStatusOrders = [
+  OrderStatus.PENDING,
+  OrderStatus.PROCESSING,
+  OrderStatus.SHIPPING,
+  OrderStatus.SHIPPED,
+  OrderStatus.CANCELLED,
+];
+
 export interface ProfileMenuCount {
   addressCount: number;
   orderCount: number;

@@ -1,50 +1,54 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import type { UseQueryResult } from '@tanstack/react-query';
 import {
   useMutation,
   useQueries,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { Fragment, useReducer } from 'react';
+import { Fragment, useMemo, useReducer } from 'react';
 
-import CustomerOrderController from 'api/controllers/CustomerOrder.controller';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import productApiCaller from 'api-callers/product/[slug]';
+import orderApiCaller from 'api-callers/profile/orders';
+import type { CommonProductModel } from 'backend/services/product/helper';
+import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import ConfirmDialog from 'components/dialog/confirm-dialog';
-import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
+import {
+  confirmDialogReducer,
+  initConfirmDialogState,
+} from 'components/dialog/confirm-dialog/reducer';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import Navigations from 'components/layouts/customer-dashboard/Navigations';
 import OrderDetailsViewer from 'components/orders/OrderDetailViewer';
-import productApiCaller from 'api-callers/product/[slug]';
-import orderApiCaller from 'api-callers/profile/orders';
 
-type Props = {
-  initialOrder: ICustomerOrder;
-};
-
-function ProfileOrderDetails({ initialOrder }: Props) {
+function ProfileOrderDetails() {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+  const id = router.query.id as string;
 
   const { data: order } = useQuery({
-    queryKey: ['order', initialOrder.id],
-    queryFn: () => orderApiCaller.getOrder(initialOrder.id),
-    initialData: initialOrder,
+    queryKey: ['order', id],
+    queryFn: () => orderApiCaller.getOrder(id),
   });
 
-  const [confirmState, dispatchConfirm] = useReducer(confirmDialogReducer, {
-    open: false,
-  });
+  const [confirmState, dispatchConfirm] = useReducer(
+    confirmDialogReducer,
+    initConfirmDialogState,
+  );
 
   const { mutate: cancelOrder, isLoading } = useMutation({
-    mutationFn: () => orderApiCaller.cancelOrder(order.id),
+    mutationFn: () =>
+      orderApiCaller.cancelOrder(order!.id, {
+        // TODO
+        cancellationReason: 'Lý do hủy của khách hàng',
+      }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['order', initialOrder.id]);
+      queryClient.invalidateQueries(['order', order!.id]);
       enqueueSnackbar('Huỷ đơn hàng thành công', {
         variant: 'success',
       });
@@ -52,11 +56,12 @@ function ProfileOrderDetails({ initialOrder }: Props) {
   });
 
   const productsOfOrders = useQueries({
-    queries: order.items.map((item) => ({
-      queryKey: ['product', item.product.toString()],
-      queryFn: () => productApiCaller.getProduct(item.product.toString()),
-    })),
-  });
+    queries:
+      order?.customerOrderItems.map((item) => ({
+        queryKey: ['product', item.product],
+        queryFn: () => productApiCaller.getProduct(item.product, false),
+      })) || [],
+  }) as UseQueryResult<CommonProductModel, unknown>[];
 
   const HEADER_BUTTON = (
     <Button color='primary' sx={{ bgcolor: 'primary.light', px: 3 }}>
@@ -64,6 +69,18 @@ function ProfileOrderDetails({ initialOrder }: Props) {
     </Button>
   );
 
+  const isLoadingProductsOfOrders = useMemo(
+    () => productsOfOrders.some((query) => query.data === undefined),
+    [productsOfOrders],
+  );
+
+  // console.log(
+  //   'file: [id].tsx:79 - ProfileOrderDetails - isLoadingProductsOfOrders:',
+  //   isLoadingProductsOfOrders,
+  // );
+  console.log('file: [id].tsx:79 - ProfileOrderDetails - order:', order);
+
+  if (!order || isLoadingProductsOfOrders) return <CircularProgressBlock />;
   return (
     <Fragment>
       <UserDashboardHeader
@@ -100,18 +117,6 @@ function ProfileOrderDetails({ initialOrder }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
-  const order = await CustomerOrderController.getOne({
-    id: context.params.id as string,
-  });
-
-  return {
-    props: { initialOrder: serialize(order) },
-  };
-};
 ProfileOrderDetails.getLayout = getCustomerDashboardLayout;
 
 export default ProfileOrderDetails;

@@ -1,4 +1,7 @@
-import type { ProductDetailWithRelated } from 'backend/services/product/helper';
+import type {
+  CommonProductModel,
+  ProductDetailWithRelated,
+} from 'backend/services/product/helper';
 import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
@@ -16,11 +19,19 @@ const getSlugs = async (): Promise<string[]> => {
   return productSlugs;
 };
 
-const getProduct = async (slug: string): Promise<ProductDetailWithRelated> => {
+const getProduct = async (
+  slug: string,
+  related = true,
+): Promise<ProductDetailWithRelated | CommonProductModel> => {
+  console.log('file: [slug].ts:26 - slug:', slug);
   const id = extractIdFromSlug(slug);
-  const response = await axiosInstance.get<JSSuccess<ProductDetailWithRelated>>(
-    insertId(PRODUCT_DETAIL_API_ROUTE, id),
-  );
+  const response = await axiosInstance.get<
+    JSSuccess<ProductDetailWithRelated | CommonProductModel>
+  >(insertId(PRODUCT_DETAIL_API_ROUTE, id), {
+    params: {
+      related,
+    },
+  });
   return response.data.data;
 };
 

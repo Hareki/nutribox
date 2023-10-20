@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import type { GetAllPaginationResult } from 'api/types/pagination.type';
+import type { GetAllPaginationResult } from 'types/pagination';
 
 interface UsePaginationQueryParams {
-  baseQueryKey: (string | number)[];
+  baseQueryKey: (string | number | undefined)[];
   getPaginationDataFn: (currPageNum: number, otherArgs: any) => Promise<any>;
   otherArgs?: any;
 }
@@ -24,7 +24,7 @@ const usePaginationQuery = <T,>({
   const {
     data: paginationData,
     isLoading,
-    isFetching,
+    // isFetching,
   } = useQuery<GetAllPaginationResult<T>>({
     queryKey: [...baseQueryKey, currPageNum],
     queryFn: () => getPaginationDataFn(currPageNum, otherArgs),

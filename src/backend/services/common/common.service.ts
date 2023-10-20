@@ -7,12 +7,14 @@ import {
 } from 'typeorm';
 
 import { getRepo } from 'backend/helpers/database.helper';
+import { SnakeNamingStrategy } from 'backend/helpers/snakeCaseNamingStrategy.helper';
 import {
   prefixObjectKeys,
   type GetRecordInputs,
   type GetRecordsByKeywordInputs,
   type GetRecordsInputs,
 } from 'backend/services/common/helper';
+import { toTableName } from 'utils/string.helper';
 
 export class CommonService {
   public static async getRecord<E extends ObjectLiteral>(
@@ -42,6 +44,17 @@ export class CommonService {
           `${entity.name}.${String(relation)}`,
           String(relation),
         );
+
+        // Load relation IDs for child entities (new code)
+        const childEntityName = toTableName(String(relation));
+        const childEntityMetadata =
+          repository.manager.connection.getMetadata(childEntityName);
+        for (const grandChildRelation of childEntityMetadata.relations) {
+          queryBuilder = queryBuilder.loadRelationIdAndMap(
+            `${String(relation)}.${grandChildRelation.propertyName}`,
+            `${String(relation)}.${grandChildRelation.propertyName}`,
+          );
+        }
       }
     }
 

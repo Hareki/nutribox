@@ -24,7 +24,7 @@ import PackageBox from 'components/icons/PackageBox';
 import TruckFilled from 'components/icons/TruckFilled';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { getFullAddress, getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddress2 } from 'helpers/address.helper';
 import useWindowSize from 'hooks/useWindowSize';
 import { formatCurrency } from 'lib';
 

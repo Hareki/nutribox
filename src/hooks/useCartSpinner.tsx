@@ -1,19 +1,20 @@
-import { useCallback } from 'react';
-import { useEffect, useState } from 'react';
+// Product Card 13
+import { useCallback, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useQuantityLimitation } from './useQuantityLimitation';
 
 import type { CommonProductModel } from 'backend/services/product/helper';
-import NumberSpinner from 'components/common/input/NumberSpinnerInput';
+import ProductSpinner from 'components/common/input/ProductSpinner';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
 
 export const useCartSpinner = (product: CommonProductModel) => {
-  const { existingCartItem: cartItem, updateCartAmount } = useCart(product.id);
+  const { existingCartItem, updateCartAmount } = useCart(product.id);
   const [firstTimeRender, setFirstTimeRender] = useState(true);
   const { maxQuantity, disableAddToCart, inStock } = useQuantityLimitation(
     product.importOrders,
-    cartItem,
+    existingCartItem,
   );
 
   const handleCartAmountChange = useCallback(
@@ -30,13 +31,13 @@ export const useCartSpinner = (product: CommonProductModel) => {
     [maxQuantity, product, updateCartAmount],
   );
 
-  const [quantity, setQuantity] = useState(cartItem?.quantity || 0);
+  const [quantity, setQuantity] = useState(existingCartItem?.quantity || 0);
 
   useEffect(() => {
-    if (cartItem) {
-      setQuantity(cartItem.quantity);
+    if (existingCartItem) {
+      setQuantity(existingCartItem.quantity);
     }
-  }, [cartItem]);
+  }, [existingCartItem]);
 
   useEffect(() => {
     if (firstTimeRender) {
@@ -44,7 +45,7 @@ export const useCartSpinner = (product: CommonProductModel) => {
       return;
     }
     const timer = setTimeout(() => {
-      if (quantity !== cartItem?.quantity) {
+      if (quantity !== existingCartItem?.quantity) {
         handleCartAmountChange(quantity, 'update');
       }
     }, 300);
@@ -56,20 +57,19 @@ export const useCartSpinner = (product: CommonProductModel) => {
   }, [quantity]);
 
   const quantitySpinner = (
-    <NumberSpinner
-      initialValue={cartItem?.quantity || 0}
-      value={quantity}
-      setValue={setQuantity}
-      max={maxQuantity}
+    <ProductSpinner
+      quantity={existingCartItem?.quantity}
+      direction='horizontal'
+      disabledAddToCart={disableAddToCart}
+      handleCartAmountChange={handleCartAmountChange}
     />
   );
 
-  // console.log(cartItem?.quantity, quantity);
   return {
     inStock,
     disableAddToCart,
     handleCartAmountChange,
     quantitySpinner,
-    cartItem,
+    cartItem: existingCartItem,
   };
 };
