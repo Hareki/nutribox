@@ -83,21 +83,20 @@ export function isAuthorized(
   return false;
 }
 
-export function redirectToDefaultCustomerRoute() {
-  return NextResponse.redirect(HOME_PAGE_ROUTE);
-}
+export const getDefaultCustomerRoute = () => HOME_PAGE_ROUTE;
 
-export function redirectToDefaultStaffRoute(
-  employeeRole: Exclude<Role, 'CUSTOMER'>,
-) {
+export const getDefaultStaffRoute = (employeeRole: EmployeeRole) => {
   const defaultStaffRoute: Record<Exclude<Role, 'CUSTOMER'>, string> = {
     ['MANAGER']: DASHBOARD_STAFF_ROUTE,
     ['CASHIER']: DASHBOARD_STAFF_ROUTE,
     ['WAREHOUSE_MANAGER']: ORDERS_STAFF_ROUTE,
     ['SHIPPER']: ORDERS_STAFF_ROUTE,
   };
-  return NextResponse.redirect(defaultStaffRoute[employeeRole]);
-}
+  const defaultRoute = defaultStaffRoute[employeeRole.toString()];
+  if (!defaultRoute)
+    throw new Error(`Invalid employee role: ${employeeRole.toString()}`);
+  return defaultRoute;
+};
 
 export const removeQueryParameters = (urlString: string) => {
   const url = new URL(urlString);

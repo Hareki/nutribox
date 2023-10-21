@@ -4,33 +4,20 @@ import { NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 
 import type { RequestMethod } from 'backend/types/utils';
-import {
-  API_BASE_ROUTE,
-  CashierApiRoutes,
-  CustomerApiRoutes,
-  ManagerApiRoutes,
-  PublicApiRoutes,
-  ShipperApiRoutes,
-} from 'constants/routes.api.constant';
+import { API_BASE_ROUTE, PublicApiRoutes } from 'constants/routes.api.constant';
 import {
   NOT_FOUND_ROUTE,
   NoAuthenticationOnlyRoutes,
   PublicRoutes,
   SIGN_IN_ROUTE,
   NoStaffRoutes,
-  CustomerRoutes,
-  ManagerRoutes,
-  CashierRoutes,
-  WarehouseManagerRoutes,
-  ShipperRoutes,
-  HOME_PAGE_ROUTE,
 } from 'constants/routes.ui.constant';
 import type { Role } from 'utils/middleware.helper';
 import {
+  getDefaultCustomerRoute,
+  getDefaultStaffRoute,
   isAuthorized,
   matchesPlaceHolderRoute,
-  redirectToDefaultCustomerRoute,
-  redirectToDefaultStaffRoute,
   removeQueryParameters,
   routeToRegexPattern,
 } from 'utils/middleware.helper';
@@ -66,7 +53,7 @@ export default withAuth(
         pattern.test(url),
       );
       if (isNoStaffRoute && employeeRole && hasValidToken) {
-        return redirectToDefaultStaffRoute(employeeRole.toString() as any);
+        return NextResponse.redirect(getDefaultStaffRoute(employeeRole));
       }
 
       // public route, but EVERYONE can't access once signed in
@@ -75,9 +62,9 @@ export default withAuth(
 
       if (isNoAuthenticationOnlyRoute && hasValidToken) {
         if (employeeRole) {
-          return redirectToDefaultStaffRoute(employeeRole.toString() as any);
+          return NextResponse.redirect(getDefaultStaffRoute(employeeRole));
         } else {
-          return redirectToDefaultCustomerRoute();
+          return NextResponse.redirect(getDefaultCustomerRoute());
         }
       }
       return undefined;
@@ -93,7 +80,6 @@ export default withAuth(
       ) {
         return undefined;
       }
-      // console.log('hehe');
       return NextResponse.redirect(NOT_FOUND_ROUTE);
     }
 
