@@ -1,9 +1,8 @@
 import { CommonService } from '../common/common.service';
 import type { CommonCartItem, CommonProductModel } from '../product/helper';
-import { CommonProductRelations } from '../product/helper';
+import { ProductService } from '../product/product.service';
 
 import { CartItemEntity } from 'backend/entities/cartItem.entity';
-import { ProductEntity } from 'backend/entities/product.entity';
 import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 import type { CartItemModel } from 'models/cartItem.model';
 
@@ -23,10 +22,8 @@ export class CartItemService {
     const commonProductIds = cartItems.map(
       (cartItem) => cartItem.product as string,
     );
-    const [commonProducts] = await CommonService.getRecords({
-      entity: ProductEntity,
+    const [commonProducts] = await ProductService.getCommonProducts({
       whereInIds: commonProductIds,
-      relations: CommonProductRelations,
     });
 
     const castedCartItems = cartItems as CartItemModel[];

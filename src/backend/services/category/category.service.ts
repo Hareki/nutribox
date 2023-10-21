@@ -1,10 +1,9 @@
 import { CommonService } from '../common/common.service';
 import type { CommonProductModel } from '../product/helper';
-import { CommonProductRelations } from '../product/helper';
+import { ProductService } from '../product/product.service';
 
 import type { CategoryWithProducts } from './helper';
 
-import { ProductEntity } from 'backend/entities/product.entity';
 import { ProductCategoryEntity } from 'backend/entities/productCategory.entity';
 
 export class CategoryService {
@@ -19,9 +18,7 @@ export class CategoryService {
   public static async getCategoryWithProducts(
     categoryId: string,
   ): Promise<CategoryWithProducts> {
-    const [products] = await CommonService.getRecords({
-      entity: ProductEntity,
-      relations: CommonProductRelations,
+    const [products] = await ProductService.getCommonProducts({
       filter: {
         productCategory: categoryId,
       },

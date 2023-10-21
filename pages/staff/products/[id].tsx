@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 import type { UpdateProductInfoRb } from '../../api/admin/product/[id]';
 
-import apiCaller from 'api-callers/admin/product';
+import apiCaller from 'api-callers/staff/products';
 import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
@@ -94,7 +94,7 @@ export default function AdminProductDetails({
 
   const { mutate: pushProductImageUrls, isLoading: isPushingImageUrls } =
     useMutation<IProduct, unknown, string[]>({
-      mutationFn: (imageUrls) => apiCaller.pushImageUrls(product.id, imageUrls),
+      mutationFn: (imageUrls) => apiCaller.pushImages(product.id, imageUrls),
       onSuccess: () => {
         enqueueSnackbar('Thêm ảnh sản phẩm thành công', {
           variant: 'success',
@@ -114,7 +114,7 @@ export default function AdminProductDetails({
     unknown,
     string
   >({
-    mutationFn: (imageUrl) => apiCaller.deleteImageUrl(product.id, imageUrl),
+    mutationFn: (imageUrl) => apiCaller.removeImage(product.id, imageUrl),
     onSuccess: () => {
       setIsUploadSuccess(true);
       setIsUploadError(false);

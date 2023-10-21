@@ -7,23 +7,22 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
-import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { ICdsUpeProduct } from 'api/models/Product.model/types';
+import apiCaller from 'api-callers/staff/products';
+import type { ExtendedCommonProductModel } from 'backend/services/product/helper';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
+import { NEW_PRODUCT_ROUTE } from 'constants/routes.ui.constant';
 import { getMaxProductQuantity } from 'helpers/product.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
 import { ProductRow } from 'pages-sections/admin';
-import apiCaller from 'api-callers/admin/product';
 
 ProductList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -32,19 +31,17 @@ ProductList.getLayout = function getLayout(page: ReactElement) {
 const tableHeading = [
   { id: 'name', label: 'Tên sản phẩm', align: 'left' },
   { id: 'category', label: 'Danh mục', align: 'left' },
-  { id: 'wholesalePrice', label: 'Giá gốc', align: 'left' },
   { id: 'retailPrice', label: 'Giá bán', align: 'left' },
-  { id: 'shelfLife', label: 'Tồn kho', align: 'left' },
+  { id: 'remainingStock', label: 'Tồn kho', align: 'left' },
 ];
 
-const mapProductToRow = (item: ICdsUpeProduct) => ({
+const mapProductToRow = (item: ExtendedCommonProductModel) => ({
   id: item.id,
   // shelfLife: item.shelfLife,
-  unexpiredAmount: getMaxProductQuantity(item.expirations),
-  imageUrls: item.imageUrls,
+  remainingStock: getMaxProductQuantity(item.importOrders),
+  imageUrls: item.productImages.map((image) => image.imageUrl),
   name: item.name,
-  category: item.category.name,
-  wholesalePrice: item.wholesalePrice,
+  category: item.productCategory.name,
   retailPrice: item.retailPrice,
 });
 
@@ -57,8 +54,8 @@ function ProductList() {
     isLoading,
     paginationData: products,
     paginationComponent,
-  } = usePaginationQuery<ICdsUpeProduct>({
-    baseQueryKey: ['admin/products'],
+  } = usePaginationQuery<ExtendedCommonProductModel>({
+    baseQueryKey: ['staff', 'products'],
     getPaginationDataFn: (currPageNum) => apiCaller.getProducts(currPageNum),
   });
 
@@ -86,7 +83,7 @@ function ProductList() {
         handleSearch={handleSearch}
         searchPlaceholder='Tìm theo tên sản phẩm'
         haveButton
-        handleBtnClick={() => router.push('/admin/product/create')}
+        handleBtnClick={() => router.push(NEW_PRODUCT_ROUTE)}
         buttonText='Thêm sản phẩm'
       />
 
@@ -132,13 +129,5 @@ function ProductList() {
     </Box>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
-
-  return { props: {} };
-};
 
 export default ProductList;

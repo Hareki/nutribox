@@ -18,7 +18,7 @@ import * as yup from 'yup';
 
 import type { UpdateProductInfoRb } from '../../../../pages/api/admin/product/[id]';
 
-import apiCaller from 'api-callers/admin/product';
+import apiCaller from 'api-callers/staff/products';
 import CurrencyInput from 'components/common/input/CurrencyInput';
 import CustomSwitch from 'components/common/input/CustomSwitch';
 import InfoDialog from 'components/dialog/info-dialog';

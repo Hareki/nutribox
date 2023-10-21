@@ -17,7 +17,7 @@ import type { ExpirationOrder } from '../../../../../pages/api/admin/product/exp
 import ExpirationOrderModal from './ExpirationOrderModal';
 import ExpirationOrderRow from './ExpirationOrderRow';
 
-import apiCaller from 'api-callers/admin/product';
+import apiCaller from 'api-callers/staff/products';
 import TableHeader from 'components/data-table/TableHeader';
 import { FlexBox } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
@@ -44,7 +44,7 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
     paginationComponent,
   } = usePaginationQuery<ExpirationOrder>({
     baseQueryKey: ['admin/order-expiration', product.id],
-    getPaginationDataFn: apiCaller.getExpirationOrders,
+    getPaginationDataFn: apiCaller.getImportOrders,
     otherArgs: product.id,
   });
 

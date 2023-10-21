@@ -8,9 +8,9 @@ import { CustomerOrderService } from './customerOrder.service';
 
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
 import { CartItemEntity } from 'backend/entities/cartItem.entity';
-import { getFullAddress } from 'helpers/address.helper';
 import { getSessionAccount } from 'backend/helpers/auth2.helper';
 import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
+import { getFullAddress } from 'helpers/address.helper';
 
 export const createCartItemAccessGuard =
   () =>
@@ -63,24 +63,24 @@ export const createCheckoutValidationGuard =
 
     req.body.checkoutValidation = checkoutValidation;
 
-    // if (!checkoutValidation.isValidDistance) {
-    //   return res.status(StatusCodes.BAD_REQUEST).json({
-    //     status: 'fail',
-    //     message: 'The distance is too far',
-    //   });
-    // }
-    // if (!checkoutValidation.isValidDuration) {
-    //   return res.status(StatusCodes.BAD_REQUEST).json({
-    //     status: 'fail',
-    //     message: 'The duration is too long',
-    //   });
-    // }
-    // if (!checkoutValidation.isValidTime) {
-    //   return res.status(StatusCodes.BAD_REQUEST).json({
-    //     status: 'fail',
-    //     message: 'Outside of working time',
-    //   });
-    // }
+    if (!checkoutValidation.isValidDistance) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: 'fail',
+        message: 'The distance is too far',
+      });
+    }
+    if (!checkoutValidation.isValidDuration) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: 'fail',
+        message: 'The duration is too long',
+      });
+    }
+    if (!checkoutValidation.isValidTime) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: 'fail',
+        message: 'Outside of working time',
+      });
+    }
 
     return next();
   };

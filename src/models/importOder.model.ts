@@ -48,7 +48,7 @@ const ImportOrderSchema = z.object({
 
 type ImportOrderModel = z.infer<typeof ImportOrderSchema>;
 
-const ImportDateRefinement1: RefinementParameters<ImportOrderModel> = [
+export const ImportDateRefinement1: RefinementParameters<ImportOrderModel> = [
   (data: ImportOrderModel) =>
     !isDateTimeAfter(data.importDate, data.expirationDate),
   {
@@ -57,7 +57,7 @@ const ImportDateRefinement1: RefinementParameters<ImportOrderModel> = [
   },
 ];
 
-const ImportDateRefinement2: RefinementParameters<ImportOrderModel> = [
+export const ImportDateRefinement2: RefinementParameters<ImportOrderModel> = [
   (data: ImportOrderModel) =>
     !isDateTimeAfter(data.manufacturingDate, data.expirationDate),
   {

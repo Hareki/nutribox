@@ -3,6 +3,7 @@
   "Product.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
   "Product.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "Product.ProductCategoryId.Required": "Vui lòng nhập Mã danh mục sản phẩm.",
+  "Product.ProductImages.Required": "Vui lòng nhập hình ảnh sản phẩm.",
   "Product.Name.Required": "Vui lòng nhập tên sản phẩm.",
   "Product.Name.Min": "Tên sản phẩm phải có ít nhất 3 ký tự.",
   "Product.Name.Max": "Tên sản phẩm không nên vượt quá 50 ký tự.",
@@ -23,5 +24,6 @@
   "Product.MaxQuantity.Required": "Vui lòng nhập số lượng tối đa.",
   "Product.MaxQuantity.Min": "Số lượng tối đa phải ít nhất là 1.",
   "Product.MaxQuantity.Max": "Số lượng tối đa không được vượt quá 1000.",
-  "Product.DefaultImportPrice.LessThan.RetailPrice": "Giá nhập mặc định phải thấp hơn giá bán lẻ."
+  "Product.DefaultImportPrice.LessThan.RetailPrice": "Giá nhập mặc định phải thấp hơn giá bán lẻ.",
+  "Product.ImportQuantity.Exceeded": "Vượt quá số lượng tồn kho cho phép, vui lòng giảm số lượng nhập đi {0}."
 }

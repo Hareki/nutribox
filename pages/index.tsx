@@ -9,7 +9,6 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { getServerSession } from 'next-auth';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useCallback, useEffect, useState, useMemo, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,11 +18,9 @@ import { Mock } from 'api-callers/mock';
 import searchApiCaller from 'api-callers/product/search';
 import type { Service } from 'backend/database/mock/services';
 import type { Testimonial } from 'backend/database/mock/testimonials';
-import { ProductEntity } from 'backend/entities/product.entity';
 import { ProductCategoryEntity } from 'backend/entities/productCategory.entity';
 import { CommonService } from 'backend/services/common/common.service';
 import type { CommonProductModel } from 'backend/services/product/helper';
-import { CommonProductRelations } from 'backend/services/product/helper';
 import { ProductService } from 'backend/services/product/product.service';
 import { StoreService } from 'backend/services/store/store.service';
 import SEO from 'components/abstract/SEO';
@@ -296,14 +293,13 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const getPaginatedProducts = async (): Promise<
     GetInfinitePaginationResult<CommonProductModel>
   > => {
-    const [data, totalDocs, nextPageNum] = await CommonService.getRecords({
-      entity: ProductEntity,
-      relations: CommonProductRelations,
-      paginationParams: {
-        limit: DEFAULT_DOCS_PER_PAGE,
-        page: DEFAULT_PAGE,
-      },
-    });
+    const [data, totalDocs, nextPageNum] =
+      await ProductService.getCommonProducts({
+        paginationParams: {
+          limit: DEFAULT_DOCS_PER_PAGE,
+          page: DEFAULT_PAGE,
+        },
+      });
 
     return {
       nextPageNum,

@@ -7,6 +7,7 @@ import { CustomerOrderItemEntity } from './customerOrderItem.entity';
 import { ImportOrderEntity } from './importOrder.entity';
 import { ProductCategoryEntity } from './productCategory.entity';
 import { ProductImageEntity } from './productImage.entity';
+import { SupplierEntity } from './supplier.entity';
 
 @Entity({ name: 'product' })
 export class ProductEntity extends AbstractEntity {
@@ -36,17 +37,17 @@ export class ProductEntity extends AbstractEntity {
   })
   name: string;
 
-  @Column('decimal')
+  @Column({
+    type: 'decimal',
+    default: 0,
+  })
   defaultImportPrice: number;
 
   @Column('decimal')
   retailPrice: number;
 
-  @Column({
-    type: 'uuid',
-    nullable: true,
-  })
-  defaultSupplierId?: string;
+  @ManyToOne(() => SupplierEntity, (supplier) => supplier.products)
+  defaultSupplier: Relation<SupplierEntity> | string;
 
   @Column()
   description: string;
@@ -55,7 +56,7 @@ export class ProductEntity extends AbstractEntity {
   shelfLife: number;
 
   @Column({
-    default: true,
+    default: false,
   })
   available: boolean;
 

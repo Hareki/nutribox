@@ -148,6 +148,7 @@ export const CATEGORY_DETAIL_API_STAFF_ROUTE = `${CATEGORIES_API_STAFF_ROUTE}/:i
 
 export const PRODUCTS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/products`;
 export const PRODUCT_DETAIL_API_STAFF_ROUTE = `${PRODUCTS_API_STAFF_ROUTE}/:id`;
+export const IMPORT_PRODUCT_API_STAFF_ROUTE = `${PRODUCT_DETAIL_API_STAFF_ROUTE}/:id/import`;
 
 export const SUPPLIERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/suppliers`;
 export const SUPPLIER_DETAIL_API_STAFF_ROUTE = `${SUPPLIERS_API_STAFF_ROUTE}/:id`;
@@ -203,8 +204,12 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
     route: PRODUCTS_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET', 'PATCH', 'DELETE'],
+    methods: ['GET', 'PUT', 'PATCH', 'DELETE'],
     route: PRODUCT_DETAIL_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['POST'],
+    route: IMPORT_PRODUCT_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],

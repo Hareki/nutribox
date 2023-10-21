@@ -20,6 +20,8 @@ const ProductSchema = z.object({
 
   productCategory: zodUuid('Product.ProductCategoryId'),
 
+  defaultSupplier: zodUuid('Product.DefaultSupplierId'),
+
   productImages: z.array(z.string().uuid()),
 
   cartItems: z.array(z.string().uuid()).optional(),
@@ -33,13 +35,11 @@ const ProductSchema = z.object({
   defaultImportPrice: zodNumber(
     'Product.DefaultImportPrice',
     'float',
-    0,
+    1,
     10_000_000,
   ),
 
-  retailPrice: zodNumber('Product.RetailPrice', 'float', 0, 10_000_000),
-
-  defaultSupplierId: zodUuid('Product.DefaultSupplierId'),
+  retailPrice: zodNumber('Product.RetailPrice', 'float', 1, 10_000_000),
 
   description: zodString('Product.Description', 1, 500),
 
@@ -68,7 +68,7 @@ const getRefinedProductSchema = (schema: z.Schema<any>) =>
 type ProductReferenceKeys = keyof Pick<
   ProductModel,
   | 'productCategory'
-  | 'defaultSupplierId'
+  | 'defaultSupplier'
   | 'productImages'
   | 'cartItems'
   | 'importOrders'
@@ -76,7 +76,7 @@ type ProductReferenceKeys = keyof Pick<
 
 type PopulateField<K extends keyof ProductModel> = K extends 'category'
   ? ProductCategoryModel
-  : K extends 'defaultSupplierId'
+  : K extends 'defaultSupplier'
   ? SupplierModel
   : K extends 'productImages'
   ? ProductImageModel[]

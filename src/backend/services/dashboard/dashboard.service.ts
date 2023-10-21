@@ -25,7 +25,6 @@ import { ImportOrderEntity } from 'backend/entities/importOrder.entity';
 import { ProductEntity } from 'backend/entities/product.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
 import { getRepo } from 'backend/helpers/database.helper';
-import type { CustomerOrderModel } from 'models/customerOrder.model';
 import type { ProductModel } from 'models/product.model';
 
 export class DashboardService {
@@ -80,7 +79,7 @@ export class DashboardService {
     let profit = 0;
     let orderNumber = 0;
     orders.forEach((order) => {
-      profit += order.profit;
+      profit += Number(order.profit);
       orderNumber += 1;
     });
 
@@ -178,7 +177,7 @@ export class DashboardService {
         const monthIndex = getMonth(monthDate);
         orders.forEach((order) => {
           if (order.updatedAt.getMonth() === monthIndex) {
-            monthlyProfits[monthIndex] += order.profit;
+            monthlyProfits[monthIndex] += Number(order.profit);
           }
         });
       }

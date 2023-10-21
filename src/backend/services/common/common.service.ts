@@ -7,12 +7,13 @@ import {
 } from 'typeorm';
 
 import { getRepo } from 'backend/helpers/database.helper';
-import { SnakeNamingStrategy } from 'backend/helpers/snakeCaseNamingStrategy.helper';
 import {
   prefixObjectKeys,
   type GetRecordInputs,
   type GetRecordsByKeywordInputs,
   type GetRecordsInputs,
+  buildChildRelationIds,
+  buildRelationFields,
 } from 'backend/services/common/helper';
 import { toTableName } from 'utils/string.helper';
 
@@ -27,36 +28,7 @@ export class CommonService {
 
     let queryBuilder = repository.createQueryBuilder(entity.name);
 
-    // By default, load relation IDs for all relations
-    const entityMetadata = repository.metadata;
-    for (const allRelationObjs of entityMetadata.relations) {
-      if (!relations || !relations.includes(allRelationObjs.propertyName)) {
-        queryBuilder = queryBuilder.loadRelationIdAndMap(
-          `${entity.name}.${allRelationObjs.propertyName}`,
-          `${entity.name}.${allRelationObjs.propertyName}`,
-        );
-      }
-    }
-
-    if (relations && relations.length > 0) {
-      for (const relation of relations) {
-        queryBuilder = queryBuilder.leftJoinAndSelect(
-          `${entity.name}.${String(relation)}`,
-          String(relation),
-        );
-
-        // Load relation IDs for child entities (new code)
-        const childEntityName = toTableName(String(relation));
-        const childEntityMetadata =
-          repository.manager.connection.getMetadata(childEntityName);
-        for (const grandChildRelation of childEntityMetadata.relations) {
-          queryBuilder = queryBuilder.loadRelationIdAndMap(
-            `${String(relation)}.${grandChildRelation.propertyName}`,
-            `${String(relation)}.${grandChildRelation.propertyName}`,
-          );
-        }
-      }
-    }
+    buildRelationFields(entity, queryBuilder, repository, relations);
 
     if (filter) {
       queryBuilder = queryBuilder.where(filter);
@@ -103,26 +75,7 @@ export class CommonService {
 
     let queryBuilder = repository.createQueryBuilder(entity.name);
 
-    const entityMetadata = repository.metadata;
-
-    // By default, load relation IDs for all relations
-    for (const allRelationObjs of entityMetadata.relations) {
-      if (!relations || !relations.includes(allRelationObjs.propertyName)) {
-        queryBuilder = queryBuilder.loadRelationIdAndMap(
-          `${entity.name}.${allRelationObjs.propertyName}`, // field name contains relation ID
-          `${entity.name}.${allRelationObjs.propertyName}`, // reference to relation object
-        );
-      }
-    }
-
-    if (relations && relations.length > 0) {
-      for (const relation of relations) {
-        queryBuilder = queryBuilder.leftJoinAndSelect(
-          `${entity.name}.${String(relation)}`,
-          String(relation),
-        );
-      }
-    }
+    buildRelationFields(entity, queryBuilder, repository, relations);
 
     const finalFilter = (filter || {}) as Record<string, any>;
 
@@ -171,26 +124,7 @@ export class CommonService {
 
     let queryBuilder = repository.createQueryBuilder(entity.name);
 
-    const entityMetadata = repository.metadata;
-
-    // By default, load relation IDs for all relations
-    for (const allRelationObjs of entityMetadata.relations) {
-      if (!relations || !relations.includes(allRelationObjs.propertyName)) {
-        queryBuilder = queryBuilder.loadRelationIdAndMap(
-          `${entity.name}.${allRelationObjs.propertyName}Id`,
-          `${entity.name}.${allRelationObjs.propertyName}`,
-        );
-      }
-    }
-
-    if (relations && relations.length > 0) {
-      for (const relation of relations) {
-        queryBuilder = queryBuilder.leftJoinAndSelect(
-          `${entity.name}.${String(relation)}`,
-          String(relation),
-        );
-      }
-    }
+    buildRelationFields(entity, queryBuilder, repository, relations);
 
     if (Array.isArray(filter)) {
       queryBuilder = queryBuilder.where(

@@ -22,7 +22,7 @@ import * as yup from 'yup';
 
 import type { ImportProductRb } from '../../../../../pages/api/admin/product/import-product';
 
-import apiCaller from 'api-callers/admin/product';
+import apiCaller from 'api-callers/staff/products';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import CustomTextField from 'components/common/input/CustomTextField';
 import CustomPickersDay from 'components/CustomPickersDay';

@@ -14,7 +14,7 @@ import { useState } from 'react';
 
 import type { CreateProductRb } from '../../api/admin/product/create';
 
-import apiCaller from 'api-callers/admin/product';
+import apiCaller from 'api-callers/staff/products';
 import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
@@ -56,7 +56,7 @@ export default function AdminProductCreate() {
     setIsRedirecting(true);
     // Step 3: Push ImageKit product urls back to Product
     apiCaller
-      .pushImageUrls(context.productId, newImageUrls)
+      .pushImages(context.productId, newImageUrls)
       .then((res) => {
         enqueueSnackbar(
           'Tải ảnh lên thành công! Đang chuyển hướng về trang quản lý sản phẩm...',
