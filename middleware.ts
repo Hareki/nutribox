@@ -30,7 +30,7 @@ const NoAuthenticationOnlyRoutePatterns =
 export default withAuth(
   async function middleware(req) {
     const { url: rawUrl, method } = req;
-    console.log('file: middleware.ts:40 - middleware - url:', rawUrl);
+    // console.log('file: middleware.ts:40 - middleware - url:', rawUrl);
 
     const { token } = req.nextauth;
     const url = removeQueryParameters(rawUrl);

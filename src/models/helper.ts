@@ -129,7 +129,7 @@ export const zodPassword = (prefix: string) =>
   );
 
 export const zodPhone = (prefix: string) =>
-  zodString('prefix', 1, 50)
+  zodString(prefix, 1, 50)
     .refine(
       (value) => MASK_PHONE_REGEX.test(value) || PHONE_REGEX.test(value),
       {

@@ -116,6 +116,9 @@ const CustomerUserMenu: FC<AccountMenuProps> = () => {
       </Box>
 
       <Menu
+        sx={{
+          zIndex: 9999,
+        }}
         open={open}
         onClose={handleClose}
         onClick={handleClose}

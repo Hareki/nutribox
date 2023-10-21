@@ -1,7 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { ErrorHandler } from 'next-connect';
-import { EntityNotFoundError } from 'typeorm';
+import {
+  EntityMetadataNotFoundError,
+  EntityNotFoundError,
+  RepositoryNotFoundError,
+} from 'typeorm';
 
 import { BadRequestError, DuplicationError } from 'backend/types/errors/common';
 import type { JSError, JSFail } from 'backend/types/jsend';
@@ -49,8 +53,14 @@ export const defaultNcOnError: ErrorHandler<
 
   // truly unexpected errors go here
   console.log('=============== UNEXPECTED ERROR ================');
-  console.log(err.message);
-  console.log(err.stack);
+  // errors caused by typeorm and nextjs conflict with each other should be ignored, since they don't really affect anything and only happens in development
+  if (
+    !(err instanceof RepositoryNotFoundError) ||
+    !(err instanceof EntityMetadataNotFoundError)
+  ) {
+    console.log(err.message);
+    console.log(err.stack);
+  }
   console.log('=================================================');
 
   res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

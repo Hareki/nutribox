@@ -15,7 +15,7 @@ type MutateCartItemType = {
   type: CartItemActionType;
 };
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 400;
 export type CartItemActionType = 'add' | 'remove' | 'update';
 
 const useCart = (productId?: string) => {
@@ -123,13 +123,7 @@ const useCart = (productId?: string) => {
       setLastActionType(undefined);
       setDebouncedItem(undefined);
     }
-  }, [
-    debouncedQuantity,
-    existingCartItem,
-    updateCartAmount,
-    lastActionType,
-    debouncedItem,
-  ]);
+  }, [debouncedQuantity]);
 
   return {
     existingCartItem: {

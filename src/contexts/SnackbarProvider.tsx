@@ -1,7 +1,6 @@
 import { styled } from '@mui/material';
 import { SnackbarProvider as NotistackProvider } from 'notistack';
 import type { FC } from 'react';
-
 // styled component
 const Provider = styled(NotistackProvider)(({ theme }) => ({
   '.SnackbarItem-anchorOriginTopRight &': {
@@ -28,7 +27,7 @@ const SnackbarProvider: FC<Props> = ({ children }) => {
   return (
     <Provider
       maxSnack={4}
-      autoHideDuration={3000}
+      autoHideDuration={3_000}
       classes={{
         anchorOriginTopRight: 'SnackbarItem-anchorOriginTopRight',
       }}

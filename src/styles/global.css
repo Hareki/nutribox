@@ -7,6 +7,15 @@
   object-fit: contain !important;
 }
 
+.notistack-SnackbarContainer * {
+  pointer-events: none !important;
+}
+
+.notistack-SnackbarContainer .notistack-Snackbar .notistack-MuiContent {
+  pointer-events: all !important;
+  cursor: text !important;
+}
+
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;

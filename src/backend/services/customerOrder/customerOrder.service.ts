@@ -236,11 +236,14 @@ export class CustomerOrderService {
     }
   }
 
-  private static async _calculateProfitForOrderItem(
+  private static async _calculateTotalAndProfitForOrderItem(
     orderItem: PopulateCustomerOrderItemIdFields<'product'>,
     importOrderRepo: Repository<ImportOrderEntity>,
     exportOrderRepo: Repository<ExportOrderEntity>,
-  ): Promise<number> {
+  ): Promise<{
+    total: number;
+    profit: number;
+  }> {
     let totalImportCost = 0;
 
     const [relatedExportOrders] = await CommonService.getRecords(
@@ -267,9 +270,12 @@ export class CustomerOrderService {
         relatedImportOrder.unitImportPrice * exportOrder.quantity;
     }
 
-    const profit =
-      orderItem.unitRetailPrice * orderItem.quantity - totalImportCost;
-    return profit;
+    const total = orderItem.unitRetailPrice * orderItem.quantity;
+    const profit = total - totalImportCost;
+    return {
+      total,
+      profit,
+    };
   }
 
   public static async checkout(
@@ -297,7 +303,8 @@ export class CustomerOrderService {
         checkoutValidation.estimatedDeliveryInfo,
         customerOrderRepo,
       );
-      let totalProfit = 0;
+      let profit = 0;
+      let total = 0;
 
       for (const cartItem of dto.cartItems) {
         const orderItem = (await this._createCustomerOrderItem(
@@ -320,15 +327,18 @@ export class CustomerOrderService {
           exportOrderRepo,
         );
 
-        const profitForItem = await this._calculateProfitForOrderItem(
-          orderItem,
-          importOrderRepo,
-          exportOrderRepo,
-        );
-        totalProfit += profitForItem;
+        const { total: totalForItem, profit: profitForItem } =
+          await this._calculateTotalAndProfitForOrderItem(
+            orderItem,
+            importOrderRepo,
+            exportOrderRepo,
+          );
+        profit += profitForItem;
+        total += totalForItem;
       }
 
-      customerOrder.profit = totalProfit;
+      customerOrder.total = total;
+      customerOrder.profit = profit;
 
       result = (await CommonService.updateRecord(
         CustomerOrderEntity,

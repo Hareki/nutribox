@@ -91,4 +91,4 @@ const App = ({
 //   return { ...appProps };
 // };
 
-export default appWithTranslation(App, nextI18NextConfig);
+export default appWithTranslation(App, nextI18NextConfig as any);

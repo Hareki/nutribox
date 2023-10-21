@@ -10,7 +10,7 @@ export function extractIdFromSlug(slug: string | undefined) {
 
 export function getMaxProductQuantity(importOrders: ImportOrderModel[]) {
   const result = importOrders.reduce((max, importOrder) => {
-    max += importOrder.importQuantity;
+    max += importOrder.remainingQuantity;
     return max;
   }, 0);
 
