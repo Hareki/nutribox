@@ -107,9 +107,9 @@ export class CustomerOrderService {
     };
   }
 
-  private static async _createCustomerOrder(
+  private static async _createOnlineCustomerOrder(
     dto: CheckoutDto,
-    updatedBy: string,
+    customerId: string,
     estimatedDeliveryInfo: EstimatedDeliveryInfo,
     customerOrderRepo: Repository<CustomerOrderEntity>,
   ): Promise<CustomerOrderEntity> {
@@ -122,7 +122,8 @@ export class CustomerOrderService {
         Date.now() + estimatedDeliveryInfo.durationInTraffic * 60 * 1000,
       ),
       estimatedDistance: estimatedDeliveryInfo.distance,
-      updatedBy,
+      updatedBy: customerId,
+      customer: customerId,
     };
 
     return CommonService.createRecord(
@@ -290,7 +291,7 @@ export class CustomerOrderService {
       const exportOrderRepo = transactionalEM.getRepository(ExportOrderEntity);
       const productRepo = transactionalEM.getRepository(ProductEntity);
 
-      const customerOrder = await this._createCustomerOrder(
+      const customerOrder = await this._createOnlineCustomerOrder(
         dto,
         customerId,
         checkoutValidation.estimatedDeliveryInfo,
