@@ -2,7 +2,7 @@ import { CommonService } from '../common/common.service';
 
 import type {
   OrderStatusCount,
-  DashboardInfo,
+  CustomerDashboardData,
   ProfileMenuCount,
 } from './helper';
 
@@ -75,7 +75,9 @@ export class CustomerService {
     return customer;
   }
 
-  public static async getDashboardInfo(id: string): Promise<DashboardInfo> {
+  public static async getDashboardInfo(
+    id: string,
+  ): Promise<CustomerDashboardData> {
     const customer = await this.getCommonCustomer(id);
 
     const orderStatusCount = await this._getOrderStatusCount(id);

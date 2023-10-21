@@ -10,15 +10,17 @@ import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { AccountService } from 'backend/services/account/account.service';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import { CustomerService } from 'backend/services/customer/customer.service';
-import type { DashboardInfo } from 'backend/services/customer/helper';
+import type { CustomerDashboardData } from 'backend/services/customer/helper';
 import type { JSFail, JSSuccess } from 'backend/types/jsend';
 import type { PopulateAccountFields } from 'models/account.model';
 import type { CustomerModel } from 'models/customer.model';
 
 type SuccessResponse = JSSuccess<
-  DashboardInfo | CustomerModel | PopulateAccountFields<'customer' | 'employee'>
+  | CustomerDashboardData
+  | CustomerModel
+  | PopulateAccountFields<'customer' | 'employee'>
 >;
-type FailResponse = JSFail<DashboardInfo | CustomerModel>;
+type FailResponse = JSFail<CustomerDashboardData | CustomerModel>;
 
 const handler = nc<
   NextApiRequest,

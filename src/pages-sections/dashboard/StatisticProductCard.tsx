@@ -3,15 +3,14 @@ import type { FC } from 'react';
 import { Fragment } from 'react';
 import React from 'react';
 
-import type { StatisticProduct } from '../../../pages/api/admin/dashboard';
-
+import type { StatisticProduct } from 'backend/services/dashboard/helper';
 import { H3, Paragraph } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 
 type StatisticProductCardProps = {
   title: string;
   soldProducts: StatisticProduct[];
-  type: 'most' | 'least';
+  type: 'mostSold' | 'leastSold';
 };
 
 const StatisticProductCard: FC<StatisticProductCardProps> = (props) => {
@@ -20,6 +19,7 @@ const StatisticProductCard: FC<StatisticProductCardProps> = (props) => {
   const totalSold = soldProducts[0].totalSold;
   const totalSoldOfAllProducts = soldProducts[0].totalSoldOfAllProducts;
   const productNames = soldProducts.map((statistic) => statistic.product.name);
+
   const productNamesUL = productNames.map((name) => <li key={name}>{name}</li>);
 
   const percentage = (100 * totalSold) / totalSoldOfAllProducts;
@@ -52,7 +52,7 @@ const StatisticProductCard: FC<StatisticProductCardProps> = (props) => {
 
               <FlexBox
                 alignItems='center'
-                color={type === 'most' ? 'success.main' : 'error.main'}
+                color={type === 'mostSold' ? 'success.main' : 'error.main'}
               >
                 <Paragraph fontSize={12}>{percentage.toFixed(2)}%</Paragraph>
               </FlexBox>

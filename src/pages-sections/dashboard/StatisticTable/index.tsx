@@ -6,13 +6,15 @@ import type { FC } from 'react';
 
 import TableHeader from './TableHeader';
 
-import type { IAccount } from 'api/models/Account.model/types';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import type { IProductWithTotalQuantity } from 'api/models/Product.model/types';
-import type { IProductCategory } from 'api/models/ProductCategory.model/types';
+import type {
+  ManagerDashboardData,
+  ProductModelWithStock,
+} from 'backend/services/dashboard/helper';
 import Scrollbar from 'components/Scrollbar';
+import { getFullName } from 'helpers/account.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import { formatCurrency } from 'lib';
+import type { CustomerOrderModel } from 'models/customerOrder.model';
 
 // styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -30,7 +32,9 @@ const StyledTableRow = styled(TableRow)({
 });
 
 type ListTableProps = {
-  dataList: ICustomerOrder[] | IProductWithTotalQuantity[];
+  dataList:
+    | ManagerDashboardData['fiveMostRecentOrders']
+    | ManagerDashboardData['fiveLeastInStockProduct'];
   tableHeading: any[];
   type: 'STOCK_OUT' | 'RECENT_PURCHASE';
 };
@@ -53,7 +57,8 @@ const StatisticTable: FC<ListTableProps> = ({
           {type === 'RECENT_PURCHASE' && (
             <TableBody>
               {filteredList.map((row, index) => {
-                const { id, account, phone, total } = row as ICustomerOrder;
+                const { id, phone, total, customer } =
+                  row as ManagerDashboardData['fiveMostRecentOrders'][number];
 
                 return (
                   <StyledTableRow key={index}>
@@ -61,7 +66,7 @@ const StatisticTable: FC<ListTableProps> = ({
                       {id.slice(-6)}
                     </StyledTableCell>
                     <StyledTableCell align='left'>
-                      {(account as unknown as IAccount).fullName}
+                      {getFullName(customer)}
                     </StyledTableCell>
 
                     <StyledTableCell align='left'>{phone}</StyledTableCell>
@@ -78,8 +83,8 @@ const StatisticTable: FC<ListTableProps> = ({
           {type === 'STOCK_OUT' && (
             <TableBody>
               {filteredList.map((row, index) => {
-                const { name, totalQuantity, category } =
-                  row as IProductWithTotalQuantity;
+                const { name, remainingStock, productCategory } =
+                  row as ManagerDashboardData['fiveLeastInStockProduct'][number];
 
                 return (
                   <StyledTableRow key={index}>
@@ -90,14 +95,14 @@ const StatisticTable: FC<ListTableProps> = ({
                     </Tooltip>
 
                     <StyledTableCell align='left'>
-                      {(category as unknown as IProductCategory).name}
+                      {productCategory.name}
                     </StyledTableCell>
 
                     <StyledTableCell
                       align='center'
                       sx={{ color: 'error.main' }}
                     >
-                      {totalQuantity}
+                      {remainingStock}
                     </StyledTableCell>
                   </StyledTableRow>
                 );

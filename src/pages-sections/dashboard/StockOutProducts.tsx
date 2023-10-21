@@ -4,7 +4,7 @@ import React from 'react';
 
 import DataListTable from './StatisticTable';
 
-import type { IProductWithTotalQuantity } from 'api/models/Product.model/types';
+import type { ProductModelWithStock } from 'backend/services/dashboard/helper';
 import { H3 } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
 
@@ -15,7 +15,7 @@ const tableHeading = [
   { id: 'totalQuantity', label: 'Tồn kho', alignCenter: true },
 ];
 
-type StockOutProductsProps = { data: IProductWithTotalQuantity[] };
+type StockOutProductsProps = { data: ProductModelWithStock[] };
 
 const StockOutProducts: FC<StockOutProductsProps> = ({ data }) => {
   return (

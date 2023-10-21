@@ -10,7 +10,7 @@ export type OrderStatusCount = {
   cancelled: number;
 };
 
-export type DashboardInfo = CommonCustomerModel & {
+export type CustomerDashboardData = CommonCustomerModel & {
   orderStatusCount: OrderStatusCount;
 };
 

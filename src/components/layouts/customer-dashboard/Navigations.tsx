@@ -54,7 +54,6 @@ const StyledNavLink = styled<FC<StyledNavLinkProps & NavLinkProps>>(
 
 const Navigations = () => {
   const { pathname } = useRouter();
-  console.log('file: Navigations.tsx:56 - Navigations - pathname:', pathname);
   const { data: session, status } = useSession();
 
   const { data: count } = useQuery({

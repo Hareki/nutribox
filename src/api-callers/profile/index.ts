@@ -3,7 +3,7 @@ import type {
   UpdateProfileAvatarDto,
   UpdateProfileDto,
 } from 'backend/dtos/profile/profile.dto';
-import type { DashboardInfo } from 'backend/services/customer/helper';
+import type { CustomerDashboardData } from 'backend/services/customer/helper';
 import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
@@ -14,9 +14,11 @@ import type { FullyPopulatedAccountModel } from 'models/account.model';
 import type { CustomerModel } from 'models/customer.model';
 
 // Assume it's a success response, because if it's not, it will get to the onError anyway
-const getDashboardInfo = async (): Promise<DashboardInfo> => {
+const getDashboardInfo = async (): Promise<CustomerDashboardData> => {
   const response =
-    await axiosInstance.get<JSSuccess<DashboardInfo>>(PROFILE_API_ROUTE);
+    await axiosInstance.get<JSSuccess<CustomerDashboardData>>(
+      PROFILE_API_ROUTE,
+    );
   return response.data.data;
 };
 

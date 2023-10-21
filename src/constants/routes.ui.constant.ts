@@ -32,6 +32,7 @@ export const PublicRoutes = [
 export const NoAuthenticationOnlyRoutes = [
   SIGN_UP_ROUTE,
   SIGN_IN_ROUTE,
+  SIGN_IN_STAFF_ROUTE,
   VERIFICATION_RESULT_ROUTE,
   FORGOT_PASSWORD_ROUTE,
   RESET_PASSWORD_ROUTE,

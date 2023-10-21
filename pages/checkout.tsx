@@ -1,4 +1,4 @@
-import { CircularProgress, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import type { GetStaticProps } from 'next';
 import { useSession } from 'next-auth/react';

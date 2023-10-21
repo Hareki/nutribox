@@ -2,8 +2,9 @@ import type { Theme } from '@mui/material';
 import { Avatar, Box, useMediaQuery } from '@mui/material';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import LayoutDrawer from '../LayoutDrawer';
 
@@ -19,12 +20,16 @@ import {
   ChevronLeftIcon,
   ListIconWrapper,
 } from './LayoutStyledComponents';
+import type { NavigationItem, SideBarRole } from './NavigationList';
 import { navigations } from './NavigationList';
 import SidebarAccordion from './SidebarAccordion';
 
+import type { EmployeeRole } from 'backend/enums/entities.enum';
+import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import { FlexBetween } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
 import useSignOutDialog from 'hooks/useSignOutDialog';
+import { shortenUrl } from 'utils/middleware.helper';
 
 const TOP_HEADER_AREA = 70;
 
@@ -45,6 +50,9 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     setSidebarCompact,
   } = props;
 
+  const { data: session } = useSession();
+  const role = session?.employeeAccount.employee.role;
+
   const router = useRouter();
   const { dialog: signOutDialog, dispatchConfirm } = useSignOutDialog();
 
@@ -55,98 +63,112 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   const COMPACT = sidebarCompact && !onHover ? 1 : 0;
   // handle active current pag
   // FIXME shouldn't be hardcoded the [id] path
-  const activeRoute = (path: string) =>
-    router.pathname.endsWith(`${path}/[id]`) ||
-    router.pathname.endsWith(`${path}/create`) ||
-    router.pathname.endsWith(path)
-      ? 1
-      : 0;
+  const activeRoute = useCallback(
+    (rawPath: string) => {
+      const path = shortenUrl(rawPath);
+      console.log('router.pathname', router.pathname);
+      console.log('path', path);
+
+      return router.pathname.endsWith(`${path}/[id]`) ||
+        router.pathname.endsWith(`${path}/create`) ||
+        router.pathname.endsWith(path)
+        ? 1
+        : 0;
+    },
+    [router.pathname],
+  );
 
   // handle navigate to another route and close sidebar drawer in mobile device
-  const handleNavigation = (path: string) => {
-    router.push(path);
-    setShowMobileSideBar();
-  };
+  const handleNavigation = useCallback(
+    (path: string) => {
+      router.push(path);
+      setShowMobileSideBar();
+    },
+    [router, setShowMobileSideBar],
+  );
 
-  const renderLevels = (data: any) => {
-    return data.map((item: any, index: any) => {
-      if (item.type === 'label')
-        return (
-          <ListLabel key={index} compact={COMPACT}>
-            {item.label}
-          </ListLabel>
-        );
+  const renderLevels = useCallback(
+    (data: Record<SideBarRole, NavigationItem[]>, role: EmployeeRole) => {
+      return data[role.toString()].map((item: any, index: any) => {
+        if (item.type === 'label')
+          return (
+            <ListLabel key={index} compact={COMPACT}>
+              {item.name}
+            </ListLabel>
+          );
 
-      if (item.children) {
-        return (
-          <SidebarAccordion key={index} item={item} sidebarCompact={COMPACT}>
-            {renderLevels(item.children)}
-          </SidebarAccordion>
-        );
-      } else if (item.type === 'extLink') {
-        return (
-          <ExternalLink
-            key={index}
-            href={item.path}
-            rel='noopener noreferrer'
-            target='_blank'
-          >
-            <NavItemButton key={item.name} name='child' active={0}>
-              {item.icon ? (
-                <ListIconWrapper>
-                  <item.icon />
-                </ListIconWrapper>
-              ) : (
-                <span className='item-icon icon-text'>{item.iconText}</span>
-              )}
-
-              <StyledText compact={COMPACT}>{item.name}</StyledText>
-
-              {/* <Box mx="auto" /> */}
-
-              {item.badge && (
-                <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
-              )}
-            </NavItemButton>
-          </ExternalLink>
-        );
-      } else {
-        return (
-          <Box key={index}>
-            <NavItemButton
-              key={item.name}
-              className='navItem'
-              active={activeRoute(item.path)}
-              onClick={() => {
-                if (item.isSignOut) {
-                  dispatchConfirm({ type: 'open_dialog' });
-                } else {
-                  handleNavigation(item.path);
-                }
-              }}
+        if (item.children) {
+          return (
+            <SidebarAccordion key={index} item={item} sidebarCompact={COMPACT}>
+              {renderLevels(item.children, role)}
+            </SidebarAccordion>
+          );
+        } else if (item.type === 'extLink') {
+          return (
+            <ExternalLink
+              key={index}
+              href={item.path}
+              rel='noopener noreferrer'
+              target='_blank'
             >
-              {item?.icon ? (
-                <ListIconWrapper>
-                  <item.icon />
-                </ListIconWrapper>
-              ) : (
-                <BulletIcon active={activeRoute(item.path)} />
-              )}
+              <NavItemButton key={item.name} name='child' active={0}>
+                {item.icon ? (
+                  <ListIconWrapper>
+                    <item.icon />
+                  </ListIconWrapper>
+                ) : (
+                  <span className='item-icon icon-text'>{item.iconText}</span>
+                )}
 
-              <StyledText compact={COMPACT}>{item.name}</StyledText>
+                <StyledText compact={COMPACT}>{item.name}</StyledText>
 
-              {/* <Box mx="auto" /> */}
+                {/* <Box mx="auto" /> */}
 
-              {item.badge && (
-                <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
-              )}
-            </NavItemButton>
-            {item.isSignOut && signOutDialog}
-          </Box>
-        );
-      }
-    });
-  };
+                {item.badge && (
+                  <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
+                )}
+              </NavItemButton>
+            </ExternalLink>
+          );
+        } else {
+          return (
+            <Box key={index}>
+              <NavItemButton
+                key={item.name}
+                className='navItem'
+                active={activeRoute(item.path) && item.type !== 'signOut'}
+                onClick={() => {
+                  if (item.type === 'signOut') {
+                    dispatchConfirm({ type: 'open_dialog' });
+                  } else {
+                    handleNavigation(item.path);
+                  }
+                }}
+              >
+                {item?.icon ? (
+                  <ListIconWrapper>
+                    <item.icon />
+                  </ListIconWrapper>
+                ) : (
+                  <BulletIcon active={activeRoute(item.path)} />
+                )}
+
+                <StyledText compact={COMPACT}>{item.name}</StyledText>
+
+                {/* <Box mx="auto" /> */}
+
+                {item.badge && (
+                  <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
+                )}
+              </NavItemButton>
+              {item.type === 'signOut' && signOutDialog}
+            </Box>
+          );
+        }
+      });
+    },
+    [COMPACT, activeRoute, dispatchConfirm, handleNavigation, signOutDialog],
+  );
 
   const content = (
     <Scrollbar
@@ -158,7 +180,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       }}
     >
       <NavWrapper compact={sidebarCompact}>
-        {renderLevels(navigations)}
+        {!role ? <CircularProgressBlock /> : renderLevels(navigations, role)}
       </NavWrapper>
     </Scrollbar>
   );

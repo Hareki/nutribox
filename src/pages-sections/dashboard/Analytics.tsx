@@ -6,6 +6,7 @@ import { analyticsChartOptions } from './chartsOptions';
 
 import { H3 } from 'components/abstract/Typography';
 import { FlexRowCenter } from 'components/flex-box';
+import { formatCurrency, formatNumber } from 'lib';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -44,6 +45,11 @@ const Analytics: FC<AnalyticsProps> = ({ monthlyProfits }) => {
     yaxis: {
       min: 0,
       max: Math.max(...series[0].data) + 10000,
+      labels: {
+        formatter(value) {
+          return formatCurrency(value);
+        },
+      },
     },
   };
 

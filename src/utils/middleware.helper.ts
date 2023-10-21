@@ -104,8 +104,13 @@ export const removeQueryParameters = (urlString: string) => {
 };
 
 export const shortenUrl = (url: string) => {
-  const urlObj = new URL(url);
-  return urlObj.pathname + urlObj.search + urlObj.hash;
+  if (!url) return '';
+  try {
+    const urlObj = new URL(url);
+    return urlObj.pathname + urlObj.search + urlObj.hash;
+  } catch (error) {
+    return url;
+  }
 };
 
 export const matchesPlaceHolderRoute = (

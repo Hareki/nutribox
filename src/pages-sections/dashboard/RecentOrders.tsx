@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import StatisticTable from './StatisticTable';
 
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
+import type { ManagerDashboardData } from 'backend/services/dashboard/helper';
 import { H3 } from 'components/abstract/Typography';
 import { FlexBetween } from 'components/flex-box';
 
@@ -15,7 +15,9 @@ const tableHeading = [
   { id: 'total', label: 'Thành tiền', alignCenter: true },
 ];
 
-type RecentOrdersProps = { data: ICustomerOrder[] };
+type RecentOrdersProps = {
+  data: ManagerDashboardData['fiveMostRecentOrders'];
+};
 
 const RecentOrders: FC<RecentOrdersProps> = ({ data }) => {
   return (

@@ -2,7 +2,6 @@ import { Box, styled } from '@mui/material';
 import type { FC, ReactNode } from 'react';
 import { Fragment, useState } from 'react';
 
-import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 
 // styled components
@@ -43,7 +42,7 @@ const AdminDashboardLayout: FC<Props> = ({ children }) => {
       />
 
       <BodyWrapper compact={sidebarCompact ? 1 : 0}>
-        <DashboardNavbar handleDrawerToggle={handleMobileDrawerToggle} />
+        {/* <DashboardNavbar handleDrawerToggle={handleMobileDrawerToggle} /> */}
         <InnerWrapper>{children}</InnerWrapper>
       </BodyWrapper>
     </Fragment>

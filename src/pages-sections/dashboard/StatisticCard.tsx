@@ -18,7 +18,6 @@ type StatisticCardProps = {
 
 const StatisticCard: FC<StatisticCardProps> = (props) => {
   const { title, amount, subAmount, status, percentage } = props;
-  console.log('file: Card1.tsx:21 - status:', status);
 
   return (
     <Card sx={{ p: 2 }}>
