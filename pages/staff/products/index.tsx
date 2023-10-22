@@ -18,7 +18,6 @@ import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
 import { NEW_PRODUCT_ROUTE } from 'constants/routes.ui.constant';
-import { getMaxProductQuantity } from 'helpers/product.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
@@ -39,7 +38,7 @@ const tableHeading = [
 const mapProductToRow = (item: ExtendedCommonProductModel) => ({
   id: item.id,
   shelfLife: item.shelfLife,
-  remainingStock: getMaxProductQuantity(item.importOrders),
+  remainingStock: item.remainingQuantity,
   imageUrls: item.productImages.map((image) => image.imageUrl),
   name: item.name,
   category: item.productCategory.name,

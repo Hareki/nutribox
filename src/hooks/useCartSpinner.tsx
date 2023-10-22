@@ -13,7 +13,7 @@ export const useCartSpinner = (product: CommonProductModel) => {
   const { existingCartItem, updateCartAmount } = useCart(product.id);
   const [firstTimeRender, setFirstTimeRender] = useState(true);
   const { maxQuantity, disableAddToCart, inStock } = useQuantityLimitation(
-    product.importOrders,
+    product,
     existingCartItem,
   );
 

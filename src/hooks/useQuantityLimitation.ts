@@ -1,16 +1,10 @@
-import { useMemo } from 'react';
-
-import { getMaxProductQuantity } from 'helpers/product.helper';
-import type { ImportOrderModel } from 'models/importOder.model';
+import type { CommonProductModel } from 'backend/services/product/helper';
 
 export function useQuantityLimitation(
-  importOrders: ImportOrderModel[],
+  product: CommonProductModel,
   cartItem: { quantity: number } | undefined,
 ) {
-  const maxQuantity = useMemo(
-    () => getMaxProductQuantity(importOrders),
-    [importOrders],
-  );
+  const maxQuantity = product.remainingQuantity;
   const inStock = maxQuantity > 0;
   const disableAddToCart = (cartItem?.quantity || 0) >= maxQuantity;
   const overLimit = (cartItem?.quantity || 0) > maxQuantity;

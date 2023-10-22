@@ -1,8 +1,7 @@
 import { addDays } from 'date-fns';
-import { MoreThan, type Repository } from 'typeorm';
+import { MoreThan } from 'typeorm';
 
 import { CommonService } from '../common/common.service';
-import type { GetRecordInputs } from '../common/helper';
 
 import type {
   ExtendedCommonProductModel,
@@ -11,7 +10,7 @@ import type {
   GetCommonProductModelsInputs,
   ProductDetailWithRelated,
 } from './helper';
-import { CommonProductRelations, type CommonProductModel } from './helper';
+import { type CommonProductModel } from './helper';
 
 import type { ImportProductDto } from 'backend/dtos/product/importProduct.dto';
 import { CustomerOrderItemEntity } from 'backend/entities/customerOrderItem.entity';
@@ -21,7 +20,6 @@ import { ProductImageEntity } from 'backend/entities/productImage.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
 import { getRepo } from 'backend/helpers/database.helper';
 import type { ImportOrderModel } from 'models/importOder.model';
-import type { PopulateProductFields } from 'models/product.model';
 
 export class ProductService {
   private static getMergedRelations = (
@@ -39,7 +37,7 @@ export class ProductService {
   };
 
   // Helper method to fetch import orders
-  private static fetchImportOrders = async (productId: string) => {
+  private static getRemainingQuantity = async (productId: string) => {
     const [validImportOrders] = await CommonService.getRecords({
       entity: ImportOrderEntity,
       filter: {
@@ -49,7 +47,13 @@ export class ProductService {
         expirationDate: MoreThan(new Date()),
       },
     });
-    return validImportOrders;
+
+    const remainingQuantity = validImportOrders.reduce((max, importOrder) => {
+      max += importOrder.remainingQuantity;
+      return max;
+    }, 0);
+
+    return remainingQuantity;
   };
 
   public static getCommonProduct = async <
@@ -76,13 +80,13 @@ export class ProductService {
       ...baseInputs,
     });
 
-    const validImportOrders = await ProductService.fetchImportOrders(
+    const remainingQuantity = await ProductService.getRemainingQuantity(
       product.id,
     );
 
     return {
       ...product,
-      importOrders: validImportOrders,
+      remainingQuantity,
     } as T;
   };
 
@@ -112,13 +116,13 @@ export class ProductService {
 
     const records = await Promise.all(
       products.map(async (product) => {
-        const validImportOrders = await ProductService.fetchImportOrders(
+        const remainingQuantity = await ProductService.getRemainingQuantity(
           product.id,
         );
 
         return {
           ...product,
-          importOrders: validImportOrders,
+          remainingQuantity,
         } as T;
       }),
     );
@@ -151,13 +155,13 @@ export class ProductService {
 
     const records = await Promise.all(
       products.map(async (product) => {
-        const validImportOrders = await ProductService.fetchImportOrders(
+        const remainingQuantity = await ProductService.getRemainingQuantity(
           product.id,
         );
 
         return {
           ...product,
-          importOrders: validImportOrders,
+          remainingQuantity,
         } as T;
       }),
     );
@@ -169,27 +173,13 @@ export class ProductService {
     id: string,
     limit = 5,
   ): Promise<ProductDetailWithRelated> => {
-    const relations: (keyof ProductEntity)[] = [
-      'productImages',
-      'productCategory',
-      'importOrders',
-    ];
-
-    type ResponseData = PopulateProductFields<
-      'importOrders' | 'productImages' | 'productCategory'
-    >;
-
-    const data = (await CommonService.getRecord({
-      entity: ProductEntity,
-      relations,
+    const data = await this.getCommonProduct({
       filter: {
         id,
       },
-    })) as ResponseData;
+    });
 
-    const [relatedProducts] = await CommonService.getRecords({
-      entity: ProductEntity,
-      relations,
+    const [relatedProducts] = await this.getCommonProducts({
       filter: {
         productCategory: data?.productCategory.id,
       },
@@ -201,7 +191,7 @@ export class ProductService {
 
     return {
       ...data,
-      relatedProducts: relatedProducts as ResponseData[],
+      relatedProducts,
     };
   };
 

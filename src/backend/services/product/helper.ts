@@ -9,18 +9,21 @@ import type { CartItemModel } from 'models/cartItem.model';
 import type { PopulateProductFields } from 'models/product.model';
 
 export type CommonProductModel = PopulateProductFields<
-  'importOrders' | 'productImages' | 'productCategory'
->;
+  'productImages' | 'productCategory'
+> & {
+  remainingQuantity: number;
+};
 
 export type ExtendedCommonProductModel = PopulateProductFields<
-  'importOrders' | 'productImages' | 'productCategory' | 'defaultSupplier'
->;
+  'productImages' | 'productCategory' | 'defaultSupplier'
+> & {
+  remainingQuantity: number;
+};
 
 // for customer usages
 export const CommonProductRelations: (keyof ProductEntity)[] = [
   'productImages',
   'productCategory',
-  'importOrders',
 ];
 
 export type GetCommonProductModelInputs = Omit<

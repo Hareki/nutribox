@@ -5,7 +5,6 @@ import type { NextHandler } from 'next-connect';
 import { ProductService } from './product.service';
 
 import type { ImportProductDto } from 'backend/dtos/product/importProduct.dto';
-import { getMaxProductQuantity } from 'helpers/product.helper';
 
 export const createMaxQuantityGuard =
   () =>
@@ -19,7 +18,7 @@ export const createMaxQuantityGuard =
       },
     });
     const maxQuantity = commonProduct.maxQuantity;
-    const currentInStock = getMaxProductQuantity(commonProduct.importOrders);
+    const currentInStock = commonProduct.remainingQuantity;
     if (currentInStock + importProductDto.importQuantity > maxQuantity) {
       const exceededQuantity =
         currentInStock + importProductDto.importQuantity - maxQuantity;

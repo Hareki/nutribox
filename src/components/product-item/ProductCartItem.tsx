@@ -40,7 +40,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
   const { setLoginDialogOpen } = useLoginDialog();
   const { status } = useSession();
   const { overLimit, maxQuantity, disableAddToCart } = useQuantityLimitation(
-    product.importOrders,
+    product,
     cartItem,
   );
 

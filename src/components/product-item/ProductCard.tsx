@@ -117,7 +117,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   }, [onPreview]);
 
   const { inStock, disableAddToCart } = useQuantityLimitation(
-    importOrders,
+    props.product,
     existingCartItem,
   );
 

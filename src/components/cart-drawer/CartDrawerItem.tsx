@@ -31,7 +31,7 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
   console.log('cartItem', cartItem);
 
   const { maxQuantity, disableAddToCart, overLimit } = useQuantityLimitation(
-    cartItem.product.importOrders,
+    cartItem.product,
     cartItem,
   );
 
