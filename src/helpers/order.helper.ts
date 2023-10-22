@@ -1,6 +1,10 @@
 import { assertNever } from './assertion.helper';
 
-import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum';
+import {
+  EmployeeRole,
+  OrderStatus,
+  PaymentMethod,
+} from 'backend/enums/entities.enum';
 import {
   CustomerOrderStatusOrders,
   type OrderStatusCount,
@@ -62,6 +66,27 @@ export function getOrderStatusName(orderStatus: OrderStatus) {
 
   return name;
 }
+
+export const getUserRoleName = (role?: EmployeeRole) => {
+  if (!role) return 'Khách hàng';
+
+  switch (role) {
+    case EmployeeRole.CASHIER:
+      return 'Thu ngân';
+    case EmployeeRole.MANAGER:
+      return 'Quản lý';
+    case EmployeeRole.SHIPPER:
+      return 'Giao hàng';
+    case EmployeeRole.WAREHOUSE_MANAGER:
+      return 'Quản lý kho';
+    case EmployeeRole.WAREHOUSE_STAFF:
+      return 'Nhân viên kho';
+    default: {
+      assertNever(role);
+      return '';
+    }
+  }
+};
 
 export const getPaymentMethodName = (paymentMethod: PaymentMethod) => {
   switch (paymentMethod) {

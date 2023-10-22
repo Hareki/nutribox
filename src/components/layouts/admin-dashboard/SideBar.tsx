@@ -1,77 +1,90 @@
-import type { Theme } from '@mui/material';
-import { Avatar, Box, useMediaQuery } from '@mui/material';
-import Image from 'next/legacy/image';
+import { Avatar, Box, Skeleton, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import type { FC } from 'react';
-import { useCallback, useState } from 'react';
+import type { Dispatch, FC, SetStateAction } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHoverDirty } from 'react-use';
 
 import LayoutDrawer from '../LayoutDrawer';
 
 import {
   ListLabel,
-  BadgeValue,
   StyledText,
   BulletIcon,
   NavWrapper,
-  ExternalLink,
   NavItemButton,
   SidebarWrapper,
   ChevronLeftIcon,
   ListIconWrapper,
-} from './LayoutStyledComponents';
-import type { NavigationItem, SideBarRole } from './NavigationList';
-import { navigations } from './NavigationList';
+  ExternalLink,
+  BadgeValue,
+} from './LayoutStyledComponents2';
+import {
+  navigations,
+  type NavigationItem,
+  type SideBarRole,
+} from './NavigationList';
 import SidebarAccordion from './SidebarAccordion';
+import EmployeeMenu from './UserMenu';
 
 import type { EmployeeRole } from 'backend/enums/entities.enum';
 import CircularProgressBlock from 'components/common/CircularProgressBlock';
-import { FlexBetween } from 'components/flex-box';
+import { FlexBetween, FlexBox, FlexRowCenter } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
 import useSignOutDialog from 'hooks/useSignOutDialog';
 import { shortenUrl } from 'utils/middleware.helper';
 
-const TOP_HEADER_AREA = 70;
+// import useSignOutDialog from 'hooks/useSignOutDialog';
 
-// -----------------------------------------------------------------------------
-type DashboardSidebarProps = {
-  sidebarCompact: any;
-  showMobileSideBar: any;
+const TOP_HEADER_AREA = 100;
+
+type SideBarProps = {
+  sidebarCompact: boolean;
+  showMobileSideBar: boolean;
   setSidebarCompact: () => void;
   setShowMobileSideBar: () => void;
+  isMobile: boolean;
+  menuOpen: boolean;
+  setMenuOpen: Dispatch<SetStateAction<boolean>>;
 };
-// -----------------------------------------------------------------------------
 
-const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
+const SideBar: FC<SideBarProps> = (props) => {
   const {
     sidebarCompact,
     showMobileSideBar,
     setShowMobileSideBar,
     setSidebarCompact,
+    isMobile,
+    menuOpen,
+    setMenuOpen,
   } = props;
 
+  const router = useRouter();
   const { data: session } = useSession();
   const role = session?.employeeAccount.employee.role;
+  const { dialog: signOutDialog, dispatchConfirm } =
+    useSignOutDialog('employee');
 
-  const router = useRouter();
-  const { dialog: signOutDialog, dispatchConfirm } = useSignOutDialog();
+  const sideBarRef = useRef<Element>(null);
+  const isHovered = useHoverDirty(sideBarRef);
 
-  const [onHover, setOnHover] = useState(false);
-  const downLg = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+  const [minimized, setMinimized] = useState<boolean>(
+    sidebarCompact && !isHovered && !menuOpen,
+  );
 
-  // side hover when side bar is compacted
-  const COMPACT = sidebarCompact && !onHover ? 1 : 0;
-  // handle active current pag
-  // FIXME shouldn't be hardcoded the [id] path
+  useEffect(() => {
+    setMinimized(sidebarCompact && !isHovered && !menuOpen);
+  }, [sidebarCompact, isHovered, menuOpen]);
+
   const activeRoute = useCallback(
     (rawPath: string) => {
       const path = shortenUrl(rawPath);
 
       return router.pathname.endsWith(`${path}/[id]`) ||
-        router.pathname.endsWith(`${path}/create`) ||
+        router.pathname.endsWith(`${path}/new`) ||
         router.pathname.endsWith(path)
-        ? 1
-        : 0;
+        ? true
+        : false;
     },
     [router.pathname],
   );
@@ -90,14 +103,18 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       return data[role.toString()].map((item: any, index: any) => {
         if (item.type === 'label')
           return (
-            <ListLabel key={index} compact={COMPACT}>
+            <ListLabel key={index} compact={minimized}>
               {item.name}
             </ListLabel>
           );
 
         if (item.children) {
           return (
-            <SidebarAccordion key={index} item={item} sidebarCompact={COMPACT}>
+            <SidebarAccordion
+              key={index}
+              item={item}
+              sidebarCompact={minimized}
+            >
               {renderLevels(item.children, role)}
             </SidebarAccordion>
           );
@@ -109,7 +126,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
               rel='noopener noreferrer'
               target='_blank'
             >
-              <NavItemButton key={item.name} name='child' active={0}>
+              <NavItemButton key={item.name} name='child' active={false}>
                 {item.icon ? (
                   <ListIconWrapper>
                     <item.icon />
@@ -118,12 +135,14 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                   <span className='item-icon icon-text'>{item.iconText}</span>
                 )}
 
-                <StyledText compact={COMPACT}>{item.name}</StyledText>
+                <StyledText compact={minimized}>{item.name}</StyledText>
 
                 {/* <Box mx="auto" /> */}
 
                 {item.badge && (
-                  <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
+                  <BadgeValue compact={minimized}>
+                    {item.badge.value}
+                  </BadgeValue>
                 )}
               </NavItemButton>
             </ExternalLink>
@@ -151,12 +170,14 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                   <BulletIcon active={activeRoute(item.path)} />
                 )}
 
-                <StyledText compact={COMPACT}>{item.name}</StyledText>
+                <StyledText compact={minimized}>{item.name}</StyledText>
 
                 {/* <Box mx="auto" /> */}
 
                 {item.badge && (
-                  <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
+                  <BadgeValue compact={minimized}>
+                    {item.badge.value}
+                  </BadgeValue>
                 )}
               </NavItemButton>
               {item.type === 'signOut' && signOutDialog}
@@ -165,39 +186,62 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         }
       });
     },
-    [COMPACT, activeRoute, dispatchConfirm, handleNavigation, signOutDialog],
+    [minimized, activeRoute, dispatchConfirm, handleNavigation, signOutDialog],
   );
 
+  const theme = useTheme();
   const content = (
-    <Scrollbar
-      autoHide
-      clickOnTrack={false}
-      sx={{
-        overflowX: 'hidden',
-        maxHeight: `calc(100vh - ${TOP_HEADER_AREA}px)`,
-      }}
-    >
-      <NavWrapper compact={sidebarCompact}>
-        {!role ? <CircularProgressBlock /> : renderLevels(navigations, role)}
-      </NavWrapper>
-    </Scrollbar>
+    <>
+      <Scrollbar
+        autoHide
+        clickOnTrack={false}
+        sx={{
+          overflowX: 'hidden',
+          maxHeight: `calc(100vh - ${TOP_HEADER_AREA}px)`,
+        }}
+      >
+        <NavWrapper compact={sidebarCompact}>
+          {!role ? (
+            <FlexRowCenter>
+              <Skeleton
+                sx={{ bgcolor: theme.palette.primary[100] }}
+                variant='rounded'
+                width={200}
+                height={400}
+              />
+            </FlexRowCenter>
+          ) : (
+            renderLevels(navigations, role)
+          )}
+        </NavWrapper>
+      </Scrollbar>
+    </>
   );
 
-  if (downLg) {
+  if (isMobile) {
     return (
       <LayoutDrawer
         open={showMobileSideBar ? true : false}
-        onClose={setShowMobileSideBar}
+        onClose={() => {
+          console.log('run');
+          setShowMobileSideBar();
+        }}
       >
-        <Box p={2} maxHeight={TOP_HEADER_AREA}>
-          <Image
+        <Box pt={2} px={2} maxHeight={TOP_HEADER_AREA}>
+          <img
             alt='Logo'
-            width={105}
-            height={50}
+            height={45}
+            width='auto'
             src='/assets/images/logo-white.svg'
             style={{ marginLeft: 8 }}
           />
         </Box>
+        <EmployeeMenu
+          minimized={minimized}
+          setMenuOpen={setMenuOpen}
+          // setLogOutDialogVisible={setLogOutDialogVisible}
+          dispatchConfirm={dispatchConfirm}
+        />
 
         {content}
       </LayoutDrawer>
@@ -205,36 +249,45 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   }
 
   return (
-    <SidebarWrapper
-      compact={sidebarCompact ? 1 : 0}
-      onMouseEnter={() => setOnHover(true)}
-      onMouseLeave={() => sidebarCompact && setOnHover(false)}
-    >
+    <SidebarWrapper compact={minimized} ref={sideBarRef}>
       <FlexBetween
-        p={2}
+        pt={2}
+        px={2}
         maxHeight={TOP_HEADER_AREA}
-        justifyContent={COMPACT ? 'center' : 'space-between'}
+        justifyContent={minimized ? 'center' : 'space-between'}
       >
         <Avatar
           src={
-            COMPACT
+            minimized
               ? '/assets/images/logo-sm.svg'
               : '/assets/images/logo-white.svg'
           }
-          sx={{ borderRadius: 0, width: 'auto', marginLeft: COMPACT ? 0 : 1 }}
+          sx={{
+            borderRadius: 0,
+            width: 'auto',
+            height: 45,
+            marginLeft: minimized ? 0 : 1,
+          }}
         />
 
         <ChevronLeftIcon
           color='disabled'
-          compact={COMPACT}
+          compact={minimized}
           onClick={setSidebarCompact}
-          sidebarcompact={sidebarCompact ? 1 : 0}
+          sideBarCompact={sidebarCompact}
         />
       </FlexBetween>
+
+      <EmployeeMenu
+        minimized={minimized}
+        setMenuOpen={setMenuOpen}
+        // setLogOutDialogVisible={setLogOutDialogVisible}
+        dispatchConfirm={dispatchConfirm}
+      />
 
       {content}
     </SidebarWrapper>
   );
 };
 
-export default DashboardSidebar;
+export default SideBar;

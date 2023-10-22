@@ -10,7 +10,7 @@ import {
   NavItemButton,
   ListIconWrapper,
   ChevronRightIcon,
-} from './LayoutStyledComponents';
+} from './LayoutStyledComponents2';
 
 // styled component
 const NavExpandRoot = styled(Box)({
@@ -81,7 +81,7 @@ const SidebarAccordion: FC<SidebarAccordionProps> = (props) => {
     <NavExpandRoot className='subMenu'>
       <NavItemButton
         onClick={handleClick}
-        active={hasActive ? 1 : 0}
+        active={hasActive}
         sx={{ justifyContent: 'space-between' }}
       >
         <Box display='flex' alignItems='center'>
@@ -91,7 +91,7 @@ const SidebarAccordion: FC<SidebarAccordionProps> = (props) => {
               <item.icon />
             </ListIconWrapper>
           )}
-          {iconText && <BulletIcon active={hasActive ? 1 : 0} />}
+          {iconText && <BulletIcon active={hasActive} />}
           <StyledText compact={sidebarCompact}>{name}</StyledText>
         </Box>
 
@@ -105,7 +105,7 @@ const SidebarAccordion: FC<SidebarAccordionProps> = (props) => {
           color='disabled'
           compact={sidebarCompact}
           className='accordionArrow'
-          collapsed={collapsed ? 1 : 0}
+          collapsed={collapsed}
         />
       </NavItemButton>
 

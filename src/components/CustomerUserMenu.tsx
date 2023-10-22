@@ -1,5 +1,4 @@
 import { PersonOutline } from '@mui/icons-material';
-import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
@@ -17,13 +16,11 @@ import {
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import type { FC, MouseEvent, MouseEventHandler } from 'react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { EmployeeRole } from 'backend/enums/entities.enum';
 import { H6, Small } from 'components/abstract/Typography';
 import { ORDERS_ROUTE, PROFILE_ROUTE } from 'constants/routes.ui.constant';
 import { getAvatarUrl, getFullName } from 'helpers/account.helper';
-import { assertNever } from 'helpers/assertion.helper';
 import useLoginDialog from 'hooks/global-states/useLoginDialog';
 import useSignOutDialog from 'hooks/useSignOutDialog';
 
@@ -31,27 +28,6 @@ const Divider = styled(Box)(({ theme }) => ({
   margin: '0.5rem 0',
   border: `1px dashed ${theme.palette.grey[200]}`,
 }));
-
-const getUserRoleName = (role?: EmployeeRole) => {
-  if (!role) return 'Khách hàng';
-
-  switch (role) {
-    case EmployeeRole.CASHIER:
-      return 'Thu ngân';
-    case EmployeeRole.MANAGER:
-      return 'Quản lý';
-    case EmployeeRole.SHIPPER:
-      return 'Giao hàng';
-    case EmployeeRole.WAREHOUSE_MANAGER:
-      return 'Quản lý kho';
-    case EmployeeRole.WAREHOUSE_STAFF:
-      return 'Nhân viên kho';
-    default: {
-      assertNever(role);
-      return '';
-    }
-  }
-};
 
 interface AccountMenuProps {}
 
@@ -62,7 +38,8 @@ const CustomerUserMenu: FC<AccountMenuProps> = () => {
   const userUrl = getAvatarUrl(session?.account.customer);
   const { palette } = useTheme();
 
-  const { dialog: signOutDialog, dispatchConfirm } = useSignOutDialog();
+  const { dialog: signOutDialog, dispatchConfirm } =
+    useSignOutDialog('customer');
   const { setLoginDialogOpen } = useLoginDialog();
 
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);

@@ -7,9 +7,12 @@ import {
   confirmDialogReducer,
   initConfirmDialogState,
 } from 'components/dialog/confirm-dialog/reducer';
-import { SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
+import {
+  SIGN_IN_ROUTE,
+  SIGN_IN_STAFF_ROUTE,
+} from 'constants/routes.ui.constant';
 
-const useSignOutDialog = () => {
+const useSignOutDialog = (userType: 'customer' | 'employee') => {
   const router = useRouter();
   const [confirmState, dispatchConfirm] = useReducer(
     confirmDialogReducer,
@@ -27,7 +30,9 @@ const useSignOutDialog = () => {
       handleConfirm={async () => {
         await signOut({ redirect: false });
         setIsRedirecting(true);
-        router.replace(SIGN_IN_ROUTE);
+        router.replace(
+          userType === 'customer' ? SIGN_IN_ROUTE : SIGN_IN_STAFF_ROUTE,
+        );
       }}
     />
   );
