@@ -6,6 +6,7 @@
   "ImportOrder.ImportDate.InvalidFormat": "Định dạng ngày nhập hàng không hợp lệ.",
   "ImportOrder.ManufacturingDate.Required": "Vui lòng nhập ngày sản xuất.",
   "ImportOrder.ManufacturingDate.InvalidFormat": "Định dạng ngày sản xuất không hợp lệ.",
+  "ImportOrder.ManufacturingDate.Max": "Ngày sản xuất không được lớn hơn ngày hiện tại.",
   "ImportOrder.ExpirationDate.Required": "Vui lòng nhập ngày hết hạn.",
   "ImportOrder.ExpirationDate.InvalidFormat": "Định dạng ngày hết hạn không hợp lệ.",
   "ImportOrder.ProductId.Required": "Vui lòng nhập Mã sản phẩm.",
@@ -17,9 +18,12 @@
   "ImportOrder.UnitImportPrice.Min": "Giá nhập mỗi đơn vị phải ít nhất là 0.",
   "ImportOrder.UnitImportPrice.Max": "Giá nhập mỗi đơn vị không được vượt quá 10,000,000.",
   "ImportOrder.RemainingQuantity.Required": "Vui lòng nhập số lượng còn lại.",
-  "ImportOrder.RemainingQuantity.Min": "Số lượng còn lại phải ít nhất là 0.",
+  "ImportOrder.RemainingQuantity.Min": "Số lượng còn lại phải lớn hơn 0.",
   "ImportOrder.RemainingQuantity.Max": "Số lượng còn lại không được vượt quá 1000.",
+  "ImportOrder.ImportDate.Max": "Ngày nhập hàng không được lớn hơn ngày hiện tại.",
+  "ImportOrder.ImportDate.Min": "Ngày nhập hàng không được nhỏ hơn ngày hiện tại quá 3 ngày",
   "ImportOrder.ImportDate.BeforeOrEqual.ExpirationDate": "Ngày nhập hàng phải trước hoặc bằng ngày hết hạn.",
   "ImportOrder.ManufacturingDate.BeforeOrEqual.ExpirationDate": "Ngày sản xuất phải trước hoặc bằng ngày hết hạn.",
+  "ImportOrder.ManufacturingDate.BeforeOrEqual.ImportDate": "Ngay sản xuất phải trước hoặc bằng ngày nhập hàng.",
   "ImportOrder.ImportQuantity.LessThan.RemainingQuantity": "Số lượng nhập phải ít hơn hoặc bằng số lượng còn lại."
 }

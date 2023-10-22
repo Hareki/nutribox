@@ -1,31 +1,39 @@
 import { Box, Card, Divider } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { IPopulatedCategoryProduct } from 'api/models/Product.model/types';
-import type { JSendFailResponse } from 'api/types/response.type';
-import type { AxiosError } from 'axios';
-import type { GetServerSideProps } from 'next';
+import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
 import { useReducer } from 'react';
 import { useState } from 'react';
 
-import type { CreateProductRb } from '../../api/admin/product/create';
-
 import apiCaller from 'api-callers/staff/products';
+import type {
+  NewProductDto,
+  ProductFormValues,
+} from 'backend/dtos/product/newProduct.dto';
+import type { ExtendedCommonProductModel } from 'backend/services/product/helper';
 import { H5 } from 'components/abstract/Typography';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
-import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
-import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
+import {
+  confirmDialogReducer,
+  initConfirmDialogState,
+} from 'components/dialog/confirm-dialog/reducer';
+import {
+  infoDialogReducer,
+  initInfoDialogState,
+} from 'components/dialog/info-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
-import { getMessageList } from 'helpers/feedback.helper';
+import { PRODUCTS_STAFF_ROUTE } from 'constants/routes.ui.constant';
+import { extractErrorMessages } from 'helpers/error.helper';
 import { handleUpload } from 'helpers/imagekit.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageListForm';
 import ImageListForm from 'pages-sections/admin/products/ImageListForm';
-import type { ProductInfoFormValues } from 'pages-sections/admin/products/ProductForm';
 import ProductForm from 'pages-sections/admin/products/ProductForm';
+import { getSlug } from 'utils/string.helper';
 
 AdminProductCreate.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -35,6 +43,7 @@ export default function AdminProductCreate() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isUploadingImages, setIsUploadingImage] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const { t } = useCustomTranslation(['product']);
 
   const onUploadStart = () => {
     setIsUploadingImage(true);
@@ -65,13 +74,13 @@ export default function AdminProductCreate() {
           },
         );
 
-        router.push('/admin/product');
+        router.push(PRODUCTS_STAFF_ROUTE);
       })
       .catch((err) => {
         console.log(err);
         setIsRedirecting(false);
         enqueueSnackbar(
-          'Đã có lỗi xảy ra trong quá trình thêm ảnh vào sản phẩm',
+          'Đã có lỗi xảy ra trong quá trình thêm ảnh vào sản phẩm (ảnh đã được tải lên)',
           {
             variant: 'error',
           },
@@ -84,13 +93,15 @@ export default function AdminProductCreate() {
     setIsUploadingImage(false);
   };
 
-  const [infoState, dispatchInfo] = useReducer(infoDialogReducer, {
-    open: false,
-  });
+  const [infoState, dispatchInfo] = useReducer(
+    infoDialogReducer,
+    initInfoDialogState,
+  );
 
-  const [confirmState, dispatchConfirm] = useReducer(confirmDialogReducer, {
-    open: false,
-  });
+  const [confirmState, dispatchConfirm] = useReducer(
+    confirmDialogReducer,
+    initConfirmDialogState,
+  );
 
   const imageUrls = useMemo(() => {
     return selectedFiles.map((file) => URL.createObjectURL(file));
@@ -107,9 +118,9 @@ export default function AdminProductCreate() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { mutate: createProductInfo, isLoading: isAddingProduct } = useMutation<
-    IPopulatedCategoryProduct,
-    AxiosError<JSendFailResponse<any>>,
-    CreateProductRb
+    ExtendedCommonProductModel,
+    Record<string, string>,
+    NewProductDto
   >({
     mutationFn: (requestBody) => apiCaller.createProduct(requestBody),
     onSuccess: async (product) => {
@@ -121,7 +132,9 @@ export default function AdminProductCreate() {
       );
       console.log('Thêm thông tin sản phẩm thành công! Tiến hành tải ảnh...');
       console.log('file: create.tsx:102 - onSuccess: - product:', product);
-
+      const folderName = `products/${getSlug(
+        product.productCategory,
+      )}/${getSlug(product)}`;
       // Step 2: Upload product images to ImageKit
       try {
         await handleUpload(
@@ -129,7 +142,7 @@ export default function AdminProductCreate() {
             onUploadError,
             onUploadStart,
             onUploadSuccess,
-            folderName: `products/${product.category.slug}/${product.slug}`,
+            folderName,
             context: {
               productId: product.id,
             },
@@ -150,34 +163,48 @@ export default function AdminProductCreate() {
       }
     },
     onError: (err) => {
-      console.log(err);
-      if (err.response.data.data) {
+      console.log('file: new.tsx:166 - AdminProductCreate - err:', err);
+      // if (err.response?.data.data) {
+      //   dispatchInfo({
+      //     type: 'open_dialog',
+      //     payload: {
+      //       title: 'Có lỗi xảy ra',
+      //       // FIXME
+      //       content: getMessageList(err.response.data.data as any),
+      //       variant: 'error',
+      //     },
+      //   });
+      //   return;
+      // }
+      // enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+      //   variant: 'error',
+      // });
+
+      try {
         dispatchInfo({
           type: 'open_dialog',
           payload: {
-            title: 'Có lỗi xảy ra',
-            content: getMessageList(err.response.data.data),
             variant: 'error',
+            title: 'Tạo sản phẩm thất bại',
+            content: extractErrorMessages(err, t),
           },
         });
-        return;
+      } catch (error) {
+        console.log('error:', error);
       }
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-        variant: 'error',
-      });
     },
   });
 
-  const handleFormSubmit = (values: ProductInfoFormValues) => {
+  const handleFormSubmit = (values: ProductFormValues) => {
     setSubmissionClicked(true);
     if (hasUploadError) {
       return;
     }
 
-    const categoryId = values.category.id;
-    const requestBody = {
+    const categoryId = values.productCategory.id;
+    const requestBody: NewProductDto = {
       ...values,
-      category: categoryId,
+      productCategory: categoryId,
     };
 
     console.log(requestBody);
@@ -188,7 +215,10 @@ export default function AdminProductCreate() {
 
   return (
     <Box py={4}>
-      <AdminDetailsViewHeader hrefBack='/admin/product' label='Thêm sản phẩm' />
+      <AdminDetailsViewHeader
+        hrefBack={PRODUCTS_STAFF_ROUTE}
+        label='Thêm sản phẩm'
+      />
 
       <Card sx={{ p: 6 }}>
         <H5 mb={3}>Hình ảnh</H5>
@@ -220,12 +250,8 @@ export default function AdminProductCreate() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', ['product']);
 
-  return {
-    props: {},
-  };
+  return { props: { ...locales } };
 };

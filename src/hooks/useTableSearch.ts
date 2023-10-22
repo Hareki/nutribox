@@ -4,13 +4,13 @@ import type { ChangeEvent } from 'react';
 import { useMemo, useState } from 'react';
 import { useDebounce } from 'usehooks-ts';
 
-import type { GetAllPaginationResult } from 'api/types/pagination.type';
+import type { GetAllPaginationResult } from 'types/pagination';
 
 type MapItemToRow = (item: any) => any;
 
 interface UseTableSearch {
   queryFn: QueryFunction<any, string[]>;
-  paginationResult: GetAllPaginationResult<any>;
+  paginationResult?: GetAllPaginationResult<any>;
   mapItemToRow: MapItemToRow;
 }
 export function useTableSearch({
@@ -21,9 +21,9 @@ export function useTableSearch({
   const [searchQuery, setSearchQuery] = useState('');
   const debounceSearchQuery = useDebounce(searchQuery, 200);
 
-  const { data: searchResult } = useQuery({
+  const { data: searchResult, isFetching: isSearching } = useQuery({
     queryKey: ['product', 'search', debounceSearchQuery],
-    queryFn: queryFn,
+    queryFn,
     initialData: [],
   });
 
@@ -37,5 +37,5 @@ export function useTableSearch({
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
-  return { handleSearch, filteredList, searchQuery };
+  return { handleSearch, filteredList, searchQuery, isSearching };
 }

@@ -12,7 +12,6 @@ import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import { CommonService } from 'backend/services/common/common.service';
 import {
-  ExtendedCommonProductRelations,
   type CommonProductModel,
   type ExtendedCommonProductModel,
 } from 'backend/services/product/helper';
@@ -31,13 +30,13 @@ const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
 handler
   .get(async (req, res) => {
     const id = req.query.id as string;
-    const data = (await CommonService.getRecord({
-      entity: ProductEntity,
-      filter: {
-        id,
-      },
-      relations: ExtendedCommonProductRelations,
-    })) as ExtendedCommonProductModel;
+    const data =
+      (await ProductService.getCommonProduct<ExtendedCommonProductModel>({
+        filter: {
+          id,
+        },
+        extended: true,
+      })) as ExtendedCommonProductModel;
 
     res.status(StatusCodes.OK).json({
       status: 'success',

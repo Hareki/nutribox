@@ -1,3 +1,4 @@
+import { addDays, isAfter } from 'date-fns';
 import { z } from 'zod';
 
 import type { ExportOrderModel } from './exportOrder.model';
@@ -10,7 +11,7 @@ import {
 import type { ProductModel } from './product.model';
 import type { SupplierModel } from './supplier.model';
 
-import { isDateTimeAfter } from 'utils/date.helper';
+import { isDateTimeAfterOrEqual } from 'utils/date.helper';
 
 const ImportOrderSchema = z.object({
   id: zodUuid('ImportOrder.Id'),
@@ -23,9 +24,17 @@ const ImportOrderSchema = z.object({
 
   exportOrders: z.array(z.string().uuid()).optional(),
 
-  importDate: zodDate('ImportOrder.ImportDate'),
+  importDate: zodDate(
+    'ImportOrder.ImportDate',
+    addDays(new Date(), -3),
+    new Date(),
+  ),
 
-  manufacturingDate: zodDate('ImportOrder.ManufacturingDate'),
+  manufacturingDate: zodDate(
+    'ImportOrder.ManufacturingDate',
+    undefined,
+    new Date(),
+  ),
 
   expirationDate: zodDate('ImportOrder.ExpirationDate'),
 
@@ -34,7 +43,7 @@ const ImportOrderSchema = z.object({
   unitImportPrice: zodNumber(
     'ImportOrder.UnitImportPrice',
     'float',
-    0,
+    1,
     10_000_000,
   ),
 
@@ -48,37 +57,42 @@ const ImportOrderSchema = z.object({
 
 type ImportOrderModel = z.infer<typeof ImportOrderSchema>;
 
-export const ImportDateRefinement1: RefinementParameters<ImportOrderModel> = [
+export const DateRefinement1: RefinementParameters<ImportOrderModel> = [
   (data: ImportOrderModel) =>
-    !isDateTimeAfter(data.importDate, data.expirationDate),
+    isDateTimeAfterOrEqual(data.expirationDate, data.importDate),
   {
     message: 'ImportOrder.ImportDate.BeforeOrEqual.ExpirationDate',
-    path: ['defaultImportPrice'],
+    path: ['importDate'],
   },
 ];
 
-export const ImportDateRefinement2: RefinementParameters<ImportOrderModel> = [
+export const DateRefinement2: RefinementParameters<ImportOrderModel> = [
   (data: ImportOrderModel) =>
-    !isDateTimeAfter(data.manufacturingDate, data.expirationDate),
+    isDateTimeAfterOrEqual(data.expirationDate, data.manufacturingDate),
   {
     message: 'ImportOrder.ManufacturingDate.BeforeOrEqual.ExpirationDate',
-    path: ['defaultImportPrice'],
+    path: ['manufacturingDate'],
   },
 ];
 
-const ImportQuantityRefinement: RefinementParameters<ImportOrderModel> = [
-  (data) => data.importQuantity <= data.remainingQuantity,
+export const DateRefinement3: RefinementParameters<ImportOrderModel> = [
+  (data: ImportOrderModel) => {
+    return isDateTimeAfterOrEqual(data.importDate, data.manufacturingDate);
+  },
   {
-    message: 'ImportOrder.ImportQuantity.LessThan.RemainingQuantity',
-    path: ['defaultImportPrice'],
+    message: 'ImportOrder.ManufacturingDate.BeforeOrEqual.ImportDate',
+    path: ['importDate'],
   },
 ];
 
-const getRefinedImportOrderSchema = (schema: z.Schema<any>) =>
-  schema
-    .refine(...ImportDateRefinement1)
-    .refine(...ImportDateRefinement2)
-    .refine(...ImportQuantityRefinement);
+export const ImportQuantityRefinement: RefinementParameters<ImportOrderModel> =
+  [
+    (data) => data.importQuantity <= data.remainingQuantity,
+    {
+      message: 'ImportOrder.ImportQuantity.LessThan.RemainingQuantity',
+      path: ['importQuantity'],
+    },
+  ];
 
 type ImportOrderReferenceKeys = keyof Pick<
   ImportOrderModel,
@@ -103,7 +117,7 @@ type PopulateImportOrderFields<K extends ImportOrderReferenceKeys> = Omit<
 type FullyPopulatedImportOrderModel =
   PopulateImportOrderFields<ImportOrderReferenceKeys>;
 
-export { ImportOrderSchema, getRefinedImportOrderSchema };
+export { ImportOrderSchema };
 export type {
   ImportOrderModel,
   FullyPopulatedImportOrderModel,

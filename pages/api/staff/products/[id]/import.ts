@@ -4,8 +4,10 @@ import nc from 'next-connect';
 
 import type { ImportProductDto } from 'backend/dtos/product/importProduct.dto';
 import { BaseImportProductDtoSchema } from 'backend/dtos/product/importProduct.dto';
+import { ProductEntity } from 'backend/entities/product.entity';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
+import { CommonService } from 'backend/services/common/common.service';
 import { createMaxQuantityGuard } from 'backend/services/product/product.guard';
 import { ProductService } from 'backend/services/product/product.service';
 import type { JSSuccess } from 'backend/types/jsend';
@@ -26,6 +28,11 @@ handler.post(
       productId,
       req.body as ImportProductDto,
     );
+
+    await CommonService.updateRecord(ProductEntity, productId, {
+      defaultImportPrice: importOrder.unitImportPrice,
+      defaultSupplier: importOrder.supplier,
+    });
 
     res.status(StatusCodes.OK).json({
       status: 'success',

@@ -102,12 +102,7 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
             textOverflow: 'ellipsis',
           }}
         >
-          <Link
-            href={`/product/${getSlug(
-              cartItem.product.name,
-              cartItem.product.id,
-            )}`}
-          >
+          <Link href={`/product/${getSlug(cartItem.product)}`}>
             <H5 ellipsis fontSize='14px' className='title'>
               {cartItem.product.name}
             </H5>

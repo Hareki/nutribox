@@ -53,7 +53,9 @@ export class ProductService {
   };
 
   public static getCommonProduct = async <
-    T extends CommonProductModel = CommonProductModel,
+    T extends
+      | CommonProductModel
+      | ExtendedCommonProductModel = CommonProductModel,
   >(
     inputs: GetCommonProductModelInputs,
   ): Promise<T> => {
@@ -85,7 +87,9 @@ export class ProductService {
   };
 
   public static getCommonProducts = async <
-    T extends CommonProductModel = CommonProductModel,
+    T extends
+      | CommonProductModel
+      | ExtendedCommonProductModel = CommonProductModel,
   >(
     inputs: GetCommonProductModelsInputs,
   ): Promise<[T[], number, number, number]> => {
@@ -123,7 +127,9 @@ export class ProductService {
   };
 
   public static getCommonProductsByKeyword = async <
-    T extends CommonProductModel = CommonProductModel,
+    T extends
+      | CommonProductModel
+      | ExtendedCommonProductModel = CommonProductModel,
   >(
     inputs: GetCommonProductModelsByKeywordInputs,
   ): Promise<T[]> => {

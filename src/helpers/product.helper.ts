@@ -2,7 +2,6 @@ import type { ImportOrderModel } from 'models/importOder.model';
 
 export function extractIdFromSlug(slug: string | undefined) {
   if (!slug) return '';
-  console.log('file: product.helper.ts:4 - extractIdFromSlug - slug:', slug);
   const parts = slug.split('_');
   const id = parts[parts.length - 1];
   return id || '';

@@ -1,3 +1,4 @@
+import { isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
 import { z } from 'zod';
 
 import {
@@ -34,30 +35,74 @@ export const zodUuid = (prefix: string) =>
     })
     .uuid();
 
-export const zodDate = (prefix: string) =>
+export const zodDate = (prefix: string, minDate?: Date, maxDate?: Date) =>
   z
     .date({
-      required_error: `${prefix}.Required`,
+      errorMap: (issue, ctx) => {
+        if (issue.code === z.ZodIssueCode.invalid_union) {
+          return { message: `${prefix}.Required` };
+        }
+
+        const issues = [
+          z.ZodIssueCode.invalid_date,
+          z.ZodIssueCode.invalid_type,
+          z.ZodIssueCode.invalid_string,
+        ];
+
+        if (issues.includes(issue.code as any)) {
+          return { message: `${prefix}.InvalidFormat` };
+        }
+
+        return { message: ctx.defaultError };
+      },
     })
     .or(
       z
-        .string({
-          required_error: `${prefix}.Required`,
-        })
+        .string()
         .regex(DATE_REGEX, {
           message: `${prefix}.InvalidFormat`,
-        }),
+        })
+        .refine(
+          (data) => {
+            const date = new Date(data);
+            return !isNaN(date.getTime());
+          },
+          {
+            message: `${prefix}.InvalidFormat`,
+          },
+        ),
+    )
+    .transform((data) => startOfDay(new Date(data)))
+    .refine(
+      (data) => {
+        if (minDate) {
+          const date = new Date(data);
+          return (
+            isAfter(date, startOfDay(minDate)) ||
+            isEqual(date, startOfDay(minDate))
+          );
+        }
+        return true;
+      },
+      {
+        message: `${prefix}.Min`,
+      },
     )
     .refine(
       (data) => {
-        const date = new Date(data);
-        return !isNaN(date.getTime());
+        if (maxDate) {
+          const date = new Date(data);
+          return (
+            isBefore(date, startOfDay(maxDate)) ||
+            isEqual(date, startOfDay(maxDate))
+          );
+        }
+        return true;
       },
       {
-        message: `${prefix}.InvalidFormat`,
+        message: `${prefix}.Max`,
       },
-    )
-    .transform((data) => new Date(data));
+    );
 
 export const zodNumber = (
   prefix: string,
@@ -67,7 +112,12 @@ export const zodNumber = (
 ) =>
   z
     .number({
-      required_error: `${prefix}.Required`,
+      errorMap: (issue, ctx) => {
+        if (issue.code === z.ZodIssueCode.invalid_union) {
+          return { message: `${prefix}.Required` };
+        }
+        return { message: ctx.defaultError };
+      },
     })
     .int(type === 'int' ? { message: `${prefix}.InvalidFormat` } : undefined)
     .min(min, {

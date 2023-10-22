@@ -102,7 +102,7 @@ const SearchInput: FC = () => {
       {searchResult.length > 0 && (
         <SearchResultCard elevation={2}>
           {searchResult.map((item) => {
-            const slug = getSlug(item.name, item.id);
+            const slug = getSlug(item);
             const imageUrl = item.productImages[0].imageUrl || '';
             return (
               <Link

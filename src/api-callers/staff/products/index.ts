@@ -5,38 +5,43 @@ import type {
   CommonProductModel,
   ExtendedCommonProductModel,
 } from 'backend/services/product/helper';
+import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
   CATEGORIES_API_ROUTE,
+  IMPORT_ORDERS_API_STAFF_ROUTE,
   IMPORT_PRODUCT_API_STAFF_ROUTE,
   PRODUCTS_API_STAFF_ROUTE,
-  PRODUCT_DETAIL_API_ROUTE,
+  PRODUCT_DETAIL_API_STAFF_ROUTE,
   SUPPLIERS_API_STAFF_ROUTE,
 } from 'constants/routes.api.constant';
+import { convertToPaginationResult } from 'helpers/pagination.help';
+import type { ImportOrderModel } from 'models/importOder.model';
 import type { ProductModel } from 'models/product.model';
 import type { ProductCategoryModel } from 'models/productCategory.model';
 import type { SupplierModel } from 'models/supplier.model';
 import type { GetAllPaginationResult } from 'types/pagination';
-import { AdminMainTablePaginationConstant } from 'utils/constants';
 import { insertId } from 'utils/middleware.helper';
 
 const getProducts = async (
   page: number,
 ): Promise<GetAllPaginationResult<ExtendedCommonProductModel>> => {
-  const response = await axiosInstance.get(`admin/product/all`, {
+  const response = await axiosInstance.get<
+    JSSuccess<ExtendedCommonProductModel[]>
+  >(PRODUCTS_API_STAFF_ROUTE, {
     params: {
-      docsPerPage: AdminMainTablePaginationConstant.docsPerPage,
       page,
     },
   });
-  return response.data.data;
+
+  return convertToPaginationResult(response);
 };
 
 const getProduct = async (
   productId: string,
 ): Promise<ExtendedCommonProductModel> => {
   const response = await axiosInstance.get(
-    insertId(PRODUCT_DETAIL_API_ROUTE, productId),
+    insertId(PRODUCT_DETAIL_API_STAFF_ROUTE, productId),
   );
   const result = response.data.data;
   return result;
@@ -47,35 +52,38 @@ const getCategoryDropdown = async (): Promise<ProductCategoryModel[]> => {
   return response.data.data;
 };
 
-// const getImportOrders = async (
-//   page: number,
-//   productId: string,
-// ): Promise<GetAllPaginationResult<ImportOrderModel>> => {
-//   const response = await axiosInstance.get(`admin/product/expiration-order`, {
-//     params: {
-//       docsPerPage: AdminSubTablePaginationConstant.docsPerPage,
-//       page,
-//       productId,
-//     },
-//   });
-//   return response.data.data;
-// };
+const getImportOrders = async (
+  page: number,
+  productId: string,
+): Promise<GetAllPaginationResult<ImportOrderModel>> => {
+  const response = await axiosInstance.get(IMPORT_ORDERS_API_STAFF_ROUTE, {
+    params: {
+      page,
+      productId,
+    },
+  });
+  return convertToPaginationResult(response);
+};
 
 const createProduct = async (
   requestBody: NewProductDto,
 ): Promise<ExtendedCommonProductModel> => {
-  const response = await axiosInstance.post(
-    PRODUCTS_API_STAFF_ROUTE,
-    requestBody,
-  );
-  return response.data.data;
+  try {
+    const response = await axiosInstance.post(
+      PRODUCTS_API_STAFF_ROUTE,
+      requestBody,
+    );
+    return response.data.data;
+  } catch (err) {
+    throw err.response.data.data;
+  }
 };
 const updateProduct = async (
   productId: string,
   requestBody: UpdateProductDto,
 ): Promise<ProductModel> => {
   const response = await axiosInstance.put(
-    insertId(PRODUCT_DETAIL_API_ROUTE, productId),
+    insertId(PRODUCT_DETAIL_API_STAFF_ROUTE, productId),
     requestBody,
   );
   return response.data.data;
@@ -83,13 +91,13 @@ const updateProduct = async (
 
 const pushImages = async (
   productId: string,
-  imageUrls: string[],
+  productImages: string[],
 ): Promise<CommonProductModel> => {
   const response = await axiosInstance.post(
     // `admin/product/${productId}?type=pushImages`,
-    insertId(PRODUCT_DETAIL_API_ROUTE, productId),
+    insertId(PRODUCT_DETAIL_API_STAFF_ROUTE, productId),
     {
-      imageUrls,
+      productImages,
     },
   );
   return response.data.data;
@@ -100,7 +108,7 @@ const removeImage = async (
   imageUrl: string,
 ): Promise<CommonProductModel> => {
   const response = await axiosInstance.patch(
-    insertId(PRODUCT_DETAIL_API_ROUTE, productId),
+    insertId(PRODUCT_DETAIL_API_STAFF_ROUTE, productId),
     {
       imageUrl,
     },
@@ -118,13 +126,19 @@ const getSupplierDropdown = async (): Promise<SupplierModel[]> => {
 };
 
 const importProduct = async (
+  productId: string,
   requestBody: ImportProductDto,
 ): Promise<ProductModel> => {
-  const response = await axiosInstance.post(
-    IMPORT_PRODUCT_API_STAFF_ROUTE,
-    requestBody,
-  );
-  return response.data.data;
+  try {
+    const response = await axiosInstance.post(
+      insertId(IMPORT_PRODUCT_API_STAFF_ROUTE, productId),
+      requestBody,
+    );
+    return response.data.data;
+  } catch (err) {
+    console.log('file: index.ts:139 - err:', err);
+    throw err.response.data.data;
+  }
 };
 
 const searchProductsByName = async (
@@ -145,7 +159,7 @@ const apiCaller = {
   getProduct,
   updateProduct,
   getCategoryDropdown,
-  // getImportOrders,
+  getImportOrders,
   pushImages,
   removeImage,
   getSupplierDropdown,

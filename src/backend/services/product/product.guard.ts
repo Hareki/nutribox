@@ -23,7 +23,9 @@ export const createMaxQuantityGuard =
     if (currentInStock + importProductDto.importQuantity > maxQuantity) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: 'fail',
-        message: 'Product.ImportQuantity.Exceeded',
+        data: {
+          importQuantity: 'Product.ImportQuantity.Exceeded',
+        },
       });
     }
 

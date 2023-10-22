@@ -5,6 +5,7 @@
   "Product.ProductCategoryId.Required": "Vui lòng nhập Mã danh mục sản phẩm.",
   "Product.ProductImages.Required": "Vui lòng nhập hình ảnh sản phẩm.",
   "Product.Name.Required": "Vui lòng nhập tên sản phẩm.",
+  "Product.Name.Duplicate": "Tên sản phẩm đã tồn tại",
   "Product.Name.Min": "Tên sản phẩm phải có ít nhất 3 ký tự.",
   "Product.Name.Max": "Tên sản phẩm không nên vượt quá 50 ký tự.",
   "Product.DefaultImportPrice.Required": "Vui lòng nhập giá nhập mặc định.",

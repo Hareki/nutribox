@@ -45,10 +45,13 @@ export const isTimeBeforeOrEqual = (date1: DateLike, date2: DateLike) => {
   return false;
 };
 
-export const isDateTimeAfter = (date1: DateLike, date2: DateLike): boolean => {
+export const isDateTimeAfterOrEqual = (
+  date1: DateLike,
+  date2: DateLike,
+): boolean => {
   const dateObject1 = getDateObject(date1);
   const dateObject2 = getDateObject(date2);
-  return isAfter(dateObject1, dateObject2);
+  return isAfter(dateObject1, dateObject2) || isEqual(dateObject1, dateObject2);
 };
 
 export const isTimeAfter = (date1: DateLike, date2: DateLike): boolean => {

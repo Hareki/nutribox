@@ -66,8 +66,6 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   const activeRoute = useCallback(
     (rawPath: string) => {
       const path = shortenUrl(rawPath);
-      console.log('router.pathname', router.pathname);
-      console.log('path', path);
 
       return router.pathname.endsWith(`${path}/[id]`) ||
         router.pathname.endsWith(`${path}/create`) ||

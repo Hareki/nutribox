@@ -5,6 +5,7 @@
   "Product.ProductCategoryId.Required": "Please enter the category ID.",
   "Product.ProductImages.Required": "Please enter the product images.",
   "Product.Name.Required": "Please enter the product name.",
+  "Product.Name.Duplicate": "Product name already exists.",
   "Product.Name.Min": "Product name should be at least 3 characters.",
   "Product.Name.Max": "Product name should not exceed 50 characters.",
   "Product.DefaultImportPrice.Required": "Please enter the default import price.",

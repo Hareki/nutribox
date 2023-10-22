@@ -86,7 +86,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({ handleDrawerToggle }) => {
           <Box flexGrow={1} />
 
           <FlexBox alignItems='center' gap={2}>
-            <CustomerUserMenu />
+            {/* <CustomerUserMenu /> */}
           </FlexBox>
         </StyledToolBar>
       </Container>

@@ -2,7 +2,7 @@ import { Avatar, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
-import type { FilteredProduct } from '../../../../pages/admin/product';
+import type { FilteredProduct } from '../../../../pages/staff/products';
 import {
   StyledTableRow,
   CategoryWrapper,
@@ -11,7 +11,9 @@ import {
 
 import { Paragraph, Small } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
+import { PRODUCT_DETAIL_STAFF_ROUTE } from 'constants/routes.ui.constant';
 import { formatCurrency } from 'lib';
+import { insertId } from 'utils/middleware.helper';
 
 // ========================================================================
 type ProductRowProps = { product: FilteredProduct };
@@ -23,10 +25,9 @@ const ProductRow: FC<ProductRowProps> = ({ product }) => {
     name,
     category,
     retailPrice,
-    wholesalePrice,
     imageUrls,
-    // shelfLife,
-    unexpiredAmount,
+    remainingStock,
+    shelfLife,
   } = product;
 
   const router = useRouter();
@@ -35,7 +36,7 @@ const ProductRow: FC<ProductRowProps> = ({ product }) => {
     <StyledTableRow
       tabIndex={-1}
       role='checkbox'
-      onClick={() => router.push(`/admin/product/${id}`)}
+      onClick={() => router.push(insertId(PRODUCT_DETAIL_STAFF_ROUTE, id))}
     >
       <StyledTableCell align='left'>
         <FlexBox alignItems='center' gap={1.5}>
@@ -59,15 +60,13 @@ const ProductRow: FC<ProductRowProps> = ({ product }) => {
         <CategoryWrapper>{category}</CategoryWrapper>
       </StyledTableCell>
 
-      <StyledTableCell align='left'>
-        {formatCurrency(wholesalePrice)}
-      </StyledTableCell>
-
-      <StyledTableCell align='left'>
+      <StyledTableCell align='center'>
         {formatCurrency(retailPrice)}
       </StyledTableCell>
 
-      <StyledTableCell align='left'>{unexpiredAmount}</StyledTableCell>
+      <StyledTableCell align='center'>{shelfLife}</StyledTableCell>
+
+      <StyledTableCell align='center'>{remainingStock}</StyledTableCell>
     </StyledTableRow>
   );
 };

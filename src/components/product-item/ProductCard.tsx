@@ -106,7 +106,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     onPreview,
   } = props;
 
-  const slug = getSlug(name, id);
+  const slug = getSlug({ name, id });
 
   const { updateCartAmount, existingCartItem } = useCart(id);
   const [openModal, setOpenModal] = useState(false);

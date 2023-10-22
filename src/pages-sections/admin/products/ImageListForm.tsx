@@ -161,7 +161,7 @@ const ImageListForm = ({
       <Box display='none'>
         <UploadFileInput
           multiple
-          inputRef={uploadRef}
+          inputRef={uploadRef as any}
           onFilesSelected={onFilesSelected}
         />
       </Box>

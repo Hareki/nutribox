@@ -48,7 +48,10 @@ export const removeAccents = (vnStr: string): string => {
     .replace(/Đ/g, 'D');
 };
 
-export const getSlug = (name = '', id = '') => {
+type GetSlugInput = { name: string; id: string };
+export const getSlug = (input?: GetSlugInput) => {
+  if (!input) return '';
+  const { name, id } = input;
   const transformedName = name.trim().toLowerCase().replace(/\s+/g, '-');
   return removeAccents(transformedName) + '_' + id;
 };

@@ -58,7 +58,7 @@ const SignUpPage: NextPage = () => {
           },
         });
       } catch (error) {
-        console.log('asd', error);
+        console.log('error:', error);
       }
     },
   });

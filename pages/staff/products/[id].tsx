@@ -1,85 +1,92 @@
 import { Box, Card, Divider } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import ProductController from 'api/controllers/Product.controller';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import { serialize } from 'api/helpers/object.helper';
-import type { ICdsUpeProduct, IProduct } from 'api/models/Product.model/types';
-import type { JSendFailResponse } from 'api/types/response.type';
 import type { AxiosError } from 'axios';
-import { Types } from 'mongoose';
 import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
-import { useReducer } from 'react';
+import { useMemo, useReducer } from 'react';
 import { useState } from 'react';
 
-import type { UpdateProductInfoRb } from '../../api/admin/product/[id]';
-
 import apiCaller from 'api-callers/staff/products';
+import type { ProductFormValues } from 'backend/dtos/product/newProduct.dto';
+import type { UpdateProductDto } from 'backend/dtos/product/updateProduct.dto';
+import type { CommonProductModel } from 'backend/services/product/helper';
+import type { JSFail } from 'backend/types/jsend';
 import { H5 } from 'components/abstract/Typography';
+import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
-import { confirmDialogReducer } from 'components/dialog/confirm-dialog/reducer';
-import { infoDialogReducer } from 'components/dialog/info-dialog/reducer';
+import {
+  confirmDialogReducer,
+  initConfirmDialogState,
+} from 'components/dialog/confirm-dialog/reducer';
+import {
+  infoDialogReducer,
+  initInfoDialogState,
+} from 'components/dialog/info-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
+import { PRODUCTS_STAFF_ROUTE } from 'constants/routes.ui.constant';
 import { getMessageList } from 'helpers/feedback.helper';
 import { handleUpload } from 'helpers/imagekit.helper';
+import type { ProductModel } from 'models/product.model';
 import { ProductForm } from 'pages-sections/admin';
 import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageListForm';
 import ImageListForm from 'pages-sections/admin/products/ImageListForm';
 import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';
-import type { ProductInfoFormValues } from 'pages-sections/admin/products/ProductForm';
+import { getSlug } from 'utils/string.helper';
 
 AdminProductDetails.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
-interface EditProductProps {
-  initialProduct: ICdsUpeProduct;
-}
-
-export default function AdminProductDetails({
-  initialProduct,
-}: EditProductProps) {
+export default function AdminProductDetails() {
   const { enqueueSnackbar } = useSnackbar();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
-  const [isUploadSuccess, setIsUploadSuccess] = useState(false);
-  const [isUploadError, setIsUploadError] = useState(false);
+  const [, setIsUploadSuccess] = useState(false);
+  const [, setIsUploadError] = useState(false);
   const [isEditingForm, setIsEditingForm] = useState(false);
-  const [infoState, dispatchInfo] = useReducer(infoDialogReducer, {
-    open: false,
-  });
+  const [infoState, dispatchInfo] = useReducer(
+    infoDialogReducer,
+    initInfoDialogState,
+  );
 
-  const [confirmState, dispatchConfirm] = useReducer(confirmDialogReducer, {
-    open: false,
-  });
+  const router = useRouter();
+  const productId = router.query.id as string;
+
+  const [confirmState, dispatchConfirm] = useReducer(
+    confirmDialogReducer,
+    initConfirmDialogState,
+  );
 
   const queryClient = useQueryClient();
 
-  const { data: product } = useQuery({
-    queryKey: ['product', initialProduct.id],
-    queryFn: () => apiCaller.getProduct(initialProduct.id),
-    initialData: initialProduct,
+  const { data: product, isLoading: isLoadingProduct } = useQuery({
+    queryKey: ['products', productId],
+    queryFn: () => apiCaller.getProduct(productId),
   });
 
   const { mutate: updateProductInfo, isLoading } = useMutation<
-    IProduct,
+    ProductModel,
     unknown,
-    UpdateProductInfoRb
+    UpdateProductDto
   >({
-    mutationFn: (values) => apiCaller.updateProduct(product.id, values),
-    onSuccess: () => {
+    mutationFn: (values) => apiCaller.updateProduct(productId, values),
+    onSuccess: (res) => {
       setIsEditingForm(false);
       enqueueSnackbar('Cập nhật sản phẩm thành công', { variant: 'success' });
-      queryClient.invalidateQueries(['product', product.id]);
+      queryClient.invalidateQueries(['product', productId]);
+      queryClient.setQueryData(['product', productId], res);
     },
-    onError: (err: AxiosError<JSendFailResponse<any>>) => {
+    onError: (err: AxiosError<JSFail<any>>) => {
       console.log(err);
-      if (err.response.data.data) {
+      if (err.response?.data.data) {
         dispatchInfo({
           type: 'open_dialog',
           payload: {
             title: 'Có lỗi xảy ra',
-            content: getMessageList(err.response.data.data),
+            // FIXME
+            content: getMessageList(err.response.data.data as any),
             variant: 'error',
           },
         });
@@ -93,13 +100,13 @@ export default function AdminProductDetails({
   });
 
   const { mutate: pushProductImageUrls, isLoading: isPushingImageUrls } =
-    useMutation<IProduct, unknown, string[]>({
-      mutationFn: (imageUrls) => apiCaller.pushImages(product.id, imageUrls),
+    useMutation<CommonProductModel, unknown, string[]>({
+      mutationFn: (imageUrls) => apiCaller.pushImages(productId, imageUrls),
       onSuccess: () => {
         enqueueSnackbar('Thêm ảnh sản phẩm thành công', {
           variant: 'success',
         });
-        queryClient.refetchQueries(['product', product.id]);
+        queryClient.refetchQueries(['product', productId]);
       },
       onError: (err) => {
         console.log(err);
@@ -110,11 +117,11 @@ export default function AdminProductDetails({
     });
 
   const { mutate: deleteImageUrl, isLoading: isDeletingImageUrl } = useMutation<
-    IProduct,
+    CommonProductModel,
     unknown,
     string
   >({
-    mutationFn: (imageUrl) => apiCaller.removeImage(product.id, imageUrl),
+    mutationFn: (imageUrl) => apiCaller.removeImage(productId, imageUrl),
     onSuccess: () => {
       setIsUploadSuccess(true);
       setIsUploadError(false);
@@ -122,7 +129,7 @@ export default function AdminProductDetails({
       enqueueSnackbar('Xoá ảnh đã chọn thành công', {
         variant: 'success',
       });
-      queryClient.refetchQueries(['product', product.id]);
+      queryClient.refetchQueries(['product', productId]);
     },
     onError: (err) => {
       setIsUploadSuccess(false);
@@ -135,11 +142,11 @@ export default function AdminProductDetails({
     },
   });
 
-  const handleInfoFormSubmit = (values: ProductInfoFormValues) => {
-    const categoryId = values.category.id;
-    const requestBody = {
+  const handleInfoFormSubmit = (values: ProductFormValues) => {
+    const categoryId = values.productCategory.id;
+    const requestBody: UpdateProductDto = {
       ...values,
-      category: categoryId,
+      productCategory: categoryId,
     };
     updateProductInfo(requestBody);
   };
@@ -163,10 +170,16 @@ export default function AdminProductDetails({
     setIsUploadingImage(false);
   };
 
+  const imageUrls = useMemo(() => {
+    return product?.productImages.map((item) => item.imageUrl);
+  }, [product]);
+
+  if (isLoadingProduct) return <CircularProgressBlock />;
+
   return (
     <Box py={4}>
       <AdminDetailsViewHeader
-        hrefBack='/admin/product'
+        hrefBack={PRODUCTS_STAFF_ROUTE}
         label='Chi tiết sản phẩm'
       />
 
@@ -175,12 +188,14 @@ export default function AdminProductDetails({
         <ImageListForm
           confirmState={confirmState}
           dispatchConfirm={dispatchConfirm}
-          imageUrls={product.imageUrls}
+          imageUrls={imageUrls!}
           onFilesSelected={handleUpload.bind(null, {
             onUploadError,
             onUploadStart,
             onUploadSuccess,
-            folderName: `products/${product.category.slug}/${product.slug}`,
+            folderName: `products/${getSlug(
+              product?.productCategory,
+            )}/${getSlug(product)}`,
           })}
           onFileDeleted={(url) => deleteImageUrl(url)}
           isAddingImageUrls={isUploadingImage || isPushingImageUrls}
@@ -199,36 +214,16 @@ export default function AdminProductDetails({
         />
       </Card>
 
-      <ProductExpiration product={product} />
+      <ProductExpiration product={product!} />
     </Box>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'product',
+    'importOrder',
+  ]);
 
-  const isValidId = Types.ObjectId.isValid(context.params.id as string);
-  if (!isValidId) {
-    return {
-      notFound: true,
-    };
-  }
-
-  // FIXME could move this to client as well to improve load time, but have to implement loading indicator
-  const product = (await ProductController.getOne({
-    id: context.params.id as string,
-    populate: ['category', 'defaultSupplier'],
-  })) as unknown as ICdsUpeProduct;
-
-  if (!product) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: { initialProduct: serialize(product) },
-  };
+  return { props: { ...locales } };
 };

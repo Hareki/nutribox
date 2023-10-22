@@ -12,10 +12,8 @@ import {
   type GetRecordInputs,
   type GetRecordsByKeywordInputs,
   type GetRecordsInputs,
-  buildChildRelationIds,
   buildRelationFields,
 } from 'backend/services/common/helper';
-import { toTableName } from 'utils/string.helper';
 
 export class CommonService {
   public static async getRecord<E extends ObjectLiteral>(

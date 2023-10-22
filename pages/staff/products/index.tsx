@@ -31,13 +31,14 @@ ProductList.getLayout = function getLayout(page: ReactElement) {
 const tableHeading = [
   { id: 'name', label: 'Tên sản phẩm', align: 'left' },
   { id: 'category', label: 'Danh mục', align: 'left' },
-  { id: 'retailPrice', label: 'Giá bán', align: 'left' },
-  { id: 'remainingStock', label: 'Tồn kho', align: 'left' },
+  { id: 'retailPrice', label: 'Giá bán', align: 'center' },
+  { id: 'shelfLife', label: 'Ngày sử dụng', align: 'center' },
+  { id: 'remainingStock', label: 'Tồn kho', align: 'center' },
 ];
 
 const mapProductToRow = (item: ExtendedCommonProductModel) => ({
   id: item.id,
-  // shelfLife: item.shelfLife,
+  shelfLife: item.shelfLife,
   remainingStock: getMaxProductQuantity(item.importOrders),
   imageUrls: item.productImages.map((image) => image.imageUrl),
   name: item.name,
@@ -63,6 +64,7 @@ function ProductList() {
     handleSearch,
     filteredList: filteredProducts,
     searchQuery,
+    isSearching,
   } = useTableSearch({
     mapItemToRow: mapProductToRow,
     paginationResult: products,
@@ -87,7 +89,7 @@ function ProductList() {
         buttonText='Thêm sản phẩm'
       />
 
-      {isLoading ? (
+      {isLoading || isSearching ? (
         <Skeleton
           variant='rectangular'
           animation='wave'

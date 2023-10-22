@@ -89,7 +89,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
       </IconButton>
 
       <FlexBox p={2} rowGap={2} width='100%' flexDirection='column'>
-        <Link href={`/product/${getSlug(name, id)}`}>
+        <Link href={`/product/${getSlug({ name, id })}`}>
           <Span ellipsis fontWeight='600' fontSize={18}>
             {name}
           </Span>

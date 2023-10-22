@@ -148,12 +148,15 @@ export const CATEGORY_DETAIL_API_STAFF_ROUTE = `${CATEGORIES_API_STAFF_ROUTE}/:i
 
 export const PRODUCTS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/products`;
 export const PRODUCT_DETAIL_API_STAFF_ROUTE = `${PRODUCTS_API_STAFF_ROUTE}/:id`;
-export const IMPORT_PRODUCT_API_STAFF_ROUTE = `${PRODUCT_DETAIL_API_STAFF_ROUTE}/:id/import`;
+export const IMPORT_PRODUCT_API_STAFF_ROUTE = `${PRODUCT_DETAIL_API_STAFF_ROUTE}/import`;
+
+export const IMPORT_ORDERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/import-orders`;
 
 export const SUPPLIERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/suppliers`;
 export const SUPPLIER_DETAIL_API_STAFF_ROUTE = `${SUPPLIERS_API_STAFF_ROUTE}/:id`;
 
 export const STORE_DETAIL_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/stores/:id`;
+
 export const COUNTER_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/counter`;
 
 export const StaffRestrictedApiRoutes: MethodRoutePair[] = [];
@@ -204,12 +207,16 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
     route: PRODUCTS_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET', 'PUT', 'PATCH', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     route: PRODUCT_DETAIL_API_STAFF_ROUTE,
   },
   {
     methods: ['POST'],
     route: IMPORT_PRODUCT_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: IMPORT_ORDERS_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
@@ -249,6 +256,10 @@ export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET', 'PATCH'],
     route: PRODUCT_DETAIL_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: IMPORT_ORDERS_API_STAFF_ROUTE,
   },
   {
     methods: ['GET', 'POST'],

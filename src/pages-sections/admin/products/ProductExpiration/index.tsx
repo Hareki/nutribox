@@ -9,20 +9,19 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
-import type { ICdsUpeProduct } from 'api/models/Product.model/types';
 import { Fragment, useState } from 'react';
-
-import type { ExpirationOrder } from '../../../../../pages/api/admin/product/expiration-order';
 
 import ExpirationOrderModal from './ExpirationOrderModal';
 import ExpirationOrderRow from './ExpirationOrderRow';
 
 import apiCaller from 'api-callers/staff/products';
+import type { ExtendedCommonProductModel } from 'backend/services/product/helper';
 import TableHeader from 'components/data-table/TableHeader';
 import { FlexBox } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
+import type { ImportOrderModel } from 'models/importOder.model';
 
 const tableHeading = [
   { id: 'supplierName', label: 'Nhà cung cấp', align: 'left' }, // supplier
@@ -33,7 +32,7 @@ const tableHeading = [
 ];
 
 interface ProductExpirationProps {
-  product: ICdsUpeProduct;
+  product: ExtendedCommonProductModel;
 }
 const ProductExpiration = ({ product }: ProductExpirationProps) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,13 +41,13 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
     isLoading,
     paginationData: expirationOrdersPagination,
     paginationComponent,
-  } = usePaginationQuery<ExpirationOrder>({
-    baseQueryKey: ['admin/order-expiration', product.id],
+  } = usePaginationQuery<ImportOrderModel>({
+    baseQueryKey: ['staff', 'import-orders', product.id],
     getPaginationDataFn: apiCaller.getImportOrders,
     otherArgs: product.id,
   });
 
-  const { selected, filteredList, handleChangePage } = useMuiTable({
+  const { selected, filteredList } = useMuiTable({
     listData: expirationOrdersPagination?.docs || [],
     // defaultSort: 'id',
     // defaultOrder: 'desc',
@@ -61,7 +60,7 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
             variant='rectangular'
             animation='wave'
             width='100%'
-            height='500px'
+            height='300px'
             sx={{ borderRadius: '8px' }}
           />
         ) : (
