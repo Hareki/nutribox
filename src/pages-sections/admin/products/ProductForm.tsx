@@ -60,8 +60,7 @@ type ProductFormProps = {
   isLoading: boolean;
   isEditing: boolean;
   setIsEditing?: (value: boolean) => void;
-  infoState: InfoDialogState;
-  dispatchInfo: Dispatch<InfoDialogAction>;
+  t: (key: string) => string;
 };
 
 const ProductForm: FC<ProductFormProps> = (props) => {
@@ -72,11 +71,8 @@ const ProductForm: FC<ProductFormProps> = (props) => {
     isLoading,
     isEditing,
     setIsEditing,
-    infoState,
-    dispatchInfo,
+    t,
   } = props;
-
-  const { t } = useCustomTranslation(['product']);
 
   const isAdding = !product;
 
@@ -307,14 +303,6 @@ const ProductForm: FC<ProductFormProps> = (props) => {
           </Grid>
         </Grid>
       </form>
-
-      <InfoDialog
-        open={infoState.open}
-        content={infoState.content}
-        title={infoState.title}
-        variant={infoState.variant}
-        handleClose={() => dispatchInfo({ type: 'close_dialog' })}
-      />
     </Fragment>
   );
 };

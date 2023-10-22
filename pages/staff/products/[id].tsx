@@ -1,6 +1,5 @@
 import { Box, Card, Divider } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -13,7 +12,6 @@ import apiCaller from 'api-callers/staff/products';
 import type { ProductFormValues } from 'backend/dtos/product/newProduct.dto';
 import type { UpdateProductDto } from 'backend/dtos/product/updateProduct.dto';
 import type { CommonProductModel } from 'backend/services/product/helper';
-import type { JSFail } from 'backend/types/jsend';
 import { H5 } from 'components/abstract/Typography';
 import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
@@ -21,14 +19,11 @@ import {
   confirmDialogReducer,
   initConfirmDialogState,
 } from 'components/dialog/confirm-dialog/reducer';
-import {
-  infoDialogReducer,
-  initInfoDialogState,
-} from 'components/dialog/info-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { PRODUCTS_STAFF_ROUTE } from 'constants/routes.ui.constant';
-import { getMessageList } from 'helpers/feedback.helper';
 import { handleUpload } from 'helpers/imagekit.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { ProductModel } from 'models/product.model';
 import { ProductForm } from 'pages-sections/admin';
 import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageListForm';
@@ -46,10 +41,12 @@ export default function AdminProductDetails() {
   const [, setIsUploadSuccess] = useState(false);
   const [, setIsUploadError] = useState(false);
   const [isEditingForm, setIsEditingForm] = useState(false);
-  const [infoState, dispatchInfo] = useReducer(
-    infoDialogReducer,
-    initInfoDialogState,
-  );
+
+  const { t } = useCustomTranslation(['product']);
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: 'Cập nhật thông tin',
+  });
 
   const router = useRouter();
   const productId = router.query.id as string;
@@ -78,25 +75,7 @@ export default function AdminProductDetails() {
       queryClient.invalidateQueries(['product', productId]);
       queryClient.setQueryData(['product', productId], res);
     },
-    onError: (err: AxiosError<JSFail<any>>) => {
-      console.log(err);
-      if (err.response?.data.data) {
-        dispatchInfo({
-          type: 'open_dialog',
-          payload: {
-            title: 'Có lỗi xảy ra',
-            // FIXME
-            content: getMessageList(err.response.data.data as any),
-            variant: 'error',
-          },
-        });
-        return;
-      }
-
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-        variant: 'error',
-      });
-    },
+    onError: dispatchErrorDialog,
   });
 
   const { mutate: pushProductImageUrls, isLoading: isPushingImageUrls } =
@@ -208,13 +187,13 @@ export default function AdminProductDetails() {
           isEditing={isEditingForm}
           isLoading={isLoading}
           product={product}
-          infoState={infoState}
-          dispatchInfo={dispatchInfo}
           handleFormSubmit={handleInfoFormSubmit}
+          t={t}
         />
       </Card>
 
       <ProductExpiration product={product!} />
+      <ErrorDialog />
     </Box>
   );
 }

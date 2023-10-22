@@ -68,15 +68,11 @@ const getImportOrders = async (
 const createProduct = async (
   requestBody: NewProductDto,
 ): Promise<ExtendedCommonProductModel> => {
-  try {
-    const response = await axiosInstance.post(
-      PRODUCTS_API_STAFF_ROUTE,
-      requestBody,
-    );
-    return response.data.data;
-  } catch (err) {
-    throw err.response.data.data;
-  }
+  const response = await axiosInstance.post(
+    PRODUCTS_API_STAFF_ROUTE,
+    requestBody,
+  );
+  return response.data.data;
 };
 const updateProduct = async (
   productId: string,
@@ -129,16 +125,11 @@ const importProduct = async (
   productId: string,
   requestBody: ImportProductDto,
 ): Promise<ProductModel> => {
-  try {
-    const response = await axiosInstance.post(
-      insertId(IMPORT_PRODUCT_API_STAFF_ROUTE, productId),
-      requestBody,
-    );
-    return response.data.data;
-  } catch (err) {
-    console.log('file: index.ts:139 - err:', err);
-    throw err.response.data.data;
-  }
+  const response = await axiosInstance.post(
+    insertId(IMPORT_PRODUCT_API_STAFF_ROUTE, productId),
+    requestBody,
+  );
+  return response.data.data;
 };
 
 const searchProductsByName = async (

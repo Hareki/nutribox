@@ -1,25 +1,26 @@
+import { enqueueSnackbar } from 'notistack';
 import { useReducer } from 'react';
-
-import { useCustomTranslation } from './useCustomTranslation';
 
 import InfoDialog from 'components/dialog/info-dialog';
 import {
   infoDialogReducer,
   initInfoDialogState,
 } from 'components/dialog/info-dialog/reducer';
+import type { AxiosErrorWithMessages } from 'helpers/error.helper';
 import { extractErrorMessages } from 'helpers/error.helper';
 
 type ServerSideErrorDialogProps = {
-  title: string;
-  namespaces: string[];
+  t: (key: string) => string;
+  operationName: string;
+  onStart?: () => void;
   onClose?: () => void;
 };
 export const useServerSideErrorDialog = ({
-  namespaces,
+  t,
   onClose,
-  title,
+  onStart,
+  operationName,
 }: ServerSideErrorDialogProps) => {
-  const { t } = useCustomTranslation(namespaces);
   const [state, dispatch] = useReducer(infoDialogReducer, initInfoDialogState);
 
   const ErrorDialog = () => (
@@ -35,22 +36,29 @@ export const useServerSideErrorDialog = ({
     />
   );
 
-  const dispatchErrorDialog = (error: Record<string, string>) => {
-    const messagesObject = error;
+  const dispatchErrorDialog = (error: AxiosErrorWithMessages) => {
+    onStart?.();
 
-    try {
+    if (error.response?.data.data) {
+      const messageObject = error.response.data.data;
       dispatch({
         type: 'open_dialog',
         payload: {
           variant: 'error',
-          title,
-          content: extractErrorMessages(messagesObject, t),
+          title: `${operationName} thất bại`,
+          content: extractErrorMessages(
+            messageObject,
+            t,
+            error.response.data.data.params,
+          ),
         },
       });
-    } catch (error) {
-      console.log('unexpected error:', error);
+      return;
     }
+    enqueueSnackbar(`Đã xảy ra lỗi không xác định, vui lòng thử lại sau`, {
+      variant: 'error',
+    });
   };
 
-  return { errorDialog: ErrorDialog, dispatchErrorDialog, t };
+  return { ErrorDialog, dispatchErrorDialog };
 };

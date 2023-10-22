@@ -15,6 +15,7 @@ export const defaultNcOnError: ErrorHandler<
   NextApiRequest,
   NextApiResponse<JSError | JSFail<any>>
 > = (err: Error, req, res) => {
+  console.log('file: defaultNcOnError.handler.ts:18 - err:', err);
   let errorCode: number | undefined;
   let data: Record<string, any> | undefined;
 

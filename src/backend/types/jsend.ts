@@ -6,7 +6,10 @@ export interface JSSuccess<T> {
 
 export interface JSFail<T> {
   status: 'fail';
-  data?: Partial<Record<keyof T, string>>;
+  // data?: Partial<Record<keyof T, string>>;
+  data?: Record<string, string> & {
+    params?: string[];
+  };
 }
 
 export interface JSError {

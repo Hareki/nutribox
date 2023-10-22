@@ -8,14 +8,14 @@ import signUpCaller from 'api-callers/sign-up';
 import type { SignUpFormValues } from 'backend/dtos/signUp.dto';
 import type { AccountWithPopulatedSide } from 'backend/types/auth';
 import SEO from 'components/abstract/SEO';
-import InfoDialog from 'components/dialog/info-dialog';
 import {
   infoDialogReducer,
   initInfoDialogState,
 } from 'components/dialog/info-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
-import { extractErrorMessages } from 'helpers/error.helper';
+import type { AxiosErrorWithMessages } from 'helpers/error.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import SignUp from 'pages-sections/auth/SignUp';
 
 const SignUpPage: NextPage = () => {
@@ -24,10 +24,21 @@ const SignUpPage: NextPage = () => {
   const [hasError, setHasError] = useState(false);
   const router = useRouter();
   const { t } = useCustomTranslation(['customer', 'account']);
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: 'Đăng ký',
+    onStart: () => setHasError(true),
+    onClose: () => {
+      if (!hasError) {
+        setIsRedirecting(true);
+        router.push('/');
+      }
+    },
+  });
 
   const { mutate: signUp, isLoading } = useMutation<
     AccountWithPopulatedSide<'customer'>,
-    Record<string, string>,
+    AxiosErrorWithMessages,
     SignUpFormValues
   >({
     mutationFn: (values: SignUpFormValues) => signUpCaller.signUp(values),
@@ -44,23 +55,7 @@ const SignUpPage: NextPage = () => {
         },
       });
     },
-    onError: (error) => {
-      const messagesObject = error;
-      setHasError(true);
-
-      try {
-        dispatch({
-          type: 'open_dialog',
-          payload: {
-            variant: 'error',
-            title: 'Đăng ký thất bại',
-            content: extractErrorMessages(messagesObject, t),
-          },
-        });
-      } catch (error) {
-        console.log('error:', error);
-      }
-    },
+    onError: dispatchErrorDialog,
   });
 
   const handleFormSubmit = async (values: SignUpFormValues) => {
@@ -78,19 +73,7 @@ const SignUpPage: NextPage = () => {
         />
       </FlexRowCenter>
 
-      <InfoDialog
-        variant={state.variant}
-        open={state.open}
-        handleClose={() => {
-          dispatch({ type: 'close_dialog' });
-          if (!hasError) {
-            setIsRedirecting(true);
-            router.push('/');
-          }
-        }}
-        title={state.title}
-        content={state.content}
-      />
+      <ErrorDialog />
     </>
   );
 };

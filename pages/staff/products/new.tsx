@@ -21,15 +21,12 @@ import {
   confirmDialogReducer,
   initConfirmDialogState,
 } from 'components/dialog/confirm-dialog/reducer';
-import {
-  infoDialogReducer,
-  initInfoDialogState,
-} from 'components/dialog/info-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { PRODUCTS_STAFF_ROUTE } from 'constants/routes.ui.constant';
-import { extractErrorMessages } from 'helpers/error.helper';
+import type { AxiosErrorWithMessages } from 'helpers/error.helper';
 import { handleUpload } from 'helpers/imagekit.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageListForm';
 import ImageListForm from 'pages-sections/admin/products/ImageListForm';
 import ProductForm from 'pages-sections/admin/products/ProductForm';
@@ -44,6 +41,10 @@ export default function AdminProductCreate() {
   const [isUploadingImages, setIsUploadingImage] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const { t } = useCustomTranslation(['product']);
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: 'Thêm sản phẩm',
+  });
 
   const onUploadStart = () => {
     setIsUploadingImage(true);
@@ -93,11 +94,6 @@ export default function AdminProductCreate() {
     setIsUploadingImage(false);
   };
 
-  const [infoState, dispatchInfo] = useReducer(
-    infoDialogReducer,
-    initInfoDialogState,
-  );
-
   const [confirmState, dispatchConfirm] = useReducer(
     confirmDialogReducer,
     initConfirmDialogState,
@@ -119,7 +115,7 @@ export default function AdminProductCreate() {
 
   const { mutate: createProductInfo, isLoading: isAddingProduct } = useMutation<
     ExtendedCommonProductModel,
-    Record<string, string>,
+    AxiosErrorWithMessages,
     NewProductDto
   >({
     mutationFn: (requestBody) => apiCaller.createProduct(requestBody),
@@ -162,37 +158,7 @@ export default function AdminProductCreate() {
         );
       }
     },
-    onError: (err) => {
-      console.log('file: new.tsx:166 - AdminProductCreate - err:', err);
-      // if (err.response?.data.data) {
-      //   dispatchInfo({
-      //     type: 'open_dialog',
-      //     payload: {
-      //       title: 'Có lỗi xảy ra',
-      //       // FIXME
-      //       content: getMessageList(err.response.data.data as any),
-      //       variant: 'error',
-      //     },
-      //   });
-      //   return;
-      // }
-      // enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-      //   variant: 'error',
-      // });
-
-      try {
-        dispatchInfo({
-          type: 'open_dialog',
-          payload: {
-            variant: 'error',
-            title: 'Tạo sản phẩm thất bại',
-            content: extractErrorMessages(err, t),
-          },
-        });
-      } catch (error) {
-        console.log('error:', error);
-      }
-    },
+    onError: dispatchErrorDialog,
   });
 
   const handleFormSubmit = (values: ProductFormValues) => {
@@ -242,9 +208,9 @@ export default function AdminProductCreate() {
           isEditing
           isLoading={isAddingProduct || isUploadingImages || isRedirecting}
           handleFormSubmit={handleFormSubmit}
-          infoState={infoState}
-          dispatchInfo={dispatchInfo}
+          t={t}
         />
+        <ErrorDialog />
       </Card>
     </Box>
   );

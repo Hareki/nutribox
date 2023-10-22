@@ -14,7 +14,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addDays } from 'date-fns';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
-import { useReducer } from 'react';
 
 import apiCaller from 'api-callers/staff/products';
 import {
@@ -28,13 +27,9 @@ import { Paragraph, Span } from 'components/abstract/Typography';
 import CurrencyInput from 'components/common/input/CurrencyInput';
 import CustomTextField from 'components/common/input/CustomTextField';
 import CustomPickersDay from 'components/CustomPickersDay';
-import InfoDialog from 'components/dialog/info-dialog';
-import {
-  infoDialogReducer,
-  initInfoDialogState,
-} from 'components/dialog/info-dialog/reducer';
-import { extractErrorMessages } from 'helpers/error.helper';
+import type { AxiosErrorWithMessages } from 'helpers/error.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import { formatCurrency } from 'lib';
 import type { ProductModel } from 'models/product.model';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
@@ -55,7 +50,10 @@ const ExpirationOrderModal = ({
 
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useCustomTranslation(['product', 'importOrder']);
-  const [state, dispatch] = useReducer(infoDialogReducer, initInfoDialogState);
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: 'Nhập hàng',
+  });
 
   const getInitialValues = (): ImportProductFormValues => {
     return {
@@ -80,7 +78,7 @@ const ExpirationOrderModal = ({
   const queryClient = useQueryClient();
   const { mutate: importProduct, isLoading: isMutating } = useMutation<
     ProductModel,
-    Record<string, string>,
+    AxiosErrorWithMessages,
     ImportProductDto
   >({
     mutationFn: (requestBody) =>
@@ -90,27 +88,7 @@ const ExpirationOrderModal = ({
       queryClient.refetchQueries(['staff', 'import-orders', product.id]);
       setOpen(false);
     },
-    onError: (err) => {
-      // console.log('asd', err);
-      // extractErrorMessages(err, t).map((message) => {
-      //   enqueueSnackbar(message, {
-      //     variant: 'error',
-      //   });
-      // });
-
-      try {
-        dispatch({
-          type: 'open_dialog',
-          payload: {
-            variant: 'error',
-            title: 'Đăng ký thất bại',
-            content: extractErrorMessages(err, t),
-          },
-        });
-      } catch (error) {
-        console.log('error:', error);
-      }
-    },
+    onError: dispatchErrorDialog,
   });
 
   const handleFormSubmit = (values: ImportProductFormValues) => {
@@ -321,15 +299,7 @@ const ExpirationOrderModal = ({
         </DialogActions>
       </form>
 
-      <InfoDialog
-        variant={state.variant}
-        open={state.open}
-        handleClose={() => {
-          dispatch({ type: 'close_dialog' });
-        }}
-        title={state.title}
-        content={state.content}
-      />
+      <ErrorDialog />
     </Dialog>
   );
 };

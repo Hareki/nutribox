@@ -1,9 +1,7 @@
-import type { Theme } from '@mui/material';
-import { Box, styled, useMediaQuery } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import type { FC, ReactNode } from 'react';
 import { Fragment, useState } from 'react';
 
-import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 
 import { FlexRowCenter } from 'components/flex-box';

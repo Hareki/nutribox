@@ -13,6 +13,8 @@ import {
 } from 'backend/dtos/password/changePassword.dto';
 import { H5 } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
+import type { AxiosErrorWithMessages } from 'helpers/error.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { FullyPopulatedAccountModel } from 'models/account.model';
 import EyeToggleButton from 'pages-sections/auth/EyeToggleButton';
@@ -29,11 +31,11 @@ const PasswordChangeForm = () => {
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  const { errorDialog: ErrorDialog, dispatchErrorDialog } =
-    useServerSideErrorDialog({
-      namespaces: ['customer', 'account'],
-      title: 'Đổi mật khẩu thất bại',
-    });
+  const { t } = useCustomTranslation(['customer', 'account']);
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: 'Đổi mật khẩu',
+  });
 
   const togglePasswordVisibility = (type: 'old' | 'new') => {
     if (type === 'old') {
@@ -45,7 +47,7 @@ const PasswordChangeForm = () => {
 
   const { mutate: changePassword, isLoading: isChangingPassword } = useMutation<
     FullyPopulatedAccountModel,
-    Record<string, string>,
+    AxiosErrorWithMessages,
     ChangePasswordFormValues
   >({
     mutationFn: (values) =>
@@ -60,9 +62,7 @@ const PasswordChangeForm = () => {
       });
       resetForm();
     },
-    onError: (error) => {
-      dispatchErrorDialog(error);
-    },
+    onError: dispatchErrorDialog,
   });
 
   const handleFormSubmit = (values: ChangePasswordFormValues) => {

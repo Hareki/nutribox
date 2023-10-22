@@ -21,10 +21,13 @@ export const createMaxQuantityGuard =
     const maxQuantity = commonProduct.maxQuantity;
     const currentInStock = getMaxProductQuantity(commonProduct.importOrders);
     if (currentInStock + importProductDto.importQuantity > maxQuantity) {
+      const exceededQuantity =
+        currentInStock + importProductDto.importQuantity - maxQuantity;
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: 'fail',
         data: {
           importQuantity: 'Product.ImportQuantity.Exceeded',
+          params: [exceededQuantity],
         },
       });
     }

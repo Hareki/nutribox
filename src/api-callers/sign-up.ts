@@ -7,15 +7,11 @@ import { SIGN_UP_API_ROUTE } from 'constants/routes.api.constant';
 const signUp = async (
   dto: SignUpDto,
 ): Promise<AccountWithPopulatedSide<'customer'>> => {
-  try {
-    const response = await axiosInstance.post<
-      JSSuccess<AccountWithPopulatedSide<'customer'>>
-    >(SIGN_UP_API_ROUTE, dto);
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
-    return response.data.data;
-  } catch (err: any) {
-    throw err.response.data.data;
-  }
+  const response = await axiosInstance.post<
+    JSSuccess<AccountWithPopulatedSide<'customer'>>
+  >(SIGN_UP_API_ROUTE, dto);
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
+  return response.data.data;
 };
 
 const signUpCaller = {

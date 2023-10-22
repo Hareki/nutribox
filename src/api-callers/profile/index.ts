@@ -43,14 +43,10 @@ const updateAvatar = async (
 const changePassword = async (
   dto: ChangePasswordDto,
 ): Promise<FullyPopulatedAccountModel> => {
-  try {
-    const response = await axiosInstance.patch<
-      JSSuccess<FullyPopulatedAccountModel>
-    >(PROFILE_API_ROUTE, dto);
-    return response.data.data;
-  } catch (error) {
-    throw error.response.data.data;
-  }
+  const response = await axiosInstance.patch<
+    JSSuccess<FullyPopulatedAccountModel>
+  >(PROFILE_API_ROUTE, dto);
+  return response.data.data;
 };
 
 const profileCaller = {
