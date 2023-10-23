@@ -5,7 +5,7 @@ import nc from 'next-connect';
 import type { ChangePasswordDto } from 'backend/dtos/password/changePassword.dto';
 import { ChangePasswordDtoSchema } from 'backend/dtos/password/changePassword.dto';
 import { UpdateProfileDtoSchema } from 'backend/dtos/profile/profile.dto';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { AccountService } from 'backend/services/account/account.service';
 import { createValidationGuard } from 'backend/services/common/common.guard';
@@ -29,7 +29,7 @@ const handler = nc<
 
 handler
   .get(async (req, res) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
 
     const data = await CustomerService.getDashboardInfo(
       account?.customer.id || '',
@@ -41,7 +41,7 @@ handler
   })
   // basic information
   .put(createValidationGuard(UpdateProfileDtoSchema), async (req, res) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const updatedCustomer = await CustomerService.updateProfile(
       account?.customer.id || '',
       req.body,
@@ -52,7 +52,7 @@ handler
     });
   })
   .patch(createValidationGuard(ChangePasswordDtoSchema), async (req, res) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const dto = req.body as ChangePasswordDto;
 
     const updatedCustomer = await AccountService.changePassword(

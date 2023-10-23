@@ -8,7 +8,7 @@ import { CustomerCancellableOrderStatuses } from './helper';
 
 import { CustomerAddressEntity } from 'backend/entities/customerAddress.entity';
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 import {
   ADDRESS_DETAIL_API_ROUTE,
@@ -19,7 +19,7 @@ import { matchesPlaceHolderRoute } from 'utils/middleware.helper';
 export const createAddressAccessGuard =
   () =>
   async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const addressId = req.query.id as string;
     try {
       const address = await CommonService.getRecord({
@@ -61,7 +61,7 @@ export const createAddressAccessGuard =
 export const createOrderAccessGuard =
   () =>
   async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const customerOrderId = req.query.id as string;
     try {
       const customerOrder = await CommonService.getRecord({
@@ -97,10 +97,10 @@ export const createOrderAccessGuard =
     }
   };
 
-export const createOrderCancellingGuard =
+export const createCustomerOrderCancellationGuard =
   () =>
   async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const customerOrderId = req.query.id as string;
     try {
       const customerOrder = await CommonService.getRecord({

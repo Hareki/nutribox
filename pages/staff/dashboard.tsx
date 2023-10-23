@@ -1,10 +1,20 @@
-import { Box, Grid } from '@mui/material';
+import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  IconButton,
+  useTheme,
+} from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { enqueueSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 
 import dashboardCaller from 'api-callers/staff/dashboard';
+import { H3 } from 'components/abstract/Typography';
+import { FlexBox } from 'components/flex-box';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { formatCurrency } from 'lib';
 import Analytics from 'pages-sections/dashboard/Analytics';
@@ -22,7 +32,12 @@ export default function VendorDashboard() {
   const { data: session } = useSession();
   const userName = session?.employeeAccount.employee.firstName;
 
-  const { data: dashboardData, isLoading: isLoadingData } = useQuery({
+  const {
+    data: dashboardData,
+    isLoading: isLoadingData,
+    refetch,
+    isFetching,
+  } = useQuery({
     queryKey: ['statistic'],
     queryFn: () => dashboardCaller.getDashboardData(),
   });
@@ -57,9 +72,26 @@ export default function VendorDashboard() {
       sx={{ borderRadius: '8px' }}
     />
   );
+  const theme = useTheme();
 
   return (
     <Box py={4}>
+      <FlexBox alignItems='center' mb={2} gap={1}>
+        <H3>Thống kê</H3>
+        <IconButton
+          disabled={isFetching}
+          onClick={async () => {
+            await refetch();
+            enqueueSnackbar('Đã cập nhật dữ liệu', { variant: 'success' });
+          }}
+        >
+          {isFetching ? (
+            <CircularProgress size={25.71} />
+          ) : (
+            <ReplayRoundedIcon style={{ color: theme.palette.primary.main }} />
+          )}
+        </IconButton>
+      </FlexBox>
       <Grid container spacing={3}>
         <Grid item md={6} xs={12}>
           {isLoading ? (

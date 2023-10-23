@@ -99,7 +99,16 @@ const EmployeeMenu: FC<UserMenuProps> = ({
             />
           )}
 
-          {!isAuthenticated && !isLoadingSession && <PersonOutline />}
+          {!isAuthenticated && !isLoadingSession && (
+            <IconButton
+              disabled
+              sx={{
+                padding: 1.25,
+              }}
+            >
+              <PersonOutline />
+            </IconButton>
+          )}
         </IconButton>
 
         <StyledUserName compact={minimized}>

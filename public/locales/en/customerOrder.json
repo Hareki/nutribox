@@ -33,5 +33,7 @@
   "CustomerOrder.UpdatedAt.Required": "Please enter the updated at date.",
   "CustomerOrder.UpdatedAt.InvalidFormat": "Invalid updated at date format.",
   "CustomerOrder.NotCancellable.Client": "Order cancellation is expired.",
+  "CustomerOrder.NotCancellable.Employee": "Order cancellation is expired.",
+  "CustomerOrder.NotUpgradeable.Employee": "Order status is not upgradable.",
   "CustomerOrder.CancellationReason.Required": "Please enter the cancellation reason."
 }

@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { AccountEntity } from './account.entity';
 import { AddressAbstractEntity } from './addressAbstract.entity';
 import { CustomerEntity } from './customer.entity';
 import { CustomerOrderItemEntity } from './customerOrderItem.entity';
@@ -25,6 +26,11 @@ export class CustomerOrderEntity extends AddressAbstractEntity {
     (customerOrderItem) => customerOrderItem.customerOrder,
   )
   customerOrderItems: Relation<CustomerOrderItemEntity>[] | string[];
+
+  @ManyToOne(() => AccountEntity, {
+    nullable: true,
+  })
+  updatedBy: Relation<AccountEntity> | string;
 
   @Column({ type: 'enum', enum: OrderStatus })
   status: OrderStatus;
@@ -52,9 +58,6 @@ export class CustomerOrderEntity extends AddressAbstractEntity {
 
   @Column({ nullable: true, type: 'timestamp with time zone' })
   deliveredOn?: Date;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @UpdateDateColumn({
     type: 'timestamp with time zone',

@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { CheckoutDtoSchema } from 'backend/dtos/checkout.dto';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import {
@@ -28,7 +28,7 @@ handler.post(
   createCheckoutValidationGuard(),
   async (req, res) => {
     const { checkoutValidation, ...dto } = req.body;
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
 
     const customerOrder = await CustomerOrderService.checkout(
       dto,

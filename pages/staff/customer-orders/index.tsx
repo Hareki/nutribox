@@ -7,12 +7,11 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { ICustomerOrder } from 'api/models/CustomerOrder.model/types';
-import type { GetServerSideProps } from 'next';
+import type { GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { ReactElement } from 'react';
 
-import apiCaller from 'api-callers/admin/order';
+import staffCustomerOrderCaller from 'api-callers/staff/customer-orders';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
@@ -21,6 +20,7 @@ import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
+import type { CustomerOrderModel } from 'models/customerOrder.model';
 import { OrderRow } from 'pages-sections/admin';
 
 OrderList.getLayout = function getLayout(page: ReactElement) {
@@ -35,7 +35,7 @@ const tableHeading = [
   { id: 'phone', label: 'Số điện thoại', align: 'left' },
 ];
 
-const mapOrderToRow = (item: ICustomerOrder) => ({
+const mapOrderToRow = (item: CustomerOrderModel) => ({
   id: item.id,
   status: item.status,
   createdAt: item.createdAt,
@@ -50,9 +50,10 @@ function OrderList() {
     isLoading,
     paginationData: orders,
     paginationComponent,
-  } = usePaginationQuery<ICustomerOrder>({
-    baseQueryKey: ['admin/orders'],
-    getPaginationDataFn: (currPageNum) => apiCaller.getOrders(currPageNum),
+  } = usePaginationQuery<CustomerOrderModel>({
+    baseQueryKey: ['staff', 'customer-orders'],
+    getPaginationDataFn: (currPageNum) =>
+      staffCustomerOrderCaller.getOrders(currPageNum),
   });
 
   const {
@@ -62,7 +63,8 @@ function OrderList() {
   } = useTableSearch({
     mapItemToRow: mapOrderToRow,
     paginationResult: orders,
-    queryFn: (context) => apiCaller.searchOrdersById(context.queryKey[2]),
+    queryFn: (context) =>
+      staffCustomerOrderCaller.searchOrdersById(context.queryKey[2]),
   });
 
   const { order, selected, filteredList } = useMuiTable({
@@ -77,7 +79,7 @@ function OrderList() {
 
       <SearchArea
         handleSearch={handleSearch}
-        searchPlaceholder='Tìm theo mã đơn hàng'
+        searchPlaceholder='Tìm theo số điện thoại đặt hàng'
         haveButton={false}
       />
 
@@ -122,12 +124,10 @@ function OrderList() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', ['order']);
 
-  return { props: {} };
+  return { props: { ...locales } };
 };
 
 export default OrderList;

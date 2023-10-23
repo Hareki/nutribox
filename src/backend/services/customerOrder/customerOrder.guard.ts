@@ -8,14 +8,14 @@ import { CustomerOrderService } from './customerOrder.service';
 
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
 import { CartItemEntity } from 'backend/entities/cartItem.entity';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 import { getFullAddress } from 'helpers/address.helper';
 
 export const createCartItemAccessGuard =
   () =>
   async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const dto = req.body as CheckoutDto;
     const cartItemRequestedNumber = dto.cartItems.length;
 

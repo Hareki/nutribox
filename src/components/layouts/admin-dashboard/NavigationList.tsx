@@ -6,7 +6,7 @@ import {
   CUSTOMERS_STAFF_ROUTE,
   DASHBOARD_STAFF_ROUTE,
   EMPLOYEES_STAFF_ROUTE,
-  ORDERS_STAFF_ROUTE,
+  CUSTOMER_ORDERS_STAFF_ROUTE,
   PRODUCTS_STAFF_ROUTE,
   STORE_DETAIL_STAFF_ROUTE,
   SUPPLIERS_STAFF_ROUTE,
@@ -33,7 +33,7 @@ export const navigations: Record<SideBarRole, NavigationItem[]> = {
     {
       name: 'Đơn hàng',
       icon: duotone.Order,
-      path: ORDERS_STAFF_ROUTE,
+      path: CUSTOMER_ORDERS_STAFF_ROUTE,
     },
     {
       name: 'Nhân viên',

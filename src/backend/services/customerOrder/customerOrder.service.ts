@@ -10,6 +10,7 @@ import type { CheckoutValidation } from './helper';
 
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
 import type { CustomerCancelOrderDto } from 'backend/dtos/profile/orders/cancelOrder.dto';
+import { AccountEntity } from 'backend/entities/account.entity';
 import { CartItemEntity } from 'backend/entities/cartItem.entity';
 import { CustomerOrderEntity } from 'backend/entities/customerOrder.entity';
 import { CustomerOrderItemEntity } from 'backend/entities/customerOrderItem.entity';
@@ -110,6 +111,13 @@ export class CustomerOrderService {
     estimatedDeliveryInfo: EstimatedDeliveryInfo,
     customerOrderRepo: Repository<CustomerOrderEntity>,
   ): Promise<CustomerOrderEntity> {
+    const customerAccountId = (
+      await CommonService.getRecord({
+        entity: AccountEntity,
+        filter: { customer: customerId },
+      })
+    ).id;
+
     const newOrder: Partial<CustomerOrderEntity> = {
       ...dto,
       profit: 0,
@@ -119,7 +127,7 @@ export class CustomerOrderService {
         Date.now() + estimatedDeliveryInfo.durationInTraffic * 60 * 1000,
       ),
       estimatedDistance: estimatedDeliveryInfo.distance,
-      updatedBy: customerId,
+      updatedBy: customerAccountId,
       customer: customerId,
     };
 
@@ -381,6 +389,7 @@ export class CustomerOrderService {
         );
 
         importOrder.remainingQuantity += exportOrder.quantity;
+        console.log('run!:', importOrder.remainingQuantity);
         await CommonService.updateRecord(
           ImportOrderEntity,
           importOrder.id,
@@ -431,7 +440,7 @@ export class CustomerOrderService {
         customerOrderRepo,
       )) as PopulateCustomerOrderFields<'customerOrderItems'>;
 
-      this._refundsProduct(
+      await this._refundsProduct(
         customerOrderId,
         customerOrderItemRepo,
         exportOrderRepo,

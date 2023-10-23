@@ -5,7 +5,10 @@ import { AccountEntity } from 'backend/entities/account.entity';
 import { hashPassword } from 'backend/helpers/auth.helper';
 import type { AccountModel } from 'models/account.model';
 
-type AccountSeed = Pick<AccountModel, 'email' | 'password' | 'verified'> & {
+type AccountSeed = Pick<
+  AccountModel,
+  'id' | 'email' | 'password' | 'verified'
+> & {
   employee?: {
     id: string;
   };
@@ -16,6 +19,7 @@ type AccountSeed = Pick<AccountModel, 'email' | 'password' | 'verified'> & {
 
 const accountSeeds: AccountSeed[] = [
   {
+    id: '28dc8380-219e-5957-a8fb-f362b46bfd05',
     email: 'admin@gmail.com',
     password: hashPassword('Admin@123'),
     employee: {
@@ -24,6 +28,7 @@ const accountSeeds: AccountSeed[] = [
     verified: true,
   },
   {
+    id: '2f56080e-0c93-565c-bd95-7bb8ac341ac2',
     email: 'customer@gmail.com',
     password: hashPassword('Admin@123'),
     customer: {

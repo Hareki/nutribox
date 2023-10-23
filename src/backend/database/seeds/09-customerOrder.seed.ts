@@ -33,7 +33,7 @@ const customerOrderSeeds: CustomerOrderSeed[] = [
     wardCode: 26812,
     streetAddress: '12/12 Đường 49',
     note: 'This is note',
-    updatedBy: 'e31e759a-edb9-40e8-bb2a-fb6b9e65d986',
+    updatedBy: '28dc8380-219e-5957-a8fb-f362b46bfd05',
     total: 35_000,
     profit: 16_500,
     status: OrderStatus.SHIPPED,

@@ -137,8 +137,8 @@ export const PROFILE_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/profile`;
 export const CUSTOMERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/customers`;
 export const CUSTOMER_DETAIL_API_STAFF_ROUTE = `${CUSTOMERS_API_STAFF_ROUTE}/:id`;
 
-export const ORDERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/orders`;
-export const ORDER_DETAIL_API_STAFF_ROUTE = `${ORDERS_API_STAFF_ROUTE}/:id`;
+export const CUSTOMER_ORDERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/customer-orders`;
+export const CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE = `${CUSTOMER_ORDERS_API_STAFF_ROUTE}/:id`;
 
 export const EMPLOYEES_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/employees`;
 export const EMPLOYEE_DETAIL_API_STAFF_ROUTE = `${EMPLOYEES_API_STAFF_ROUTE}/:id`;
@@ -180,11 +180,12 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
   },
   {
     methods: ['GET'],
-    route: ORDERS_API_STAFF_ROUTE,
+    route: CUSTOMER_ORDERS_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET'],
-    route: ORDER_DETAIL_API_STAFF_ROUTE,
+    // FIXME Manager should be allowed to use PATCH method, just for development
+    methods: ['GET', 'PATCH'],
+    route: CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE,
   },
   {
     methods: ['GET', 'POST'],
@@ -243,11 +244,11 @@ export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
   },
   {
     methods: ['GET'],
-    route: ORDERS_API_STAFF_ROUTE,
+    route: CUSTOMER_ORDERS_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
-    route: ORDER_DETAIL_API_STAFF_ROUTE,
+    route: CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
@@ -278,11 +279,11 @@ export const CashierApiRoutes: MethodRoutePair[] = [
   },
   {
     methods: ['GET'],
-    route: ORDERS_API_STAFF_ROUTE,
+    route: CUSTOMER_ORDERS_API_STAFF_ROUTE,
   },
   {
     methods: ['GET', 'PATCH'],
-    route: ORDER_DETAIL_API_STAFF_ROUTE,
+    route: CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
@@ -305,10 +306,10 @@ export const ShipperApiRoutes: MethodRoutePair[] = [
   },
   {
     methods: ['GET'],
-    route: ORDERS_API_STAFF_ROUTE,
+    route: CUSTOMER_ORDERS_API_STAFF_ROUTE,
   },
   {
     methods: ['GET', 'PATCH'],
-    route: ORDER_DETAIL_API_STAFF_ROUTE,
+    route: CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE,
   },
 ];

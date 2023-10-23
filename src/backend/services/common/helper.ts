@@ -113,3 +113,19 @@ export const buildRelationFields = <E extends ObjectLiteral>(
     }
   }
 };
+
+export const generateAndWhereConditions = <E>(
+  filter: Partial<E> | undefined,
+) => {
+  const conditions: string[] = [];
+  const parameters: { [key: string]: any } = {};
+
+  if (filter) {
+    Object.entries(filter).forEach(([key, value], index) => {
+      conditions.push(`${key} = :value${index}`);
+      parameters[`value${index}`] = value;
+    });
+  }
+
+  return { conditions, parameters };
+};

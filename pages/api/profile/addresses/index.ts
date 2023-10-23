@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import type { NewCustomerAddressDto } from 'backend/dtos/profile/addresses/newCustomerAddress.dto';
 import { NewCustomerAddressDtoSchema } from 'backend/dtos/profile/addresses/newCustomerAddress.dto';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import { CustomerAddressService } from 'backend/services/customerAddress/customerAddress.service';
@@ -19,7 +19,7 @@ const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
 
 handler
   .get(async (req, res) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
 
     const data = await CustomerAddressService.getAddresses(
       account?.customer.id || '',
@@ -32,7 +32,7 @@ handler
   .post(
     createValidationGuard(NewCustomerAddressDtoSchema),
     async (req, res) => {
-      const account = await getSessionAccount(req, res);
+      const account = await getSessionCustomerAccount(req, res);
 
       const dto = req.body as NewCustomerAddressDto;
 

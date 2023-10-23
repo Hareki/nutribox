@@ -6,7 +6,6 @@ import type { CustomerOrderItemModel } from './customerOrderItem.model';
 import { zodDate, zodNumber, zodPhone, zodString, zodUuid } from './helper';
 
 import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum'; // Assuming enums are defined somewhere
-import { PHONE_REGEX } from 'constants/regex.constant';
 
 const CustomerOrderSchema = z.object({
   id: zodUuid('CustomerOrder.Id'),

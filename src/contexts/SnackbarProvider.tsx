@@ -3,6 +3,9 @@ import { SnackbarProvider as NotistackProvider } from 'notistack';
 import type { FC } from 'react';
 // styled component
 const Provider = styled(NotistackProvider)(({ theme }) => ({
+  '&': {
+    backgroundColor: `${theme.palette.primary.main} !important`,
+  },
   '.SnackbarItem-anchorOriginTopRight &': {
     zIndex: theme.zIndex.snackbar,
     translate: '0px 75px',
@@ -15,7 +18,7 @@ const Provider = styled(NotistackProvider)(({ theme }) => ({
   },
 
   '&.SnackbarItem-variantSuccess .MuiSvgIcon-root': {
-    color: theme.palette.success.main,
+    color: theme.palette.primary.main,
   },
   '&.SnackbarItem-variantError .MuiSvgIcon-root': {
     color: theme.palette.error.main,

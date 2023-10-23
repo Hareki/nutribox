@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { UpdateProfileAvatarDtoSchema } from 'backend/dtos/profile/profile.dto';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import { CustomerService } from 'backend/services/customer/customer.service';
@@ -27,7 +27,7 @@ const handler = nc<
 handler.put(
   createValidationGuard(UpdateProfileAvatarDtoSchema),
   async (req, res) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const updatedCustomer = await CustomerService.updateProfile(
       account?.customer.id || '',
       req.body,

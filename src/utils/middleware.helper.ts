@@ -16,7 +16,7 @@ import {
   DASHBOARD_STAFF_ROUTE,
   HOME_PAGE_ROUTE,
   ManagerRoutes,
-  ORDERS_STAFF_ROUTE,
+  CUSTOMER_ORDERS_STAFF_ROUTE,
   ShipperRoutes,
   WarehouseManagerRoutes,
 } from 'constants/routes.ui.constant';
@@ -89,8 +89,8 @@ export const getDefaultStaffRoute = (employeeRole: EmployeeRole) => {
   const defaultStaffRoute: Record<Exclude<Role, 'CUSTOMER'>, string> = {
     ['MANAGER']: DASHBOARD_STAFF_ROUTE,
     ['CASHIER']: DASHBOARD_STAFF_ROUTE,
-    ['WAREHOUSE_MANAGER']: ORDERS_STAFF_ROUTE,
-    ['SHIPPER']: ORDERS_STAFF_ROUTE,
+    ['WAREHOUSE_MANAGER']: CUSTOMER_ORDERS_STAFF_ROUTE,
+    ['SHIPPER']: CUSTOMER_ORDERS_STAFF_ROUTE,
   };
   const defaultRoute = defaultStaffRoute[employeeRole.toString()];
   if (!defaultRoute)

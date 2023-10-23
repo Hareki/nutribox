@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { CustomerService } from 'backend/services/customer/customer.service';
 import type { ProfileMenuCount } from 'backend/services/customer/helper';
@@ -15,7 +15,7 @@ const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
 );
 
 handler.get(async (req, res) => {
-  const account = await getSessionAccount(req, res);
+  const account = await getSessionCustomerAccount(req, res);
 
   const data = await CustomerService.getMenuCount(account?.customer.id || '');
   res.status(StatusCodes.OK).json({

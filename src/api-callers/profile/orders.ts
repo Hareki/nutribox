@@ -5,7 +5,7 @@ import {
   ORDERS_API_ROUTE,
   ORDER_DETAIL_API_ROUTE,
 } from 'constants/routes.api.constant';
-import { ORDERS_DETAIL_STAFF_ROUTE } from 'constants/routes.ui.constant';
+import { CUSTOMER_ORDER_DETAIL_STAFF_ROUTE } from 'constants/routes.ui.constant';
 import type {
   CustomerOrderModel,
   PopulateCustomerOrderFields,
@@ -55,23 +55,10 @@ export const cancelOrder = async (
   return response.data.data;
 };
 
-// TODO: This is old, not updated yet, since we don't implement this feature yet
-export const updateOrderStatus = async (
-  orderId: string,
-): Promise<CustomerOrderModel> => {
-  // const requestBody: UpdateOrderStatusRb = {
-  //   id: orderId,
-  // };
-  // const response = await axiosInstance.put(`admin/order/update`, requestBody);
-  // return response.data.data;
-  return undefined as any;
-};
-
 const orderCaller = {
   getOrders,
   getOrder,
   cancelOrder,
-  updateOrderStatus,
 };
 
 export default orderCaller;

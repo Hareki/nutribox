@@ -16,12 +16,12 @@ import {
 } from '@mui/material';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import OrderPaymentChip from './OrderPaymentChip';
 
 import { PaymentMethod } from 'backend/enums/entities.enum';
-import { CustomerOrderStatusOrders } from 'backend/services/customer/helper';
+import { CustomerOrderStatusOrders } from 'backend/services/customerOrder/helper';
 import type { CommonProductModel } from 'backend/services/product/helper';
 import { H5, H6, Paragraph, Span } from 'components/abstract/Typography';
 import TableRow from 'components/data-table/TableRow';
@@ -29,13 +29,15 @@ import { FlexBetween, FlexBox } from 'components/flex-box';
 import Delivery from 'components/icons/Delivery';
 import PackageBox from 'components/icons/PackageBox';
 import TruckFilled from 'components/icons/TruckFilled';
-import { PRODUCT_DETAIL_ROUTE } from 'constants/routes.ui.constant';
+import {
+  CUSTOMER_ORDER_DETAIL_STAFF_ROUTE,
+  PRODUCT_DETAIL_ROUTE,
+} from 'constants/routes.ui.constant';
 import { getFullAddress2 } from 'helpers/address.helper';
 import { getOrderStatusName } from 'helpers/order.helper';
 import { formatCurrency, formatDateTime } from 'lib';
 import type { PopulateCustomerOrderFields } from 'models/customerOrder.model';
-import { CancelIndexThreshHold } from 'utils/constants';
-import { insertId } from 'utils/middleware.helper';
+import { insertId, matchesPlaceHolderRoute } from 'utils/middleware.helper';
 
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
   flexWrap: 'wrap',
@@ -52,10 +54,19 @@ const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
 
 const stepIconList = [DescriptionSharpIcon, PackageBox, TruckFilled, Delivery];
 const cancelIconList = [DescriptionSharpIcon, CancelIcon];
-const cancelIndex = 4;
+
 const getCurrentStatusIndex = (
   order: PopulateCustomerOrderFields<'customerOrderItems'>,
-) => CustomerOrderStatusOrders.indexOf(order.status);
+  test1?: boolean,
+  test2?: boolean,
+) => {
+  console.log('--------');
+  console.log('file: OrderDetailViewer.tsx:63 - isCancel:', test1);
+  console.log('file: OrderDetailViewer.tsx:63 - delivered:', test2);
+  console.log('file: OrderDetailViewer.tsx:61 - order:', order);
+  console.log('--------');
+  return CustomerOrderStatusOrders.indexOf(order.status);
+};
 
 interface OrderDetailsViewerProps {
   order: PopulateCustomerOrderFields<'customerOrderItems'>;
@@ -63,41 +74,47 @@ interface OrderDetailsViewerProps {
   isCancelling?: boolean;
   cancelOrderCallback?: () => void;
   isUpdating?: boolean;
-  updateOrderCallback?: () => void;
+  upgradeOrderStatusCallBack?: () => void;
 }
 const OrderDetailsViewer = ({
   order,
-  isCancelling,
   isUpdating,
   productsOfOrders,
   cancelOrderCallback,
-  updateOrderCallback,
+  upgradeOrderStatusCallBack,
 }: OrderDetailsViewerProps) => {
   const { transitions } = useTheme();
   const router = useRouter();
-  const isAdmin = router.pathname.startsWith('/admin');
+  // const isStaff = router.pathname.includes('/staff');
 
   const [isHover, setIsHover] = useState(false);
 
-  const [statusIndex, setStatusIndex] = useState(getCurrentStatusIndex(order));
-  useEffect(() => {
-    const newIndex = getCurrentStatusIndex(order);
-    setStatusIndex(newIndex);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [order.status]);
+  // const [statusIndex, setStatusIndex] = useState(getCurrentStatusIndex(order));
+  // useEffect(() => {
+  //   const newIndex = getCurrentStatusIndex(order);
+  //   console.log(
+  //     'file: OrderDetailViewer.tsx:100 - useEffect - newIndex:',
+  //     newIndex,
+  //   );
+  //   setStatusIndex(newIndex);
+  // }, [order, order.status]);
 
-  useEffect(() => {
-    if (isHover && !(isCancel || delivered)) {
-      setStatusIndex((prev) => prev + 1);
-      return;
-    }
-    setStatusIndex(getCurrentStatusIndex(order));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isHover]);
+  // const statusIndex = useMemo(() => getCurrentStatusIndex(order), [order]);
+  const isStaff = matchesPlaceHolderRoute(
+    router.pathname,
+    CUSTOMER_ORDER_DETAIL_STAFF_ROUTE,
+    true,
+  );
 
+  const cancelIndex = CustomerOrderStatusOrders.length - 1;
+  const cancelableIndexThreshHold = isStaff ? 2 : 1;
+  const statusIndex = useMemo(() => getCurrentStatusIndex(order), [order]);
   const delivered = statusIndex - Number(isHover) === cancelIndex - 1;
-  const isCancel = statusIndex === cancelIndex;
-  const canCancel = statusIndex <= CancelIndexThreshHold;
+  const isOrderCancelled = statusIndex === cancelIndex;
+  const canCancel = statusIndex <= cancelableIndexThreshHold;
+  const shouldIncreaseIndex = isHover && !(isOrderCancelled || delivered);
+
+  const finalIndex = shouldIncreaseIndex ? statusIndex + 1 : statusIndex;
 
   let iconList = stepIconList;
   if (statusIndex === cancelIndex) {
@@ -121,7 +138,7 @@ const OrderDetailsViewer = ({
                 // }
                 // open
                 title={
-                  !isCancel
+                  !isOrderCancelled
                     ? getOrderStatusName(CustomerOrderStatusOrders[index])
                     : getOrderStatusName(CustomerOrderStatusOrders[cancelIndex])
                 }
@@ -139,9 +156,9 @@ const OrderDetailsViewer = ({
                         width: 64,
                         height: 64,
                         bgcolor:
-                          index <= statusIndex ? 'primary.main' : 'grey.300',
+                          index <= finalIndex ? 'primary.main' : 'grey.300',
                         color:
-                          index <= statusIndex ? 'grey.white' : 'primary.main',
+                          index <= finalIndex ? 'grey.white' : 'primary.main',
                       }}
                     >
                       <Icon color='inherit' sx={{ fontSize: '32px' }} />
@@ -171,7 +188,7 @@ const OrderDetailsViewer = ({
                   sx={{
                     transition: `background-color 0.3s ${transitions.easing.easeInOut}`,
                   }}
-                  bgcolor={index < statusIndex ? 'primary.main' : 'grey.300'}
+                  bgcolor={index < finalIndex ? 'primary.main' : 'grey.300'}
                 />
               )}
             </Fragment>
@@ -192,7 +209,7 @@ const OrderDetailsViewer = ({
             </Typography>
           </Grid>
 
-          {isAdmin && (
+          {isStaff && (
             <Grid
               item
               lg='auto'
@@ -206,9 +223,15 @@ const OrderDetailsViewer = ({
             >
               <Tooltip
                 title={
-                  !(isCancel || delivered) &&
+                  !(isOrderCancelled || delivered) &&
                   `Thăng cấp lên ${getOrderStatusName(
-                    CustomerOrderStatusOrders[getCurrentStatusIndex(order) + 1],
+                    CustomerOrderStatusOrders[
+                      getCurrentStatusIndex(
+                        order,
+                        isOrderCancelled,
+                        delivered,
+                      ) + 1
+                    ],
                   )}`
                 }
               >
@@ -221,13 +244,13 @@ const OrderDetailsViewer = ({
                   }}
                 >
                   <LoadingButton
-                    disabled={isCancel || delivered}
+                    disabled={isOrderCancelled || delivered}
                     loading={isUpdating}
                     variant='contained'
                     color='primary'
                     onMouseEnter={() => setIsHover(true)}
                     onMouseLeave={() => setIsHover(false)}
-                    onClick={() => updateOrderCallback?.()}
+                    onClick={() => upgradeOrderStatusCallBack?.()}
                   >
                     <UpgradeRoundedIcon sx={{ fontSize: '26px' }} />
                     Thăng cấp
@@ -308,7 +331,7 @@ const OrderDetailsViewer = ({
                 variant='rectangular'
                 animation='wave'
                 width='95%'
-                height={50}
+                height={70}
                 sx={{
                   mx: 'auto',
                   borderRadius: '8px',
@@ -416,7 +439,7 @@ const OrderDetailsViewer = ({
             </Paragraph>
           </Card>
         </Grid>
-        {!isAdmin && !isCancel && canCancel && (
+        {!isOrderCancelled && canCancel && (
           <LoadingButton
             onClick={() => cancelOrderCallback?.()}
             loadingPosition='center'
@@ -424,7 +447,7 @@ const OrderDetailsViewer = ({
             variant='contained'
             sx={{ height: 44, ml: 'auto', mt: 3 }}
           >
-            Huỷ đơn hàng
+            Hủy đơn hàng
           </LoadingButton>
         )}
       </Grid>

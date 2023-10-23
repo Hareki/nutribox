@@ -202,13 +202,16 @@ const SideBar: FC<SideBarProps> = (props) => {
       >
         <NavWrapper compact={sidebarCompact}>
           {!role ? (
-            <FlexRowCenter>
-              <Skeleton
-                sx={{ bgcolor: theme.palette.primary[100] }}
-                variant='rounded'
-                width={200}
-                height={400}
-              />
+            <FlexRowCenter flexDirection='column' gap={2}>
+              {Array.from({ length: 5 }, (_, i) => (
+                <Skeleton
+                  key={i}
+                  sx={{ bgcolor: theme.palette.primary[100] }}
+                  variant='rounded'
+                  width={240}
+                  height={44}
+                />
+              ))}
             </FlexRowCenter>
           ) : (
             renderLevels(navigations, role)

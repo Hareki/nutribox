@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import type { UpdateCustomerAddressDto } from 'backend/dtos/profile/addresses/updateCustomerAddress.dto';
 import { UpdateCustomerAddressDtoSchema } from 'backend/dtos/profile/addresses/updateCustomerAddress.dto';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import { createAddressAccessGuard } from 'backend/services/customer/customer.guard';
@@ -24,7 +24,7 @@ handler
     createAddressAccessGuard(),
     createValidationGuard(UpdateCustomerAddressDtoSchema),
     async (req, res) => {
-      const account = await getSessionAccount(req, res);
+      const account = await getSessionCustomerAccount(req, res);
 
       const id = req.query.id as string;
       const dto = req.body as UpdateCustomerAddressDto;
@@ -42,7 +42,7 @@ handler
     },
   )
   .delete(createAddressAccessGuard(), async (req, res) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const id = req.query.id as string;
     await CustomerAddressService.deleteAddress(id, account.customer.id);
 

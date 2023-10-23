@@ -5,10 +5,8 @@ import {
   OrderStatus,
   PaymentMethod,
 } from 'backend/enums/entities.enum';
-import {
-  CustomerOrderStatusOrders,
-  type OrderStatusCount,
-} from 'backend/services/customer/helper';
+import { type OrderStatusCount } from 'backend/services/customer/helper';
+import { CustomerOrderStatusOrders } from 'backend/services/customerOrder/helper';
 
 export function translateOrderStatusCountLabel(
   orderStatusName: keyof OrderStatusCount,

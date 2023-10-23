@@ -4,7 +4,7 @@ import nc from 'next-connect';
 
 import type { CartItemDto } from 'backend/dtos/cartItem.dto';
 import { CartItemDtoSchema } from 'backend/dtos/cartItem.dto';
-import { getSessionAccount } from 'backend/helpers/auth2.helper';
+import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { CartItemService } from 'backend/services/cartItem/cartItem.service';
 import { createValidationGuard } from 'backend/services/common/common.guard';
@@ -21,7 +21,7 @@ const handler = nc<
 
 handler
   .get(async (req, res) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const cartItems = await CartItemService.getCartItems(account.customer.id);
 
     res.status(StatusCodes.CREATED).json({
@@ -30,7 +30,7 @@ handler
     });
   })
   .post(createValidationGuard(CartItemDtoSchema), async (req, res) => {
-    const account = await getSessionAccount(req, res);
+    const account = await getSessionCustomerAccount(req, res);
     const { product: productId, quantity } = req.body as CartItemDto;
 
     const updatedCartItems = await CartItemService.updateCartItem(
