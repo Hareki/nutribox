@@ -17,8 +17,8 @@ const handler = nc<
 
 handler.get(async (req, res) => {
   const id = req.query.id as string;
-  const data = await StoreService.getStoreInfo(id);
-  res.status(StatusCodes.CREATED).json({
+  const data = await StoreService.getStoreInfoAndWorkTimes(id);
+  res.status(StatusCodes.OK).json({
     status: 'success',
     data,
   });

@@ -1,16 +1,16 @@
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { LoadingButton } from '@mui/lab';
-import { Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { IStore } from 'api/models/Store.model/types';
-import type { IAddress } from 'api/types/schema.type';
 import { useFormik } from 'formik';
-import { phoneRegex } from 'helpers/regex.helper';
 import { useSnackbar } from 'notistack';
-import * as yup from 'yup';
+import { useState } from 'react';
 
-import type { UpdateStoreContactInfoRb } from '../../../../pages/api/admin/store';
-
-import apiCaller from 'api-callers/stores';
+import staffStoreCaller from 'api-callers/staff/stores';
+import {
+  UpdateStoreInfoFormSchema,
+  type UpdateStoreInfoDto,
+} from 'backend/dtos/store/updateStoreInfo.dto';
 import AddressForm from 'components/AddressForm';
 import PhoneInput from 'components/common/input/PhoneInput';
 import { STORE_ID } from 'constants/temp.constant';
@@ -18,9 +18,12 @@ import {
   transformAddressToFormikValue,
   transformFormikValueToIAddress,
 } from 'helpers/address.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import type { PopulateStoreFields, StoreModel } from 'models/store.model';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 interface ContactInfoFormProps {
-  initialStoreInfo: IStore;
+  initialStoreInfo: PopulateStoreFields<'storeWorkTimes'>;
 }
 
 export default function ContactInfoForm({
@@ -28,22 +31,28 @@ export default function ContactInfoForm({
 }: ContactInfoFormProps) {
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
+  const [isEditing, setIsEditing] = useState(false);
 
   const { mutate: updateStoreInfo, isLoading } = useMutation<
-    IStore,
+    StoreModel,
     unknown,
-    UpdateStoreContactInfoRb
+    UpdateStoreInfoDto
   >({
-    mutationFn: (body) => apiCaller.updateStoreInfo(body),
+    mutationFn: (dto) => staffStoreCaller.updateStoreInfo(STORE_ID, dto),
     onSuccess: () => {
       enqueueSnackbar('Cập nhật thông tin liên hệ thành công', {
         variant: 'success',
       });
+      setIsEditing(false);
       queryClient.invalidateQueries(['store', initialStoreInfo.id]);
     },
   });
 
-  const getInitialValues = (initialStoreInfo: IStore) => {
+  const { t } = useCustomTranslation(['store', 'storeWorkTime']);
+
+  const getInitialValues = (
+    initialStoreInfo: PopulateStoreFields<'storeWorkTimes'>,
+  ) => {
     return {
       phone: initialStoreInfo?.phone || '',
       email: initialStoreInfo?.email || '',
@@ -54,10 +63,9 @@ export default function ContactInfoForm({
   type ShopInfoFormValues = ReturnType<typeof getInitialValues>;
 
   const handleFormSubmit = (values: ShopInfoFormValues) => {
-    const address: IAddress = transformFormikValueToIAddress(values);
-    const input: UpdateStoreContactInfoRb = {
-      id: STORE_ID,
-      ...address,
+    const address = transformFormikValueToIAddress(values);
+    const input: UpdateStoreInfoDto = {
+      ...address!,
       phone: values.phone,
       email: values.email,
     };
@@ -72,9 +80,11 @@ export default function ContactInfoForm({
     handleBlur,
     handleSubmit,
     setFieldValue,
+    resetForm,
   } = useFormik<ShopInfoFormValues>({
+    enableReinitialize: true,
     initialValues: getInitialValues(initialStoreInfo),
-    validationSchema,
+    validationSchema: toFormikValidationSchema(UpdateStoreInfoFormSchema),
     onSubmit: handleFormSubmit,
   });
 
@@ -93,8 +103,9 @@ export default function ContactInfoForm({
             value={values.phone}
             onChange={handleChange}
             error={!!touched.phone && !!errors.phone}
-            helperText={(touched.phone && errors.phone) as string}
+            helperText={t((touched.phone && errors.phone) as string)}
             InputProps={{
+              readOnly: !isEditing,
               inputComponent: PhoneInput as any,
             }}
           />
@@ -110,11 +121,15 @@ export default function ContactInfoForm({
             value={values.email}
             onChange={handleChange}
             error={!!touched.email && !!errors.email}
-            helperText={(touched.email && errors.email) as string}
+            helperText={t((touched.email && errors.email) as string)}
+            InputProps={{
+              readOnly: !isEditing,
+            }}
           />
         </Grid>
 
         <AddressForm
+          isEditing={isEditing}
           medium
           values={values}
           touched={touched}
@@ -125,44 +140,83 @@ export default function ContactInfoForm({
         />
       </Grid>
 
-      <LoadingButton
+      {/* <LoadingButton
         loading={isLoading}
         type='submit'
         variant='contained'
         color='primary'
       >
         Lưu thay đổi
-      </LoadingButton>
+      </LoadingButton> */}
+
+      <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
+        {isEditing ? (
+          <>
+            <LoadingButton
+              loading={isLoading}
+              variant='contained'
+              color='primary'
+              type='submit'
+            >
+              Lưu thay đổi
+            </LoadingButton>
+            <Button
+              variant='outlined'
+              color='primary'
+              type='submit'
+              onClick={() => {
+                setIsEditing(false);
+                resetForm();
+              }}
+              sx={{
+                px: 3,
+              }}
+            >
+              Huỷ
+            </Button>
+          </>
+        ) : (
+          <Button
+            startIcon={<EditRoundedIcon />}
+            variant='contained'
+            color='primary'
+            type='submit'
+            onClick={() => setIsEditing(true)}
+          >
+            Chỉnh sửa
+          </Button>
+        )}
+      </Grid>
     </form>
   );
 }
 
-const validationSchema = yup.object().shape({
-  phone: yup
-    .string()
-    .required('Vui lòng nhập số điện thoại')
-    .transform((value, originalValue) => {
-      if (originalValue && typeof originalValue === 'string') {
-        return originalValue.replace(/-/g, '');
-      }
-      return value;
-    })
-    .matches(phoneRegex, 'Định dạng số điện thoại không hợp lệ'),
-  email: yup
-    .string()
-    .email('Định dạng email không hợp lệ')
-    .required('Vui lòng nhập email'),
-  province: yup
-    .object()
-    .typeError('Vui lòng nhập Tỉnh/Thành Phố')
-    .required('Vui lòng nhập Tỉnh/Thành Phố'),
-  district: yup
-    .object()
-    .typeError('Vui lòng nhập Quận/Huyện')
-    .required('Vui lòng nhập Quận/Huyện'),
-  ward: yup
-    .object()
-    .typeError('Vui lòng nhập Phường/Xã')
-    .required('Vui lòng nhập Phường/Xã'),
-  streetAddress: yup.string().required('Vui lòng nhập Số nhà, tên đường'),
-});
+// const validationSchema = yup.object().shape({
+//   phone: yup
+//     .string()
+//     .required('Vui lòng nhập số điện thoại')
+//     .transform((value, originalValue) => {
+//       if (originalValue && typeof originalValue === 'string') {
+//         return originalValue.replace(/-/g, '');
+//       }
+//       return value;
+//     })
+//     .matches(phoneRegex, 'Định dạng số điện thoại không hợp lệ'),
+//   email: yup
+//     .string()
+//     .email('Định dạng email không hợp lệ')
+//     .required('Vui lòng nhập email'),
+//   province: yup
+//     .object()
+//     .typeError('Vui lòng nhập Tỉnh/Thành Phố')
+//     .required('Vui lòng nhập Tỉnh/Thành Phố'),
+//   district: yup
+//     .object()
+//     .typeError('Vui lòng nhập Quận/Huyện')
+//     .required('Vui lòng nhập Quận/Huyện'),
+//   ward: yup
+//     .object()
+//     .typeError('Vui lòng nhập Phường/Xã')
+//     .required('Vui lòng nhập Phường/Xã'),
+//   streetAddress: yup.string().required('Vui lòng nhập Số nhà, tên đường'),
+// });

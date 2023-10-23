@@ -63,7 +63,6 @@ export const createEmployeeOrderStatusUpgradeGuard =
         });
       }
 
-      console.log('file: employee.guard.ts:67 -  req.body:', req.body);
       req.body = {
         nextStatus: getNextOrderStatusId(customerOrder.status),
       };

@@ -83,7 +83,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       DEFAULT_RELATED_PRODUCTS_LIMIT,
     );
 
-  const initialStoreInfo = await StoreService.getStoreInfo(STORE_ID);
+  const initialStoreInfo =
+    await StoreService.getStoreInfoAndWorkTimes(STORE_ID);
 
   if (!product?.available) {
     return {

@@ -82,11 +82,12 @@ const SideBar: FC<SideBarProps> = (props) => {
 
       return router.pathname.endsWith(`${path}/[id]`) ||
         router.pathname.endsWith(`${path}/new`) ||
-        router.pathname.endsWith(path)
+        router.pathname.endsWith(path) ||
+        router.asPath.endsWith(path)
         ? true
         : false;
     },
-    [router.pathname],
+    [router.pathname, router.asPath],
   );
 
   // handle navigate to another route and close sidebar drawer in mobile device
@@ -209,7 +210,7 @@ const SideBar: FC<SideBarProps> = (props) => {
                   sx={{ bgcolor: theme.palette.primary[100] }}
                   variant='rounded'
                   width={240}
-                  height={44}
+                  height={40}
                 />
               ))}
             </FlexRowCenter>

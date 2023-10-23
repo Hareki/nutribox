@@ -228,7 +228,7 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
     route: SUPPLIER_DETAIL_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET', 'PUT'],
+    methods: ['GET', 'PUT', 'PATCH'],
     route: STORE_DETAIL_API_STAFF_ROUTE,
   },
 ];

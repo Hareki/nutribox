@@ -6,6 +6,7 @@ import {
   isBefore,
   isEqual,
 } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 
 import { DayOfWeek } from 'backend/enums/entities.enum';
 
@@ -112,4 +113,12 @@ export const getDayOfWeek = (day: number): DayOfWeek => {
 
 export const getTodayDayOfWeek = (): DayOfWeek => {
   return getDayOfWeek(new Date().getDay());
+};
+
+export const getUtcDate = (date: DateLike): Date => {
+  if (!date) {
+    return utcToZonedTime(new Date(), 'Etc/UTC');
+  }
+  const dateObject = getDateObject(date);
+  return utcToZonedTime(dateObject, 'Etc/UTC');
 };

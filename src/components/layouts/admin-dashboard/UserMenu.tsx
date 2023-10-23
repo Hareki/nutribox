@@ -71,7 +71,10 @@ const EmployeeMenu: FC<UserMenuProps> = ({
         <IconButton
           disabled={isLoadingSession}
           id='account-menu-button'
-          sx={{ padding: isAuthenticated || isLoadingSession ? 0 : 1.25 }}
+          sx={{
+            padding: isAuthenticated || isLoadingSession ? 0 : 1.25,
+            backgroundColor: theme.palette.grey[100],
+          }}
           onClick={handleClick}
           aria-haspopup='true'
           aria-expanded={open ? 'true' : undefined}

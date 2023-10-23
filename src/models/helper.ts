@@ -6,6 +6,7 @@ import {
   MASK_PHONE_REGEX,
   PHONE_REGEX,
 } from 'constants/regex.constant';
+import { getUtcDate } from 'utils/date.helper';
 export type RefinementParameters<T> = [
   (data: T) => boolean,
   { message: string; path: string[] },
@@ -35,7 +36,12 @@ export const zodUuid = (prefix: string) =>
     })
     .uuid();
 
-export const zodDate = (prefix: string, minDate?: Date, maxDate?: Date) =>
+export const zodDate = (
+  prefix: string,
+  minDate?: Date,
+  maxDate?: Date,
+  ignoreTime = true,
+) =>
   z
     .date({
       errorMap: (issue, ctx) => {
@@ -72,7 +78,13 @@ export const zodDate = (prefix: string, minDate?: Date, maxDate?: Date) =>
           },
         ),
     )
-    .transform((data) => startOfDay(new Date(data)))
+    .transform((data) => {
+      console.log('file: helper.ts:82 - .transform - data:', data);
+      if (ignoreTime) {
+        return startOfDay(getUtcDate(data));
+      }
+      return getUtcDate(data);
+    })
     .refine(
       (data) => {
         if (minDate) {

@@ -323,7 +323,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     queryFn: () => ProductService.getNewProducts(DEFAULT_NEW_PRODUCTS_LIMIT),
   });
 
-  const initialStoreInfo = await StoreService.getStoreInfo();
+  const initialStoreInfo = await StoreService.getStoreInfoAndWorkTimes();
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['products', 'infinite', { categoryId: undefined }],

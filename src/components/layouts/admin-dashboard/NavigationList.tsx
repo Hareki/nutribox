@@ -11,6 +11,8 @@ import {
   STORE_DETAIL_STAFF_ROUTE,
   SUPPLIERS_STAFF_ROUTE,
 } from 'constants/routes.ui.constant';
+import { STORE_ID } from 'constants/temp.constant';
+import { insertId } from 'utils/middleware.helper';
 
 export type NavigationItem = {
   name: string;
@@ -53,7 +55,7 @@ export const navigations: Record<SideBarRole, NavigationItem[]> = {
     {
       name: 'Cài đặt cửa hàng',
       icon: duotone.Settings,
-      path: STORE_DETAIL_STAFF_ROUTE,
+      path: insertId(STORE_DETAIL_STAFF_ROUTE, STORE_ID),
     },
     { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
   ],

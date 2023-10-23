@@ -1,21 +1,21 @@
-import type { IStoreHour } from 'api/models/Store.model/StoreHour.schema/types';
-import type { WeekDays } from 'pages-sections/admin/store-setting/StoreHoursForm';
+import type { UpdateStoreWorkTimesDto } from 'backend/dtos/store/updateStoreWorkTimes.dto';
+import { DayOfWeek } from 'backend/enums/entities.enum';
 
 export const getDayOfWeekLabel = (dayOfWeek: string) => {
   const value = dayOfWeek.toLowerCase();
   switch (value) {
     case 'monday':
-      return 'Thứ 2';
+      return 'Thứ hai';
     case 'tuesday':
-      return 'Thứ 3';
+      return 'Thứ ba';
     case 'wednesday':
-      return 'Thứ 4';
+      return 'Thứ tư';
     case 'thursday':
-      return 'Thứ 5';
+      return 'Thứ năm';
     case 'friday':
-      return 'Thứ 6';
+      return 'Thứ sáu';
     case 'saturday':
-      return 'Thứ 7';
+      return 'Thứ bảy';
     case 'sunday':
       return 'Chủ nhật';
     default:
@@ -35,28 +35,30 @@ export const getStoreHoursLabel = (fromTime: Date, toTime: Date) => {
   return `${fromTimeLabel} - ${toTimeLabel}`;
 };
 
-export const transformStoreHoursToFormikValue = (storeHours: IStoreHour[]) => {
-  const initialValues: Record<WeekDays, { from: Date; to: Date }> = {
-    monday: { from: new Date(), to: new Date() },
-    tuesday: { from: new Date(), to: new Date() },
-    wednesday: { from: new Date(), to: new Date() },
-    thursday: { from: new Date(), to: new Date() },
-    friday: { from: new Date(), to: new Date() },
-    saturday: { from: new Date(), to: new Date() },
-    sunday: { from: new Date(), to: new Date() },
+export const transformStoreHoursToFormikValue = (
+  storeWorkTimes: UpdateStoreWorkTimesDto,
+): Record<DayOfWeek, { from: Date; to: Date }> => {
+  const initialValues: Record<DayOfWeek, { from: Date; to: Date }> = {
+    MONDAY: { from: new Date(), to: new Date() },
+    TUESDAY: { from: new Date(), to: new Date() },
+    WEDNESDAY: { from: new Date(), to: new Date() },
+    THURSDAY: { from: new Date(), to: new Date() },
+    FRIDAY: { from: new Date(), to: new Date() },
+    SATURDAY: { from: new Date(), to: new Date() },
+    SUNDAY: { from: new Date(), to: new Date() },
   };
 
-  const dayMapping: Record<string, WeekDays> = {
-    MONDAY: 'monday',
-    TUESDAY: 'tuesday',
-    WEDNESDAY: 'wednesday',
-    THURSDAY: 'thursday',
-    FRIDAY: 'friday',
-    SATURDAY: 'saturday',
-    SUNDAY: 'sunday',
+  const dayMapping: Record<string, DayOfWeek> = {
+    MONDAY: DayOfWeek.MONDAY,
+    TUESDAY: DayOfWeek.TUESDAY,
+    WEDNESDAY: DayOfWeek.WEDNESDAY,
+    THURSDAY: DayOfWeek.THURSDAY,
+    FRIDAY: DayOfWeek.FRIDAY,
+    SATURDAY: DayOfWeek.SATURDAY,
+    SUNDAY: DayOfWeek.SUNDAY,
   };
 
-  storeHours.forEach((storeHour) => {
+  storeWorkTimes.forEach((storeHour) => {
     const dayOfWeek = dayMapping[storeHour.dayOfWeek];
     const openTime = new Date(storeHour.openTime);
     const closeTime = new Date(storeHour.closeTime);
@@ -68,4 +70,14 @@ export const transformStoreHoursToFormikValue = (storeHours: IStoreHour[]) => {
   });
 
   return initialValues;
+};
+
+export const transformFormikValuesToStoreWorkTimes = (
+  values: Record<DayOfWeek, { from: Date; to: Date }>,
+): UpdateStoreWorkTimesDto => {
+  return Object.entries(values).map(([day, times]) => ({
+    dayOfWeek: day as DayOfWeek,
+    openTime: times.from,
+    closeTime: times.to,
+  }));
 };

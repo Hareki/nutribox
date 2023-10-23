@@ -5,5 +5,6 @@
   "StoreWorkTime.StoreId.Required": "Please enter the store ID.",
   "StoreWorkTime.DayOfWeek.Required": "Please select a day of the week.",
   "StoreWorkTime.OpenTime.Required": "Please enter the opening time.",
-  "StoreWorkTime.CloseTime.Required": "Please enter the closing time."
+  "StoreWorkTime.CloseTime.Required": "Please enter the closing time.",
+  "StoreWorkTime.OpenTime.Before.CloseTime": "Open time must be before close time at least 1 hour"
 }

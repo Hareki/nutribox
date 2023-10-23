@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { zodDate, zodString, zodUuid } from './helper';
+import { zodDate, zodUuid } from './helper';
 import type { StoreModel } from './store.model';
 
 import { DayOfWeek } from 'backend/enums/entities.enum';
@@ -16,9 +16,9 @@ const StoreWorkTimeSchema = z.object({
     required_error: 'StoreWorkTime.DayOfWeek.Required',
   }),
 
-  openTime: zodDate('StoreWorkTime.OpenTime'),
+  openTime: zodDate('StoreWorkTime.OpenTime', undefined, undefined, false),
 
-  closeTime: zodDate('StoreWorkTime.CloseTime'),
+  closeTime: zodDate('StoreWorkTime.CloseTime', undefined, undefined, false),
 });
 
 type StoreWorkTimeModel = z.infer<typeof StoreWorkTimeSchema>;

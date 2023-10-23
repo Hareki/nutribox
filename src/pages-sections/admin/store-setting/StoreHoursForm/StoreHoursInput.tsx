@@ -18,6 +18,9 @@ interface StoreHoursInputProps {
   fromHelperText?: string;
   toError?: boolean;
   toHelperText?: string;
+  isEditing: boolean;
+  handleTouchedBlur: (fieldName: string) => () => void;
+  name: string;
 }
 
 const StoreHoursInput = ({
@@ -30,33 +33,54 @@ const StoreHoursInput = ({
   fromHelperText,
   toError,
   toHelperText,
+  isEditing,
+  handleTouchedBlur,
+  name,
 }: StoreHoursInputProps) => {
   return (
-    <FlexBox alignItems='center' flexWrap='wrap' justifyContent='space-between'>
-      <H5>{getDayOfWeekLabel(dayOfWeek)}</H5>
-      <FlexBox alignItems='flex-start' gap={1} my={1}>
+    <FlexBox
+      alignItems='flex-start'
+      flexWrap='wrap'
+      justifyContent='space-between'
+    >
+      <H5 mt={2} width={80}>
+        {getDayOfWeekLabel(dayOfWeek)}
+      </H5>
+      <FlexBox alignItems='flex-start' gap={1} my={1} flexGrow={1}>
         <TimePicker
           ampm={false}
           value={fromValue}
           onChange={onFromChange}
+          readOnly={!isEditing}
           renderInput={(params) => (
             <TextField
               {...params}
+              fullWidth
               error={fromError}
               helperText={(fromError && fromHelperText) as string}
+              onBlur={handleTouchedBlur(name)}
+              sx={{
+                flexGrow: 1,
+              }}
             />
           )}
         />
-        <Paragraph mt={1}>đến</Paragraph>
+        <Paragraph mt={1}>-</Paragraph>
         <TimePicker
           ampm={false}
           value={toValue}
           onChange={onToChange}
+          readOnly={!isEditing}
           renderInput={(params) => (
             <TextField
               {...params}
+              fullWidth
               error={toError}
               helperText={(toError && toHelperText) as string}
+              onBlur={handleTouchedBlur(name)}
+              sx={{
+                flexGrow: 1,
+              }}
             />
           )}
         />

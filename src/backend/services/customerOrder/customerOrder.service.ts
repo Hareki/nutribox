@@ -389,7 +389,6 @@ export class CustomerOrderService {
         );
 
         importOrder.remainingQuantity += exportOrder.quantity;
-        console.log('run!:', importOrder.remainingQuantity);
         await CommonService.updateRecord(
           ImportOrderEntity,
           importOrder.id,

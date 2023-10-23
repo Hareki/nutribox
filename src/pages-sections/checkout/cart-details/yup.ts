@@ -1,7 +1,4 @@
-import * as yup from 'yup';
-
 import type { CheckoutFormValues } from 'backend/dtos/checkout.dto';
-import { MASK_PHONE_REGEX } from 'constants/regex.constant';
 import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
 import type { CommonCustomerAccountModel } from 'models/account.model';
 

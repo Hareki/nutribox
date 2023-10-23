@@ -1,20 +1,27 @@
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { LoadingButton } from '@mui/lab';
+import { Button, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { IStoreHourWithObjectId } from 'api/models/Store.model/StoreHour.schema/types';
-import type { IStore } from 'api/models/Store.model/types';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
+import { useState } from 'react';
 import * as yup from 'yup';
-
-import type { UpdateStoreHoursRb } from '../../../../../pages/api/admin/store';
 
 import StoreHoursInput from './StoreHoursInput';
 
-import apiCaller from 'api-callers/stores';
-import { transformStoreHoursToFormikValue } from 'helpers/storeHours.helper';
+import staffStoreCaller from 'api-callers/staff/stores';
+import type { UpdateStoreWorkTimesDto } from 'backend/dtos/store/updateStoreWorkTimes.dto';
+import type { DayOfWeek } from 'backend/enums/entities.enum';
+import { STORE_ID } from 'constants/temp.constant';
+import {
+  transformFormikValuesToStoreWorkTimes,
+  transformStoreHoursToFormikValue,
+} from 'helpers/storeHours.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import type { PopulateStoreFields } from 'models/store.model';
 
 export type WeekDays =
   | 'monday'
@@ -26,50 +33,40 @@ export type WeekDays =
   | 'sunday';
 
 interface StoreHoursFormProps {
-  initialStoreInfo: IStore;
+  initialStoreInfo: PopulateStoreFields<'storeWorkTimes'>;
 }
 
 const StoreHoursForm = ({ initialStoreInfo }: StoreHoursFormProps) => {
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useCustomTranslation(['store', 'storeWorkTime']);
   const queryClient = useQueryClient();
+  const [isEditing, setIsEditing] = useState(false);
   const { mutate: updateStoreInfo, isLoading } = useMutation<
-    IStore,
+    PopulateStoreFields<'storeWorkTimes'>,
     unknown,
-    UpdateStoreHoursRb
+    UpdateStoreWorkTimesDto
   >({
-    mutationFn: (body) => apiCaller.updateStoreInfo(body),
+    mutationFn: (body) => staffStoreCaller.updateStoreWorkTimes(STORE_ID, body),
     onSuccess: () => {
       enqueueSnackbar('Cập nhật giờ làm việc thành công', {
         variant: 'success',
       });
-      queryClient.invalidateQueries(['store', initialStoreInfo.id]);
+      setIsEditing(false);
+      queryClient.refetchQueries(['stores', initialStoreInfo.id]);
     },
   });
 
   const getInitialValues = (
-    initialStoreInfo: IStore,
-  ): Record<WeekDays, { from: Date; to: Date }> => ({
-    ...transformStoreHoursToFormikValue(initialStoreInfo.storeHours),
-  });
+    initialStoreInfo: PopulateStoreFields<'storeWorkTimes'>,
+  ): Record<DayOfWeek, { from: Date; to: Date }> =>
+    transformStoreHoursToFormikValue(initialStoreInfo.storeWorkTimes);
 
   type StoreHoursFormValues = ReturnType<typeof getInitialValues>;
 
   const handleFormSubmit = (values: StoreHoursFormValues) => {
-    const storeHours = initialStoreInfo.storeHours;
+    const newStoreWorkTimes = transformFormikValuesToStoreWorkTimes(values);
 
-    const newStoreHours: IStoreHourWithObjectId[] = storeHours.map(
-      (storeHour) => {
-        const newStoreHour = values[storeHour.dayOfWeek.toLowerCase()];
-        return {
-          _id: storeHour._id,
-          dayOfWeek: storeHour.dayOfWeek,
-          openTime: newStoreHour.from,
-          closeTime: newStoreHour.to,
-        };
-      },
-    );
-
-    updateStoreInfo({ id: initialStoreInfo.id, storeHours: newStoreHours });
+    updateStoreInfo(newStoreWorkTimes);
   };
 
   const {
@@ -80,11 +77,19 @@ const StoreHoursForm = ({ initialStoreInfo }: StoreHoursFormProps) => {
     // handleBlur,
     handleSubmit,
     setFieldValue,
+    resetForm,
+    setFieldTouched,
   } = useFormik<StoreHoursFormValues>({
     initialValues: getInitialValues(initialStoreInfo),
     validationSchema,
     onSubmit: handleFormSubmit,
   });
+
+  const handleTouchedBlur = (fieldName: string) => {
+    return () => {
+      setFieldTouched(fieldName, true);
+    };
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -92,7 +97,10 @@ const StoreHoursForm = ({ initialStoreInfo }: StoreHoursFormProps) => {
         <Box mb={4}>
           {Object.keys(values).map((dayOfWeek) => (
             <StoreHoursInput
+              handleTouchedBlur={handleTouchedBlur}
+              isEditing={isEditing}
               key={dayOfWeek}
+              name={dayOfWeek}
               dayOfWeek={dayOfWeek as WeekDays}
               fromValue={values[dayOfWeek].from}
               toValue={values[dayOfWeek].to}
@@ -100,23 +108,57 @@ const StoreHoursForm = ({ initialStoreInfo }: StoreHoursFormProps) => {
                 setFieldValue(`${dayOfWeek}.from`, value)
               }
               onToChange={(value) => setFieldValue(`${dayOfWeek}.to`, value)}
-              fromError={
-                !!errors[dayOfWeek]?.from && !!touched[dayOfWeek]?.from
-              }
-              fromHelperText={errors[dayOfWeek]?.from}
-              toError={!!errors[dayOfWeek]?.to && !!touched[dayOfWeek]?.to}
-              toHelperText={errors[dayOfWeek]?.to}
+              // fromError={
+              //   !!errors[dayOfWeek]?.from && !!touched[dayOfWeek]?.from
+              // }
+              fromError={errors[dayOfWeek]?.from}
+              fromHelperText={t(errors[dayOfWeek]?.from)}
+              // toError={!!errors[dayOfWeek]?.to && !!touched[dayOfWeek]?.to}
+              toError={!!errors[dayOfWeek]?.to}
+              toHelperText={t(errors[dayOfWeek]?.to)}
             />
           ))}
         </Box>
-        <LoadingButton
-          loading={isLoading}
-          type='submit'
-          variant='contained'
-          color='primary'
-        >
-          Lưu thay đổi
-        </LoadingButton>
+        <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
+          {isEditing ? (
+            <>
+              <LoadingButton
+                loading={isLoading}
+                variant='contained'
+                color='primary'
+                type='submit'
+              >
+                Lưu thay đổi
+              </LoadingButton>
+              <Button
+                variant='outlined'
+                color='primary'
+                type='submit'
+                onClick={() => {
+                  setIsEditing(false);
+                  resetForm({
+                    values: getInitialValues(initialStoreInfo),
+                  });
+                }}
+                sx={{
+                  px: 3,
+                }}
+              >
+                Huỷ
+              </Button>
+            </>
+          ) : (
+            <Button
+              startIcon={<EditRoundedIcon />}
+              variant='contained'
+              color='primary'
+              type='submit'
+              onClick={() => setIsEditing(true)}
+            >
+              Chỉnh sửa
+            </Button>
+          )}
+        </Grid>
       </LocalizationProvider>
     </form>
   );
@@ -124,39 +166,64 @@ const StoreHoursForm = ({ initialStoreInfo }: StoreHoursFormProps) => {
 
 const toTimeValidation = (from: Date, schema: yup.DateSchema) => {
   return schema.test({
-    test: (to) => !from || !to || from < to,
-    message: 'To time must be later than From time',
+    test: (to) => {
+      const fromHours = from?.getHours() || 0;
+      const toHours = to?.getHours() || 0;
+      return !from || !to || toHours - fromHours > 0;
+    },
+    message: 'StoreWorkTime.OpenTime.Before.CloseTime',
   });
 };
 
 const validationSchema = yup.object().shape({
-  monday: yup.object().shape({
-    from: yup.date().required('Required'),
-    to: yup.date().required('Required').when('from', toTimeValidation),
+  MONDAY: yup.object().shape({
+    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    to: yup
+      .date()
+      .required('StoreWorkTime.OpenTime.Required')
+      .when('from', toTimeValidation),
   }),
-  tuesday: yup.object().shape({
-    from: yup.date().required('Required'),
-    to: yup.date().required('Required').when('from', toTimeValidation),
+  TUESDAY: yup.object().shape({
+    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    to: yup
+      .date()
+      .required('StoreWorkTime.OpenTime.Required')
+      .when('from', toTimeValidation),
   }),
-  wednesday: yup.object().shape({
-    from: yup.date().required('Required'),
-    to: yup.date().required('Required').when('from', toTimeValidation),
+  WEDNESDAY: yup.object().shape({
+    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    to: yup
+      .date()
+      .required('StoreWorkTime.OpenTime.Required')
+      .when('from', toTimeValidation),
   }),
-  thursday: yup.object().shape({
-    from: yup.date().required('Required'),
-    to: yup.date().required('Required').when('from', toTimeValidation),
+  THURSDAY: yup.object().shape({
+    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    to: yup
+      .date()
+      .required('StoreWorkTime.OpenTime.Required')
+      .when('from', toTimeValidation),
   }),
-  friday: yup.object().shape({
-    from: yup.date().required('Required'),
-    to: yup.date().required('Required').when('from', toTimeValidation),
+  FRIDAY: yup.object().shape({
+    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    to: yup
+      .date()
+      .required('StoreWorkTime.OpenTime.Required')
+      .when('from', toTimeValidation),
   }),
-  saturday: yup.object().shape({
-    from: yup.date().required('Required'),
-    to: yup.date().required('Required').when('from', toTimeValidation),
+  SATURDAY: yup.object().shape({
+    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    to: yup
+      .date()
+      .required('StoreWorkTime.OpenTime.Required')
+      .when('from', toTimeValidation),
   }),
-  sunday: yup.object().shape({
-    from: yup.date().required('Required'),
-    to: yup.date().required('Required').when('from', toTimeValidation),
+  SUNDAY: yup.object().shape({
+    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    to: yup
+      .date()
+      .required('StoreWorkTime.OpenTime.Required')
+      .when('from', toTimeValidation),
   }),
 });
 

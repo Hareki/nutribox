@@ -6,9 +6,9 @@
   "Store.Email.InvalidFormat": "The store's email format is invalid.",
   "Store.Phone.Required": "Please enter the store's phone number.",
   "Store.Phone.InvalidFormat": "The store's phone number format is invalid.",
-  "Store.ProvinceCode.Required": "Please enter the province code.",
-  "Store.DistrictCode.Required": "Please enter the district code.",
-  "Store.WardCode.Required": "Please enter the ward code.",
+  "Store.ProvinceCode.Required": "Please enter the Province.",
+  "Store.DistrictCode.Required": "Please enter the District.",
+  "Store.WardCode.Required": "Please enter the Ward.",
   "Store.StreetAddress.Required": "Please enter the street address.",
   "Store.StreetAddress.Min": "Street address should be at least 1 character.",
   "Store.StreetAddress.Max": "Street address should not exceed 100 characters."
