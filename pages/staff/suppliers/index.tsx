@@ -16,6 +16,7 @@ import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
+import { NEW_SUPPLIER_ROUTE } from 'constants/routes.ui.constant';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
@@ -77,7 +78,7 @@ function SupplierList() {
         handleSearch={handleSearch}
         searchPlaceholder='Tìm theo tên nhà CC'
         haveButton
-        handleBtnClick={() => router.push('/admin/supplier/create')}
+        handleBtnClick={() => router.push(NEW_SUPPLIER_ROUTE)}
         buttonText='Thêm nhà CC'
       />
 

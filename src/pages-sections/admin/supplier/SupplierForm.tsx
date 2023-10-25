@@ -15,6 +15,7 @@ import type {
   InfoDialogState,
 } from 'components/dialog/info-dialog/reducer';
 import { transformAddressToFormikValue } from 'helpers/address.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import type { SupplierModel } from 'models/supplier.model';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
@@ -56,6 +57,8 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
     dispatchInfo,
   } = props;
 
+  const { t } = useCustomTranslation(['supplier']);
+
   const isAdding = !props.supplier;
 
   const {
@@ -90,7 +93,7 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
               error={!!touched.name && !!errors.name}
-              helperText={(touched.name && errors.name) as string}
+              helperText={t((touched.name && errors.name) as string)}
               InputProps={{
                 readOnly: !isEditing,
               }}
@@ -108,7 +111,7 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
               error={!!touched.phone && !!errors.phone}
-              helperText={(touched.phone && errors.phone) as string}
+              helperText={t((touched.phone && errors.phone) as string)}
               InputProps={{
                 inputComponent: PhoneInput as any,
                 readOnly: !isEditing,
@@ -127,7 +130,7 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
               error={!!touched.email && !!errors.email}
-              helperText={(touched.email && errors.email) as string}
+              helperText={t((touched.email && errors.email) as string)}
               InputProps={{
                 readOnly: !isEditing,
               }}

@@ -15,5 +15,7 @@
   "Supplier.WardCode.Required": "Please enter the ward code.",
   "Supplier.StreetAddress.Required": "Please enter the street address.",
   "Supplier.StreetAddress.Min": "Please enter the street address.",
-  "Supplier.StreetAddress.Max": "Street address should not exceed 100 characters."
+  "Supplier.StreetAddress.Max": "Street address should not exceed 100 characters.",
+  "Supplier.Email.Duplicate": "Supplier email already exists.",
+  "Supplier.Phone.Duplicate": "SDT nhà sản xuất đã tồn tại"
 }

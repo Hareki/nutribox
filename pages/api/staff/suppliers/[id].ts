@@ -48,7 +48,15 @@ handler
       });
     } catch (error) {
       if (isDuplicateError(error)) {
-        throw new DuplicationError('name', 'Supplier.Name.Duplicate');
+        if (error.message.includes('UQ_SUPPLIER_NAME')) {
+          throw new DuplicationError('name', 'Supplier.Name.Duplicate');
+        }
+        if (error.message.includes('UQ_SUPPLIER_PHONE')) {
+          throw new DuplicationError('phone', 'Supplier.Phone.Duplicate');
+        }
+        if (error.message.includes('UQ_SUPPLIER_EMAIL')) {
+          throw new DuplicationError('email', 'Supplier.Email.Duplicate');
+        }
       }
       throw error;
     }
