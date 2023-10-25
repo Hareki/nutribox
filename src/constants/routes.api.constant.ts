@@ -132,6 +132,7 @@ export const CustomerApiRoutes: MethodRoutePair[] = [
 ];
 
 export const DASHBOARD_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/dashboard`;
+export const MONTHLY_PROFITS_API_STAFF_ROUTE = `${DASHBOARD_API_STAFF_ROUTE}/monthly-profits`;
 export const PROFILE_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/profile`;
 
 export const CUSTOMERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/customers`;
@@ -165,6 +166,10 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET'],
     route: DASHBOARD_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: MONTHLY_PROFITS_API_STAFF_ROUTE,
   },
   {
     methods: ['GET', 'PUT'],
@@ -219,12 +224,14 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
     methods: ['GET'],
     route: IMPORT_ORDERS_API_STAFF_ROUTE,
   },
+  // FIXME Manager should be allowed to use  POST method, just for development
   {
-    methods: ['GET'],
+    methods: ['GET', 'POST'],
     route: SUPPLIERS_API_STAFF_ROUTE,
   },
+  // FIXME Manager should be allowed to use PUT method, just for development
   {
-    methods: ['GET'],
+    methods: ['GET', 'PUT'],
     route: SUPPLIER_DETAIL_API_STAFF_ROUTE,
   },
   {

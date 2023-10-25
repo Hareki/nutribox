@@ -1,6 +1,6 @@
 import { Box, Card } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { GetServerSideProps } from 'next';
+import { useMutation } from '@tanstack/react-query';
+import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSnackbar } from 'notistack';
@@ -9,9 +9,10 @@ import { useReducer } from 'react';
 import { useState } from 'react';
 
 import staffSupplierCaller from 'api-callers/staff/suppliers';
-import type { SupplierFormValues } from 'backend/dtos/suppliers/newSupplier.dto';
-import type { UpdateSupplierDto } from 'backend/dtos/suppliers/updateSupplier.dto';
-import CircularProgressBlock from 'components/common/CircularProgressBlock';
+import type {
+  NewSupplierDto,
+  SupplierFormValues,
+} from 'backend/dtos/suppliers/newSupplier.dto';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import {
   infoDialogReducer,
@@ -25,92 +26,83 @@ import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { SupplierModel } from 'models/supplier.model';
 import SupplierForm from 'pages-sections/admin/supplier/SupplierForm';
 
-AdminSupplierDetails.getLayout = function getLayout(page: ReactElement) {
+AdminSupplierCreate.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
-export default function AdminSupplierDetails() {
-  const router = useRouter();
-  const id = router.query.id as string;
-  const queryClient = useQueryClient();
-  const { data: supplier, isLoading: isLoadingSupplier } = useQuery({
-    queryKey: ['suppliers', id],
-    queryFn: () => staffSupplierCaller.getSupplier(id),
-  });
-  const { t } = useCustomTranslation([
-    'supplier',
-    'customerAddress',
-    'customerOrder',
-  ]);
-
-  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
-    t,
-    operationName: 'Cập nhật thông tin',
-  });
-
+export default function AdminSupplierCreate() {
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [infoState, dispatchInfo] = useReducer(
     infoDialogReducer,
     initInfoDialogState,
   );
 
-  const [isEditingForm, setIsEditingForm] = useState(false);
+  const { t } = useCustomTranslation([
+    'supplier',
+    'customerAddress',
+    'customerOrder',
+  ]);
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: 'Thêm nhà cung cấp',
+  });
+
+  const router = useRouter();
+
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate: updateSupplier, isLoading: isUpdatingSupplier } = useMutation<
+
+  const { mutate: createSupplier, isLoading } = useMutation<
     SupplierModel,
     unknown,
-    UpdateSupplierDto
+    NewSupplierDto
   >({
-    mutationFn: (requestBody) =>
-      staffSupplierCaller.updateSupplier(id, requestBody),
+    mutationFn: async (requestBody) =>
+      staffSupplierCaller.createSupplier(requestBody),
     onSuccess: () => {
-      setIsEditingForm(false);
-      enqueueSnackbar('Cập nhật nhà CC thành công', { variant: 'success' });
-      queryClient.invalidateQueries(['suppliers', id]);
+      enqueueSnackbar('Thêm nhà cung cấp thành công', {
+        variant: 'success',
+      });
+
+      setIsRedirecting(true);
+      router.push(SUPPLIERS_STAFF_ROUTE);
     },
     onError: dispatchErrorDialog,
   });
 
   const handleFormSubmit = (values: SupplierFormValues) => {
     const addressRb = transformFormikValueToIAddress(values);
-    const requestBody: UpdateSupplierDto = {
+    const requestBody: NewSupplierDto = {
       name: values.name,
       phone: values.phone,
       email: values.email,
       ...addressRb!,
     };
 
-    updateSupplier(requestBody);
+    createSupplier(requestBody);
   };
-
-  if (isLoadingSupplier) {
-    return <CircularProgressBlock />;
-  }
 
   return (
     <Box py={4}>
       <AdminDetailsViewHeader
-        hrefBack={SUPPLIERS_STAFF_ROUTE}
-        label='Chi tiết nhà cung cấp'
+        hrefBack='/admin/supplier'
+        label='Thêm nhà cung cấp'
       />
 
       <Card sx={{ p: 6 }}>
         <SupplierForm
-          supplier={supplier}
-          setIsEditing={setIsEditingForm}
-          isEditing={isEditingForm}
-          isLoading={isUpdatingSupplier}
+          isEditing
+          isLoading={isLoading || isRedirecting}
           handleFormSubmit={handleFormSubmit}
           infoState={infoState}
           dispatchInfo={dispatchInfo}
         />
       </Card>
-
       <ErrorDialog />
     </Box>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const locales = await serverSideTranslations(locale ?? 'vn', [
     'supplier',
     'customerAddress',

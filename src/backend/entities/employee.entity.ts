@@ -21,6 +21,7 @@ export class EmployeeEntity extends AbstractEntity {
 
   @Column({
     transformer: new StringEncryptionTransformer(),
+    unique: true,
   })
   personalId: string;
 
@@ -46,6 +47,7 @@ export class EmployeeEntity extends AbstractEntity {
 
   @Column({
     transformer: new StringEncryptionTransformer(),
+    unique: true,
   })
   phone: string;
 

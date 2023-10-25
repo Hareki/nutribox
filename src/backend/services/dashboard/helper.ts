@@ -31,5 +31,5 @@ export type ManagerDashboardData = {
   fiveMostRecentOrders: PopulateCustomerOrderFields<'customer'>[];
   fiveLeastInStockProduct: ProductModelWithStock[];
 
-  monthlyProfits: number[]; // 12 months, future months are 0
+  // monthlyProfits: number[]; // 12 months, future months are 0
 };

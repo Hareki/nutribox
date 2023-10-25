@@ -3,6 +3,7 @@
   "Supplier.CreatedAt.Required": "Please enter the creation date.",
   "Supplier.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "Supplier.Name.Required": "Please enter the supplier name.",
+  "Supplier.Name.Duplicate": "Supplier name already exists.",
   "Supplier.Name.Min": "Supplier name should be at least 3 characters.",
   "Supplier.Name.Max": "Supplier name should not exceed 50 characters.",
   "Supplier.Phone.Required": "Please enter the supplier's phone number.",

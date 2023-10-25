@@ -33,6 +33,7 @@ import {
   getStoreHoursLabel,
 } from 'helpers/storeHours.helper';
 import type { PopulateStoreFields } from 'models/store.model';
+import { getUtcDate } from 'utils/date.helper';
 
 const StyledHeader = styled(H3)({
   fontSize: '28px',

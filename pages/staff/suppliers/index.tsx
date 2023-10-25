@@ -7,12 +7,10 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
-import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { ISupplier } from 'api/models/Supplier.model/types';
+import staffSupplierCaller from 'api-callers/staff/suppliers';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
@@ -21,8 +19,8 @@ import Scrollbar from 'components/Scrollbar';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
+import type { SupplierModel } from 'models/supplier.model';
 import SupplierRow from 'pages-sections/admin/supplier/SupplierRow';
-import apiCaller from 'api-callers/admin/supplier';
 
 SupplierList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -35,7 +33,7 @@ const tableHeading = [
   { id: 'email', label: 'Email', align: 'left' },
 ];
 
-const mapSupplierToRow = (item: ISupplier) => ({
+const mapSupplierToRow = (item: SupplierModel) => ({
   id: item.id,
   name: item.name,
   phone: item.phone,
@@ -50,9 +48,10 @@ function SupplierList() {
     isLoading,
     paginationData: suppliers,
     paginationComponent,
-  } = usePaginationQuery<ISupplier>({
-    baseQueryKey: ['admin/suppliers'],
-    getPaginationDataFn: (currPageNum) => apiCaller.getSuppliers(currPageNum),
+  } = usePaginationQuery<SupplierModel>({
+    baseQueryKey: ['staff', 'suppliers'],
+    getPaginationDataFn: (currPageNum) =>
+      staffSupplierCaller.getSuppliers(currPageNum),
   });
 
   const {
@@ -62,7 +61,8 @@ function SupplierList() {
   } = useTableSearch({
     mapItemToRow: mapSupplierToRow,
     paginationResult: suppliers,
-    queryFn: (context) => apiCaller.searchSuppliersByName(context.queryKey[2]),
+    queryFn: (context) =>
+      staffSupplierCaller.searchSuppliersByName(context.queryKey[2]),
   });
 
   const { order, selected, filteredList } = useMuiTable({
@@ -123,13 +123,5 @@ function SupplierList() {
     </Box>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
-
-  return { props: {} };
-};
 
 export default SupplierList;

@@ -10,7 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { enqueueSnackbar } from 'notistack';
-import type { ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 
 import dashboardCaller from 'api-callers/staff/dashboard';
 import { H3 } from 'components/abstract/Typography';
@@ -40,6 +40,21 @@ export default function VendorDashboard() {
   } = useQuery({
     queryKey: ['statistic'],
     queryFn: () => dashboardCaller.getDashboardData(),
+  });
+
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+
+  const {
+    data: monthlyProfits,
+    // isLoading: isLoadingMonthlyProfits,
+    // refetch: refetchMonthlyProfits,
+    isFetching: isFetchingMonthlyProfits,
+  } = useQuery({
+    queryKey: ['statistic', 'monthlyProfits', selectedYear],
+    queryFn: ({ queryKey }) =>
+      dashboardCaller.getMonthlyProfits(queryKey[2] as number),
+    initialData: [0],
   });
 
   const isLoading = isLoadingData || !session;
@@ -177,7 +192,12 @@ export default function VendorDashboard() {
           {isLoading ? (
             tableSkeleton
           ) : (
-            <Analytics monthlyProfits={dashboardData!.monthlyProfits} />
+            <Analytics
+              isFetchingMonthlyProfits={isFetchingMonthlyProfits}
+              monthlyProfits={monthlyProfits}
+              selectedYear={selectedYear}
+              setSelectedYear={setSelectedYear}
+            />
           )}
         </Grid>
 

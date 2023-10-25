@@ -6,6 +6,7 @@ import {
   setDate,
   startOfDay,
   startOfMonth,
+  startOfYear,
   subMonths,
 } from 'date-fns';
 import { Between, MoreThan, MoreThanOrEqual } from 'typeorm';
@@ -155,13 +156,19 @@ export class DashboardService {
     return productsWithStock;
   }
 
-  private static async _getMonthlyProfits(): Promise<number[]> {
+  public static async getMonthlyProfits(
+    year = new Date().getFullYear(),
+  ): Promise<number[]> {
     const customerOrderRepository = await getRepo(CustomerOrderEntity);
+    const startOfGivenYear = new Date(year, 0, 1);
 
+    const finalStartOfYear = startOfYear(startOfGivenYear);
+    const finalEndOfYear = endOfYear(startOfGivenYear);
     // Fetch all 'SHIPPED' orders
     const orders = await customerOrderRepository.find({
       where: {
         status: OrderStatus.SHIPPED,
+        updatedAt: Between(finalStartOfYear, finalEndOfYear),
       },
     });
 
@@ -170,8 +177,8 @@ export class DashboardService {
 
     // Iterate over each month and calculate the profit
     eachMonthOfInterval({
-      start: new Date(),
-      end: endOfYear(new Date()),
+      start: finalStartOfYear,
+      end: finalEndOfYear,
     }).forEach((monthDate) => {
       if (!isFuture(monthDate)) {
         const monthIndex = getMonth(monthDate);
@@ -215,7 +222,7 @@ export class DashboardService {
     const fiveLeastInStockProduct =
       await DashboardService.getLeastInStockProducts(5);
     const fiveMostRecentOrders = await DashboardService._getMostRecentOrders();
-    const monthlyProfits = await DashboardService._getMonthlyProfits();
+    // const monthlyProfits = await DashboardService._getMonthlyProfits();
 
     return {
       todayProfit: todayFinancialStatistic.profit,
@@ -228,7 +235,7 @@ export class DashboardService {
       leastSoldProducts,
       fiveLeastInStockProduct,
       fiveMostRecentOrders,
-      monthlyProfits,
+      // monthlyProfits,
     };
   }
 }

@@ -1,8 +1,6 @@
 import pluralize from 'pluralize';
 import { snakeCase } from 'typeorm/util/StringUtils';
 
-import { CustomerAddressType } from 'backend/enums/entities.enum';
-
 export const serialize = (data: any) => {
   return JSON.parse(JSON.stringify(data));
 };
@@ -54,6 +52,11 @@ export const getSlug = (input?: GetSlugInput) => {
   const { name, id } = input;
   const transformedName = name.trim().toLowerCase().replace(/\s+/g, '-');
   return removeAccents(transformedName) + '_' + id;
+};
+
+export const shortenString = (input: string, limit: number): string => {
+  if (input.length <= limit) return input;
+  return `${input.substring(0, limit)}...`;
 };
 
 // export const getAddressTypeLabel = (type: CustomerAddressType) => {

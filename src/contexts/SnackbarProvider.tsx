@@ -3,7 +3,7 @@ import { SnackbarProvider as NotistackProvider } from 'notistack';
 import type { FC } from 'react';
 // styled component
 const Provider = styled(NotistackProvider)(({ theme }) => ({
-  '&': {
+  '&.SnackbarItem-variantSuccess': {
     backgroundColor: `${theme.palette.primary.main} !important`,
   },
   '.SnackbarItem-anchorOriginTopRight &': {

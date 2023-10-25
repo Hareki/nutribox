@@ -13,6 +13,9 @@ export class CustomerAddressEntity extends AddressAbstractEntity {
   @Column()
   isDefault: boolean;
 
-  @Column('text')
+  @Column({
+    type: 'text',
+    unique: true,
+  })
   title: string;
 }

@@ -3,6 +3,7 @@
   "Supplier.CreatedAt.Required": "Vui lòng nhập ngày tạo.",
   "Supplier.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "Supplier.Name.Required": "Vui lòng nhập tên nhà cung cấp.",
+  "Supplier.Name.Duplicate": "Tên nhà cung cấp đã tồn tại.",
   "Supplier.Name.Min": "Tên nhà cung cấp phải có ít nhất 3 ký tự.",
   "Supplier.Name.Max": "Tên nhà cung cấp không được vượt quá 50 ký tự.",
   "Supplier.Phone.Required": "Vui lòng nhập số điện thoại của nhà cung cấp.",

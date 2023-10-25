@@ -4,9 +4,9 @@ import { Button, Grid, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import type { Dispatch, FC } from 'react';
 import { Fragment } from 'react';
-import * as yup from 'yup';
 
-import type { ISupplier } from 'api/models/Supplier.model/types';
+import type { SupplierFormValues } from 'backend/dtos/suppliers/newSupplier.dto';
+import { SupplierFormSchema } from 'backend/dtos/suppliers/newSupplier.dto';
 import AddressForm from 'components/AddressForm';
 import PhoneInput from 'components/common/input/PhoneInput';
 import InfoDialog from 'components/dialog/info-dialog';
@@ -15,21 +15,29 @@ import type {
   InfoDialogState,
 } from 'components/dialog/info-dialog/reducer';
 import { transformAddressToFormikValue } from 'helpers/address.helper';
-import { phoneRegex } from 'helpers/regex.helper';
+import type { SupplierModel } from 'models/supplier.model';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
-const getInitialValues = (initialSupplier: ISupplier) => {
+const getInitialValues = (initialSupplier?: SupplierModel) => {
+  let addressFormikValue: any = {
+    province: null,
+    district: null,
+    ward: null,
+    streetAddress: '',
+  };
+  if (initialSupplier) {
+    addressFormikValue = transformAddressToFormikValue(initialSupplier);
+  }
   return {
     name: initialSupplier?.name || '',
     phone: initialSupplier?.phone || '',
     email: initialSupplier?.email || '',
-    ...transformAddressToFormikValue(initialSupplier),
+    ...addressFormikValue,
   };
 };
 
-export type SupplierInfoFormValues = ReturnType<typeof getInitialValues>;
-
 type SupplierFormProps = {
-  supplier?: ISupplier;
+  supplier?: SupplierModel;
   handleFormSubmit: (values: any) => void;
   isLoading: boolean;
   isEditing: boolean;
@@ -59,11 +67,13 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
     handleChange,
     handleBlur,
     handleSubmit,
-  } = useFormik<SupplierInfoFormValues>({
+  } = useFormik<SupplierFormValues>({
     initialValues: getInitialValues(props.supplier),
-    validationSchema,
+    validationSchema: toFormikValidationSchema(SupplierFormSchema),
     onSubmit: handleFormSubmit,
   });
+
+  console.log('file: SupplierForm.tsx:67 - errors:', errors);
 
   return (
     <Fragment>
@@ -152,13 +162,15 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
                     color='primary'
                     onClick={() => {
                       setIsEditing?.(false);
-                      resetForm();
+                      resetForm({
+                        values: getInitialValues(props.supplier),
+                      });
                     }}
                     sx={{
                       px: 3,
                     }}
                   >
-                    Huỷ
+                    Hủy
                   </Button>
                 )}
               </Fragment>
@@ -188,36 +200,36 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
   );
 };
 
-const validationSchema = yup.object().shape({
-  name: yup
-    .string()
-    .required('Vui lòng nhập tên nhà cung cấp')
-    .max(100, 'Tên sản phẩm không được quá 100 ký tự'),
-  // FIXME: Generalize phone validation
-  phone: yup
-    .string()
-    .required('Vui lòng nhập số điện thoại')
-    .transform((value, originalValue) => {
-      if (originalValue && typeof originalValue === 'string') {
-        return originalValue.replace(/-/g, '');
-      }
-      return value;
-    })
-    .matches(phoneRegex, 'Định dạng số điện thoại không hợp lệ'),
-  // FIXME: Generalize address validation
-  province: yup
-    .object()
-    .typeError('Vui lòng nhập Tỉnh/Thành Phố')
-    .required('Vui lòng nhập Tỉnh/Thành Phố'),
-  district: yup
-    .object()
-    .typeError('Vui lòng nhập Quận/Huyện')
-    .required('Vui lòng nhập Quận/Huyện'),
-  ward: yup
-    .object()
-    .typeError('Vui lòng nhập Phường/Xã')
-    .required('Vui lòng nhập Phường/Xã'),
-  streetAddress: yup.string().required('Vui lòng nhập Số nhà, tên đường'),
-});
+// const validationSchema = yup.object().shape({
+//   name: yup
+//     .string()
+//     .required('Vui lòng nhập tên nhà cung cấp')
+//     .max(100, 'Tên sản phẩm không được quá 100 ký tự'),
+//   // FIXME: Generalize phone validation
+//   phone: yup
+//     .string()
+//     .required('Vui lòng nhập số điện thoại')
+//     .transform((value, originalValue) => {
+//       if (originalValue && typeof originalValue === 'string') {
+//         return originalValue.replace(/-/g, '');
+//       }
+//       return value;
+//     })
+//     .matches(phoneRegex, 'Định dạng số điện thoại không hợp lệ'),
+//   // FIXME: Generalize address validation
+//   province: yup
+//     .object()
+//     .typeError('Vui lòng nhập Tỉnh/Thành Phố')
+//     .required('Vui lòng nhập Tỉnh/Thành Phố'),
+//   district: yup
+//     .object()
+//     .typeError('Vui lòng nhập Quận/Huyện')
+//     .required('Vui lòng nhập Quận/Huyện'),
+//   ward: yup
+//     .object()
+//     .typeError('Vui lòng nhập Phường/Xã')
+//     .required('Vui lòng nhập Phường/Xã'),
+//   streetAddress: yup.string().required('Vui lòng nhập Số nhà, tên đường'),
+// });
 
 export default SupplierForm;

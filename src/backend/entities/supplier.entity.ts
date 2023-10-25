@@ -18,9 +18,13 @@ export class SupplierEntity extends AddressAbstractEntity {
   })
   name: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   phone: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   email: string;
 }

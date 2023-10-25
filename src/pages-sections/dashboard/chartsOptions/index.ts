@@ -122,7 +122,7 @@ export const marketShareChartOptions = (theme: Theme): ApexOptions => ({
           show: true,
           fontSize: '14px',
           fontWeight: '600',
-          formatter: function (w) {
+          formatter(w) {
             return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
           },
         },
@@ -142,6 +142,13 @@ export const analyticsChartOptions = (
     background: 'transparent',
     toolbar: { show: false },
     fontFamily: theme.typography.fontFamily,
+    animations: {
+      enabled: true,
+      dynamicAnimation: {
+        enabled: true,
+        speed: 350,
+      },
+    },
   },
   colors: [theme.palette.primary.main, theme.palette.grey[600]],
   dataLabels: { enabled: false },
@@ -155,7 +162,7 @@ export const analyticsChartOptions = (
   xaxis: {
     axisBorder: { show: false },
     axisTicks: { show: false },
-    categories: categories,
+    categories,
     labels: {
       style: { fontSize: '14px', colors: theme.palette.grey[600] },
     },

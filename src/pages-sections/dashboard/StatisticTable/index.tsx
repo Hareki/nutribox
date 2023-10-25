@@ -1,20 +1,23 @@
 import { styled, Table, TableContainer, Tooltip } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
 import TableHeader from './TableHeader';
 
-import type {
-  ManagerDashboardData,
-  ProductModelWithStock,
-} from 'backend/services/dashboard/helper';
+import type { ManagerDashboardData } from 'backend/services/dashboard/helper';
 import Scrollbar from 'components/Scrollbar';
+import {
+  CUSTOMER_ORDER_DETAIL_STAFF_ROUTE,
+  PRODUCT_DETAIL_STAFF_ROUTE,
+} from 'constants/routes.ui.constant';
 import { getFullName } from 'helpers/account.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import { formatCurrency } from 'lib';
-import type { CustomerOrderModel } from 'models/customerOrder.model';
+import { StyledTableRow } from 'pages-sections/admin';
+import { insertId } from 'utils/middleware.helper';
+import { shortenString } from 'utils/string.helper';
 
 // styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -26,10 +29,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.grey[300]}`,
   ':first-of-type': { paddingLeft: 24 },
 }));
-
-const StyledTableRow = styled(TableRow)({
-  ':last-child .MuiTableCell-root': { border: 0 },
-});
 
 type ListTableProps = {
   dataList:
@@ -48,6 +47,8 @@ const StatisticTable: FC<ListTableProps> = ({
     listData: dataList,
   });
 
+  const router = useRouter();
+
   return (
     <Scrollbar>
       <TableContainer>
@@ -61,7 +62,15 @@ const StatisticTable: FC<ListTableProps> = ({
                   row as ManagerDashboardData['fiveMostRecentOrders'][number];
 
                 return (
-                  <StyledTableRow key={index}>
+                  <StyledTableRow
+                    key={index}
+                    role='checkbox'
+                    onClick={() =>
+                      router.push(
+                        insertId(CUSTOMER_ORDER_DETAIL_STAFF_ROUTE, id),
+                      )
+                    }
+                  >
                     <StyledTableCell align='left'>
                       {id.slice(-6)}
                     </StyledTableCell>
@@ -83,14 +92,19 @@ const StatisticTable: FC<ListTableProps> = ({
           {type === 'STOCK_OUT' && (
             <TableBody>
               {filteredList.map((row, index) => {
-                const { name, remainingStock, productCategory } =
+                const { name, remainingStock, productCategory, id } =
                   row as ManagerDashboardData['fiveLeastInStockProduct'][number];
 
                 return (
-                  <StyledTableRow key={index}>
+                  <StyledTableRow
+                    key={index}
+                    onClick={() => {
+                      router.push(insertId(PRODUCT_DETAIL_STAFF_ROUTE, id));
+                    }}
+                  >
                     <Tooltip placement='top' title={name}>
                       <StyledTableCell align='left'>
-                        {name.slice(0, 30).concat('...')}
+                        {shortenString(name, 40)}
                       </StyledTableCell>
                     </Tooltip>
 
