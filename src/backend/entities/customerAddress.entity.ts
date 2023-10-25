@@ -15,7 +15,6 @@ export class CustomerAddressEntity extends AddressAbstractEntity {
 
   @Column({
     type: 'text',
-    unique: true,
   })
   title: string;
 }

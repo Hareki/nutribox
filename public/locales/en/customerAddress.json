@@ -16,5 +16,6 @@
   "CustomerAddress.StreetAddress.Min": "Please enter the Street Address.",
   "CustomerAddress.StreetAddress.Max": "Street Address must not exceed 500 characters.",
   "CustomerAddress.IsDefault.Required": "Please enter the Default status.",
-  "CustomerAddress.Title.Required": "Please enter the Address title."
+  "CustomerAddress.Title.Required": "Please enter the Address title.",
+  "CustomerAddress.Title.Duplicate": "Address title already exists."
 }

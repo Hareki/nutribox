@@ -69,10 +69,35 @@ export class CustomerAddressService {
     return customerAddresses as CustomerAddressModel[];
   }
 
+  private static async checkTitleDuplicate(customerId: string, title: string) {
+    try {
+      const testAddressWithType = await CommonService.getRecord({
+        entity: CustomerAddressEntity,
+        filter: {
+          customer: { id: customerId },
+          title,
+        },
+      });
+      return !!testAddressWithType;
+    } catch (error) {
+      if (isEntityNotFoundError(error)) {
+        return false;
+      }
+      throw error;
+    }
+  }
+
   public static async addAddress(
     customerId: string,
     dto: NewCustomerAddressDto,
   ): Promise<CustomerAddressModel> {
+    const isAddressTitleDuplicate = await this.checkTitleDuplicate(
+      customerId,
+      dto.title,
+    );
+    if (isAddressTitleDuplicate) {
+      throw new Error('duplicate key value of title with given customer id');
+    }
     const address = (await CommonService.createRecord(CustomerAddressEntity, {
       ...dto,
       customer: { id: customerId },
@@ -90,6 +115,14 @@ export class CustomerAddressService {
     customerId: string,
     dto: NewCustomerAddressDto,
   ): Promise<CustomerAddressModel> {
+    const isAddressTitleDuplicate = await this.checkTitleDuplicate(
+      customerId,
+      dto.title,
+    );
+    if (isAddressTitleDuplicate) {
+      throw new Error('duplicate key value of title with given customer id');
+    }
+
     const wasDefault = await CommonService.getRecord({
       entity: CustomerAddressEntity,
       filter: { id },

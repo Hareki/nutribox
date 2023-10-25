@@ -18,6 +18,7 @@ import UserDashboardHeader from 'components/common/layout/header/UserDashboardHe
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { transformAccountAddressToFormikValue } from 'helpers/address.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
@@ -112,6 +113,10 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
 
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: `${isAddMode ? 'Thêm' : 'Sửa'} địa chỉ`,
+  });
   const { mutate: mutateAddress, isLoading: isMutating } = useMutation<
     CustomerAddressModel[],
     unknown,
@@ -133,12 +138,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
       );
       goBack();
     },
-    onError: (error) => {
-      console.log(error);
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-        variant: 'error',
-      });
-    },
+    onError: dispatchErrorDialog,
   });
 
   return (
@@ -197,6 +197,7 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
             {isAddMode ? 'Thêm địa chỉ' : 'Cập nhật địa chỉ'}
           </LoadingButton>
         </form>
+        <ErrorDialog />
       </Card1>
     </>
   );
