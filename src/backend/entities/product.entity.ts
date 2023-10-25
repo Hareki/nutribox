@@ -1,5 +1,5 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, Unique } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { CartItemEntity } from './cartItem.entity';
@@ -10,6 +10,7 @@ import { ProductImageEntity } from './productImage.entity';
 import { SupplierEntity } from './supplier.entity';
 
 @Entity({ name: 'product' })
+@Unique('UQ_PRODUCT_NAME', ['name'])
 export class ProductEntity extends AbstractEntity {
   @ManyToOne(
     () => ProductCategoryEntity,
@@ -32,9 +33,7 @@ export class ProductEntity extends AbstractEntity {
   @OneToMany(() => ImportOrderEntity, (importOrder) => importOrder.product)
   importOrders: Relation<ImportOrderEntity>[] | string[];
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   name: string;
 
   @Column({

@@ -1,5 +1,12 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
+  Unique,
+} from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { AccountEntity } from './account.entity';
@@ -12,6 +19,9 @@ import {
 } from 'backend/transformers';
 
 @Entity({ name: 'employee' })
+@Unique('UQ_EMPLOYEE_PERSONAL_ID', ['personalId'])
+@Unique('UQ_EMPLOYEE_EMAIL', ['email'])
+@Unique('UQ_EMPLOYEE_PHONE', ['phone'])
 export class EmployeeEntity extends AbstractEntity {
   @OneToMany(
     () => ReviewResponseEntity,
@@ -21,7 +31,6 @@ export class EmployeeEntity extends AbstractEntity {
 
   @Column({
     transformer: new StringEncryptionTransformer(),
-    unique: true,
   })
   personalId: string;
 
@@ -40,14 +49,11 @@ export class EmployeeEntity extends AbstractEntity {
   @Column()
   lastName: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   email: string;
 
   @Column({
     transformer: new StringEncryptionTransformer(),
-    unique: true,
   })
   phone: string;
 

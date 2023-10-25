@@ -1,5 +1,5 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, Unique } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { CustomerEntity } from './customer.entity';
@@ -8,6 +8,7 @@ import { EmployeeEntity } from './employee.entity';
 import { StringEncryptionTransformer } from 'backend/transformers';
 
 @Entity({ name: 'account' })
+@Unique('UQ_ACCOUNT_EMAIL', ['email'])
 export class AccountEntity extends AbstractEntity {
   @OneToOne(() => CustomerEntity, (customer) => customer.account, {
     nullable: true,
@@ -21,9 +22,7 @@ export class AccountEntity extends AbstractEntity {
   @JoinColumn()
   employee?: Relation<EmployeeEntity> | string;
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   email: string;
 
   @Column()

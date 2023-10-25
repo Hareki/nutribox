@@ -1,5 +1,12 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+  Unique,
+} from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { AccountEntity } from './account.entity';
@@ -13,6 +20,7 @@ import {
 } from 'backend/transformers';
 
 @Entity({ name: 'customer' })
+@Unique('UQ_CUSTOMER_EMAIL', ['email'])
 export class CustomerEntity extends AbstractEntity {
   @OneToOne(() => AccountEntity, (account) => account.customer)
   @JoinColumn()
@@ -39,9 +47,7 @@ export class CustomerEntity extends AbstractEntity {
   @Column()
   lastName: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   email: string;
 
   @Column({
