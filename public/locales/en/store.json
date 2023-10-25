@@ -4,6 +4,8 @@
   "Store.CreatedAt.InvalidFormat": "Invalid creation date format.",
   "Store.Email.Required": "Please enter the store's email.",
   "Store.Email.InvalidFormat": "The store's email format is invalid.",
+  "Store.Email.Duplicate": "The store's email already exists.",
+  "Store.Phone.Duplicate": "The store's phone already exists.",
   "Store.Phone.Required": "Please enter the store's phone number.",
   "Store.Phone.InvalidFormat": "The store's phone number format is invalid.",
   "Store.ProvinceCode.Required": "Please enter the Province.",

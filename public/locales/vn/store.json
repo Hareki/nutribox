@@ -4,6 +4,8 @@
   "Store.CreatedAt.InvalidFormat": "Định dạng ngày tạo không hợp lệ.",
   "Store.Email.Required": "Vui lòng nhập email của cửa hàng.",
   "Store.Email.InvalidFormat": "Định dạng email của cửa hàng không hợp lệ.",
+  "Store.Email.Duplicate": "Địa chỉ cửa hàng đã tồn tại",
+  "Store.Phone.Duplicate": "SDT cửa hàng đã tồn tại",
   "Store.Phone.Required": "Vui lòng nhập số điện thoại của cửa hàng.",
   "Store.Phone.InvalidFormat": "Định dạng số điện thoại của cửa hàng không hợp lệ.",
   "Store.ProvinceCode.Required": "Vui lòng nhập Thành phố/Tỉnh.",

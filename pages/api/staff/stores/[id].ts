@@ -8,6 +8,7 @@ import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import { createUniqueDaysOfWeekGuard } from 'backend/services/store/store.guard';
 import { StoreService } from 'backend/services/store/store.service';
+import { DuplicationError } from 'backend/types/errors/common';
 import type { JSSuccess } from 'backend/types/jsend';
 import type { PopulateStoreFields, StoreModel } from 'models/store.model';
 
@@ -29,15 +30,25 @@ handler
     });
   })
   .patch(createValidationGuard(UpdateStoreInfoDtoSchema), async (req, res) => {
-    const id = req.query.id as string;
-    const dto = req.body;
+    try {
+      const id = req.query.id as string;
+      const dto = req.body;
 
-    const updatedStore = await StoreService.updateStoreInfo(id, dto);
+      const updatedStore = await StoreService.updateStoreInfo(id, dto);
 
-    res.status(StatusCodes.OK).json({
-      status: 'success',
-      data: updatedStore,
-    });
+      res.status(StatusCodes.OK).json({
+        status: 'success',
+        data: updatedStore,
+      });
+    } catch (error) {
+      if (error.message.includes('UQ_STORE_EMAIL')) {
+        throw new DuplicationError('name', 'Store.Email.Duplicate');
+      }
+      if (error.message.includes('UQ_STORE_PHONE')) {
+        throw new DuplicationError('phone', 'Store.Phone.Duplicate');
+      }
+      throw error;
+    }
   })
   .put(
     createValidationGuard(UpdateStoreWorkTimesDtoSchema),

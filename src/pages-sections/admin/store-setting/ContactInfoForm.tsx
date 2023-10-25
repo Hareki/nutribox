@@ -19,6 +19,7 @@ import {
   transformFormikValueToIAddress,
 } from 'helpers/address.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { PopulateStoreFields, StoreModel } from 'models/store.model';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
@@ -32,6 +33,11 @@ export default function ContactInfoForm({
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
+  const { t } = useCustomTranslation(['store', 'storeWorkTime']);
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: 'Cập nhật thông tin liên hệ',
+  });
 
   const { mutate: updateStoreInfo, isLoading } = useMutation<
     StoreModel,
@@ -46,9 +52,8 @@ export default function ContactInfoForm({
       setIsEditing(false);
       queryClient.invalidateQueries(['store', initialStoreInfo.id]);
     },
+    onError: dispatchErrorDialog,
   });
-
-  const { t } = useCustomTranslation(['store', 'storeWorkTime']);
 
   const getInitialValues = (
     initialStoreInfo: PopulateStoreFields<'storeWorkTimes'>,
@@ -187,6 +192,7 @@ export default function ContactInfoForm({
           </Button>
         )}
       </Grid>
+      <ErrorDialog />
     </form>
   );
 }

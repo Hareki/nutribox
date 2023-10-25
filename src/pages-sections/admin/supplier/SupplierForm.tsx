@@ -76,8 +76,6 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
     onSubmit: handleFormSubmit,
   });
 
-  console.log('file: SupplierForm.tsx:67 - errors:', errors);
-
   return (
     <Fragment>
       <form onSubmit={handleSubmit}>
