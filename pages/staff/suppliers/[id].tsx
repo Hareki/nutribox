@@ -115,6 +115,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
     'supplier',
     'customerAddress',
     'customerOrder',
+    'common',
   ]);
 
   return { props: { ...locales } };

@@ -89,6 +89,7 @@ const stepperList = [
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const locales = await serverSideTranslations(locale ?? 'vn', [
     'customerOrder',
+    'common',
   ]);
 
   return { props: { ...locales } };

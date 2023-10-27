@@ -131,7 +131,7 @@ export const zodNumber = (
         return { message: ctx.defaultError };
       },
     })
-    .int(type === 'int' ? { message: `${prefix}.InvalidFormat` } : undefined)
+    .int(type === 'int' ? { message: `Number.InvalidFormat` } : undefined)
     .min(min, {
       message: `${prefix}.Min`,
     })
@@ -149,7 +149,7 @@ export const zodNumber = (
             return !isNaN(number);
           },
           {
-            message: `${prefix}.InvalidFormat`,
+            message: `Number.InvalidFormat`,
           },
         )
         .refine(

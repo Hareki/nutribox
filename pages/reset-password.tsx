@@ -245,6 +245,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const locales = await serverSideTranslations(context.locale ?? 'vn', [
     'account',
+    'common',
   ]);
 
   return {

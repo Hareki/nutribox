@@ -202,6 +202,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   const locales = await serverSideTranslations(locale ?? 'vn', [
     'product',
     'importOrder',
+    'common',
   ]);
 
   return { props: { ...locales } };

@@ -125,7 +125,10 @@ function OrderList() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const locales = await serverSideTranslations(locale ?? 'vn', ['order']);
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'order',
+    'common',
+  ]);
 
   return { props: { ...locales } };
 };

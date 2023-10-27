@@ -334,7 +334,10 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     queryFn: getPaginatedProducts,
   });
 
-  const locales = await serverSideTranslations(locale ?? 'vn', ['account']);
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'account',
+    'common',
+  ]);
 
   return {
     props: {

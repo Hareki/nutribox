@@ -4,7 +4,7 @@ export const useCustomTranslation = (namespaces: string[]) => {
   const { t, i18n } = useTranslation(namespaces);
 
   const customT = (key: string, options?: Record<string, any>): string => {
-    for (const ns of namespaces) {
+    for (const ns of [...namespaces, 'common']) {
       if (i18n.exists(key, { ns })) {
         return t(key, { ...options, ns });
       }

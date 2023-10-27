@@ -107,6 +107,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     'supplier',
     'customerAddress',
     'customerOrder',
+    'common',
   ]);
 
   return { props: { ...locales } };
