@@ -5,6 +5,7 @@ import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
   FORGOT_PASSWORD_API_ROUTE,
+  RESEND_VERIFICATION_EMAIL_API_ROUTE,
   RESET_PASSWORD_API_ROUTE,
   VERIFY_EMAIL_API_ROUTE,
 } from 'constants/routes.api.constant';
@@ -41,9 +42,18 @@ const resetPassword = async (
   return response.data.data;
 };
 
+const resendVerificationEmail = async (email: string): Promise<undefined> => {
+  const response = await axiosInstance.post<JSSuccess<undefined>>(
+    RESEND_VERIFICATION_EMAIL_API_ROUTE,
+    { email },
+  );
+  return response.data.data;
+};
+
 const mailCaller = {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  resendVerificationEmail,
 };
 export default mailCaller;

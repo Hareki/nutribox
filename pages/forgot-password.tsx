@@ -6,9 +6,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useReducer, useState } from 'react';
-import * as yup from 'yup';
 
 import mailCaller from 'api-callers/mail';
+import {
+  ForgotPasswordDtoSchema,
+  type ForgotPasswordDto,
+} from 'backend/dtos/password/forgotPassword.dto';
 import SEO from 'components/abstract/SEO';
 import { H1, H6 } from 'components/abstract/Typography';
 import InfoDialog from 'components/dialog/info-dialog';
@@ -18,14 +21,14 @@ import {
 } from 'components/dialog/info-dialog/reducer';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import { getPageLayout } from 'components/layouts/PageLayout';
-
-const initialValues = {
-  email: '',
-};
-type FormValues = typeof initialValues;
-const validationSchema = yup.object().shape({});
+import { HOME_PAGE_ROUTE, SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
+import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 ResetPassword.getLayout = getPageLayout;
+
+const initialValues: ForgotPasswordDto = {
+  email: '',
+};
 
 function ResetPassword() {
   const router = useRouter();
@@ -59,15 +62,15 @@ function ResetPassword() {
     },
   });
 
-  const handleFormSubmit = async (values: FormValues) => {
+  const handleFormSubmit = async (values: ForgotPasswordDto) => {
     console.log(values);
     resetPasswordRequest(values.email);
   };
 
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik<FormValues>({
+    useFormik<ForgotPasswordDto>({
       initialValues,
-      validationSchema,
+      validationSchema: toFormikValidationSchema(ForgotPasswordDtoSchema),
       onSubmit: handleFormSubmit,
     });
 
@@ -126,7 +129,7 @@ function ResetPassword() {
         handleClose={() => {
           dispatch({ type: 'close_dialog' });
           setIsRedirecting(true);
-          router.push('/');
+          router.push(SIGN_IN_ROUTE);
         }}
         title={state.title}
         content={state.content}

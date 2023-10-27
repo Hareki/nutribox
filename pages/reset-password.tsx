@@ -23,7 +23,10 @@ import {
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import { getPageLayout } from 'components/layouts/PageLayout';
 import LazyImage from 'components/LazyImage';
-import { SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
+import {
+  SIGN_IN_ROUTE,
+  SIGN_IN_STAFF_ROUTE,
+} from 'constants/routes.ui.constant';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import {
   PasswordConfirmationSchema,
@@ -42,6 +45,7 @@ const Wrapper = styled(BazaarCard)({
 });
 
 interface ChangePasswordProps {
+  isEmployee: boolean;
   isValidToken: boolean;
   token: string;
 }
@@ -51,7 +55,11 @@ const initialValues: ResetPasswordFormValues = {
   confirmPassword: '',
 };
 
-function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
+function ChangePassword({
+  isValidToken,
+  token,
+  isEmployee,
+}: ChangePasswordProps) {
   const router = useRouter();
   const [buttonContent, setButtonContent] = useState('Khôi phục');
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -197,7 +205,7 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
               handleClose={() => {
                 dispatch({ type: 'close_dialog' });
                 setIsRedirecting(true);
-                router.push(SIGN_IN_ROUTE);
+                router.push(isEmployee ? SIGN_IN_STAFF_ROUTE : SIGN_IN_ROUTE);
               }}
               title={state.title}
               content={state.content}
@@ -230,15 +238,16 @@ function ChangePassword({ isValidToken, token }: ChangePasswordProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context.query.token as string;
   let isValidToken = true;
+  let account: FullyPopulatedAccountModel | undefined;
   try {
-    await CommonService.getRecord({
+    account = (await CommonService.getRecord({
       entity: AccountEntity,
       filter: {
         forgotPasswordToken: token,
         forgotPasswordTokenExpiry: MoreThan(new Date()),
       },
       relations: ['customer', 'employee'],
-    });
+    })) as FullyPopulatedAccountModel;
   } catch (error) {
     isValidToken = false;
   }
@@ -250,6 +259,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
+      isEmployee: !!account?.employee,
       isValidToken,
       token: token || '',
       ...locales,

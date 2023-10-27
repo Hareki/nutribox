@@ -43,6 +43,10 @@ export class MailerService {
       forgotPasswordToken: token,
       forgotPasswordTokenExpiry: expiry,
     });
+    console.log(
+      'file: mailer.service.ts:44 - MailerService - sendResetPasswordEmail - token:',
+      token,
+    );
 
     const mailOptions = {
       from: process.env.MAILER_EMAIL,
@@ -54,21 +58,35 @@ export class MailerService {
     return transporter.sendMail(mailOptions);
   }
 
-  static async sendVerificationEmail(email: string) {
-    const { account, token, expiry } = await this._getAccountAndToken(email);
+  static async sendVerificationEmail(email: string): Promise<undefined> {
+    try {
+      const { account, token, expiry } = await this._getAccountAndToken(email);
+      if (account.verified) {
+        throw new Error('Account is already verified');
+      }
+      await CommonService.updateRecord(AccountEntity, account.id, {
+        verificationToken: token,
+        verificationTokenExpiry: expiry,
+      });
+      console.log(
+        'file: mailer.service.ts:66 - MailerService - sendVerificationEmail - token:',
+        token,
+      );
 
-    await CommonService.updateRecord(AccountEntity, account.id, {
-      verificationToken: token,
-      verificationTokenExpiry: expiry,
-    });
+      const mailOptions = {
+        from: process.env.MAILER_EMAIL,
+        to: account.email,
+        subject: 'Nutribox - Xác nhận tài khoản',
+        text: `Vui lòng nhấp vào đường dẫn này để xác nhận tài khoản: ${VERIFICATION_RESULT_ROUTE}?token=${token}. Nếu bạn không yêu cầu xác nhận tài khoản, vui lòng bỏ qua email này.`,
+      };
 
-    const mailOptions = {
-      from: process.env.MAILER_EMAIL,
-      to: account.email,
-      subject: 'Nutribox - Xác nhận tài khoản',
-      text: `Vui lòng nhấp vào đường dẫn này để xác nhận tài khoản: ${VERIFICATION_RESULT_ROUTE}?token=${token}. Nếu bạn không yêu cầu xác nhận tài khoản, vui lòng bỏ qua email này.`,
-    };
-
-    return transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
+    } catch (error) {
+      /* Do nothing if can't find the account with the corresponding email */
+      console.log(
+        'file: mailer.service.ts:85 - MailerService - sendVerificationEmail - error:',
+        error,
+      );
+    }
   }
 }

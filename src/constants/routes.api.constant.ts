@@ -14,6 +14,7 @@ export const HOT_PRODUCTS_API_ROUTE = `${PRODUCTS_API_ROUTE}/hot`;
 export const SLUGS_API_ROUTE = `${PRODUCTS_API_ROUTE}/slugs`;
 export const SIGN_UP_API_ROUTE = `${API_BASE_ROUTE}/sign-up`;
 export const VERIFY_EMAIL_API_ROUTE = `${API_BASE_ROUTE}/verify-email`;
+export const RESEND_VERIFICATION_EMAIL_API_ROUTE = `${API_BASE_ROUTE}/resend-verification-email`;
 export const FORGOT_PASSWORD_API_ROUTE = `${API_BASE_ROUTE}/password/forgot`;
 export const RESET_PASSWORD_API_ROUTE = `${API_BASE_ROUTE}/password/reset`;
 export const STORE_DETAIL_API_ROUTE = `${API_BASE_ROUTE}/stores/:id`;
@@ -72,6 +73,10 @@ export const PublicApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET'],
     route: STORE_DETAIL_API_ROUTE,
+  },
+  {
+    methods: ['POST'],
+    route: RESEND_VERIFICATION_EMAIL_API_ROUTE,
   },
 ];
 

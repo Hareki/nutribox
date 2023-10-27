@@ -8,11 +8,13 @@ import signUpCaller from 'api-callers/sign-up';
 import type { SignUpFormValues } from 'backend/dtos/signUp.dto';
 import type { AccountWithPopulatedSide } from 'backend/types/auth';
 import SEO from 'components/abstract/SEO';
+import InfoDialog from 'components/dialog/info-dialog';
 import {
   infoDialogReducer,
   initInfoDialogState,
 } from 'components/dialog/info-dialog/reducer';
 import { FlexRowCenter } from 'components/flex-box';
+import { SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
 import type { AxiosErrorWithMessages } from 'helpers/error.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
@@ -72,7 +74,17 @@ const SignUpPage: NextPage = () => {
           handleFormSubmit={handleFormSubmit}
         />
       </FlexRowCenter>
-
+      <InfoDialog
+        variant={state.variant}
+        open={state.open}
+        handleClose={() => {
+          dispatch({ type: 'close_dialog' });
+          setIsRedirecting(true);
+          router.push(SIGN_IN_ROUTE);
+        }}
+        title={state.title}
+        content={state.content}
+      />
       <ErrorDialog />
     </>
   );
