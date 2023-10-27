@@ -79,7 +79,6 @@ export const zodDate = (
         ),
     )
     .transform((data) => {
-      console.log('file: helper.ts:82 - .transform - data:', data);
       if (ignoreTime) {
         return startOfDay(getUtcDate(data));
       }

@@ -83,7 +83,7 @@ function formatCurrency(price: number, fraction = 0) {
 }
 
 function formatNumber(num: number) {
-  const formatter = new Intl.NumberFormat('vi-VN');
+  const formatter = new Intl.NumberFormat('en-US');
   return formatter.format(num);
 }
 

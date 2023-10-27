@@ -4,6 +4,7 @@ import type { Dispatch } from 'react';
 
 import type { JSFail } from 'backend/types/jsend';
 import type { InfoDialogAction } from 'components/dialog/info-dialog/reducer';
+import { formatCurrency, formatNumber } from 'lib';
 
 export type AxiosErrorWithMessages = AxiosError<JSFail<any>>;
 
@@ -21,7 +22,10 @@ export const extractErrorMessages = (
       if (params) {
         params.forEach((param, index) => {
           const placeholder = `{${index}}`;
-          translatedMsg = translatedMsg.replace(placeholder, param);
+          translatedMsg = translatedMsg.replace(
+            placeholder,
+            !isNaN(Number(param)) ? formatNumber(Number(param)) : param,
+          );
         });
       }
 

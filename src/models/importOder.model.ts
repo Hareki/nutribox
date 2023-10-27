@@ -1,4 +1,4 @@
-import { addDays, isAfter } from 'date-fns';
+import { addDays } from 'date-fns';
 import { z } from 'zod';
 
 import type { ExportOrderModel } from './exportOrder.model';
@@ -84,15 +84,6 @@ export const DateRefinement3: RefinementParameters<ImportOrderModel> = [
     path: ['importDate'],
   },
 ];
-
-export const ImportQuantityRefinement: RefinementParameters<ImportOrderModel> =
-  [
-    (data) => data.importQuantity <= data.remainingQuantity,
-    {
-      message: 'ImportOrder.ImportQuantity.LessThan.RemainingQuantity',
-      path: ['importQuantity'],
-    },
-  ];
 
 type ImportOrderReferenceKeys = keyof Pick<
   ImportOrderModel,

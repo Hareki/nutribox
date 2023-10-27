@@ -8,7 +8,10 @@ import { ProductEntity } from 'backend/entities/product.entity';
 import { DEFAULT_NC_CONFIGS } from 'backend/next-connect/configs';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import { CommonService } from 'backend/services/common/common.service';
-import { createMaxQuantityGuard } from 'backend/services/product/product.guard';
+import {
+  createImportPriceGuard,
+  createMaxQuantityGuard,
+} from 'backend/services/product/product.guard';
 import { ProductService } from 'backend/services/product/product.service';
 import type { JSSuccess } from 'backend/types/jsend';
 import type { ImportOrderModel } from 'models/importOder.model';
@@ -22,6 +25,7 @@ const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
 handler.post(
   createValidationGuard(BaseImportProductDtoSchema),
   createMaxQuantityGuard(),
+  createImportPriceGuard(),
   async (req, res) => {
     const productId = req.query.id as string;
     const importOrder = await ProductService.importProduct(

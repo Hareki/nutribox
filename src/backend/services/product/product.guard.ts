@@ -33,3 +33,30 @@ export const createMaxQuantityGuard =
 
     return next();
   };
+
+export const createImportPriceGuard =
+  () =>
+  async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
+    const importProductDto = req.body as ImportProductDto;
+    const productId = req.query.id as string;
+
+    const commonProduct = await ProductService.getCommonProduct({
+      filter: {
+        id: productId,
+      },
+    });
+    const productRetailPrice = commonProduct.retailPrice;
+
+    if (importProductDto.unitImportPrice > productRetailPrice) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: 'fail',
+        data: {
+          unitImportPrice:
+            'ImportOrder.UnitImportPrice.LessThanOrEqual.RetailPrice',
+          params: [productRetailPrice],
+        },
+      });
+    }
+
+    return next();
+  };

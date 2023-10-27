@@ -25,5 +25,5 @@
   "ImportOrder.ImportDate.BeforeOrEqual.ExpirationDate": "Import date should be before or equal to the expiration date.",
   "ImportOrder.ManufacturingDate.BeforeOrEqual.ExpirationDate": "Manufacturing date should be before or equal to the expiration date.",
   "ImportOrder.ManufacturingDate.BeforeOrEqual.ImportDate": "Manufacturing date should be before or equal to the import date.",
-  "ImportOrder.ImportQuantity.LessThan.RemainingQuantity": "Import quantity should be less than or equal to the remaining quantity."
+  "ImportOrder.UnitImportPrice.LessThanOrEqual.RetailPrice": "Unit import price should be less than the retail price, which is ₫{0}."
 }

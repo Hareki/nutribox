@@ -25,5 +25,5 @@
   "ImportOrder.ImportDate.BeforeOrEqual.ExpirationDate": "Ngày nhập hàng phải trước hoặc bằng ngày hết hạn.",
   "ImportOrder.ManufacturingDate.BeforeOrEqual.ExpirationDate": "Ngày sản xuất phải trước hoặc bằng ngày hết hạn.",
   "ImportOrder.ManufacturingDate.BeforeOrEqual.ImportDate": "Ngay sản xuất phải trước hoặc bằng ngày nhập hàng.",
-  "ImportOrder.ImportQuantity.LessThan.RemainingQuantity": "Số lượng nhập phải ít hơn hoặc bằng số lượng còn lại."
+  "ImportOrder.UnitImportPrice.LessThanOrEqual.RetailPrice": "Giá nhập phải nhỏ hơn hoặc bằng giá bán lẻ là ₫{0}."
 }
