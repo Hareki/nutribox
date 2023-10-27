@@ -58,14 +58,14 @@ export class CustomerOrderService {
       deliveryTime: addMinutes(new Date(), 50 + PREPARATION_TIME),
     };
 
-    // const estimatedDeliveryInfo = await getEstimatedDeliveryInfo(
-    //   storeAddress,
-    //   customerAddress,
-    // );
-    // return estimatedDeliveryInfo;
+    const estimatedDeliveryInfo = await getEstimatedDeliveryInfo(
+      storeAddress,
+      customerAddress,
+    );
+    return estimatedDeliveryInfo;
 
     // return invalidDummyInfo;
-    return validDummyInfo;
+    // return validDummyInfo;
   }
 
   public static async getCheckoutValidation(
