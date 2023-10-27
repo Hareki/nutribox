@@ -26,7 +26,8 @@ handler.get(async (req, res) => {
 
   const commonArgs: Partial<CommonArgs<ProductEntity>> = {
     filter: {
-      ...(category && { productCategory: { id: category } }),
+      productCategory: { available: true, ...(category && { id: category }) },
+      available: true,
     },
   };
 

@@ -203,6 +203,10 @@ export class ProductService {
         limit,
         page: 1,
       },
+      filter: {
+        available: true,
+        productCategory: { available: true },
+      },
     });
 
     return newestProducts as CommonProductModel[];
@@ -218,6 +222,8 @@ export class ProductService {
       .innerJoin('coi.customerOrder', 'co', 'co.status = :status', {
         status: OrderStatus.SHIPPED,
       })
+      .innerJoin('product.productCategory', 'pc', 'pc.available = true')
+      .where('product.available = true')
       .select('product.id as product_id')
       .addSelect('SUM(coi.quantity)', 'total_sold')
       .groupBy('product.id')

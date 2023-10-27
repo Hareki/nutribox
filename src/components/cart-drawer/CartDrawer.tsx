@@ -5,15 +5,11 @@ import type { FC } from 'react';
 
 import CartDrawerItem from './CartDrawerItem';
 
-import type {
-  CommonCartItem,
-  CommonProductModel,
-} from 'backend/services/product/helper';
+import type { CommonCartItem } from 'backend/services/product/helper';
 import { Paragraph } from 'components/abstract/Typography';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import CartBag from 'components/icons/CartBag';
 import LazyImage from 'components/LazyImage';
-import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
 import { useGlobalQuantityLimitation } from 'hooks/useGlobalQuantityLimitation';
 import { formatCurrency } from 'lib';
@@ -21,14 +17,8 @@ import { formatCurrency } from 'lib';
 type CartDrawerProps = { toggleCartDrawer: () => void };
 
 const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
-  const { cartItems, updateCartAmount } = useCart();
+  const { cartItems } = useCart();
   const cartList = cartItems;
-
-  const handleCartAmountChange =
-    (amount: number, product: CommonProductModel, type: CartItemActionType) =>
-    () => {
-      updateCartAmount({ product, quantity: amount }, type);
-    };
 
   const { hasOverLimitItem, hasUnavailableItem } =
     useGlobalQuantityLimitation();
@@ -89,11 +79,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
         )}
 
         {cartList.map((item: CommonCartItem) => (
-          <CartDrawerItem
-            key={item.product.id}
-            cartItem={item}
-            handleCartAmountChange={handleCartAmountChange}
-          />
+          <CartDrawerItem key={item.product.id} productId={item.product.id} />
         ))}
       </Box>
 

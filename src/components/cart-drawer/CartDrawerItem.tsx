@@ -6,52 +6,55 @@ import { useMemo, type FC } from 'react';
 import { H5, Paragraph, Span, Tiny } from '../abstract/Typography';
 import { FlexBox } from '../flex-box';
 
-import type {
-  CommonCartItem,
-  CommonProductModel,
-} from 'backend/services/product/helper';
+import type { CommonProductModel } from 'backend/services/product/helper';
 import { PRODUCT_DETAIL_ROUTE } from 'constants/routes.ui.constant';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
+import useCart from 'hooks/global-states/useCart';
 import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
 import { insertId } from 'utils/middleware.helper';
 import { getSlug } from 'utils/string.helper';
 
 type CartDrawerItemProps = {
-  cartItem: CommonCartItem;
-  handleCartAmountChange: (
-    amount: number,
-    product: CommonProductModel,
-    type: CartItemActionType,
-  ) => () => void;
+  productId: string;
 };
-const CartDrawerItem: FC<CartDrawerItemProps> = ({
-  cartItem,
-  handleCartAmountChange,
-}) => {
+const CartDrawerItem: FC<CartDrawerItemProps> = ({ productId }) => {
   const { palette } = useTheme();
 
+  const handleCartAmountChange =
+    (amount: number, product: CommonProductModel, type: CartItemActionType) =>
+    () => {
+      updateCartAmount({ product, quantity: amount }, type);
+    };
+
+  const { updateCartAmount, existingCartItem } = useCart(productId);
+
   const { maxQuantity, disableAddToCart, overLimit } = useQuantityLimitation(
-    cartItem.product,
-    cartItem,
+    existingCartItem.product!,
+    existingCartItem,
   );
 
   const imageUrls = useMemo(
-    () => cartItem.product.productImages.map((item) => item.imageUrl),
-    [cartItem.product.productImages],
+    () => existingCartItem.product!.productImages.map((item) => item.imageUrl),
+    [existingCartItem.product],
   );
 
   return (
     <Box borderBottom={`1px solid ${palette.divider}`}>
-      <FlexBox py={2} px={2.5} key={cartItem.product.id} alignItems='center'>
+      <FlexBox
+        py={2}
+        px={2.5}
+        key={existingCartItem.product!.id}
+        alignItems='center'
+      >
         <FlexBox alignItems='center' flexDirection='column'>
           <Button
-            disabled={disableAddToCart}
+            disabled={disableAddToCart || !existingCartItem.product!.available}
             color='primary'
             variant='outlined'
             onClick={handleCartAmountChange(
-              cartItem.quantity + 1,
-              cartItem.product,
+              existingCartItem.quantity! + 1,
+              existingCartItem.product!,
               'add',
             )}
             sx={{ height: '32px', width: '32px', borderRadius: '300px' }}
@@ -60,16 +63,19 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
           </Button>
 
           <Box fontWeight={600} fontSize='15px' my='3px'>
-            {cartItem.quantity}
+            {existingCartItem.quantity!}
           </Box>
 
           <Button
             color='primary'
             variant='outlined'
-            disabled={cartItem.quantity === 1}
+            disabled={
+              existingCartItem.quantity! === 1 ||
+              !existingCartItem.product!.available
+            }
             onClick={handleCartAmountChange(
-              cartItem.quantity - 1,
-              cartItem.product,
+              existingCartItem.quantity! - 1,
+              existingCartItem.product!,
               'remove',
             )}
             sx={{ height: '32px', width: '32px', borderRadius: '300px' }}
@@ -78,16 +84,24 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
           </Button>
         </FlexBox>
 
-        <Link href={insertId(PRODUCT_DETAIL_ROUTE, getSlug(cartItem.product))}>
+        <Link
+          href={insertId(
+            PRODUCT_DETAIL_ROUTE,
+            getSlug(existingCartItem.product!),
+          )}
+        >
           <Avatar
             variant='square'
-            alt={cartItem.product.name}
+            alt={existingCartItem.product!.name}
             src={imageUrls[0]}
             sx={{
               mx: 2,
               width: 76,
               height: 76,
-              filter: overLimit ? 'grayscale(1)' : 'none',
+              filter:
+                overLimit || !existingCartItem.product!.available
+                  ? 'grayscale(1)'
+                  : 'none',
               '& .MuiAvatar-img': {
                 objectFit: 'contain',
               },
@@ -104,35 +118,56 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
           }}
         >
           <Link
-            href={insertId(PRODUCT_DETAIL_ROUTE, getSlug(cartItem.product))}
+            href={insertId(
+              PRODUCT_DETAIL_ROUTE,
+              getSlug(existingCartItem.product!),
+            )}
           >
             <H5 ellipsis fontSize='14px' className='title'>
-              {cartItem.product.name}
+              {existingCartItem.product!.name}
             </H5>
           </Link>
 
           <Tiny color='grey.600'>
-            {formatCurrency(cartItem.product.retailPrice)} x {cartItem.quantity}
+            {formatCurrency(existingCartItem.product!.retailPrice)} x{' '}
+            {existingCartItem.quantity!}
           </Tiny>
 
           <Box
             fontWeight={600}
             fontSize='14px'
-            color={overLimit ? 'text.secondary' : 'primary.main'}
+            color={
+              overLimit || !existingCartItem.product!.available
+                ? 'grey.600'
+                : 'primary.main'
+            }
             mt={0.5}
           >
-            {formatCurrency(cartItem.quantity * cartItem.product.retailPrice)}
+            {formatCurrency(
+              existingCartItem.quantity! *
+                existingCartItem.product!.retailPrice,
+            )}
           </Box>
         </Box>
 
         <IconButton
           size='small'
-          onClick={handleCartAmountChange(0, cartItem.product, 'remove')}
+          onClick={handleCartAmountChange(
+            0,
+            existingCartItem.product!,
+            'remove',
+          )}
           sx={{ marginLeft: 2.5 }}
         >
           <Close fontSize='small' />
         </IconButton>
       </FlexBox>
+      {!existingCartItem.product!.available && (
+        <Paragraph color='error.500' textAlign='center'>
+          Sản phẩm đã không còn tồn tại, vui lòng xóa sản phẩm này khỏi giỏ hàng
+        </Paragraph>
+      )}
+
       {overLimit && (
         <Paragraph color='error.500' textAlign='center'>
           Chỉ còn <Span fontWeight={600}>{maxQuantity}</Span> sản phẩm này, vui
