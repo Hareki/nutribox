@@ -5,6 +5,8 @@
   "StoreWorkTime.StoreId.Required": "Vui lòng nhập Mã cửa hàng.",
   "StoreWorkTime.DayOfWeek.Required": "Vui lòng chọn một ngày trong tuần.",
   "StoreWorkTime.OpenTime.Required": "Vui lòng nhập giờ mở cửa.",
+  "StoreWorkTime.OpenTime.InvalidFormat": "Giờ mở cửa không đúng định dạng",
   "StoreWorkTime.CloseTime.Required": "Vui lòng nhập giờ đóng cửa.",
+  "StoreWorkTime.CloseTime.InvalidFormat": "Giờ đóng cửa không đúng định dạng",
   "StoreWorkTime.OpenTime.Before.CloseTime": "Giờ mở cửa phải trước đóng cửa 1 tiếng"
 }

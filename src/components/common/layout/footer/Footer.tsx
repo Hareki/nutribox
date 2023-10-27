@@ -18,6 +18,7 @@ import Link from 'next/link';
 import { type FC, useEffect, useState } from 'react';
 
 import apiCaller from 'api-callers/stores';
+import { DayOfWeek } from 'backend/enums/entities.enum';
 import { H3 } from 'components/abstract/Typography';
 import Image from 'components/common/input/MuiImage';
 import { FlexBox } from 'components/flex-box';
@@ -173,19 +174,26 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
                     }
                     spacing={2}
                   >
-                    {storeInfo.storeWorkTimes.map((item, index) => (
-                      <FlexBox key={index} justifyContent='space-between'>
-                        <Typography color='grey.600'>
-                          {getDayOfWeekLabel(item.dayOfWeek)}
-                        </Typography>
-                        <Typography color='grey.600'>
-                          {getStoreHoursLabel(
-                            new Date(item.openTime),
-                            new Date(item.closeTime),
-                          )}
-                        </Typography>
-                      </FlexBox>
-                    ))}
+                    {storeInfo.storeWorkTimes
+                      .sort((a, b) => {
+                        return (
+                          Object.values(DayOfWeek).indexOf(a.dayOfWeek) -
+                          Object.values(DayOfWeek).indexOf(b.dayOfWeek)
+                        );
+                      })
+                      .map((item, index) => (
+                        <FlexBox key={index} justifyContent='space-between'>
+                          <Typography color='grey.600'>
+                            {getDayOfWeekLabel(item.dayOfWeek)}
+                          </Typography>
+                          <Typography color='grey.600'>
+                            {getStoreHoursLabel(
+                              new Date(item.openTime),
+                              new Date(item.closeTime),
+                            )}
+                          </Typography>
+                        </FlexBox>
+                      ))}
                   </Stack>
                 </Grid>
               </Grid>

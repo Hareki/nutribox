@@ -35,5 +35,8 @@
   "CustomerOrder.NotCancellable.Client": "Đã quá hạn để hủy đơn hàng này.",
   "CustomerOrder.NotCancellable.Employee": "Đã quá hạn để hủy đơn hàng này.",
   "CustomerOrder.NotUpgradeable.Employee": "Không thể cập nhật đơn hàng ở trạng thái này",
-  "CustomerOrder.CancellationReason.Required": "Vui lòng nhập lý do hủy đơn"
+  "CustomerOrder.CancellationReason.Required": "Vui lòng nhập lý do hủy đơn",
+  "CustomerOrder.Distance.TooFar": "Khoảng cách giao hàng quá xa",
+  "CustomerOrder.Duration.TooLong": "Thời gian giao hàng quá lâu",
+  "CustomerOrder.WorkTime.Outside": "Ngoài giờ làm việc, vui lòng thử lại sau"
 }

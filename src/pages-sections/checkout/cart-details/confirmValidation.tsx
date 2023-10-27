@@ -81,11 +81,18 @@ export const checkDistance = (
       type: 'open_dialog',
       payload: {
         content: (
-          <Paragraph>
-            Chúng tôi chỉ giao hàng trong bán kính{' '}
-            <Span fontWeight={600}>{MAX_DELIVERY_RANGE} km</Span> tính từ chi
-            nhánh gần nhất, vui lòng thử địa chỉ khác.
-          </Paragraph>
+          <>
+            <Paragraph>
+              - Chúng tôi chỉ giao hàng trong bán kính{' '}
+              <Span fontWeight={600}>{MAX_DELIVERY_RANGE} km</Span>
+              {/* tính từ chi nhánh gần nhất, vui lòng thử địa chỉ khác. */}
+            </Paragraph>
+            <Paragraph>
+              {/* {`Khoảng cách của bạn đến cửa hàng : ${distance} km`} */}-
+              Khoảng cách của bạn đến cửa hàng:{' '}
+              <Span fontWeight={600}>{distance} km</Span>
+            </Paragraph>
+          </>
         ),
         title: 'Đã xảy ra lỗi',
         variant: 'error',

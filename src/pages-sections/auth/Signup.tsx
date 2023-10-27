@@ -157,6 +157,7 @@ const SignUp: FC<SignUpProps> = ({ handleFormSubmit, loading, disabled }) => {
             inputFormat='dd/MM/yyyy'
             renderInput={(props) => (
               <CustomTextField
+                {...(props as any)}
                 mb={1.5}
                 fullWidth
                 name='birthday'
@@ -165,7 +166,6 @@ const SignUp: FC<SignUpProps> = ({ handleFormSubmit, loading, disabled }) => {
                   (touched.birthday && tc(errors.birthday as string)) as string
                 }
                 error={!!touched.birthday && !!errors.birthday}
-                {...(props as any)}
               />
             )}
             onChange={(newValue) => {

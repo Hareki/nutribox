@@ -17,5 +17,7 @@
   "Customer.Phone.Max": "Phone number must not exceed 50 characters.",
   "Customer.Phone.InvalidFormat": "Invalid format for Phone number.",
   "Customer.Birthday.Required": "Please enter the Birthday.",
-  "Customer.Birthday.InvalidFormat": "Invalid date format for Birthday."
+  "Customer.Birthday.InvalidFormat": "Invalid date format for Birthday.",
+  "Customer.Birthday.Max": "Birthday must not exceed yesterday",
+  "Customer.Birthday.Min": "Birthday must not be less than 200 years ago"
 }

@@ -177,52 +177,78 @@ const toTimeValidation = (from: Date, schema: yup.DateSchema) => {
 
 const validationSchema = yup.object().shape({
   MONDAY: yup.object().shape({
-    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    from: yup
+      .date()
+      .typeError('StoreWorkTime.OpenTime.InvalidFormat')
+      .required('StoreWorkTime.OpenTime.Required'),
     to: yup
       .date()
-      .required('StoreWorkTime.OpenTime.Required')
+      .typeError('StoreWorkTime.CloseTime.InvalidFormat')
+      .required('StoreWorkTime.CloseTime.Required')
       .when('from', toTimeValidation),
   }),
   TUESDAY: yup.object().shape({
-    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    from: yup
+      .date()
+      .typeError('StoreWorkTime.OpenTime.InvalidFormat')
+      .required('StoreWorkTime.OpenTime.Required'),
     to: yup
       .date()
       .required('StoreWorkTime.OpenTime.Required')
       .when('from', toTimeValidation),
   }),
   WEDNESDAY: yup.object().shape({
-    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    from: yup
+      .date()
+      .typeError('StoreWorkTime.OpenTime.InvalidFormat')
+      .required('StoreWorkTime.OpenTime.Required'),
     to: yup
       .date()
       .required('StoreWorkTime.OpenTime.Required')
       .when('from', toTimeValidation),
   }),
   THURSDAY: yup.object().shape({
-    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    from: yup
+      .date()
+      .typeError('StoreWorkTime.OpenTime.InvalidFormat')
+      .required('StoreWorkTime.OpenTime.Required'),
     to: yup
       .date()
-      .required('StoreWorkTime.OpenTime.Required')
+      .typeError('StoreWorkTime.CloseTime.Required')
+      .required('StoreWorkTime.CloseTime.Required')
       .when('from', toTimeValidation),
   }),
   FRIDAY: yup.object().shape({
-    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    from: yup
+      .date()
+      .typeError('StoreWorkTime.OpenTime.InvalidFormat')
+      .required('StoreWorkTime.OpenTime.Required'),
     to: yup
       .date()
-      .required('StoreWorkTime.OpenTime.Required')
+      .typeError('StoreWorkTime.CloseTime.Required')
+      .required('StoreWorkTime.CloseTime.Required')
       .when('from', toTimeValidation),
   }),
   SATURDAY: yup.object().shape({
-    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    from: yup
+      .date()
+      .typeError('StoreWorkTime.OpenTime.InvalidFormat')
+      .required('StoreWorkTime.OpenTime.Required'),
     to: yup
       .date()
-      .required('StoreWorkTime.OpenTime.Required')
+      .typeError('StoreWorkTime.CloseTime.Required')
+      .required('StoreWorkTime.CloseTime.Required')
       .when('from', toTimeValidation),
   }),
   SUNDAY: yup.object().shape({
-    from: yup.date().required('StoreWorkTime.OpenTime.Required'),
+    from: yup
+      .date()
+      .typeError('StoreWorkTime.OpenTime.InvalidFormat')
+      .required('StoreWorkTime.OpenTime.Required'),
     to: yup
       .date()
-      .required('StoreWorkTime.OpenTime.Required')
+      .typeError('StoreWorkTime.CloseTime.Required')
+      .required('StoreWorkTime.CloseTime.Required')
       .when('from', toTimeValidation),
   }),
 });

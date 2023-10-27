@@ -69,7 +69,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
           }
         />
 
-        <Divider sx={{ mb: 3, mx: -4 }} />
+        {/* <Divider sx={{ mb: 3, mx: -4 }} />
 
         <FormControlLabel
           name='PayPal'
@@ -92,9 +92,9 @@ const PaymentForm: FC<PaymentFormProps> = ({
               size='small'
             />
           }
-        />
+        /> */}
 
-        <Divider sx={{ mb: 3, mx: -4 }} />
+        {/* <Divider sx={{ mb: 3, mx: -4 }} /> */}
 
         {/* {paymentMethod === 'MoMo' && (
           <Fragment>
@@ -133,7 +133,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
           }
         /> */}
 
-        <Divider sx={{ mb: 3, mx: -4 }} />
+        {/* <Divider sx={{ mb: 3, mx: -4 }} /> */}
 
         {paymentMethod === 'credit-card' && (
           <Formik<FormValues>

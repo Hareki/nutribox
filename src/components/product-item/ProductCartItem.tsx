@@ -5,15 +5,16 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useMemo, type FC } from 'react';
 
-import type { CommonCartItem } from 'backend/services/product/helper';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import MuiNextImage from 'components/common/input/MuiNextImage';
 import { FlexBox } from 'components/flex-box';
+import { PRODUCT_DETAIL_ROUTE } from 'constants/routes.ui.constant';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
 import useCart from 'hooks/global-states/useCart';
 import useLoginDialog from 'hooks/global-states/useLoginDialog';
 import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
+import { insertId } from 'utils/middleware.helper';
 import { getSlug } from 'utils/string.helper';
 
 const Wrapper = styled(Card)(({ theme }) => ({
@@ -32,15 +33,19 @@ const Wrapper = styled(Card)(({ theme }) => ({
   },
 }));
 
-interface ProductCartItemProps extends CommonCartItem {}
+// interface ProductCartItemProps extends CommonCartItem {}
+interface ProductCartItemProps {
+  productId: string;
+}
 
-const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
-  const { productImages, name, retailPrice, id } = product;
-  const { updateCartAmount, existingCartItem: cartItem } = useCart(product.id);
+const ProductCartItem: FC<ProductCartItemProps> = ({ productId }) => {
+  const { existingCartItem: cartItem, updateCartAmount } = useCart(productId);
+  const { productImages, name, retailPrice, id, available } = cartItem.product!;
+  // const { updateCartAmount, existingCartItem: cartItem } = useCart(cartItem.product.id);
   const { setLoginDialogOpen } = useLoginDialog();
   const { status } = useSession();
   const { overLimit, maxQuantity, disableAddToCart } = useQuantityLimitation(
-    product,
+    cartItem.product!,
     cartItem,
   );
 
@@ -56,7 +61,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
       if (status === 'authenticated') {
         updateCartAmount(
           {
-            product,
+            product: cartItem.product!,
             quantity: amount,
           },
           type,
@@ -74,6 +79,10 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
         height={140}
         display='block'
         style={{
+          filter:
+            !cartItem.product?.available || overLimit
+              ? 'grayscale(100%)'
+              : 'none',
           objectFit: 'contain',
           padding: '8px',
         }}
@@ -89,7 +98,7 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
       </IconButton>
 
       <FlexBox p={2} rowGap={2} width='100%' flexDirection='column'>
-        <Link href={`/product/${getSlug({ name, id })}`}>
+        <Link href={insertId(PRODUCT_DETAIL_ROUTE, getSlug({ name, id }))}>
           <Span ellipsis fontWeight='600' fontSize={18}>
             {name}
           </Span>
@@ -97,11 +106,14 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
 
         <FlexBox gap={1} flexWrap='wrap' alignItems='center'>
           <Span color='grey.600'>
-            {formatCurrency(retailPrice)} x {quantity}
+            {formatCurrency(retailPrice)} x {cartItem.quantity}
           </Span>
 
-          <Span fontWeight={600} color='primary.main'>
-            {formatCurrency(retailPrice * quantity)}
+          <Span
+            fontWeight={600}
+            color={available ? 'primary.main' : 'grey.600'}
+          >
+            {formatCurrency(retailPrice * cartItem.quantity)}
           </Span>
         </FlexBox>
 
@@ -110,30 +122,37 @@ const ProductCartItem: FC<ProductCartItemProps> = ({ quantity, product }) => {
             color='primary'
             sx={{ p: '5px', borderRadius: '50%' }}
             variant='outlined'
-            disabled={quantity === 1}
-            onClick={handleCartAmountChange(quantity - 1, 'remove')}
+            disabled={cartItem.quantity === 1 || !available}
+            onClick={handleCartAmountChange(cartItem.quantity - 1, 'remove')}
           >
             <Remove fontSize='small' />
           </Button>
 
           <Span mx={1} fontWeight={600} fontSize={15}>
-            {quantity}
+            {cartItem.quantity}
           </Span>
           <Button
-            disabled={disableAddToCart}
+            disabled={disableAddToCart || !available}
             color='primary'
             sx={{ p: '5px', borderRadius: '50%' }}
             variant='outlined'
-            onClick={handleCartAmountChange(quantity + 1, 'add')}
+            onClick={handleCartAmountChange(cartItem.quantity + 1, 'add')}
           >
             <Add fontSize='small' />
           </Button>
         </FlexBox>
 
-        {overLimit && (
+        {overLimit && cartItem.product?.available && (
           <Paragraph color='error.500'>
             Chỉ còn <Span fontWeight={600}>{maxQuantity}</Span> sản phẩm này,
             vui lòng giảm số lượng
+          </Paragraph>
+        )}
+
+        {!cartItem.product?.available && (
+          <Paragraph color='error.500'>
+            Sản phẩm đã không còn tồn tại, vui lòng xóa sản phẩm này khỏi giỏ
+            hàng
           </Paragraph>
         )}
       </FlexBox>

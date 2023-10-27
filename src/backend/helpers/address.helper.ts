@@ -81,8 +81,10 @@ export async function getEstimatedDeliveryInfo(
       }
     }
 
+    console.log('ERROR FETCHING 1');
     throw new Error('Error fetching distance and estimated time');
   } catch (error) {
+    console.log('ERROR FETCHING 2');
     console.error('Error fetching distance and estimated time:', error);
     throw error;
   }

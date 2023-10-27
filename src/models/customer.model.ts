@@ -1,3 +1,4 @@
+import { addDays, addYears } from 'date-fns';
 import { z } from 'zod';
 
 import type { AccountModel } from './account.model';
@@ -35,7 +36,11 @@ const CustomerSchema = z.object({
 
   phone: zodPhone('Customer.Phone'),
 
-  birthday: zodDate('Customer.Birthday'),
+  birthday: zodDate(
+    'Customer.Birthday',
+    addYears(new Date(), -200),
+    addDays(new Date(), -1),
+  ),
 
   avatarUrl: zodString('Account.AvatarUrl', 0, 500).optional(),
 });

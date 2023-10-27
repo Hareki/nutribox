@@ -17,5 +17,7 @@
   "Customer.Phone.Max": "Số điện thoại không được vượt quá 50 ký tự.",
   "Customer.Phone.InvalidFormat": "Định dạng Số điện thoại không hợp lệ.",
   "Customer.Birthday.Required": "Vui lòng nhập Ngày sinh.",
-  "Customer.Birthday.InvalidFormat": "Định dạng Ngày sinh không hợp lệ."
+  "Customer.Birthday.InvalidFormat": "Định dạng Ngày sinh không hợp lệ.",
+  "Customer.Birthday.Max": "Ngày sinh không thể vượt quá hôm qua.",
+  "Customer.Birthday.Min": "Ngày sinh không thể sớm hơn 200 năm"
 }

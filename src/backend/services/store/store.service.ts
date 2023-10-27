@@ -1,6 +1,3 @@
-import { getHours, getMinutes, getSeconds, set } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
-
 import { CommonService } from '../common/common.service';
 
 import type { UpdateStoreInfoDto } from 'backend/dtos/store/updateStoreInfo.dto';
@@ -12,7 +9,6 @@ import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 import { BadRequestError } from 'backend/types/errors/common';
 import { STORE_ID } from 'constants/temp.constant';
 import type { PopulateStoreFields, StoreModel } from 'models/store.model';
-import { getUtcDate } from 'utils/date.helper';
 
 export class StoreService {
   public static async getStoreInfoAndWorkTimes(

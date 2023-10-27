@@ -10,9 +10,11 @@ import type {
   CommonCartItem,
   CommonProductModel,
 } from 'backend/services/product/helper';
+import { PRODUCT_DETAIL_ROUTE } from 'constants/routes.ui.constant';
 import type { CartItemActionType } from 'hooks/global-states/useCart';
 import { useQuantityLimitation } from 'hooks/useQuantityLimitation';
 import { formatCurrency } from 'lib';
+import { insertId } from 'utils/middleware.helper';
 import { getSlug } from 'utils/string.helper';
 
 type CartDrawerItemProps = {
@@ -28,7 +30,6 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
   handleCartAmountChange,
 }) => {
   const { palette } = useTheme();
-  console.log('cartItem', cartItem);
 
   const { maxQuantity, disableAddToCart, overLimit } = useQuantityLimitation(
     cartItem.product,
@@ -77,7 +78,7 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
           </Button>
         </FlexBox>
 
-        <Link href={`/product/${cartItem.product.id}`}>
+        <Link href={insertId(PRODUCT_DETAIL_ROUTE, getSlug(cartItem.product))}>
           <Avatar
             variant='square'
             alt={cartItem.product.name}
@@ -102,7 +103,9 @@ const CartDrawerItem: FC<CartDrawerItemProps> = ({
             textOverflow: 'ellipsis',
           }}
         >
-          <Link href={`/product/${getSlug(cartItem.product)}`}>
+          <Link
+            href={insertId(PRODUCT_DETAIL_ROUTE, getSlug(cartItem.product))}
+          >
             <H5 ellipsis fontSize='14px' className='title'>
               {cartItem.product.name}
             </H5>

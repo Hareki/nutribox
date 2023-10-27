@@ -35,5 +35,8 @@
   "CustomerOrder.NotCancellable.Client": "Order cancellation is expired.",
   "CustomerOrder.NotCancellable.Employee": "Order cancellation is expired.",
   "CustomerOrder.NotUpgradeable.Employee": "Order status is not upgradable.",
-  "CustomerOrder.CancellationReason.Required": "Please enter the cancellation reason."
+  "CustomerOrder.CancellationReason.Required": "Please enter the cancellation reason.",
+  "CustomerOrder.Distance.TooFar": "The distance is too far",
+  "CustomerOrder.Duration.TooLong": "The delivery time is too long",
+  "CustomerOrder.WorkTime.Outside": "Outside of work time, please try again later!"
 }

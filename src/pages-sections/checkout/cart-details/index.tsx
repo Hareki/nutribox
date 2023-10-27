@@ -3,8 +3,6 @@ import { Button, Card, Divider, Grid, TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
-import type { GetStaticProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
@@ -72,7 +70,8 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
   const [isEstimating, setIsEstimating] = useState(false);
   const [selectAddressDialogOpen, setSelectAddressDialogOpen] = useState(false);
   const { cartItems } = useCart();
-  const { hasOverLimitItem } = useGlobalQuantityLimitation();
+  const { hasOverLimitItem, hasUnavailableItem } =
+    useGlobalQuantityLimitation();
   const [infoState, dispatchInfo] = useReducer(
     infoDialogReducer,
     initInfoDialogState,
@@ -250,7 +249,10 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
         {/* CART PRODUCT LIST */}
         <Grid item md={8} xs={12}>
           {cartItems.map((item) => (
-            <ProductCartItem key={item.product.id} {...item} />
+            <ProductCartItem
+              key={item.product.id}
+              productId={item.product.id}
+            />
           ))}
         </Grid>
         {/* CHECKOUT FORM */}
@@ -420,6 +422,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
               <LoadingButton
                 disabled={
                   hasOverLimitItem ||
+                  hasUnavailableItem ||
                   cartItems.length === 0 ||
                   isLoadingStoreInfo
                 }

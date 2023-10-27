@@ -11,6 +11,7 @@ import { CartItemEntity } from 'backend/entities/cartItem.entity';
 import { getSessionCustomerAccount } from 'backend/helpers/auth2.helper';
 import { isEntityNotFoundError } from 'backend/helpers/validation.helper';
 import { getFullAddress } from 'helpers/address.helper';
+import type { PopulateCartItemFields } from 'models/cartItem.model';
 
 export const createCartItemAccessGuard =
   () =>
@@ -58,6 +59,31 @@ export const createCheckoutValidationGuard =
   () =>
   async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     const customerAddress = await getFullAddress(req.body as CheckoutDto);
+    const cartItemIds = (req.body as CheckoutDto).cartItems;
+
+    const [cartItemsWithProducts] = await CommonService.getRecords({
+      entity: CartItemEntity,
+      relations: ['product'],
+      whereInIds: cartItemIds,
+    });
+
+    const castedCartItemsWithProducts =
+      cartItemsWithProducts as PopulateCartItemFields<'product'>[];
+
+    const unavailableProducts = castedCartItemsWithProducts.filter(
+      (cartItem) => !cartItem.product.available,
+    );
+
+    if (unavailableProducts.length) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: 'fail',
+        message: 'Some products are not available',
+        data: {
+          unavailableProducts,
+        },
+      });
+    }
+
     const checkoutValidation =
       await CustomerOrderService.getCheckoutValidation(customerAddress);
 
@@ -66,19 +92,25 @@ export const createCheckoutValidationGuard =
     if (!checkoutValidation.isValidDistance) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: 'fail',
-        message: 'The distance is too far',
+        data: {
+          distance: 'CustomerOrder.Distance.TooFar',
+        },
       });
     }
     if (!checkoutValidation.isValidDuration) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: 'fail',
-        message: 'The duration is too long',
+        data: {
+          duration: 'CustomerOrder.Duration.TooLong',
+        },
       });
     }
     if (!checkoutValidation.isValidTime) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: 'fail',
-        message: 'Outside of working time',
+        data: {
+          workTime: 'CustomerOrder.WorkTime.Outside',
+        },
       });
     }
 

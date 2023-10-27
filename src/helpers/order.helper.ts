@@ -1,10 +1,7 @@
 import { assertNever } from './assertion.helper';
 
-import {
-  EmployeeRole,
-  OrderStatus,
-  PaymentMethod,
-} from 'backend/enums/entities.enum';
+import type { EmployeeRole } from 'backend/enums/entities.enum';
+import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum';
 import { type OrderStatusCount } from 'backend/services/customer/helper';
 import { CustomerOrderStatusOrders } from 'backend/services/customerOrder/helper';
 
@@ -65,22 +62,23 @@ export function getOrderStatusName(orderStatus: OrderStatus) {
   return name;
 }
 
-export const getUserRoleName = (role?: EmployeeRole) => {
-  if (!role) return 'Khách hàng';
-
+export const getUserRoleName = (
+  role?: keyof typeof EmployeeRole | 'CUSTOMER',
+) => {
   switch (role) {
-    case EmployeeRole.CASHIER:
+    case 'CASHIER':
       return 'Thu ngân';
-    case EmployeeRole.MANAGER:
+    case 'MANAGER':
       return 'Quản lý';
-    case EmployeeRole.SHIPPER:
+    case 'SHIPPER':
       return 'Giao hàng';
-    case EmployeeRole.WAREHOUSE_MANAGER:
+    case 'WAREHOUSE_MANAGER':
       return 'Quản lý kho';
-    case EmployeeRole.WAREHOUSE_STAFF:
+    case 'WAREHOUSE_STAFF':
       return 'Nhân viên kho';
+    case 'CUSTOMER':
+      return 'Khách hàng';
     default: {
-      assertNever(role);
       return '';
     }
   }

@@ -40,6 +40,7 @@ export default function VendorDashboard() {
   } = useQuery({
     queryKey: ['statistic'],
     queryFn: () => dashboardCaller.getDashboardData(),
+    staleTime: Infinity,
   });
 
   const currentYear = new Date().getFullYear();

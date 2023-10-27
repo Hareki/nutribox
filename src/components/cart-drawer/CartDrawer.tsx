@@ -30,7 +30,8 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
       updateCartAmount({ product, quantity: amount }, type);
     };
 
-  const { hasOverLimitItem } = useGlobalQuantityLimitation();
+  const { hasOverLimitItem, hasUnavailableItem } =
+    useGlobalQuantityLimitation();
 
   const getTotalPrice = () => {
     return cartList.reduce(
@@ -101,7 +102,7 @@ const CartDrawer: FC<CartDrawerProps> = ({ toggleCartDrawer }) => {
           <Box p={2.5}>
             <Link href='/checkout' passHref legacyBehavior>
               <Button
-                disabled={hasOverLimitItem}
+                disabled={hasOverLimitItem || hasUnavailableItem}
                 fullWidth
                 color='primary'
                 variant='contained'
