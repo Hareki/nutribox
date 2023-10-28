@@ -8,8 +8,8 @@ import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { CUSTOMERS_STAFF_ROUTE } from 'constants/routes.ui.constant';
-import AccountAddressViewer from 'pages-sections/staff/customer/AccountAddressViewer';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
+import AccountAddressViewer from 'pages-sections/staff/customer/AccountAddressViewer';
 
 AdminAccountDetails.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -34,7 +34,7 @@ function AdminAccountDetails() {
       ) : (
         <>
           <ProfileViewer customer={customer!} />
-          <AccountAddressViewer accountId={customer!.id} />
+          <AccountAddressViewer addresses={customer!.customerAddresses} />
         </>
       )}
     </Box>

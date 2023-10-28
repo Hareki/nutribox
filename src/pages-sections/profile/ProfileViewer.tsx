@@ -1,12 +1,9 @@
 import { Person } from '@mui/icons-material';
 import type { Theme } from '@mui/material';
-import { Skeleton } from '@mui/material';
 import { Avatar, Box, Button, Card, Grid, useMediaQuery } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
-import profileCaller from 'api-callers/profile';
 import type {
   CustomerDashboardData,
   OrderStatusCount,
@@ -20,28 +17,13 @@ import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/N
 import { getAvatarUrl, getFullName } from 'helpers/account.helper';
 import { translateOrderStatusCountLabel } from 'helpers/order.helper';
 import { formatDate } from 'lib';
-import type { CommonCustomerModel } from 'models/customer.model';
 
 type ProfileProps = {
-  customer: CommonCustomerModel | CustomerDashboardData;
+  customer: CustomerDashboardData;
   toggleEditing?: () => void;
-  // orderStatusCount: OrderStatusCount;
-  // isLoadingCount: boolean;
 };
-const ProfileViewer: FC<ProfileProps> = ({
-  customer,
-  toggleEditing,
-  // orderStatusCount,
-  // isLoadingCount,
-}) => {
+const ProfileViewer: FC<ProfileProps> = ({ customer, toggleEditing }) => {
   const downMd = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
-
-  const { data: dashboardInfo, isLoading: isLoadingCount } = useQuery({
-    queryKey: ['order-status-count', customer.id],
-    queryFn: () => profileCaller.getDashboardInfo(),
-    onError: (err) => console.log(err),
-    enabled: !(customer as CustomerDashboardData).orderStatusCount,
-  });
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
@@ -63,9 +45,7 @@ const ProfileViewer: FC<ProfileProps> = ({
     cancelled: 0,
   };
 
-  const orderStatusCount =
-    (customer as CustomerDashboardData).orderStatusCount ||
-    dashboardInfo?.orderStatusCount;
+  const orderStatusCount = customer.orderStatusCount;
 
   return (
     <Fragment>
@@ -121,36 +101,25 @@ const ProfileViewer: FC<ProfileProps> = ({
                 .map((key) => {
                   return (
                     <Grid item lg={3} sm={6} xs={6} key={key}>
-                      {isLoadingCount ? (
-                        <Skeleton
-                          variant='rectangular'
-                          height='98px'
-                          sx={{
-                            borderRadius: '8px',
-                          }}
-                          animation='wave'
-                        />
-                      ) : (
-                        <Card
-                          sx={{
-                            height: '100%',
-                            display: 'flex',
-                            p: '1rem 1.25rem',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                          }}
-                        >
-                          <H3 color='primary.main' my={0} fontWeight={600}>
-                            {orderStatusCount![key] || 0}
-                          </H3>
+                      <Card
+                        sx={{
+                          height: '100%',
+                          display: 'flex',
+                          p: '1rem 1.25rem',
+                          alignItems: 'center',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <H3 color='primary.main' my={0} fontWeight={600}>
+                          {orderStatusCount![key] || 0}
+                        </H3>
 
-                          <Small color='grey.600' textAlign='center'>
-                            {translateOrderStatusCountLabel(
-                              key as keyof OrderStatusCount,
-                            )}
-                          </Small>
-                        </Card>
-                      )}
+                        <Small color='grey.600' textAlign='center'>
+                          {translateOrderStatusCountLabel(
+                            key as keyof OrderStatusCount,
+                          )}
+                        </Small>
+                      </Card>
                     </Grid>
                   );
                 })}

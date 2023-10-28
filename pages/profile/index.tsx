@@ -1,9 +1,11 @@
+import { useQuery } from '@tanstack/react-query';
 import type { GetStaticProps } from 'next';
 import { useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 
+import profileCaller from 'api-callers/profile';
 import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
@@ -15,22 +17,27 @@ function Profile(): ReactElement {
   const { data: session } = useSession();
   const account = session?.account;
 
+  const { data: customerWithDashboardInfo, isLoading: isLoadingCustomer } =
+    useQuery({
+      queryKey: ['order-status-count', account?.customer.id],
+      queryFn: () => profileCaller.getDashboardInfo(),
+      onError: (err) => console.log(err),
+    });
+
   const [isEditing, setIsEditing] = useState(false);
   const toggleEditing = () => setIsEditing((prev) => !prev);
 
-  if (!account) return <CircularProgressBlock />;
+  if (!account || isLoadingCustomer) return <CircularProgressBlock />;
 
   return (
     <>
       {!isEditing ? (
         <ProfileViewer
-          customer={account.customer}
+          customer={customerWithDashboardInfo!}
           toggleEditing={toggleEditing}
-          // orderStatusCount={orderStatusCount}
-          // isLoadingCount={isLoadingCount}
         />
       ) : (
-        <ProfileEditor account={account} toggleEditing={toggleEditing} />
+        <ProfileEditor account={account!} toggleEditing={toggleEditing} />
       )}
     </>
   );

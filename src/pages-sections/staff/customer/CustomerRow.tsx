@@ -10,6 +10,7 @@ import { FlexBox } from 'components/flex-box';
 import { CUSTOMER_DETAIL_STAFF_ROUTE } from 'constants/routes.ui.constant';
 import { getAvatarUrl } from 'helpers/account.helper';
 import { formatDate } from 'lib';
+import { insertId } from 'utils/middleware.helper';
 
 type AccountRowProps = { account: FilteredAccount };
 
@@ -22,7 +23,9 @@ const CustomerRow: FC<AccountRowProps> = ({ account }) => {
     <StyledTableRow
       tabIndex={-1}
       role='checkbox'
-      onClick={() => router.push(CUSTOMER_DETAIL_STAFF_ROUTE)}
+      onClick={() =>
+        router.push(insertId(CUSTOMER_DETAIL_STAFF_ROUTE, account.id))
+      }
     >
       <StyledTableCell align='left'>
         <FlexBox alignItems='center' gap={1.5}>
