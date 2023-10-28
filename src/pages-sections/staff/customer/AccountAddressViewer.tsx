@@ -29,18 +29,8 @@ interface AccountAddressViewerProps {
 const AccountAddressViewer = ({ addresses }: AccountAddressViewerProps) => {
   const filterAddress = addresses.map(mapAddressRow);
 
-  const {
-    order,
-    // orderBy,
-    selected,
-    // rowsPerPage,
-    filteredList,
-    // handleChangePage,
-    // handleRequestSort,
-  } = useMuiTable({
+  const { order, selected, filteredList } = useMuiTable({
     listData: filterAddress || [],
-    // defaultSort: 'id',
-    // defaultOrder: 'desc',
   });
   return (
     <Fragment>
@@ -52,11 +42,9 @@ const AccountAddressViewer = ({ addresses }: AccountAddressViewerProps) => {
                 <TableHeader
                   order={order}
                   hideSelectBtn
-                  // orderBy={orderBy}
                   heading={tableHeading}
                   numSelected={selected.length}
                   rowCount={filteredList.length}
-                  // onRequestSort={handleRequestSort}
                 />
 
                 <TableBody>

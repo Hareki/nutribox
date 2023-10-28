@@ -40,9 +40,15 @@ function AdminOrderDetails() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { data: order, isLoading: isLoadingOrder } = useQuery({
-    queryKey: ['customer-orders', id],
+    queryKey: ['staff', 'customer-orders', id],
     queryFn: () => staffCustomerOrderCaller.getOrder(id),
   });
+
+  const { data: exportOrderDetails, isLoading: isLoadingExportOrderDetails } =
+    useQuery({
+      queryKey: ['staff', 'customer-orders', 'export-order-details', id],
+      queryFn: () => staffCustomerOrderCaller.getExportOrderDetails(id),
+    });
 
   const [confirmState, dispatchConfirm] = useReducer(
     confirmDialogReducer,
@@ -101,12 +107,11 @@ function AdminOrderDetails() {
       })) || [],
   });
 
-  if (isLoadingOrder) {
+  if (isLoadingOrder || isLoadingExportOrderDetails) {
     return <CircularProgressBlock />;
   }
 
   const status = order!.status;
-  // console.log('file: [id].tsx:109 - AdminOrderDetails - order:', order);
 
   return (
     <Box py={4} maxWidth={1200} margin='auto'>
@@ -116,6 +121,7 @@ function AdminOrderDetails() {
       />
 
       <OrderDetailsViewer
+        exportOrderDetails={exportOrderDetails!}
         order={order!}
         productsOfOrders={productsOfOrders}
         isUpdating={isUpgradingOrder}

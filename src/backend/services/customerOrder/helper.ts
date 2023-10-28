@@ -16,3 +16,11 @@ export const CustomerOrderStatusOrders = [
   OrderStatus.SHIPPED,
   OrderStatus.CANCELLED,
 ];
+
+export type ExportOrderDetails = {
+  exportOrderId: string;
+  importDate: Date;
+  expirationDate: Date;
+  productName: string;
+  exportQuantity: number;
+};

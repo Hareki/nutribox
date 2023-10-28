@@ -9,7 +9,7 @@ import {
 } from '../../helpers/address.helper';
 import { CommonService } from '../common/common.service';
 
-import type { CheckoutValidation } from './helper';
+import type { CheckoutValidation, ExportOrderDetails } from './helper';
 
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
 import type { CustomerCancelOrderDto } from 'backend/dtos/profile/orders/cancelOrder.dto';
@@ -22,6 +22,7 @@ import { ImportOrderEntity } from 'backend/entities/importOrder.entity';
 import { ProductEntity } from 'backend/entities/product.entity';
 import { StoreEntity } from 'backend/entities/store.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
+import { getRepo } from 'backend/helpers/database.helper';
 import {
   MAX_DELIVERY_DURATION,
   MAX_DELIVERY_RANGE,
@@ -33,7 +34,10 @@ import type {
   CustomerOrderModel,
   PopulateCustomerOrderFields,
 } from 'models/customerOrder.model';
-import type { PopulateCustomerOrderItemIdFields } from 'models/customerOrderItem.model';
+import type {
+  FullyPopulatedCustomerOrderItemModel,
+  PopulateCustomerOrderItemIdFields,
+} from 'models/customerOrderItem.model';
 import type { ExportOrderModel } from 'models/exportOrder.model';
 import type { PopulateStoreFields } from 'models/store.model';
 import type { StoreWorkTimeModel } from 'models/storeWorkTime.model';
@@ -451,5 +455,41 @@ export class CustomerOrderService {
     });
 
     return updatedOrder!;
+  }
+
+  public static async getExportOrderDetails(
+    customerOrderId: string,
+  ): Promise<ExportOrderDetails[]> {
+    const customerOrderItems = await (
+      await getRepo(CustomerOrderItemEntity)
+    ).find({
+      where: { customerOrder: customerOrderId },
+      relations: ['product', 'exportOrders', 'exportOrders.importOrder'],
+      order: {
+        product: 'ASC',
+      },
+    });
+
+    const exportOrderDetails: ExportOrderDetails[] = [];
+
+    for (const coItem of customerOrderItems) {
+      for (const eo of coItem.exportOrders) {
+        const detail: ExportOrderDetails = {
+          exportOrderId: (eo as ExportOrderEntity).id,
+          importDate: (
+            (eo as ExportOrderEntity).importOrder as ImportOrderEntity
+          ).importDate,
+          expirationDate: (
+            (eo as ExportOrderEntity).importOrder as ImportOrderEntity
+          ).expirationDate,
+          productName: (coItem.product as ProductEntity).name,
+          exportQuantity: (eo as ExportOrderEntity).quantity,
+        };
+
+        exportOrderDetails.push(detail);
+      }
+    }
+
+    return exportOrderDetails;
   }
 }

@@ -145,6 +145,7 @@ export const CUSTOMER_DETAIL_API_STAFF_ROUTE = `${CUSTOMERS_API_STAFF_ROUTE}/:id
 
 export const CUSTOMER_ORDERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/customer-orders`;
 export const CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE = `${CUSTOMER_ORDERS_API_STAFF_ROUTE}/:id`;
+export const EXPORT_ORDER_DETAIL_API_STAFF_ROUTE = `${CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE}/export-order-details`;
 
 export const EMPLOYEES_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/employees`;
 export const EMPLOYEE_DETAIL_API_STAFF_ROUTE = `${EMPLOYEES_API_STAFF_ROUTE}/:id`;
@@ -243,6 +244,10 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
     methods: ['GET', 'PUT', 'PATCH'],
     route: STORE_DETAIL_API_STAFF_ROUTE,
   },
+  {
+    methods: ['GET'],
+    route: EXPORT_ORDER_DETAIL_API_STAFF_ROUTE,
+  },
 ];
 
 export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
@@ -282,6 +287,10 @@ export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
     methods: ['GET', 'PUT', 'DELETE'],
     route: SUPPLIER_DETAIL_API_STAFF_ROUTE,
   },
+  {
+    methods: ['GET'],
+    route: EXPORT_ORDER_DETAIL_API_STAFF_ROUTE,
+  },
 ];
 
 export const CashierApiRoutes: MethodRoutePair[] = [
@@ -309,6 +318,10 @@ export const CashierApiRoutes: MethodRoutePair[] = [
     methods: ['POST'],
     route: COUNTER_API_STAFF_ROUTE,
   },
+  {
+    methods: ['GET'],
+    route: EXPORT_ORDER_DETAIL_API_STAFF_ROUTE,
+  },
 ];
 
 export const ShipperApiRoutes: MethodRoutePair[] = [
@@ -323,5 +336,9 @@ export const ShipperApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET', 'PATCH'],
     route: CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: EXPORT_ORDER_DETAIL_API_STAFF_ROUTE,
   },
 ];

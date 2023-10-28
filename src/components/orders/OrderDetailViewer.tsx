@@ -18,10 +18,11 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { Fragment, useMemo, useState } from 'react';
 
-import ExportOrderDetail from './ExportOrderDetail';
+import ExportOrderDetailTable from './ExportOrderDetailTable';
 import OrderPaymentChip from './OrderPaymentChip';
 
 import { PaymentMethod } from 'backend/enums/entities.enum';
+import type { ExportOrderDetails } from 'backend/services/customerOrder/helper';
 import { CustomerOrderStatusOrders } from 'backend/services/customerOrder/helper';
 import type { CommonProductModel } from 'backend/services/product/helper';
 import { H5, H6, Paragraph, Span } from 'components/abstract/Typography';
@@ -69,6 +70,7 @@ interface OrderDetailsViewerProps {
   cancelOrderCallback?: () => void;
   isUpdating?: boolean;
   upgradeOrderStatusCallBack?: () => void;
+  exportOrderDetails?: ExportOrderDetails[];
 }
 const OrderDetailsViewer = ({
   order,
@@ -76,6 +78,7 @@ const OrderDetailsViewer = ({
   productsOfOrders,
   cancelOrderCallback,
   upgradeOrderStatusCallBack,
+  exportOrderDetails,
 }: OrderDetailsViewerProps) => {
   const { transitions } = useTheme();
   const router = useRouter();
@@ -351,6 +354,12 @@ const OrderDetailsViewer = ({
 
       {/* SHIPPING AND ORDER SUMMERY */}
       <Grid container spacing={3}>
+        {exportOrderDetails && (
+          <Grid item xs={12}>
+            <ExportOrderDetailTable exportOrderDetails={exportOrderDetails} />
+          </Grid>
+        )}
+
         <Grid item lg={6} md={6} xs={12}>
           <Card sx={{ p: '20px 30px', height: '100%' }}>
             <H5 mt={0} mb={2}>
@@ -399,10 +408,6 @@ const OrderDetailsViewer = ({
               {order.note ? order.note : '_'}
             </Paragraph>
           </Card>
-        </Grid>
-
-        <Grid item xs={12}>
-          <ExportOrderDetail />
         </Grid>
 
         {!isOrderCancelled && canCancel && (
