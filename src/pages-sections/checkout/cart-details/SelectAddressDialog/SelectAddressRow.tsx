@@ -2,7 +2,7 @@ import { Typography, useTheme } from '@mui/material';
 import type { FC } from 'react';
 
 import TableRow from 'components/data-table/TableRow';
-import { getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddressFromNames } from 'helpers/address.helper';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 interface SelectAddressDialogProps {
@@ -45,7 +45,7 @@ const SelectAddressRow: FC<SelectAddressDialogProps> = ({
       </Typography>
 
       <Typography flex='1 1 260px !important' m={0.75} textAlign='left'>
-        {getFullAddress2(address)}
+        {getFullAddressFromNames(address)}
       </Typography>
     </TableRow>
   );

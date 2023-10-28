@@ -24,7 +24,7 @@ import PackageBox from 'components/icons/PackageBox';
 import TruckFilled from 'components/icons/TruckFilled';
 import CustomerDashboardLayout from 'components/layouts/customer-dashboard';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddressFromNames } from 'helpers/address.helper';
 import useWindowSize from 'hooks/useWindowSize';
 import { formatCurrency } from 'lib';
 
@@ -229,7 +229,7 @@ const OrderDetails: FC<Props> = ({ order, setOrderDetails }) => {
             </H5>
 
             <Paragraph fontSize={14} my={0}>
-              {getFullAddress2(order)}
+              {getFullAddressFromNames(order)}
             </Paragraph>
           </Card>
         </Grid>

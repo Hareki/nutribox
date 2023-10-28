@@ -42,7 +42,7 @@ import {
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import ProductCartItem from 'components/product-item/ProductCartItem';
 import { STORE_ID } from 'constants/temp.constant';
-import { getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddressFromNames } from 'helpers/address.helper';
 import {
   transformAccountAddressToFormikValue,
   transformFormikValueToIAddress,
@@ -223,7 +223,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
 
   useEffect(() => {
     const address = transformFormikValueToIAddress(values);
-    setCurrentFullAddress(getFullAddress2(address));
+    setCurrentFullAddress(getFullAddressFromNames(address));
   }, [values, touched, errors]);
 
   const handleTouchedBlur = (fieldName: string) => {

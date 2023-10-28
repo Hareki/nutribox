@@ -16,8 +16,9 @@ import {
 } from '@mui/material';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 
+import ExportOrderDetail from './ExportOrderDetail';
 import OrderPaymentChip from './OrderPaymentChip';
 
 import { PaymentMethod } from 'backend/enums/entities.enum';
@@ -33,7 +34,7 @@ import {
   CUSTOMER_ORDER_DETAIL_STAFF_ROUTE,
   PRODUCT_DETAIL_ROUTE,
 } from 'constants/routes.ui.constant';
-import { getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddressFromNames } from 'helpers/address.helper';
 import { getOrderStatusName } from 'helpers/order.helper';
 import { formatCurrency, formatDateTime } from 'lib';
 import type { PopulateCustomerOrderFields } from 'models/customerOrder.model';
@@ -57,14 +58,7 @@ const cancelIconList = [DescriptionSharpIcon, CancelIcon];
 
 const getCurrentStatusIndex = (
   order: PopulateCustomerOrderFields<'customerOrderItems'>,
-  test1?: boolean,
-  test2?: boolean,
 ) => {
-  console.log('--------');
-  console.log('file: OrderDetailViewer.tsx:63 - isCancel:', test1);
-  console.log('file: OrderDetailViewer.tsx:63 - delivered:', test2);
-  console.log('file: OrderDetailViewer.tsx:61 - order:', order);
-  console.log('--------');
   return CustomerOrderStatusOrders.indexOf(order.status);
 };
 
@@ -85,21 +79,9 @@ const OrderDetailsViewer = ({
 }: OrderDetailsViewerProps) => {
   const { transitions } = useTheme();
   const router = useRouter();
-  // const isStaff = router.pathname.includes('/staff');
 
   const [isHover, setIsHover] = useState(false);
 
-  // const [statusIndex, setStatusIndex] = useState(getCurrentStatusIndex(order));
-  // useEffect(() => {
-  //   const newIndex = getCurrentStatusIndex(order);
-  //   console.log(
-  //     'file: OrderDetailViewer.tsx:100 - useEffect - newIndex:',
-  //     newIndex,
-  //   );
-  //   setStatusIndex(newIndex);
-  // }, [order, order.status]);
-
-  // const statusIndex = useMemo(() => getCurrentStatusIndex(order), [order]);
   const isStaff = matchesPlaceHolderRoute(
     router.pathname,
     CUSTOMER_ORDER_DETAIL_STAFF_ROUTE,
@@ -164,21 +146,6 @@ const OrderDetailsViewer = ({
                       <Icon color='inherit' sx={{ fontSize: '32px' }} />
                     </Avatar>
                   </div>
-
-                  {/* {index < statusIndex && (
-                      <Box position='absolute' right='0' top='0'>
-                        <Avatar
-                          sx={{
-                            width: 22,
-                            height: 22,
-                            bgcolor: 'grey.200',
-                            color: 'success.main',
-                          }}
-                        >
-                          <Done color='inherit' sx={{ fontSize: '1rem' }} />
-                        </Avatar>
-                      </Box>
-                    )} */}
                 </div>
               </Tooltip>
 
@@ -225,13 +192,7 @@ const OrderDetailsViewer = ({
                 title={
                   !(isOrderCancelled || delivered) &&
                   `Thăng cấp lên ${getOrderStatusName(
-                    CustomerOrderStatusOrders[
-                      getCurrentStatusIndex(
-                        order,
-                        isOrderCancelled,
-                        delivered,
-                      ) + 1
-                    ],
+                    CustomerOrderStatusOrders[getCurrentStatusIndex(order) + 1],
                   )}`
                 }
               >
@@ -397,7 +358,7 @@ const OrderDetailsViewer = ({
             </H5>
 
             <Paragraph fontSize={14} my={0}>
-              {getFullAddress2(order)}
+              {getFullAddressFromNames(order)}
             </Paragraph>
           </Card>
         </Grid>
@@ -439,6 +400,11 @@ const OrderDetailsViewer = ({
             </Paragraph>
           </Card>
         </Grid>
+
+        <Grid item xs={12}>
+          <ExportOrderDetail />
+        </Grid>
+
         {!isOrderCancelled && canCancel && (
           <LoadingButton
             onClick={() => cancelOrderCallback?.()}

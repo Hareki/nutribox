@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { type FC, useEffect, useState } from 'react';
+import { type FC } from 'react';
 
 import apiCaller from 'api-callers/stores';
 import { DayOfWeek } from 'backend/enums/entities.enum';
@@ -28,13 +28,12 @@ import Instagram from 'components/icons/Instagram';
 import Twitter from 'components/icons/Twitter';
 import Youtube from 'components/icons/Youtube';
 import { STORE_ID } from 'constants/temp.constant';
-import { getFullAddress, getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddressFromNames } from 'helpers/address.helper';
 import {
   getDayOfWeekLabel,
   getStoreHoursLabel,
 } from 'helpers/storeHours.helper';
 import type { PopulateStoreFields } from 'models/store.model';
-import { getUtcDate } from 'utils/date.helper';
 
 const StyledHeader = styled(H3)({
   fontSize: '28px',
@@ -126,7 +125,9 @@ const Footer: FC<FooterProps> = ({ initialStoreInfo }) => {
                   <FlexBox gap={2} flexDirection='column'>
                     <FlexBox alignItems='center' color='grey.700' gap={1}>
                       <LocationOnIcon />
-                      <Typography>{getFullAddress2(storeInfo)}</Typography>
+                      <Typography>
+                        {getFullAddressFromNames(storeInfo)}
+                      </Typography>
                     </FlexBox>
 
                     <FlexBox alignItems='center' color='grey.700' gap={1}>

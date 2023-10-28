@@ -21,7 +21,7 @@ import {
 } from 'components/dialog/confirm-dialog/reducer';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
-import { getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddressFromNames } from 'helpers/address.helper';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 type AddressViewerProps = {
@@ -136,7 +136,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
             </Typography>
 
             <Typography flex='1 1 260px !important' m={0.75} textAlign='left'>
-              {getFullAddress2(address)}
+              {getFullAddressFromNames(address)}
             </Typography>
 
             <Typography whiteSpace='pre' textAlign='center' color='grey.600'>

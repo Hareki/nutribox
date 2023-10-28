@@ -5,7 +5,7 @@ import AddressRow from './AddressRow';
 
 import TableHeader from 'components/data-table/TableHeader';
 import Scrollbar from 'components/Scrollbar';
-import { getFullAddress2 } from 'helpers/address.helper';
+import { getFullAddressFromNames } from 'helpers/address.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
@@ -16,7 +16,7 @@ const tableHeading = [
 ];
 
 const mapAddressRow = (address: CustomerAddressModel) => ({
-  fullAddress: getFullAddress2(address),
+  fullAddress: getFullAddressFromNames(address),
   isDefault: address.isDefault,
   title: address.title,
 });

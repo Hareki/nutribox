@@ -110,7 +110,9 @@ export const getFullAddress = async ({
   return `${streetAddress}, ${wardName}, ${districtName}, ${provinceName}, Việt Nam`;
 };
 
-export const getFullAddress2 = (address: Partial<IAddress> | null): string => {
+export const getFullAddressFromNames = (
+  address: Partial<IAddress> | null,
+): string => {
   if (!address) return '';
   const { provinceName, districtName, wardName, streetAddress } = address;
   if (!provinceName || !districtName || !wardName || !streetAddress) return '';
