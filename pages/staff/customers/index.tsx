@@ -20,7 +20,7 @@ import { getAvatarUrl, getFullName } from 'helpers/account.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
-import CustomerRow from 'pages-sections/admin/customer/CustomerRow';
+import CustomerRow from 'pages-sections/staff/customer/CustomerRow';
 
 AccountList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;

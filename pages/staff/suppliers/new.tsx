@@ -24,7 +24,7 @@ import { transformFormikValueToIAddress } from 'helpers/address.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { SupplierModel } from 'models/supplier.model';
-import SupplierForm from 'pages-sections/admin/supplier/SupplierForm';
+import SupplierForm from 'pages-sections/staff/supplier/SupplierForm';
 
 AdminSupplierCreate.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;

@@ -21,7 +21,7 @@ import { NEW_PRODUCT_ROUTE } from 'constants/routes.ui.constant';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
-import { ProductRow } from 'pages-sections/admin';
+import { ProductRow } from 'pages-sections/staff';
 
 ProductList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;

@@ -15,7 +15,7 @@ import {
 import { getFullName } from 'helpers/account.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import { formatCurrency } from 'lib';
-import { StyledTableRow } from 'pages-sections/admin';
+import { StyledTableRow } from 'pages-sections/staff';
 import { insertId } from 'utils/middleware.helper';
 import { shortenString } from 'utils/string.helper';
 

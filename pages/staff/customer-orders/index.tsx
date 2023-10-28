@@ -21,7 +21,7 @@ import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
 import type { CustomerOrderModel } from 'models/customerOrder.model';
-import { OrderRow } from 'pages-sections/admin';
+import { OrderRow } from 'pages-sections/staff';
 
 OrderList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;

@@ -9,8 +9,8 @@ import { H3, Paragraph } from 'components/abstract/Typography';
 import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { STORE_ID } from 'constants/temp.constant';
-import ContactInfoForm from 'pages-sections/admin/store-setting/ContactInfoForm';
-import StoreHoursForm from 'pages-sections/admin/store-setting/StoreHoursForm';
+import ContactInfoForm from 'pages-sections/staff/store-setting/ContactInfoForm';
+import StoreHoursForm from 'pages-sections/staff/store-setting/StoreHoursForm';
 
 StoreSetting.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;

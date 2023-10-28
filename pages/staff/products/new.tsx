@@ -27,9 +27,9 @@ import type { AxiosErrorWithMessages } from 'helpers/error.helper';
 import { handleUpload } from 'helpers/imagekit.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
-import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageListForm';
-import ImageListForm from 'pages-sections/admin/products/ImageListForm';
-import ProductForm from 'pages-sections/admin/products/ProductForm';
+import type { UploadSuccessResponse } from 'pages-sections/staff/products/ImageListForm';
+import ImageListForm from 'pages-sections/staff/products/ImageListForm';
+import ProductForm from 'pages-sections/staff/products/ProductForm';
 import { getSlug } from 'utils/string.helper';
 
 AdminProductCreate.getLayout = function getLayout(page: ReactElement) {

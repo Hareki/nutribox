@@ -21,7 +21,7 @@ import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
 import type { SupplierModel } from 'models/supplier.model';
-import SupplierRow from 'pages-sections/admin/supplier/SupplierRow';
+import SupplierRow from 'pages-sections/staff/supplier/SupplierRow';
 
 SupplierList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;

@@ -25,10 +25,10 @@ import { handleUpload } from 'helpers/imagekit.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { ProductModel } from 'models/product.model';
-import { ProductForm } from 'pages-sections/admin';
-import type { UploadSuccessResponse } from 'pages-sections/admin/products/ImageListForm';
-import ImageListForm from 'pages-sections/admin/products/ImageListForm';
-import ProductExpiration from 'pages-sections/admin/products/ProductExpiration';
+import { ProductForm } from 'pages-sections/staff';
+import type { UploadSuccessResponse } from 'pages-sections/staff/products/ImageListForm';
+import ImageListForm from 'pages-sections/staff/products/ImageListForm';
+import ProductExpiration from 'pages-sections/staff/products/ProductExpiration';
 import { getSlug } from 'utils/string.helper';
 
 AdminProductDetails.getLayout = function getLayout(page: ReactElement) {

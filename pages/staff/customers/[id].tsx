@@ -8,7 +8,7 @@ import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import { CUSTOMERS_STAFF_ROUTE } from 'constants/routes.ui.constant';
-import AccountAddressViewer from 'pages-sections/admin/customer/AccountAddressViewer';
+import AccountAddressViewer from 'pages-sections/staff/customer/AccountAddressViewer';
 import ProfileViewer from 'pages-sections/profile/ProfileViewer';
 
 AdminAccountDetails.getLayout = function getLayout(page: ReactElement) {
