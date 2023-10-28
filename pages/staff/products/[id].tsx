@@ -71,7 +71,7 @@ export default function AdminProductDetails() {
     mutationFn: (values) => apiCaller.updateProduct(productId, values),
     onSuccess: (res) => {
       setIsEditingForm(false);
-      enqueueSnackbar('Cập nhật sản phẩm thành công', { variant: 'success' });
+      enqueueSnackbar(t('Product.UpdateInfo.Success'), { variant: 'success' });
       queryClient.invalidateQueries(['product', productId]);
       queryClient.setQueryData(['product', productId], res);
     },

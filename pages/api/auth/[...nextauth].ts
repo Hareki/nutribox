@@ -85,7 +85,7 @@ export const authOptions: AuthOptions = {
 
         if (!account) return null;
 
-        if (!account.verified) throw new Error('Account.Verified.Invalid');
+        if (!account.verified) throw new Error('Account.Verified.False');
         if (account.disabled) throw new Error('Account.Disabled.True');
 
         return {

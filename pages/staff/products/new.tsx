@@ -67,7 +67,7 @@ export default function AdminProductCreate() {
     // Step 3: Push ImageKit product urls back to Product
     apiCaller
       .pushImages(context.productId, newImageUrls)
-      .then((res) => {
+      .then(() => {
         enqueueSnackbar(
           'Tải ảnh lên thành công! Đang chuyển hướng về trang quản lý sản phẩm...',
           {

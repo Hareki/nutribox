@@ -20,11 +20,13 @@
   "Product.Description.Max": "Product description should not exceed 500 characters.",
   "Product.ShelfLife.Required": "Please enter the product shelf life.",
   "Product.ShelfLife.Min": "Product shelf life should be at least 1.",
-  "Product.ShelfLife.Max": "Product shelf life should not exceed 1000.",
+  "Product.ShelfLife.Max": "Product shelf life should not exceed 10 000.",
   "Product.Available.Required": "Please indicate if the product is available.",
   "Product.MaxQuantity.Required": "Please enter the maximum quantity.",
   "Product.MaxQuantity.Min": "Maximum quantity should be at least 1.",
-  "Product.MaxQuantity.Max": "Maximum quantity should not exceed 1000.",
+  "Product.MaxQuantity.Max": "Maximum quantity should not exceed 10 000.",
   "Product.DefaultImportPrice.LessThan.RetailPrice": "Default import price should be less than the retail price.",
-  "Product.ImportQuantity.Exceeded": "Maximum quantity exceeded, please reduce the quantity by {0}."
+  "Product.ImportQuantity.Exceeded": "Maximum quantity exceeded, please reduce the quantity by {0}.",
+  "Product.UpdateInfo.Success": "Update product information successfully.",
+  "Product.UpdateImages.Failed": "Unexpected error occurred while updating product images."
 }

@@ -20,11 +20,13 @@
   "Product.Description.Max": "Mô tả sản phẩm không được vượt quá 500 ký tự.",
   "Product.ShelfLife.Required": "Vui lòng nhập thời hạn sử dụng.",
   "Product.ShelfLife.Min": "Thời hạn sử dụng phải ít nhất là 1.",
-  "Product.ShelfLife.Max": "Thời hạn sử dụng không được vượt quá 1000.",
+  "Product.ShelfLife.Max": "Thời hạn sử dụng không được vượt quá 10 000.",
   "Product.Available.Required": "Vui lòng chỉ rõ sản phẩm có sẵn hay không.",
   "Product.MaxQuantity.Required": "Vui lòng nhập số lượng tối đa.",
   "Product.MaxQuantity.Min": "Số lượng tối đa phải ít nhất là 1.",
-  "Product.MaxQuantity.Max": "Số lượng tối đa không được vượt quá 1000.",
+  "Product.MaxQuantity.Max": "Số lượng tối đa không được vượt quá 10 000.",
   "Product.DefaultImportPrice.LessThan.RetailPrice": "Giá nhập mặc định phải thấp hơn giá bán lẻ.",
-  "Product.ImportQuantity.Exceeded": "Vượt quá số lượng tồn kho cho phép, vui lòng giảm số lượng nhập đi {0}."
+  "Product.ImportQuantity.Exceeded": "Vượt quá số lượng tồn kho cho phép, vui lòng giảm số lượng nhập đi {0}.",
+  "Product.UpdateInfo.Success": "Cập nhật thông tin sản phẩm thành công.",
+  "Product.UpdateImages.Failed": "Đã có lỗi xảy ra khi cập nhật ảnh sản phẩm."
 }

@@ -28,10 +28,10 @@ export const useLoginForm = (userType: UserType) => {
       }),
     onSuccess: (result) => {
       if (!result?.ok) {
-        const notVerified = result?.error?.includes('Account.Verified.Invalid');
+        const notVerified = result?.error?.includes('Account.Verified.False');
         const notFound = result?.error?.includes('CredentialsSignin');
         if (notVerified) {
-          setErrorMessage('Account.Verified.Invalid');
+          setErrorMessage('Account.Verified.False');
         }
         if (notFound) {
           setErrorMessage('Account.Credentials.Invalid');

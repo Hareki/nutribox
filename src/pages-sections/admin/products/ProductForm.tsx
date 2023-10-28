@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
-import type { Dispatch, FC } from 'react';
+import type { FC } from 'react';
 import { Fragment } from 'react';
 
 import apiCaller from 'api-callers/staff/products';
@@ -19,12 +19,6 @@ import { ProductFormSchema } from 'backend/dtos/product/newProduct.dto';
 import type { ExtendedCommonProductModel } from 'backend/services/product/helper';
 import CurrencyInput from 'components/common/input/CurrencyInput';
 import CustomSwitch from 'components/common/input/CustomSwitch';
-import InfoDialog from 'components/dialog/info-dialog';
-import type {
-  InfoDialogAction,
-  InfoDialogState,
-} from 'components/dialog/info-dialog/reducer';
-import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import type { ProductCategoryModel } from 'models/productCategory.model';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 

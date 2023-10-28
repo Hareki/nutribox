@@ -2,5 +2,6 @@
   "title": "Đây là tiêu đề tiếng Việt",
   "description": "Đây là mô tả tiếng Việt",
   "Free Express Shipping": "Đây là miễn phí vận chuyển tiếng Việt",
-  "Number.InvalidFormat": "Vui lòng nhập số."
+  "Number.InvalidFormat": "Vui lòng nhập số.",
+  "Internet.Error": "Đã xảy ra lỗi không xác định, vui lòng thử lại sau"
 }

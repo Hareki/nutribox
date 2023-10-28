@@ -43,13 +43,13 @@ const ProductSchema = z.object({
 
   description: zodString('Product.Description', 1, 500),
 
-  shelfLife: zodNumber('Product.ShelfLife', 'int', 1, 1_000),
+  shelfLife: zodNumber('Product.ShelfLife', 'int', 1, 10_000),
 
   available: z.boolean({
     required_error: 'Product.Available.Required',
   }),
 
-  maxQuantity: zodNumber('Product.MaxQuantity', 'int', 1, 1_000),
+  maxQuantity: zodNumber('Product.MaxQuantity', 'int', 1, 10_000),
 });
 
 type ProductModel = z.infer<typeof ProductSchema>;

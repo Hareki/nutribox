@@ -18,7 +18,7 @@
   "Account.Disabled.Required": "Vui lòng nhập Trạng thái vô hiệu hóa.",
   "Account.Disabled.True": "Tài khoản đã bị vô hiệu hóa.",
   "Account.Verified.Required": "Vui lòng nhập Trạng thái đã xác thực.",
-  "Account.Verified.Invalid": "Tài khoản chưa được xác thực.",
+  "Account.Verified.False": "Tài khoản chưa được xác thực.",
   "Account.VerificationToken.Min": "Token xác thực phải có ít nhất 1 ký tự",
   "Account.VerificationToken.Max": "Token xác thực không được vượt quá 500 ký tự.",
   "Account.VerificationTokenExpiry.InvalidFormat": "Định dạng thời gian hết hạn của token xác thực không hợp lệ.",

@@ -55,7 +55,7 @@ export const useServerSideErrorDialog = ({
       });
       return;
     }
-    enqueueSnackbar(`Đã xảy ra lỗi không xác định, vui lòng thử lại sau`, {
+    enqueueSnackbar(t('Internet.Error'), {
       variant: 'error',
     });
   };
