@@ -7,22 +7,20 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
-import { checkContextCredentials } from 'api/helpers/auth.helper';
-import type { IAccountWithTotalOrders } from 'api/models/Account.model/types';
-import type { GetServerSideProps } from 'next';
 import type { ReactElement } from 'react';
 
-import apiCaller from 'api-callers/admin/account';
+import staffCustomerCaller from 'api-callers/staff/customers';
+import type { CustomerWithTotalOrders } from 'backend/services/customer/helper';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
-import { getAvatarUrl } from 'helpers/account.helper';
+import { getAvatarUrl, getFullName } from 'helpers/account.helper';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
-import AccountRow from 'pages-sections/admin/account/AccountRow';
+import CustomerRow from 'pages-sections/admin/customer/CustomerRow';
 
 AccountList.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
@@ -36,12 +34,12 @@ const tableHeading = [
   { id: 'totalOrders', label: 'Tổng số đơn', align: 'center' },
 ];
 
-const mapAccountToRow = (item: IAccountWithTotalOrders) => ({
+const mapAccountToRow = (item: CustomerWithTotalOrders) => ({
   id: item.id,
   lastName: item.lastName,
   firstName: item.firstName,
 
-  fullName: item.fullName,
+  fullName: getFullName(item),
   avatarUrl: getAvatarUrl(item),
   birthday: item.birthday,
   phone: item.phone,
@@ -56,9 +54,10 @@ function AccountList() {
     isLoading,
     paginationData: accounts,
     paginationComponent,
-  } = usePaginationQuery<IAccountWithTotalOrders>({
-    baseQueryKey: ['admin/accounts'],
-    getPaginationDataFn: (currPageNum) => apiCaller.getAccounts(currPageNum),
+  } = usePaginationQuery<CustomerWithTotalOrders>({
+    baseQueryKey: ['staff', 'customers'],
+    getPaginationDataFn: (currPageNum) =>
+      staffCustomerCaller.getCustomers(currPageNum),
   });
 
   const {
@@ -69,16 +68,16 @@ function AccountList() {
     mapItemToRow: mapAccountToRow,
     paginationResult: accounts,
     queryFn: (context) =>
-      apiCaller.searchAccountsByFullName(context.queryKey[2]),
+      staffCustomerCaller.searchCustomersByName(context.queryKey[2]),
   });
 
   const {
     order,
     // orderBy,
     selected,
-    rowsPerPage,
+    // rowsPerPage,
     filteredList,
-    handleChangePage,
+    // handleChangePage,
     // handleRequestSort,
   } = useMuiTable({
     listData: filteredAccounts,
@@ -86,15 +85,13 @@ function AccountList() {
     // defaultOrder: 'desc',
   });
 
-  console.log('file: index.tsx:73 - AccountList - filteredList:', filteredList);
-
   return (
     <Box py={4}>
       <H3 mb={2}>Tài khoản</H3>
 
       <SearchArea
         handleSearch={handleSearch}
-        searchPlaceholder='Tìm theo tên tài khoản'
+        searchPlaceholder='Tìm theo họ tên khách hàng'
         haveButton={false}
       />
 
@@ -123,7 +120,7 @@ function AccountList() {
 
                 <TableBody>
                   {filteredList.map((account) => (
-                    <AccountRow account={account} key={account.id} />
+                    <CustomerRow account={account} key={account.id} />
                   ))}
                 </TableBody>
               </Table>
@@ -140,13 +137,5 @@ function AccountList() {
     </Box>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isNotAuthorized, blockingResult } =
-    await checkContextCredentials(context);
-  if (isNotAuthorized) return blockingResult;
-
-  return { props: {} };
-};
 
 export default AccountList;

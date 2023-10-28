@@ -57,30 +57,30 @@ export class CustomerService {
   }
 
   public static async getCommonCustomer(
-    id: string,
+    customerId: string,
   ): Promise<CommonCustomerModel> {
     const queryBuilder = (await getRepo(CustomerEntity)).createQueryBuilder(
       'customer',
     );
     queryBuilder.leftJoinAndSelect('customer.account', 'account');
-    queryBuilder.where('account.id = :id', { id });
+    queryBuilder.where('customer.id = :id', { id: customerId });
     queryBuilder.leftJoinAndSelect('customer.cartItems', 'cartItems');
     queryBuilder.leftJoinAndSelect(
       'customer.customerAddresses',
       'customerAddresses',
     );
 
-    const test = queryBuilder.getQueryAndParameters();
     const customer = (await queryBuilder.getOne()) as CommonCustomerModel;
+
     return customer;
   }
 
   public static async getDashboardInfo(
-    id: string,
+    customerId: string,
   ): Promise<CustomerDashboardData> {
-    const customer = await this.getCommonCustomer(id);
+    const customer = await this.getCommonCustomer(customerId);
 
-    const orderStatusCount = await this._getOrderStatusCount(id);
+    const orderStatusCount = await this._getOrderStatusCount(customerId);
     return {
       ...customer,
       orderStatusCount,

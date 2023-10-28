@@ -1,4 +1,4 @@
-import AccountRow from './account/AccountRow';
+import CustomerRow from './customer/CustomerRow';
 import OrderDetails from './orders/OrderDetails';
 import OrderRow from './orders/OrderRow';
 import ProductForm from './products/ProductForm';
@@ -14,7 +14,7 @@ import {
 export {
   OrderRow,
   ProductRow,
-  AccountRow,
+  CustomerRow as AccountRow,
   ProductForm,
   OrderDetails,
   // styled components

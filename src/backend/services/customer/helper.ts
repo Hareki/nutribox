@@ -1,5 +1,5 @@
 import { OrderStatus } from 'backend/enums/entities.enum';
-import type { CommonCustomerModel } from 'models/customer.model';
+import type { CommonCustomerModel, CustomerModel } from 'models/customer.model';
 
 export type OrderStatusCount = {
   total: number;
@@ -23,3 +23,7 @@ export interface ProfileMenuCount {
   addressCount: number;
   orderCount: number;
 }
+
+export type CustomerWithTotalOrders = CustomerModel & {
+  totalOrders: number;
+};

@@ -24,7 +24,7 @@ function Profile(): ReactElement {
     <>
       {!isEditing ? (
         <ProfileViewer
-          account={account}
+          customer={account.customer}
           toggleEditing={toggleEditing}
           // orderStatusCount={orderStatusCount}
           // isLoadingCount={isLoadingCount}

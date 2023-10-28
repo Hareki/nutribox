@@ -7,7 +7,10 @@ import type { FC } from 'react';
 import { Fragment } from 'react';
 
 import profileCaller from 'api-callers/profile';
-import type { OrderStatusCount } from 'backend/services/customer/helper';
+import type {
+  CustomerDashboardData,
+  OrderStatusCount,
+} from 'backend/services/customer/helper';
 import SEO from 'components/abstract/SEO';
 import { H3, H5, Small } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
@@ -17,16 +20,16 @@ import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/N
 import { getAvatarUrl, getFullName } from 'helpers/account.helper';
 import { translateOrderStatusCountLabel } from 'helpers/order.helper';
 import { formatDate } from 'lib';
-import type { CommonCustomerAccountModel } from 'models/account.model';
+import type { CommonCustomerModel } from 'models/customer.model';
 
 type ProfileProps = {
-  account: CommonCustomerAccountModel;
+  customer: CommonCustomerModel | CustomerDashboardData;
   toggleEditing?: () => void;
   // orderStatusCount: OrderStatusCount;
   // isLoadingCount: boolean;
 };
 const ProfileViewer: FC<ProfileProps> = ({
-  account,
+  customer,
   toggleEditing,
   // orderStatusCount,
   // isLoadingCount,
@@ -34,9 +37,10 @@ const ProfileViewer: FC<ProfileProps> = ({
   const downMd = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   const { data: dashboardInfo, isLoading: isLoadingCount } = useQuery({
-    queryKey: ['order-status-count', account.customer.id],
+    queryKey: ['order-status-count', customer.id],
     queryFn: () => profileCaller.getDashboardInfo(),
     onError: (err) => console.log(err),
+    enabled: !(customer as CustomerDashboardData).orderStatusCount,
   });
 
   // SECTION TITLE HEADER LINK
@@ -59,12 +63,10 @@ const ProfileViewer: FC<ProfileProps> = ({
     cancelled: 0,
   };
 
-  const orderStatusCount = dashboardInfo?.orderStatusCount;
-  console.log(
-    'file: ProfileViewer.tsx:62 - orderStatusCount:',
-    orderStatusCount,
-    isLoadingCount,
-  );
+  const orderStatusCount =
+    (customer as CustomerDashboardData).orderStatusCount ||
+    dashboardInfo?.orderStatusCount;
+
   return (
     <Fragment>
       <SEO title='Hồ Sơ Của Tôi' />
@@ -92,7 +94,7 @@ const ProfileViewer: FC<ProfileProps> = ({
               }}
             >
               <Avatar
-                src={getAvatarUrl(account.customer)}
+                src={getAvatarUrl(customer)}
                 sx={{
                   height: 64,
                   width: 64,
@@ -105,7 +107,7 @@ const ProfileViewer: FC<ProfileProps> = ({
               <Box ml={1.5} flex='1 1 0'>
                 <FlexBetween flexWrap='wrap'>
                   <div>
-                    <H5 my='0px'>{getFullName(account.customer)}</H5>
+                    <H5 my='0px'>{getFullName(customer)}</H5>
                   </div>
                 </FlexBetween>
               </Box>
@@ -168,14 +170,11 @@ const ProfileViewer: FC<ProfileProps> = ({
           }),
         }}
       >
-        <TableRowItem title='Họ và tên lót' value={account.customer.lastName} />
-        <TableRowItem title='Tên' value={account.customer.firstName} />
-        <TableRowItem title='Email' value={account.email} />
-        <TableRowItem title='Số điện thoại' value={account.customer.phone} />
-        <TableRowItem
-          title='Ngày sinh'
-          value={formatDate(account.customer.birthday)}
-        />
+        <TableRowItem title='Họ và tên lót' value={customer.lastName} />
+        <TableRowItem title='Tên' value={customer.firstName} />
+        <TableRowItem title='Email' value={customer.email} />
+        <TableRowItem title='Số điện thoại' value={customer.phone} />
+        <TableRowItem title='Ngày sinh' value={formatDate(customer.birthday)} />
       </TableRow>
     </Fragment>
   );

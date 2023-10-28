@@ -37,16 +37,16 @@ export const navigations: Record<SideBarRole, NavigationItem[]> = {
       icon: duotone.Order,
       path: CUSTOMER_ORDERS_STAFF_ROUTE,
     },
-    // {
-    //   name: 'Nhân viên',
-    //   icon: duotone.UserTie,
-    //   path: EMPLOYEES_STAFF_ROUTE,
-    // },
-    // {
-    //   name: 'Khách hàng',
-    //   icon: duotone.Customers,
-    //   path: CUSTOMERS_STAFF_ROUTE,
-    // },
+    {
+      name: 'Nhân viên',
+      icon: duotone.UserTie,
+      path: EMPLOYEES_STAFF_ROUTE,
+    },
+    {
+      name: 'Khách hàng',
+      icon: duotone.Customers,
+      path: CUSTOMERS_STAFF_ROUTE,
+    },
     {
       name: 'Nhà cung cấp',
       icon: duotone.Seller,
