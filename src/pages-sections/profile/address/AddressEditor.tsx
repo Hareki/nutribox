@@ -133,7 +133,9 @@ const AddressEditor: NextPage<AddressEditorProps> = ({
       queryClient.invalidateQueries(['addresses', accountId]);
       queryClient.setQueryData(['addresses', accountId], newAddresses);
       enqueueSnackbar(
-        isAddMode ? 'Thêm địa chỉ thành công' : 'Sửa địa chỉ thành công',
+        isAddMode
+          ? t('CustomerAddress.Added.Success')
+          : t('CustomerAddress.Updated.Success'),
         { variant: 'success' },
       );
       goBack();

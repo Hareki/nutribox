@@ -22,6 +22,7 @@ import {
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import CustomerDashboardNavigation from 'components/layouts/customer-dashboard/Navigations';
 import { getFullAddressFromNames } from 'helpers/address.helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import type { CustomerAddressModel } from 'models/customerAddress.model';
 
 type AddressViewerProps = {
@@ -44,7 +45,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
     initConfirmDialogState,
   );
   const { enqueueSnackbar } = useSnackbar();
-
+  const { t } = useCustomTranslation(['customerAddress']);
   const [deleteAddressId, setDeleteAddressId] = useState<string>();
 
   const queryClient = useQueryClient();
@@ -56,13 +57,15 @@ const AddressViewer: FC<AddressViewerProps> = ({
   >({
     mutationFn: (addressId) => addressCaller.deleteAddress(addressId),
     onSuccess: (newAddresses) => {
-      enqueueSnackbar('Xoá địa chỉ đã chọn thành công', { variant: 'success' });
+      enqueueSnackbar(t('CustomerAddress.Deleted.Success'), {
+        variant: 'success',
+      });
       queryClient.invalidateQueries(['addresses', accountId]);
       queryClient.setQueryData(['addresses', accountId], newAddresses);
     },
     onError: (err) => {
       console.log(err);
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+      enqueueSnackbar(t('Internet.Error'), {
         variant: 'error',
       });
     },
@@ -76,7 +79,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
           isDefault: true,
         }),
       onSuccess: (newAddresses) => {
-        enqueueSnackbar('Đặt làm địa chỉ mặc định thành công', {
+        enqueueSnackbar(t('CustomerAddress.SetDefault.Success'), {
           variant: 'success',
         });
         queryClient.invalidateQueries(['addresses', accountId]);
@@ -86,7 +89,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
       },
       onError: (err) => {
         console.log(err);
-        enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+        enqueueSnackbar(t('Internet.Error'), {
           variant: 'error',
         });
       },

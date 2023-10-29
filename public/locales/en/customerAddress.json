@@ -17,5 +17,9 @@
   "CustomerAddress.StreetAddress.Max": "Street Address must not exceed 500 characters.",
   "CustomerAddress.IsDefault.Required": "Please enter the Default status.",
   "CustomerAddress.Title.Required": "Please enter the Address title.",
-  "CustomerAddress.Title.Duplicate": "Address title already exists."
+  "CustomerAddress.Title.Duplicate": "Address title already exists.",
+  "CustomerAddress.Added.Success": "Address added successfully.",
+  "CustomerAddress.Updated.Success": "Address updated successfully.",
+  "CustomerAddress.Deleted.Success": "Selected address deleted successfully.",
+  "CustomerAddress.SetDefault.Success": "Set default address successfully."
 }

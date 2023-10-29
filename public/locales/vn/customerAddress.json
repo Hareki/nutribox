@@ -17,5 +17,9 @@
   "CustomerAddress.StreetAddress.Max": "Địa chỉ đường không được vượt quá 500 ký tự.",
   "CustomerAddress.IsDefault.Required": "Vui lòng nhập trạng thái Mặc định.",
   "CustomerAddress.Title.Required": "Vui lòng nhập Tên địa chỉ.",
-  "CustomerAddress.Title.Duplicate": "Tên địa chỉ đã tồn tại"
+  "CustomerAddress.Title.Duplicate": "Tên địa chỉ đã tồn tại",
+  "CustomerAddress.Added.Success": "Thêm địa chỉ thành công.",
+  "CustomerAddress.Updated.Success": "Cập nhật địa chỉ thành công.",
+  "CustomerAddress.Deleted.Success": "Xóa địa chỉ đã chọn thành công.",
+  "CustomerAddress.SetDefault.Success": "Đặt làm địa chỉ mặc định thành công"
 }
