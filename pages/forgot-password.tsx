@@ -2,8 +2,10 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Card, TextField } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
+import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSnackbar } from 'notistack';
 import { useReducer, useState } from 'react';
 
@@ -21,7 +23,8 @@ import {
 } from 'components/dialog/info-dialog/reducer';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import { getPageLayout } from 'components/layouts/PageLayout';
-import { HOME_PAGE_ROUTE, SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
+import { SIGN_IN_ROUTE } from 'constants/routes.ui.constant';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 ResetPassword.getLayout = getPageLayout;
@@ -36,6 +39,7 @@ function ResetPassword() {
   const { enqueueSnackbar } = useSnackbar();
 
   const [state, dispatch] = useReducer(infoDialogReducer, initInfoDialogState);
+  const { t } = useCustomTranslation(['account']);
 
   const { mutate: resetPasswordRequest, isLoading } = useMutation<
     undefined,
@@ -55,8 +59,7 @@ function ResetPassword() {
         payload: {
           variant: 'info',
           title: 'Thông báo',
-          content:
-            'Mã xác nhận đã được gửi nếu có tài khoản tương ứng, vui lòng kiểm tra email, bạn sẽ được chuyển về trang chủ sau khi tắt thông báo này',
+          content: t('Account.ForgotPassword.Sent'),
         },
       });
     },
@@ -137,5 +140,14 @@ function ResetPassword() {
     </FlexRowCenter>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'account',
+    'common',
+  ]);
+
+  return { props: { ...locales } };
+};
 
 export default ResetPassword;

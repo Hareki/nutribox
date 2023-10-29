@@ -26,5 +26,6 @@
   "Account.ForgotPasswordToken.Max": "Token quên mật khẩu không được vượt quá 500 ký tự.",
   "Account.ForgotPasswordTokenExpiry.InvalidFormat": "Định dạng thời gian hết hạn của token quên mật khẩu không hợp lệ.",
   "Account.Credentials.Invalid": "Sai tài khoản hoặc mật khẩu",
-  "Account.OldPassword.Same": "Mật khẩu cũ và mới phải khác nhau"
+  "Account.OldPassword.Same": "Mật khẩu cũ và mới phải khác nhau",
+  "Account.ForgotPassword.Sent": "Mã xác nhận đã được gửi nếu có tài khoản tương ứng, vui lòng kiểm tra email, bạn sẽ được chuyển về trang đăng nhập sau khi tắt thông báo này"
 }
