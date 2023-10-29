@@ -3,5 +3,6 @@
   "description": "Test description for multi language",
   "Free Express Shipping": "Free Express Shipping",
   "Number.InvalidFormat": "Please enter a number.",
-  "Internet.Error": "Unexpected error occurred. Please try again later."
+  "Internet.Error": "Unexpected error occurred. Please try again later.",
+  "Dashboard.UpdateData.Success": "Updated data."
 }

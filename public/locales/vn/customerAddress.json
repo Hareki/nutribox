@@ -21,5 +21,6 @@
   "CustomerAddress.Added.Success": "Thêm địa chỉ thành công.",
   "CustomerAddress.Updated.Success": "Cập nhật địa chỉ thành công.",
   "CustomerAddress.Deleted.Success": "Xóa địa chỉ đã chọn thành công.",
-  "CustomerAddress.SetDefault.Success": "Đặt làm địa chỉ mặc định thành công"
+  "CustomerAddress.SetDefault.Success": "Đặt làm địa chỉ mặc định thành công",
+  "CustomerAddress.Delete.Confirmation": "Bạn có chắc muốn xoá địa chỉ này? Hành động này không thể hoàn tác"
 }

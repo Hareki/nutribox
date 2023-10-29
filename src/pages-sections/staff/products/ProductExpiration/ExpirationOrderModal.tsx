@@ -84,7 +84,7 @@ const ExpirationOrderModal = ({
     mutationFn: (requestBody) =>
       apiCaller.importProduct(product.id, requestBody),
     onSuccess: () => {
-      enqueueSnackbar('Nhập hàng thành công', { variant: 'success' });
+      enqueueSnackbar(t('ImportOrder.Import.Success'), { variant: 'success' });
       queryClient.refetchQueries(['staff', 'import-orders', product.id]);
       setOpen(false);
     },

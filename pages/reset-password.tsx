@@ -98,7 +98,7 @@ function ChangePassword({
         payload: {
           variant: 'error',
           title: 'Thông báo',
-          content: 'Đã có lỗi xảy ra, vui lòng thử lại sau',
+          content: t('Internet.Error'),
         },
       });
     },
@@ -266,13 +266,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const locales = await serverSideTranslations(locale ?? 'vn', [
-    'account',
-    'common',
-  ]);
+// export const getStaticProps: GetStaticProps = async ({ locale }) => {
+//   const locales = await serverSideTranslations(locale ?? 'vn', [
+//     'account',
+//     'common',
+//   ]);
 
-  return { props: { ...locales } };
-};
+//   return { props: { ...locales } };
+// };
 
 export default ChangePassword;

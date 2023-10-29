@@ -49,7 +49,7 @@ function ResetPassword() {
     mutationFn: (email) => mailCaller.forgotPassword({ email }),
     onError: (error) => {
       console.log(error);
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+      enqueueSnackbar(t('Internet.Error'), {
         variant: 'error',
       });
     },

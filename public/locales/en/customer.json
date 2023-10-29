@@ -18,6 +18,10 @@
   "Customer.Phone.InvalidFormat": "Invalid format for Phone number.",
   "Customer.Birthday.Required": "Please enter the Birthday.",
   "Customer.Birthday.InvalidFormat": "Invalid date format for Birthday.",
-  "Customer.Birthday.Max": "Birthday must not exceed yesterday",
-  "Customer.Birthday.Min": "Birthday must not be less than 200 years ago"
+  "Customer.Birthday.Max": "Birthday must not exceed yesterday.",
+  "Customer.Birthday.Min": "Birthday must not be less than 200 years ago.",
+  "Customer.UpdateProfile.Success": "Profile updated successfully.",
+  "Customer.UpdateProfilePicture.Success": "Profile picture updated successfully.",
+  "Customer.ProfilePicture.InvalidFormat": "Profile picture must be an image.",
+  "Customer.ProfilePicture.Failed": "An error occurred while updating the profile picture."
 }

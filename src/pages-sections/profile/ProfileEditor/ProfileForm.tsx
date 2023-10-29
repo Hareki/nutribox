@@ -66,14 +66,16 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
     mutationFn: (body) => profileCaller.updateAccount(body),
     onSuccess: () => {
       reloadSession();
-      enqueueSnackbar('Chỉnh sửa thông tin thành công', { variant: 'success' });
-      queryClient.invalidateQueries(['account']);
+      enqueueSnackbar(t('Customer.UpdateProfile.Success'), {
+        variant: 'success',
+      });
+      queryClient.invalidateQueries(['profile']);
       setIsEditing(false);
       //   toggleEditing();
     },
     onError: (error) => {
       console.log(error);
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+      enqueueSnackbar(t('Internet.Error'), {
         variant: 'error',
       });
     },
@@ -90,21 +92,21 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
     onSuccess: (response) => {
       setIsUploadingImage(false);
       reloadSession();
-      queryClient.invalidateQueries(['account']);
-      queryClient.setQueryData(['account'], (oldData: CustomerModel) => {
+      queryClient.invalidateQueries(['profile']);
+      queryClient.setQueryData(['profile'], (oldData: CustomerModel) => {
         return {
           ...oldData,
           avatarUrl: response.avatarUrl,
         };
       });
-      enqueueSnackbar('Thay đổi ảnh đại diện thành công', {
+      enqueueSnackbar(t('Customer.UpdateProfilePicture.Success'), {
         variant: 'success',
       });
     },
     onError: (err) => {
       console.log(err);
       setIsUploadingImage(false);
-      enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+      enqueueSnackbar(t('Internet.Error'), {
         variant: 'error',
       });
     },
@@ -190,7 +192,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
             validateFile={(file: File) => {
               const isValidAvatar = file.type.startsWith('image/');
               if (!isValidAvatar) {
-                enqueueSnackbar('Ảnh đại diện phải là ảnh', {
+                enqueueSnackbar(t('Customer.ProfilePicture.InvalidFormat'), {
                   variant: 'error',
                 });
                 return false;
@@ -203,7 +205,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
             onError={(err: any) => {
               console.log(err);
               setIsUploadingImage(false);
-              enqueueSnackbar('Đã có lỗi xảy ra khi thay đổi ảnh đại diện', {
+              enqueueSnackbar(t('Customer.ProfilePicture.Failed'), {
                 variant: 'error',
               });
             }}

@@ -70,7 +70,7 @@ function ProfileOrderDetails() {
   const productsOfOrders = useQueries({
     queries:
       order?.customerOrderItems.map((item) => ({
-        queryKey: ['product', item.product],
+        queryKey: ['products', item.product],
         queryFn: () => productApiCaller.getProduct(item.product, false),
       })) || [],
   }) as UseQueryResult<CommonProductModel, unknown>[];

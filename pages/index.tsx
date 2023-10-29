@@ -83,7 +83,7 @@ function HomePage(props: HomePageProps) {
   const searchQuery = query?.productName as string;
 
   const { data: searchResult, isLoading: isSearching } = useQuery({
-    queryKey: ['product', 'search', searchQuery],
+    queryKey: ['products', 'search', searchQuery],
     queryFn: (context) =>
       searchApiCaller.searchProductsByName(context.queryKey[2]),
     initialData: [],

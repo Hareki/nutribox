@@ -93,7 +93,10 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     };
   }
 
-  const locales = await serverSideTranslations(locale ?? 'vn', ['cartItem']);
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'cartItem',
+    'common',
+  ]);
 
   return {
     props: {

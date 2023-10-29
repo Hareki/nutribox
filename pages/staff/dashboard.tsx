@@ -8,7 +8,9 @@ import {
 } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import { useQuery } from '@tanstack/react-query';
+import type { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { enqueueSnackbar } from 'notistack';
 import { useState, type ReactElement } from 'react';
 
@@ -16,6 +18,7 @@ import dashboardCaller from 'api-callers/staff/dashboard';
 import { H3 } from 'components/abstract/Typography';
 import { FlexBox } from 'components/flex-box';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { formatCurrency } from 'lib';
 import Analytics from 'pages-sections/dashboard/Analytics';
 import RecentOrders from 'pages-sections/dashboard/RecentOrders';
@@ -89,6 +92,7 @@ export default function VendorDashboard() {
     />
   );
   const theme = useTheme();
+  const { t } = useCustomTranslation([]);
 
   return (
     <Box py={4}>
@@ -98,7 +102,9 @@ export default function VendorDashboard() {
           disabled={isFetching}
           onClick={async () => {
             await refetch();
-            enqueueSnackbar('Đã cập nhật dữ liệu', { variant: 'success' });
+            enqueueSnackbar(t('Dashboard.UpdateData.Success'), {
+              variant: 'success',
+            });
           }}
         >
           {isFetching ? (
@@ -236,3 +242,9 @@ function calculatePercentageDifference(
 
   return percentageDifference;
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', ['common']);
+
+  return { props: { ...locales } };
+};

@@ -39,45 +39,45 @@ export const extractErrorMessages = (
   }
 };
 
-export type GetDefaultOnApiErrorInputs = {
-  // error: AxiosErrorWithMessages;
-  dispatch: Dispatch<InfoDialogAction>;
-  operationName: string;
-  t: (key: string) => string;
-  onStart?: () => void;
-};
+// export type GetDefaultOnApiErrorInputs = {
+//   // error: AxiosErrorWithMessages;
+//   dispatch: Dispatch<InfoDialogAction>;
+//   operationName: string;
+//   t: (key: string) => string;
+//   onStart?: () => void;
+// };
 
-export const getDefaultOnApiError =
-  ({
-    dispatch,
-    // error,
-    operationName,
-    t,
-    onStart,
-  }: GetDefaultOnApiErrorInputs) =>
-  (error: AxiosErrorWithMessages) => {
-    onStart?.();
+// export const getDefaultOnApiError =
+//   ({
+//     dispatch,
+//     // error,
+//     operationName,
+//     t,
+//     onStart,
+//   }: GetDefaultOnApiErrorInputs) =>
+//   (error: AxiosErrorWithMessages) => {
+//     onStart?.();
 
-    if (error.response?.data.data) {
-      const messageObject = error.response.data.data;
-      dispatch({
-        type: 'open_dialog',
-        payload: {
-          variant: 'error',
-          title: `${operationName} thất bại`,
-          content: extractErrorMessages(
-            messageObject,
-            t,
-            error.response.data.data.params,
-          ),
-        },
-      });
-      return;
-    }
-    enqueueSnackbar(`Đã xảy ra lỗi không xác định, vui lòng thử lại sau`, {
-      variant: 'error',
-    });
-  };
+//     if (error.response?.data.data) {
+//       const messageObject = error.response.data.data;
+//       dispatch({
+//         type: 'open_dialog',
+//         payload: {
+//           variant: 'error',
+//           title: `${operationName} thất bại`,
+//           content: extractErrorMessages(
+//             messageObject,
+//             t,
+//             error.response.data.data.params,
+//           ),
+//         },
+//       });
+//       return;
+//     }
+//     enqueueSnackbar(`Đã xảy ra lỗi không xác định, vui lòng thử lại sau`, {
+//       variant: 'error',
+//     });
+//   };
 
 // export const getDefaultOnApiError =
 //   (
@@ -106,7 +106,7 @@ export const getDefaultOnApiError =
 //     onDone?.();
 //   };
 
-export const notifyUnexpectedError = () =>
-  enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
-    variant: 'error',
-  });
+// export const notifyUnexpectedError = () =>
+//   enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+//     variant: 'error',
+//   });

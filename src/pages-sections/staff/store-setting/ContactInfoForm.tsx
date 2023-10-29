@@ -46,11 +46,11 @@ export default function ContactInfoForm({
   >({
     mutationFn: (dto) => staffStoreCaller.updateStoreInfo(STORE_ID, dto),
     onSuccess: () => {
-      enqueueSnackbar('Cập nhật thông tin liên hệ thành công', {
+      enqueueSnackbar(t('Store.UpdateContactInfo.Success'), {
         variant: 'success',
       });
       setIsEditing(false);
-      queryClient.invalidateQueries(['store', initialStoreInfo.id]);
+      queryClient.invalidateQueries(['staff', 'stores', initialStoreInfo.id]);
     },
     onError: dispatchErrorDialog,
   });

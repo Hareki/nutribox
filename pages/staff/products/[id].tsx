@@ -72,8 +72,8 @@ export default function AdminProductDetails() {
     onSuccess: (res) => {
       setIsEditingForm(false);
       enqueueSnackbar(t('Product.UpdateInfo.Success'), { variant: 'success' });
-      queryClient.invalidateQueries(['product', productId]);
-      queryClient.setQueryData(['product', productId], res);
+      queryClient.invalidateQueries(['products', productId]);
+      queryClient.setQueryData(['products', productId], res);
     },
     onError: dispatchErrorDialog,
   });
@@ -82,14 +82,14 @@ export default function AdminProductDetails() {
     useMutation<CommonProductModel, unknown, string[]>({
       mutationFn: (imageUrls) => apiCaller.pushImages(productId, imageUrls),
       onSuccess: () => {
-        enqueueSnackbar('Thêm ảnh sản phẩm thành công', {
+        enqueueSnackbar(t('Product.AddImages.Success'), {
           variant: 'success',
         });
-        queryClient.refetchQueries(['product', productId]);
+        queryClient.refetchQueries(['products', productId]);
       },
       onError: (err) => {
         console.log(err);
-        enqueueSnackbar('Đã có lỗi xảy ra khi thêm ảnh sản phẩm', {
+        enqueueSnackbar(t('Product.AddImages.Failed'), {
           variant: 'error',
         });
       },
@@ -108,7 +108,7 @@ export default function AdminProductDetails() {
       enqueueSnackbar(t('Product.DeleteSelectedImage.Success'), {
         variant: 'success',
       });
-      queryClient.refetchQueries(['product', productId]);
+      queryClient.refetchQueries(['products', productId]);
     },
     onError: (err) => {
       setIsUploadSuccess(false);

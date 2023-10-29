@@ -48,11 +48,11 @@ const StoreHoursForm = ({ initialStoreInfo }: StoreHoursFormProps) => {
   >({
     mutationFn: (body) => staffStoreCaller.updateStoreWorkTimes(STORE_ID, body),
     onSuccess: () => {
-      enqueueSnackbar('Cập nhật giờ làm việc thành công', {
+      enqueueSnackbar(t('Store.UpdateWorkTime.Success'), {
         variant: 'success',
       });
       setIsEditing(false);
-      queryClient.refetchQueries(['stores', initialStoreInfo.id]);
+      queryClient.refetchQueries(['staff', 'stores', initialStoreInfo.id]);
     },
   });
 

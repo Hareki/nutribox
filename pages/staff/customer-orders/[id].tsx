@@ -74,7 +74,7 @@ function AdminOrderDetails() {
         });
       },
       onError: (err) => {
-        enqueueSnackbar('Đã có lỗi xảy ra, vui lòng thử lại sau', {
+        enqueueSnackbar(t('Internet.Error'), {
           variant: 'error',
         });
         console.log(err);
@@ -102,7 +102,7 @@ function AdminOrderDetails() {
   const productsOfOrders = useQueries({
     queries:
       order?.customerOrderItems.map((item) => ({
-        queryKey: ['product', item.product.toString()],
+        queryKey: ['products', item.product.toString()],
         queryFn: () => productApiCaller.getProduct(item.product.toString()),
       })) || [],
   });

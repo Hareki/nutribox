@@ -21,5 +21,6 @@
   "CustomerAddress.Added.Success": "Address added successfully.",
   "CustomerAddress.Updated.Success": "Address updated successfully.",
   "CustomerAddress.Deleted.Success": "Selected address deleted successfully.",
-  "CustomerAddress.SetDefault.Success": "Set default address successfully."
+  "CustomerAddress.SetDefault.Success": "Set default address successfully.",
+  "CustomerAddress.Delete.Confirmation": "Are you sure you want to delete the selected address? This action cannot be undone."
 }

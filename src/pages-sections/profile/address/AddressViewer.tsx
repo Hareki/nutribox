@@ -116,8 +116,7 @@ const AddressViewer: FC<AddressViewerProps> = ({
       type: 'open_dialog',
       payload: {
         title: 'Xoá địa chỉ đã chọn?',
-        content:
-          'Bạn có chắc muốn xoá địa chỉ này? Hành động này không thể hoàn tác',
+        content: t('CustomerAddress.Delete.Confirmation'),
       },
     });
   };

@@ -22,7 +22,7 @@ export function useTableSearch({
   const debounceSearchQuery = useDebounce(searchQuery, 200);
 
   const { data: searchResult, isFetching: isSearching } = useQuery({
-    queryKey: ['product', 'search', debounceSearchQuery],
+    queryKey: ['products', 'search', debounceSearchQuery],
     queryFn,
     initialData: [],
   });

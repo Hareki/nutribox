@@ -57,7 +57,7 @@ const PasswordChangeForm = () => {
       }),
     onSuccess: () => {
       setIsEditing(false);
-      enqueueSnackbar('Đổi mật khẩu thành công', {
+      enqueueSnackbar(t('Account.ChangePassword.Success'), {
         variant: 'success',
       });
       resetForm();

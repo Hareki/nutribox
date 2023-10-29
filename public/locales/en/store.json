@@ -13,5 +13,7 @@
   "Store.WardCode.Required": "Please enter the Ward.",
   "Store.StreetAddress.Required": "Please enter the street address.",
   "Store.StreetAddress.Min": "Street address should be at least 1 character.",
-  "Store.StreetAddress.Max": "Street address should not exceed 100 characters."
+  "Store.StreetAddress.Max": "Street address should not exceed 100 characters.",
+  "Store.UpdateWorkTime.Success": "Store work time updated successfully.",
+  "Store.UpdateContactInfo.Success": "Store contact information updated successfully."
 }

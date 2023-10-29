@@ -18,7 +18,7 @@ StoreSetting.getLayout = function getLayout(page: ReactElement) {
 
 function StoreSetting() {
   const { data: storeInfoAndWorkTimes, isLoading } = useQuery({
-    queryKey: ['stores', STORE_ID],
+    queryKey: ['staff', 'stores', STORE_ID],
     queryFn: () => staffStoreCaller.getStoreInfoAndWorkTimes(STORE_ID),
   });
 

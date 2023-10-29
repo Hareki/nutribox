@@ -19,5 +19,9 @@
   "Customer.Birthday.Required": "Vui lòng nhập Ngày sinh.",
   "Customer.Birthday.InvalidFormat": "Định dạng Ngày sinh không hợp lệ.",
   "Customer.Birthday.Max": "Ngày sinh không thể vượt quá hôm qua.",
-  "Customer.Birthday.Min": "Ngày sinh không thể sớm hơn 200 năm"
+  "Customer.Birthday.Min": "Ngày sinh không thể sớm hơn 200 năm",
+  "Customer.UpdateProfile.Success": "Cập nhật thông tin cá nhân thành công.",
+  "Customer.UpdateProfilePicture.Success": "Đổi ảnh đại diện thành công.",
+  "Customer.ProfilePicture.InvalidFormat": "Ảnh đại diện phải là ảnh",
+  "Customer.ProfilePicture.Failed": "Đã có lỗi xảy ra khi thay đổi ảnh đại diện"
 }

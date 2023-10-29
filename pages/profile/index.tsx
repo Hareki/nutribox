@@ -19,7 +19,7 @@ function Profile(): ReactElement {
 
   const { data: customerWithDashboardInfo, isLoading: isLoadingCustomer } =
     useQuery({
-      queryKey: ['order-status-count', account?.customer.id],
+      queryKey: ['profile', account?.customer.id],
       queryFn: () => profileCaller.getDashboardInfo(),
       onError: (err) => console.log(err),
     });

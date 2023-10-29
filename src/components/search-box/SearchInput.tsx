@@ -22,7 +22,7 @@ const SearchInput: FC = () => {
   const debounceSearchQuery = useDebounce(searchQuery, 200);
 
   const { data: searchResult } = useQuery({
-    queryKey: ['product', 'search', debounceSearchQuery],
+    queryKey: ['products', 'search', debounceSearchQuery],
     queryFn: (context) => apiCaller.searchProductsByName(context.queryKey[2]),
     initialData: [],
   });
