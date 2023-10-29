@@ -2,7 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Card, Container, TextField, styled } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
-import type { GetServerSideProps } from 'next';
+import type { GetServerSideProps, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Fragment, useCallback, useReducer, useState } from 'react';
@@ -87,8 +87,7 @@ function ChangePassword({
         payload: {
           variant: 'info',
           title: 'Thông báo',
-          content:
-            'Khôi phục mật khẩu thành công, bạn sẽ được chuyển đến trang đăng nhập sau khi tắt thông báo này',
+          content: t('Account.ResetPassword.Success'),
         },
       });
     },
@@ -265,6 +264,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       ...locales,
     },
   };
+};
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'account',
+    'common',
+  ]);
+
+  return { props: { ...locales } };
 };
 
 export default ChangePassword;

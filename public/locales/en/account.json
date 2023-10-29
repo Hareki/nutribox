@@ -27,5 +27,6 @@
   "Account.ForgotPasswordTokenExpiry.InvalidFormat": "Invalid expiry date format for Forgot Password Token.",
   "Account.Credentials.Invalid": "Wrong email or password.",
   "Account.OldPassword.Same": "Old password and new password must be different",
-  "Account.ForgotPassword.Sent": "A confirmation code has been sent if there is a corresponding account. Please check your email. You will be redirected to the sign in page after closing this notification."
+  "Account.ForgotPassword.Sent": "A confirmation code has been sent if there is a corresponding account. Please check your email. You will be redirected to the sign in page after closing this notification.",
+  "Account.ResetPassword.Success": "Password recovery successful. You will be redirected to the login page after closing this notification."
 }
