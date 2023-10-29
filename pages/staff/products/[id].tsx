@@ -105,7 +105,7 @@ export default function AdminProductDetails() {
       setIsUploadSuccess(true);
       setIsUploadError(false);
 
-      enqueueSnackbar('Xoá ảnh đã chọn thành công', {
+      enqueueSnackbar(t('Product.DeleteSelectedImage.Success'), {
         variant: 'success',
       });
       queryClient.refetchQueries(['product', productId]);
@@ -115,7 +115,7 @@ export default function AdminProductDetails() {
       setIsUploadError(true);
 
       console.log(err);
-      enqueueSnackbar('Đã có lỗi xảy ra khi xoá ảnh đã chọn', {
+      enqueueSnackbar(t('Product.DeleteSelectedImage.Failed'), {
         variant: 'error',
       });
     },

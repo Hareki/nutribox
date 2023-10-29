@@ -38,5 +38,7 @@
   "CustomerOrder.CancellationReason.Required": "Please enter the cancellation reason.",
   "CustomerOrder.Distance.TooFar": "The distance is too far",
   "CustomerOrder.Duration.TooLong": "The delivery time is too long",
-  "CustomerOrder.WorkTime.Outside": "Outside of work time, please try again later!"
+  "CustomerOrder.WorkTime.Outside": "Outside of work time, please try again later!",
+  "CustomerOrder.Cancellation.Success": "The order has been successfully canceled.",
+  "CustomerOrder.UpgradeStatus.Success": "The order status has been successfully updated."
 }

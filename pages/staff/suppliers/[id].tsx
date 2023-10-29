@@ -64,7 +64,9 @@ export default function AdminSupplierDetails() {
       staffSupplierCaller.updateSupplier(id, requestBody),
     onSuccess: () => {
       setIsEditingForm(false);
-      enqueueSnackbar('Cập nhật nhà CC thành công', { variant: 'success' });
+      enqueueSnackbar('Cập nhật nhà cung cấp thành công', {
+        variant: 'success',
+      });
       queryClient.invalidateQueries(['suppliers', id]);
     },
     onError: dispatchErrorDialog,

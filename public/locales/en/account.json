@@ -29,5 +29,6 @@
   "Account.OldPassword.Same": "Old password and new password must be different",
   "Account.ForgotPassword.Sent": "A confirmation code has been sent if there is a corresponding account. Please check your email. You will be redirected to the sign in page after closing this notification.",
   "Account.ResetPassword.Success": "Password recovery successful. You will be redirected to the login page after closing this notification.",
-  "Account.SignUp.Success": "Please check your email to activate your account. You will be redirected to the homepage after closing this notification."
+  "Account.SignUp.Success": "Please check your email to activate your account. You will be redirected to the homepage after closing this notification.",
+  "Account.ResendVerification.Success": "A confirmation link has been sent if the email information is valid (an account has been registered with this email and has not been verified). You will be redirected to the login page after closing this notification."
 }

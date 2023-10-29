@@ -51,7 +51,7 @@ function ProfileOrderDetails() {
     onSuccess: () => {
       queryClient.refetchQueries(['orders', order!.id]);
       setCancelOrderDialogVisible(false);
-      enqueueSnackbar('Huỷ đơn hàng thành công', {
+      enqueueSnackbar(t('CustomerOrder.Cancellation.Success'), {
         variant: 'success',
       });
     },

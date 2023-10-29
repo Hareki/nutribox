@@ -120,12 +120,9 @@ export default function AdminProductCreate() {
   >({
     mutationFn: (requestBody) => apiCaller.createProduct(requestBody),
     onSuccess: async (product) => {
-      enqueueSnackbar(
-        'Thêm thông tin sản phẩm thành công! Tiến hành tải ảnh...',
-        {
-          variant: 'success',
-        },
-      );
+      enqueueSnackbar(t('Product.AddInfo.Success'), {
+        variant: 'success',
+      });
       console.log('Thêm thông tin sản phẩm thành công! Tiến hành tải ảnh...');
       console.log('file: create.tsx:102 - onSuccess: - product:', product);
       const folderName = `products/${getSlug(
@@ -150,12 +147,9 @@ export default function AdminProductCreate() {
           'Đã có lỗi xảy ra khi upload ảnh sản phẩm, thông tin sản phẩm đã được lưu',
           err,
         );
-        enqueueSnackbar(
-          'Đã có lỗi xảy ra khi upload ảnh sản phẩm, thông tin sản phẩm đã được lưu',
-          {
-            variant: 'error',
-          },
-        );
+        enqueueSnackbar(t('Product.AddImages.Failed'), {
+          variant: 'error',
+        });
       }
     },
     onError: dispatchErrorDialog,

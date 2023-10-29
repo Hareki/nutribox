@@ -38,5 +38,7 @@
   "CustomerOrder.CancellationReason.Required": "Vui lòng nhập lý do hủy đơn",
   "CustomerOrder.Distance.TooFar": "Khoảng cách giao hàng quá xa",
   "CustomerOrder.Duration.TooLong": "Thời gian giao hàng quá lâu",
-  "CustomerOrder.WorkTime.Outside": "Ngoài giờ làm việc, vui lòng thử lại sau"
+  "CustomerOrder.WorkTime.Outside": "Ngoài giờ làm việc, vui lòng thử lại sau",
+  "CustomerOrder.Cancellation.Success": "Hủy đơn hàng thành công",
+  "CustomerOrder.UpgradeStatus.Success": "Cập nhật trạng thái đơn hàng thành công"
 }

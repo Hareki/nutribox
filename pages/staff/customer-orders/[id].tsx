@@ -69,7 +69,7 @@ function AdminOrderDetails() {
       mutationFn: () => staffCustomerOrderCaller.upgradeOrderStatus(id),
       onSuccess: () => {
         queryClient.refetchQueries(['customer-orders', id]);
-        enqueueSnackbar('Cập nhật trạng thái đơn hàng thành công', {
+        enqueueSnackbar(t('CustomerOrder.UpgradeStatus.Success'), {
           variant: 'success',
         });
       },
@@ -93,7 +93,7 @@ function AdminOrderDetails() {
     onSuccess: () => {
       queryClient.refetchQueries(['customer-orders', order!.id]);
       setCancelOrderDialogVisible(false);
-      enqueueSnackbar('Huỷ đơn hàng thành công', {
+      enqueueSnackbar(t('CustomerOrder.Cancellation.Success'), {
         variant: 'success',
       });
     },

@@ -80,8 +80,7 @@ function VerificationResult({ verified }: VerificationProps) {
         payload: {
           variant: 'info',
           title: 'Thông báo',
-          content:
-            'Đường dẫn xác nhận đã được gửi nếu thông tin email hợp lệ (Đã đăng ký tài khoản với email này và chưa được xác thực). Bạn sẽ được chuyển về trang đăng nhập sau khi tắt thông báo này',
+          content: t('Account.ResendVerification.Success'),
         },
       });
     },

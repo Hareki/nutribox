@@ -28,5 +28,10 @@
   "Product.DefaultImportPrice.LessThan.RetailPrice": "Giá nhập mặc định phải thấp hơn giá bán lẻ.",
   "Product.ImportQuantity.Exceeded": "Vượt quá số lượng tồn kho cho phép, vui lòng giảm số lượng nhập đi {0}.",
   "Product.UpdateInfo.Success": "Cập nhật thông tin sản phẩm thành công.",
-  "Product.UpdateImages.Failed": "Đã có lỗi xảy ra khi cập nhật ảnh sản phẩm."
+  "Product.AddInfo.Success": "Thêm thông tin sản phẩm thành công! Tiến hành tải ảnh...",
+  "Product.UpdateImages.Failed": "Đã có lỗi xảy ra khi cập nhật ảnh sản phẩm.",
+  "Product.AddImages.Success": "Đã thêm ảnh sản phẩm thành công",
+  "Product.AddImages.Failed": "Đã có lỗi xảy ra khi upload ảnh sản phẩm, thông tin sản phẩm đã được lưu",
+  "Product.DeleteSelectedImage.Success": "Xóa ảnh đã chọn thành công.",
+  "Product.DeleteSelectedImage.Failed": "Đã có lỗi xảy ra khi xoá ảnh đã chọn."
 }

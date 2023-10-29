@@ -28,5 +28,10 @@
   "Product.DefaultImportPrice.LessThan.RetailPrice": "Default import price should be less than the retail price.",
   "Product.ImportQuantity.Exceeded": "Maximum quantity exceeded, please reduce the quantity by {0}.",
   "Product.UpdateInfo.Success": "Update product information successfully.",
-  "Product.UpdateImages.Failed": "Unexpected error occurred while updating product images."
+  "Product.AddInfo.Success": "Product information added successfully! Proceeding to upload image...",
+  "Product.UpdateImages.Failed": "Unexpected error occurred while updating product images.",
+  "Product.AddImages.Success": "The product images have been successfully added.",
+  "Product.AddImages.Failed": "Error uploading product image, but product info has been saved.",
+  "Product.DeleteSelectedImage.Success": "Selected image has been successfully deleted.",
+  "Product.DeleteSelectedImage.Failed": "An unexpected error occurred while deleting the selected image."
 }
