@@ -9,6 +9,7 @@ import useLoginDialog from './useLoginDialog';
 import apiCaller from 'api-callers/global/cart';
 import type { CartItemDto } from 'backend/dtos/cartItem.dto';
 import type { CommonCartItem } from 'backend/services/product/helper';
+import { useCustomTranslation } from 'hooks/useCustomTranslation';
 
 type MutateCartItemType = {
   cart: CartItemDto;
@@ -23,6 +24,7 @@ const useCart = (productId?: string) => {
   const { setLoginDialogOpen } = useLoginDialog();
   const { data: session, status } = useSession();
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useCustomTranslation(['cartItem']);
 
   const customerId = session?.account.customer.id;
 
@@ -60,13 +62,13 @@ const useCart = (productId?: string) => {
 
       switch (type) {
         case 'add':
-          enqueueSnackbar('Đã thêm vào giỏ hàng', { variant: 'success' });
+          enqueueSnackbar(t('CartItem.Added.Success'), { variant: 'success' });
           break;
         case 'remove':
-          enqueueSnackbar('Đã xoá khỏi giỏ hàng', { variant: 'error' });
+          enqueueSnackbar(t('CartItem.Removed.Success'), { variant: 'error' });
           break;
         case 'update':
-          enqueueSnackbar('Đã cập nhật giỏ hàng', { variant: 'success' });
+          enqueueSnackbar('CartItem.Updated.Success', { variant: 'success' });
       }
     },
   });

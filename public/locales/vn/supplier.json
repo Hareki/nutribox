@@ -17,5 +17,7 @@
   "Supplier.StreetAddress.Min": "Địa chỉ đường phố phải có ít nhất 1 ký tự.",
   "Supplier.StreetAddress.Max": "Địa chỉ đường phố không được vượt quá 100 ký tự.",
   "Supplier.Email.Duplicate": "Email nhà sản xuất đã tồn tại",
-  "Supplier.Phone.Duplicate": "SDT nhà sản xuất đã tồn tại"
+  "Supplier.Phone.Duplicate": "SDT nhà sản xuất đã tồn tại",
+  "Supplier.UpdateInfo.Success": "Cập nhật nhà cung cấp thành công",
+  "Supplier.AddInfo.Success": "Thêm nhà cung cấp thành công"
 }

@@ -7,5 +7,8 @@
   "CartItem.Quantity.Required": "Vui lòng nhập Số lượng.",
   "CartItem.Quantity.InvalidFormat": "Định dạng Số lượng không hợp lệ.",
   "CartItem.Quantity.Min": "Số lượng phải ít nhất là 0.",
-  "CartItem.Quantity.Max": "Số lượng không được vượt quá 100."
+  "CartItem.Quantity.Max": "Số lượng không được vượt quá 100.",
+  "CartItem.Added.Success": "Đã thêm vào giỏ hàng.",
+  "CartItem.Removed.Success": "Đã xóa khỏi giỏ hàng.",
+  "CartItem.Updated.Success": "Đã cập nhật giỏ hàng."
 }

@@ -59,7 +59,7 @@ export default function AdminSupplierCreate() {
     mutationFn: async (requestBody) =>
       staffSupplierCaller.createSupplier(requestBody),
     onSuccess: () => {
-      enqueueSnackbar('Thêm nhà cung cấp thành công', {
+      enqueueSnackbar(t('Supplier.AddInfo.Success'), {
         variant: 'success',
       });
 

@@ -1,5 +1,6 @@
 import { Container, styled, Tabs } from '@mui/material';
 import type { GetStaticPaths, GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Fragment } from 'react';
 
 import type { CommonProductModel } from 'backend/services/product/helper';
@@ -74,7 +75,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const id = extractIdFromSlug(params?.slug as string);
 
   const { relatedProducts, ...product } =
@@ -92,11 +93,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
+  const locales = await serverSideTranslations(locale ?? 'vn', ['cartItem']);
+
   return {
     props: {
       product: serialize(product),
       initialStoreInfo: serialize(initialStoreInfo),
       relatedProducts: serialize(relatedProducts),
+      ...locales,
     },
   };
 };
