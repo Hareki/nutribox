@@ -28,5 +28,6 @@
   "Account.Credentials.Invalid": "Sai tài khoản hoặc mật khẩu",
   "Account.OldPassword.Same": "Mật khẩu cũ và mới phải khác nhau",
   "Account.ForgotPassword.Sent": "Mã xác nhận đã được gửi nếu có tài khoản tương ứng, vui lòng kiểm tra email, bạn sẽ được chuyển về trang đăng nhập sau khi tắt thông báo này",
-  "Account.ResetPassword.Success": "Khôi phục mật khẩu thành công, bạn sẽ được chuyển đến trang đăng nhập sau khi tắt thông báo này"
+  "Account.ResetPassword.Success": "Khôi phục mật khẩu thành công, bạn sẽ được chuyển đến trang đăng nhập sau khi tắt thông báo này",
+  "Account.SignUp.Success": "Vui lòng kiểm tra email để kích hoạt tài khoản, bạn sẽ được chuyển hướng về trang chủ sau khi tắt thông báo này"
 }

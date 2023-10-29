@@ -52,8 +52,7 @@ const SignUpPage: NextPage = () => {
         payload: {
           variant: 'info',
           title: 'Đăng ký thành công',
-          content:
-            'Vui lòng kiểm tra email để kích hoạt tài khoản, bạn sẽ được chuyển hướng về trang chủ sau khi tắt thông báo này',
+          content: t('Account.SignUp.Success'),
         },
       });
     },
