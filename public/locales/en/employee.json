@@ -15,5 +15,8 @@
   "Employee.Phone.Required": "Please enter the phone number.",
   "Employee.Phone.InvalidFormat": "Invalid phone number format.",
   "Employee.Birthday.Required": "Please enter the birthday.",
-  "Employee.Birthday.InvalidFormat": "Invalid date format."
+  "Employee.Birthday.InvalidFormat": "Invalid date format.",
+  "Employee.PersonalId.Duplicate": "Personal ID already exists.",
+  "Employee.Email.Duplicate": "Employee email already exists.",
+  "Employee.Phone.Duplicate": "Employee phone number already exists."
 }

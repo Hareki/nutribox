@@ -1,6 +1,6 @@
 import type { ForgotPasswordDto } from 'backend/dtos/password/forgotPassword.dto';
 import type { ResetPasswordDto } from 'backend/dtos/password/resetPassword.dto';
-import type { VerifyEmailDto } from 'backend/dtos/verifyEmail.dto';
+import type { VerifyCustomerEmailDto } from 'backend/dtos/verifyCustomerEmail.dto';
 import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
@@ -12,7 +12,7 @@ import {
 import type { FullyPopulatedAccountModel } from 'models/account.model';
 
 const verifyEmail = async (
-  dto: VerifyEmailDto,
+  dto: VerifyCustomerEmailDto,
 ): Promise<FullyPopulatedAccountModel> => {
   try {
     const response = await axiosInstance.post<

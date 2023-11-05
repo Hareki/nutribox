@@ -15,5 +15,8 @@
   "Employee.Phone.Required": "Vui lòng nhập số điện thoại.",
   "Employee.Phone.InvalidFormat": "Định dạng số điện thoại không hợp lệ.",
   "Employee.Birthday.Required": "Vui lòng nhập ngày sinh.",
-  "Employee.Birthday.InvalidFormat": "Định dạng ngày không hợp lệ."
+  "Employee.Birthday.InvalidFormat": "Định dạng ngày không hợp lệ.",
+  "Employee.PersonalId.Duplicate": "Số CCCD nhân viên đã tồn tại.",
+  "Employee.Email.Duplicate": "Email nhân viên đã tồn tại.",
+  "Employee.Phone.Duplicate": "Số điện thoại nhân viên đã tồn tại."
 }

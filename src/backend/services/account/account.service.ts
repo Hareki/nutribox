@@ -2,13 +2,16 @@ import { omit } from 'lodash';
 import { MoreThan } from 'typeorm';
 
 import { CommonService } from '../common/common.service';
+import { generateToken } from '../mailer/helper';
 
 import type { CredentialsIdentifier } from './helper';
 
+import type { NewEmployeeDto } from 'backend/dtos/employees/NewEmployee.dto';
 import type { ChangePasswordDto } from 'backend/dtos/password/changePassword.dto';
 import type { SignUpDto } from 'backend/dtos/signUp.dto';
 import { AccountEntity } from 'backend/entities/account.entity';
 import { CustomerEntity } from 'backend/entities/customer.entity';
+import { EmployeeEntity } from 'backend/entities/employee.entity';
 import { hashPassword } from 'backend/helpers/auth.helper';
 import { getRepo } from 'backend/helpers/database.helper';
 import {
@@ -22,6 +25,7 @@ import type {
   PopulateAccountFields,
 } from 'models/account.model';
 import type { CustomerModel } from 'models/customer.model';
+import type { EmployeeModel } from 'models/employee.model';
 export class AccountService {
   public static async getAccount<U extends UserType>(
     identifier: CredentialsIdentifier,
@@ -111,8 +115,43 @@ export class AccountService {
     }
   }
 
+  public static async createEmployeeAccount(
+    dto: NewEmployeeDto,
+  ): Promise<AccountWithPopulatedSide<'employee'>> {
+    const accountRepo = await getRepo(AccountEntity);
+    const employeeRepo = await getRepo(EmployeeEntity);
+
+    try {
+      const employee = (await employeeRepo.save(dto)) as EmployeeModel;
+
+      const account = await accountRepo.save({
+        email: dto.email,
+        // random, temporary password
+        password: hashPassword(generateToken()),
+        customer: {
+          id: employee.id,
+        },
+      });
+
+      const populatedAccount = await this.getAccount(
+        {
+          id: account.id,
+        },
+        'employee',
+      );
+
+      return { ...populatedAccount!, password: '' };
+    } catch (error) {
+      if (isDuplicateError(error)) {
+        throw new DuplicationError('email', 'Account.Email.Duplicate');
+      }
+      throw error;
+    }
+  }
+
   public static async verifyEmail(
     token: string,
+    passwordForEmployeeAccount?: string,
   ): Promise<FullyPopulatedAccountModel> {
     const accountRepo = await getRepo(AccountEntity);
 
@@ -132,6 +171,10 @@ export class AccountService {
       account.verificationToken = null as any;
       account.verificationTokenExpiry = null as any;
       account.verified = true;
+
+      if (account.employee) {
+        account.password = hashPassword(passwordForEmployeeAccount!);
+      }
 
       await accountRepo.save(account);
 
