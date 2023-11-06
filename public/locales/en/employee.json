@@ -23,5 +23,9 @@
   "Employee.Birthday.Min": "Birthday must not be less than 200 years ago.",
   "Employee.UpdateInfo.Success": "Employee updated successfully",
   "Employee.AddInfo.Success": "Employee added successfully",
-  "Employee.Disabled.Required": "Please enter the active status."
+  "Employee.Disabled.Required": "Please enter the active status.",
+  "Employee.UpdateProfile.Success": "Profile updated successfully",
+  "Employee.UpdateProfilePicture.Success": "Profile picture updated successfully.",
+  "Employee.ProfilePicture.InvalidFormat": "Profile picture must be an image.",
+  "Employee.ProfilePicture.Failed": "An error occurred while updating the profile picture."
 }

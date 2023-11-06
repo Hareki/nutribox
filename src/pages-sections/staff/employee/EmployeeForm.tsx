@@ -32,6 +32,7 @@ import type {
 import { getAvatarUrl } from 'helpers/account.helper';
 import { getUserRoleName } from 'helpers/order.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
+import { mergeTime } from 'utils/date.helper';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 const getInitialValues = (initialEmployee?: CommonEmployeeModel) => {
@@ -273,9 +274,12 @@ const EmployeeForm: FC<EmployeeFormProps> = (props) => {
                     error={!!touched.birthday && !!errors.birthday}
                   />
                 )}
-                onChange={(newValue) => {
-                  setFieldValue('birthday', newValue);
-                }}
+                onChange={(newValue) =>
+                  setFieldValue(
+                    'birthday',
+                    mergeTime(newValue || new Date(), new Date()),
+                  )
+                }
                 renderDay={(_, __, pickersDayProps) => (
                   <CustomPickersDay
                     {...(pickersDayProps as any)}

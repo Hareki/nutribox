@@ -20,6 +20,7 @@ import MuiImage from 'components/common/input/MuiImage';
 import PhoneInput from 'components/common/input/PhoneInput';
 import CustomPickersDay from 'components/CustomPickersDay';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
+import { mergeTime } from 'utils/date.helper';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 interface SignUpProps {
@@ -168,9 +169,12 @@ const SignUp: FC<SignUpProps> = ({ handleFormSubmit, loading, disabled }) => {
                 error={!!touched.birthday && !!errors.birthday}
               />
             )}
-            onChange={(newValue) => {
-              setFieldValue('birthday', newValue);
-            }}
+            onChange={(newValue) =>
+              setFieldValue(
+                'birthday',
+                mergeTime(newValue || new Date(), new Date()),
+              )
+            }
             renderDay={(_, __, pickersDayProps) => (
               <CustomPickersDay
                 {...(pickersDayProps as any)}

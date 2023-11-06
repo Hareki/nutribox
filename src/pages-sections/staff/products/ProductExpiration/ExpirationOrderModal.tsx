@@ -32,6 +32,7 @@ import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import { formatCurrency } from 'lib';
 import type { ProductModel } from 'models/product.model';
+import { mergeTime } from 'utils/date.helper';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
 
 interface ExpirationOrderModalProps {
@@ -157,9 +158,12 @@ const ExpirationOrderModal = ({
                     error={!!touched.importDate && !!errors.importDate}
                   />
                 )}
-                onChange={(newValue) => {
-                  setFieldValue('importDate', newValue);
-                }}
+                onChange={(newValue) =>
+                  setFieldValue(
+                    'importDate',
+                    mergeTime(newValue || new Date(), new Date()),
+                  )
+                }
                 renderDay={(_, __, pickersDayProps) => (
                   <CustomPickersDay
                     {...pickersDayProps}

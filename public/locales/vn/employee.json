@@ -23,5 +23,9 @@
   "Employee.Birthday.Min": "Ngày sinh không thể sớm hơn 200 năm.",
   "Employee.UpdateInfo.Success": "Cập nhật nhân viên thành công",
   "Employee.AddInfo.Success": "Thêm nhân viên thành công",
-  "Employee.Disabled.Required": "Vui lòng nhập trạng thái hoạt động."
+  "Employee.Disabled.Required": "Vui lòng nhập trạng thái hoạt động.",
+  "Employee.UpdateProfile.Success": "Cập nhật thông tin cá nhân thành công",
+  "Employee.UpdateProfilePicture.Success": "Đổi ảnh đại diện thành công.",
+  "Employee.ProfilePicture.InvalidFormat": "Ảnh đại diện phải là ảnh",
+  "Employee.ProfilePicture.Failed": "Đã có lỗi xảy ra khi thay đổi ảnh đại diện"
 }

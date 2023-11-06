@@ -17,17 +17,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { IKUpload } from 'imagekitio-react';
 import { useSnackbar } from 'notistack';
-import { useState, useRef, Fragment, useMemo, useEffect } from 'react';
+import { useState, useRef, Fragment, useMemo } from 'react';
 
-import profileCaller from 'api-callers/profile';
-import type {
-  UpdateProfileFormValues,
-  UpdateProfileAvatarDto,
-} from 'backend/dtos/profile/profile.dto';
+import staffProfileCaller from 'api-callers/staff/profile';
+import type { UpdateProfileAvatarDto } from 'backend/dtos/profile/profile.dto';
+import { type UpdateProfileDto } from 'backend/dtos/profile/profile.dto';
 import {
-  UpdateProfileDtoSchema,
-  type UpdateProfileDto,
-} from 'backend/dtos/profile/profile.dto';
+  UpdateStaffProfileDtoSchema,
+  type UpdateStaffProfileFormValues,
+} from 'backend/dtos/staffProfile/updateStaffProfile.dto';
+import type { CommonEmployeeModel } from 'backend/services/employee/helper';
 import { H5 } from 'components/abstract/Typography';
 import Card1 from 'components/common/Card1';
 import PhoneInput from 'components/common/input/PhoneInput';
@@ -36,41 +35,39 @@ import { IKPublicContext } from 'constants/imagekit.constant';
 import { getAvatarUrl } from 'helpers/account.helper';
 import { reloadSession } from 'helpers/session.helper';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
-import type { CommonCustomerAccountModel } from 'models/account.model';
-import type { CustomerModel } from 'models/customer.model';
+import type { CommonEmployeeAccountModel } from 'models/account.model';
 import { mergeTime } from 'utils/date.helper';
 import { toFormikValidationSchema } from 'utils/zodFormikAdapter.helper';
-interface ProfileFormProps {
-  account: CommonCustomerAccountModel;
-  toggleEditing: () => void;
+interface Props {
+  account: CommonEmployeeAccountModel;
 }
 
 interface UploadSuccessResponse {
   url: string;
 }
 
-const ProfileForm = ({ account }: ProfileFormProps) => {
+const EmployeeProfileForm = ({ account }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const { palette } = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
-  const { t } = useCustomTranslation(['customer']);
+  const { t } = useCustomTranslation(['employee']);
 
   const uploadRef = useRef<HTMLInputElement>();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const { mutate: updateAccount, isLoading } = useMutation<
-    CustomerModel,
+    CommonEmployeeModel,
     any,
     UpdateProfileDto
   >({
-    mutationFn: (body) => profileCaller.updateAccount(body),
+    mutationFn: (body) => staffProfileCaller.updateAccount(body),
     onSuccess: () => {
       reloadSession();
-      enqueueSnackbar(t('Customer.UpdateProfile.Success'), {
+      enqueueSnackbar(t('Employee.UpdateProfile.Success'), {
         variant: 'success',
       });
-      queryClient.invalidateQueries(['profile']);
+      queryClient.invalidateQueries(['staff', 'profile']);
       setIsEditing(false);
       //   toggleEditing();
     },
@@ -83,24 +80,27 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
   });
 
   const { mutate: updateAvatar } = useMutation<
-    CustomerModel,
+    CommonEmployeeModel,
     any,
     UpdateProfileAvatarDto
   >({
     mutationFn: ({ avatarUrl }) => {
-      return profileCaller.updateAvatar({ avatarUrl });
+      return staffProfileCaller.updateAvatar({ avatarUrl });
     },
     onSuccess: (response) => {
       setIsUploadingImage(false);
       reloadSession();
-      queryClient.invalidateQueries(['profile']);
-      queryClient.setQueryData(['profile'], (oldData: CustomerModel) => {
-        return {
-          ...oldData,
-          avatarUrl: response.avatarUrl,
-        };
-      });
-      enqueueSnackbar(t('Customer.UpdateProfilePicture.Success'), {
+      queryClient.invalidateQueries(['staff', 'profile']);
+      queryClient.setQueryData(
+        ['staff', 'profile'],
+        (oldData: CommonEmployeeModel) => {
+          return {
+            ...oldData,
+            avatarUrl: response.avatarUrl,
+          };
+        },
+      );
+      enqueueSnackbar(t('Employee.UpdateProfilePicture.Success'), {
         variant: 'success',
       });
     },
@@ -113,18 +113,19 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
     },
   });
 
-  const initialValues: UpdateProfileFormValues = useMemo(
+  const initialValues: UpdateStaffProfileFormValues = useMemo(
     () => ({
-      email: account.customer.email || '',
-      phone: account.customer.phone || '',
-      lastName: account.customer.lastName || '',
-      firstName: account.customer.firstName || '',
-      birthday: account.customer.birthday || new Date(),
+      email: account.employee.email || '',
+      phone: account.employee.phone || '',
+      lastName: account.employee.lastName || '',
+      firstName: account.employee.firstName || '',
+      birthday: account.employee.birthday || new Date(),
+      personalId: account.employee.personalId || '',
     }),
     [account],
   );
 
-  const handleFormSubmit = async (values: UpdateProfileFormValues) => {
+  const handleFormSubmit = async (values: UpdateStaffProfileFormValues) => {
     delete values.email;
     updateAccount(values);
   };
@@ -142,7 +143,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
     enableReinitialize: true,
     onSubmit: handleFormSubmit,
     initialValues,
-    validationSchema: toFormikValidationSchema(UpdateProfileDtoSchema),
+    validationSchema: toFormikValidationSchema(UpdateStaffProfileDtoSchema),
   });
 
   return (
@@ -153,7 +154,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
           <CircularProgress size={40} />
         ) : (
           <Avatar
-            src={getAvatarUrl(account.customer)}
+            src={getAvatarUrl(account.employee)}
             sx={{ height: 64, width: 64, objectFit: 'contain' }}
           />
         )}
@@ -193,7 +194,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
             validateFile={(file: File) => {
               const isValidAvatar = file.type.startsWith('image/');
               if (!isValidAvatar) {
-                enqueueSnackbar(t('Customer.ProfilePicture.InvalidFormat'), {
+                enqueueSnackbar(t('Employee.ProfilePicture.InvalidFormat'), {
                   variant: 'error',
                 });
                 return false;
@@ -206,7 +207,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
             onError={(err: any) => {
               console.log(err);
               setIsUploadingImage(false);
-              enqueueSnackbar(t('Customer.ProfilePicture.Failed'), {
+              enqueueSnackbar(t('Employee.ProfilePicture.Failed'), {
                 variant: 'error',
               });
             }}
@@ -222,6 +223,50 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
       <form onSubmit={handleSubmit}>
         <Box mb={4}>
           <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                disabled
+                sx={{
+                  '& .Mui-disabled': {
+                    color: palette.grey[500],
+                    WebkitTextFillColor: palette.grey[500],
+                  },
+                }}
+                name='email'
+                type='email'
+                label='Email'
+                onBlur={handleBlur}
+                value={values.email}
+                onChange={handleChange}
+                error={!!touched.email && !!errors.email}
+                helperText={t((touched.email && errors.email) as string)}
+              />
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                disabled
+                sx={{
+                  '& .Mui-disabled': {
+                    color: palette.grey[500],
+                    WebkitTextFillColor: palette.grey[500],
+                  },
+                }}
+                name='email'
+                type='email'
+                label='Số CCCD'
+                onBlur={handleBlur}
+                value={values.personalId}
+                onChange={handleChange}
+                error={!!touched.personalId && !!errors.personalId}
+                helperText={t(
+                  (touched.personalId && errors.personalId) as string,
+                )}
+              />
+            </Grid>
+
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
@@ -259,27 +304,6 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                disabled
-                sx={{
-                  '& .Mui-disabled': {
-                    color: palette.grey[500],
-                    WebkitTextFillColor: palette.grey[500],
-                  },
-                }}
-                name='email'
-                type='email'
-                label='Email'
-                onBlur={handleBlur}
-                value={values.email}
-                onChange={handleChange}
-                error={!!touched.email && !!errors.email}
-                helperText={t((touched.email && errors.email) as string)}
-              />
-            </Grid>
-
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
                 label='Số điện thoại'
                 name='phone'
                 onBlur={handleBlur}
@@ -299,6 +323,7 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
                 <DatePicker
                   label='Ngày sinh'
                   disableFuture
+                  readOnly={!isEditing}
                   value={values.birthday}
                   inputFormat='dd/MM/yyyy'
                   renderInput={(props) => (
@@ -372,4 +397,4 @@ const ProfileForm = ({ account }: ProfileFormProps) => {
   );
 };
 
-export default ProfileForm;
+export default EmployeeProfileForm;

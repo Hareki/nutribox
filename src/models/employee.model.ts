@@ -1,4 +1,4 @@
-import { addDays, addYears } from 'date-fns';
+import { addDays, addYears, startOfDay } from 'date-fns';
 import { z } from 'zod';
 
 import type { AccountModel } from './account.model';
@@ -7,6 +7,7 @@ import type { ReviewResponseModel } from './reviewResponse.model';
 
 import { EmployeeRole } from 'backend/enums/entities.enum';
 import { NAME_REGEX, PID_REGEX } from 'constants/regex.constant';
+import { getUtcDate } from 'utils/date.helper';
 
 const EmployeeSchema = z.object({
   id: zodUuid('Employee.Id'),
@@ -41,8 +42,8 @@ const EmployeeSchema = z.object({
 
   birthday: zodDate(
     'Employee.Birthday',
-    addYears(new Date(), -200),
-    addDays(new Date(), -1),
+    addYears(startOfDay(new Date()), -200),
+    addDays(startOfDay(new Date()), -1),
   ),
 
   avatarUrl: zodString('Account.AvatarUrl', 0, 500).optional(),

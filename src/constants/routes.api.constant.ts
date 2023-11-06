@@ -145,6 +145,7 @@ export const CustomerApiRoutes: MethodRoutePair[] = [
 export const DASHBOARD_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/dashboard`;
 export const MONTHLY_PROFITS_API_STAFF_ROUTE = `${DASHBOARD_API_STAFF_ROUTE}/monthly-profits`;
 export const PROFILE_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/profile`;
+export const PROFILE_AVATAR_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/profile/avatar`;
 
 export const CUSTOMERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/customers`;
 export const CUSTOMER_DETAIL_API_STAFF_ROUTE = `${CUSTOMERS_API_STAFF_ROUTE}/:id`;
@@ -183,8 +184,12 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
     route: MONTHLY_PROFITS_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET', 'PUT'],
+    methods: ['GET', 'PUT', 'PATCH'],
     route: PROFILE_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['PUT'],
+    route: PROFILE_AVATAR_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
@@ -261,8 +266,12 @@ export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
     route: DASHBOARD_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET', 'PUT'],
+    methods: ['GET', 'PUT', 'PATCH'],
     route: PROFILE_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['PUT'],
+    route: PROFILE_AVATAR_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
@@ -300,8 +309,12 @@ export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
 
 export const CashierApiRoutes: MethodRoutePair[] = [
   {
-    methods: ['GET', 'PUT'],
+    methods: ['GET', 'PUT', 'PATCH'],
     route: PROFILE_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['PUT'],
+    route: PROFILE_AVATAR_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
@@ -331,8 +344,12 @@ export const CashierApiRoutes: MethodRoutePair[] = [
 
 export const ShipperApiRoutes: MethodRoutePair[] = [
   {
-    methods: ['GET', 'PUT'],
+    methods: ['GET', 'PUT', 'PATCH'],
     route: PROFILE_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['PUT'],
+    route: PROFILE_AVATAR_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],

@@ -87,10 +87,9 @@ export const zodDate = (
     .refine(
       (data) => {
         if (minDate) {
-          const date = new Date(data);
           return (
-            isAfter(date, startOfDay(minDate)) ||
-            isEqual(date, startOfDay(minDate))
+            isAfter(data, startOfDay(minDate)) ||
+            isEqual(data, startOfDay(minDate))
           );
         }
         return true;
@@ -102,10 +101,9 @@ export const zodDate = (
     .refine(
       (data) => {
         if (maxDate) {
-          const date = new Date(data);
           return (
-            isBefore(date, startOfDay(maxDate)) ||
-            isEqual(date, startOfDay(maxDate))
+            isBefore(data, startOfDay(maxDate)) ||
+            isEqual(data, startOfDay(maxDate))
           );
         }
         return true;

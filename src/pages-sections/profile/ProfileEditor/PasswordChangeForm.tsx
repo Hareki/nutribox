@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack';
 import { Fragment, useState } from 'react';
 
 import profileCaller from 'api-callers/profile';
+import staffProfileCaller from 'api-callers/staff/profile';
 import {
   ChangePasswordFormValueSchema,
   type ChangePasswordFormValues,
@@ -26,7 +27,10 @@ const initialValues: ChangePasswordFormValues = {
   confirmPassword: '',
 };
 
-const PasswordChangeForm = () => {
+type Props = {
+  isEmployee?: boolean;
+};
+const PasswordChangeForm: React.FC<Props> = ({ isEmployee = false }) => {
   const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -51,10 +55,15 @@ const PasswordChangeForm = () => {
     ChangePasswordFormValues
   >({
     mutationFn: (values) =>
-      profileCaller.changePassword({
-        oldPassword: values.oldPassword,
-        newPassword: values.password,
-      }),
+      !isEmployee
+        ? profileCaller.changePassword({
+            oldPassword: values.oldPassword,
+            newPassword: values.password,
+          })
+        : staffProfileCaller.changePassword({
+            oldPassword: values.oldPassword,
+            newPassword: values.password,
+          }),
     onSuccess: () => {
       setIsEditing(false);
       enqueueSnackbar(t('Account.ChangePassword.Success'), {

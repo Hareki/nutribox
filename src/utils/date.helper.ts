@@ -5,6 +5,10 @@ import {
   isAfter,
   isBefore,
   isEqual,
+  setHours,
+  setMilliseconds,
+  setMinutes,
+  setSeconds,
 } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 
@@ -98,6 +102,23 @@ export const isTimeWithinRange = (
   );
 };
 
+export const mergeTime = (date: DateLike, time: DateLike): Date => {
+  const timeObject = getDateObject(time);
+  const dateObject = getDateObject(date);
+
+  const hours = timeObject.getHours();
+  const minutes = timeObject.getMinutes();
+  const seconds = timeObject.getSeconds();
+  const milliseconds = timeObject.getMilliseconds();
+
+  const mergedDate = setMilliseconds(
+    setSeconds(setMinutes(setHours(dateObject, hours), minutes), seconds),
+    milliseconds,
+  );
+
+  return mergedDate;
+};
+
 export const getDayOfWeek = (day: number): DayOfWeek => {
   const weekday = [
     DayOfWeek.SUNDAY,
@@ -115,7 +136,7 @@ export const getTodayDayOfWeek = (): DayOfWeek => {
   return getDayOfWeek(new Date().getDay());
 };
 
-export const getUtcDate = (date: DateLike): Date => {
+export const getUtcDate = (date?: DateLike): Date => {
   if (!date) {
     return utcToZonedTime(new Date(), 'Etc/UTC');
   }
