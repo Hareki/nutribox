@@ -6,10 +6,13 @@ import { CommonService } from '../common/common.service';
 import { generateToken } from './helper';
 
 import { AccountEntity } from 'backend/entities/account.entity';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import {
   RESET_PASSWORD_ROUTE,
   VERIFICATION_RESULT_ROUTE,
+  VERIFICATION_RESULT_STAFF_ROUTE,
 } from 'constants/routes.ui.constant';
+import type { FullyPopulatedAccountModel } from 'models/account.model';
 
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -20,15 +23,18 @@ export const transporter = nodemailer.createTransport({
 });
 
 export class MailerService {
-  private static async _getAccountAndToken(
-    email: string,
-  ): Promise<{ account: AccountEntity; token: string; expiry: Date }> {
-    const account = await CommonService.getRecord({
+  private static async _getAccountAndToken(email: string): Promise<{
+    account: FullyPopulatedAccountModel;
+    token: string;
+    expiry: Date;
+  }> {
+    const account = (await CommonService.getRecord({
       entity: AccountEntity,
       filter: {
         email,
       },
-    });
+      relations: ['customer', 'employee'],
+    })) as FullyPopulatedAccountModel;
 
     const token = generateToken();
     const expiry = addHours(new Date(), 1);
@@ -64,6 +70,10 @@ export class MailerService {
       if (account.verified) {
         throw new Error('Account is already verified');
       }
+      if (account.employee?.role === EmployeeRole.WAREHOUSE_STAFF) {
+        return;
+      }
+
       await CommonService.updateRecord(AccountEntity, account.id, {
         verificationToken: token,
         verificationTokenExpiry: expiry,
@@ -73,11 +83,16 @@ export class MailerService {
         token,
       );
 
+      const isEmployee = !!account.employee;
+      const verificationRoute = isEmployee
+        ? VERIFICATION_RESULT_STAFF_ROUTE
+        : VERIFICATION_RESULT_ROUTE;
+
       const mailOptions = {
         from: process.env.MAILER_EMAIL,
         to: account.email,
         subject: 'Nutribox - Xác nhận tài khoản',
-        text: `Vui lòng nhấp vào đường dẫn này để xác nhận tài khoản: ${VERIFICATION_RESULT_ROUTE}?token=${token}. Nếu bạn không yêu cầu xác nhận tài khoản, vui lòng bỏ qua email này.`,
+        text: `Vui lòng nhấp vào đường dẫn này để xác nhận tài khoản: ${verificationRoute}?token=${token}. Nếu bạn không yêu cầu xác nhận tài khoản, vui lòng bỏ qua email này.`,
       };
 
       await transporter.sendMail(mailOptions);

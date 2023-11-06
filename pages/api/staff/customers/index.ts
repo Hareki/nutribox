@@ -14,6 +14,7 @@ import { CommonService } from 'backend/services/common/common.service';
 import type { CommonArgs } from 'backend/services/common/helper';
 import type { CustomerWithTotalOrders } from 'backend/services/customer/helper';
 import type { JSSuccess } from 'backend/types/jsend';
+import { DEFAULT_DOCS_PER_PAGE } from 'constants/pagination.constant';
 import type { CustomerModel } from 'models/customer.model';
 
 type SuccessResponse = JSSuccess<CustomerWithTotalOrders[]>;
@@ -33,14 +34,21 @@ handler.get(async (req, res) => {
   const customerOrderRepo = await getRepo(CustomerOrderEntity);
 
   if (keyword) {
-    const customers = (await CommonService.getRecordsByKeyword({
-      ...commonArgs,
-      searchParams: {
-        keyword,
-        fieldName: 'name',
-        limit: paginationParams.limit,
-      },
-    })) as CustomerModel[];
+    const customerRepository = await getRepo(CustomerEntity);
+    const queryBuilder = customerRepository.createQueryBuilder('customer');
+    const nameParts = keyword.trim().split(/\s+/);
+    nameParts.forEach((part, index) => {
+      queryBuilder.orWhere(`customer.firstName ILIKE :part${index}`, {
+        [`part${index}`]: `%${part}%`,
+      });
+      queryBuilder.orWhere(`customer.lastName ILIKE :part${index}`, {
+        [`part${index}`]: `%${part}%`,
+      });
+    });
+
+    const customers = (await queryBuilder
+      .take(DEFAULT_DOCS_PER_PAGE)
+      .getMany()) as CustomerModel[];
 
     const customersWithTotalOrders = await Promise.all(
       customers.map(async (customer) => {

@@ -1,1 +1,1 @@
-export class CustomerService {}
+export class EmployeeService {}

@@ -18,5 +18,10 @@
   "Employee.Birthday.InvalidFormat": "Invalid date format.",
   "Employee.PersonalId.Duplicate": "Personal ID already exists.",
   "Employee.Email.Duplicate": "Employee email already exists.",
-  "Employee.Phone.Duplicate": "Employee phone number already exists."
+  "Employee.Phone.Duplicate": "Employee phone number already exists.",
+  "Employee.Birthday.Max": "Birthday must not exceed yesterday.",
+  "Employee.Birthday.Min": "Birthday must not be less than 200 years ago.",
+  "Employee.UpdateInfo.Success": "Employee updated successfully",
+  "Employee.AddInfo.Success": "Employee added successfully",
+  "Employee.Disabled.Required": "Please enter the active status."
 }

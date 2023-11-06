@@ -58,6 +58,7 @@ const SignIn: FC<SignInProps> = ({
   errorMessage,
   userType,
 }) => {
+  console.log('file: SignIn.tsx:61 - errorMessage:', errorMessage);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const { t } = useCustomTranslation(['account']);
   const togglePasswordVisibility = useCallback(() => {
@@ -140,7 +141,7 @@ const SignIn: FC<SignInProps> = ({
 
       {!!errorMessage && (
         <H4 mt={2} mb={4} textAlign='center' color='error.500'>
-          {t('Account.Credentials.Invalid')}
+          {t(errorMessage)}
         </H4>
       )}
 

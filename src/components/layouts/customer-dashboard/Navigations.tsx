@@ -57,7 +57,7 @@ const Navigations = () => {
   const { data: session, status } = useSession();
 
   const { data: count } = useQuery({
-    queryKey: ['count', session?.account.customer.id],
+    queryKey: ['count', session?.account?.customer.id],
     queryFn: () => menuCountCaller.countAddressAndOrder(),
     enabled: status === 'authenticated' && !!session,
   });

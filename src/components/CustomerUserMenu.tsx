@@ -34,8 +34,8 @@ interface AccountMenuProps {}
 const CustomerUserMenu: FC<AccountMenuProps> = () => {
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
-  const userFullName = getFullName(session?.account.customer);
-  const userUrl = getAvatarUrl(session?.account.customer);
+  const userFullName = getFullName(session?.account?.customer);
+  const userUrl = getAvatarUrl(session?.account?.customer);
   const { palette } = useTheme();
 
   const { dialog: signOutDialog, dispatchConfirm } =

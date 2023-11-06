@@ -21,6 +21,8 @@ export const STORE_DETAIL_API_ROUTE = `${API_BASE_ROUTE}/stores/:id`;
 
 export const TESTING_API_ROUTE = `${API_BASE_ROUTE}/testing`;
 
+export const EMPLOYEES_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/employees`;
+
 export const PublicApiRoutes: MethodRoutePair[] = [
   {
     methods: ['GET'],
@@ -77,6 +79,10 @@ export const PublicApiRoutes: MethodRoutePair[] = [
   {
     methods: ['POST'],
     route: RESEND_VERIFICATION_EMAIL_API_ROUTE,
+  },
+  {
+    methods: ['PUT'],
+    route: EMPLOYEES_API_STAFF_ROUTE,
   },
 ];
 
@@ -147,7 +153,6 @@ export const CUSTOMER_ORDERS_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/customer
 export const CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE = `${CUSTOMER_ORDERS_API_STAFF_ROUTE}/:id`;
 export const EXPORT_ORDER_DETAIL_API_STAFF_ROUTE = `${CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE}/export-order-details`;
 
-export const EMPLOYEES_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/employees`;
 export const EMPLOYEE_DETAIL_API_STAFF_ROUTE = `${EMPLOYEES_API_STAFF_ROUTE}/:id`;
 
 export const CATEGORIES_API_STAFF_ROUTE = `${API_BASE_STAFF_ROUTE}/categories`;

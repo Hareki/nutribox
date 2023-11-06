@@ -34,7 +34,7 @@ export default function AdminSupplierDetails() {
   const id = router.query.id as string;
   const queryClient = useQueryClient();
   const { data: supplier, isLoading: isLoadingSupplier } = useQuery({
-    queryKey: ['suppliers', id],
+    queryKey: ['staff', 'suppliers', id],
     queryFn: () => staffSupplierCaller.getSupplier(id),
   });
   const { t } = useCustomTranslation([
@@ -67,7 +67,7 @@ export default function AdminSupplierDetails() {
       enqueueSnackbar(t('Supplier.UpdateInfo.Success'), {
         variant: 'success',
       });
-      queryClient.invalidateQueries(['suppliers', id]);
+      queryClient.invalidateQueries(['staff', 'suppliers', id]);
     },
     onError: dispatchErrorDialog,
   });

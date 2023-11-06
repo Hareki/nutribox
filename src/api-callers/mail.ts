@@ -1,9 +1,11 @@
 import type { ForgotPasswordDto } from 'backend/dtos/password/forgotPassword.dto';
 import type { ResetPasswordDto } from 'backend/dtos/password/resetPassword.dto';
 import type { VerifyCustomerEmailDto } from 'backend/dtos/verifyCustomerEmail.dto';
+import type { VerifyEmployeeEmailDto } from 'backend/dtos/verifyEmployeeEmail.dto';
 import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';
 import {
+  EMPLOYEES_API_STAFF_ROUTE,
   FORGOT_PASSWORD_API_ROUTE,
   RESEND_VERIFICATION_EMAIL_API_ROUTE,
   RESET_PASSWORD_API_ROUTE,
@@ -11,13 +13,27 @@ import {
 } from 'constants/routes.api.constant';
 import type { FullyPopulatedAccountModel } from 'models/account.model';
 
-const verifyEmail = async (
+const verifyCustomerEmail = async (
   dto: VerifyCustomerEmailDto,
 ): Promise<FullyPopulatedAccountModel> => {
   try {
     const response = await axiosInstance.post<
       JSSuccess<FullyPopulatedAccountModel>
     >(VERIFY_EMAIL_API_ROUTE, dto);
+
+    return response.data.data;
+  } catch (err: any) {
+    return err.response.data;
+  }
+};
+
+const verifyEmployeeEmail = async (
+  dto: VerifyEmployeeEmailDto,
+): Promise<FullyPopulatedAccountModel> => {
+  try {
+    const response = await axiosInstance.put<
+      JSSuccess<FullyPopulatedAccountModel>
+    >(EMPLOYEES_API_STAFF_ROUTE, dto);
 
     return response.data.data;
   } catch (err: any) {
@@ -51,7 +67,8 @@ const resendVerificationEmail = async (email: string): Promise<undefined> => {
 };
 
 const mailCaller = {
-  verifyEmail,
+  verifyCustomerEmail,
+  verifyEmployeeEmail,
   forgotPassword,
   resetPassword,
   resendVerificationEmail,

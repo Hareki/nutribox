@@ -8,7 +8,6 @@ import type {
   CustomerDashboardData,
   OrderStatusCount,
 } from 'backend/services/customer/helper';
-import SEO from 'components/abstract/SEO';
 import { H3, H5, Small } from 'components/abstract/Typography';
 import UserDashboardHeader from 'components/common/layout/header/UserDashboardHeader';
 import TableRow from 'components/data-table/TableRow';
@@ -49,8 +48,6 @@ const ProfileViewer: FC<ProfileProps> = ({ customer, toggleEditing }) => {
 
   return (
     <Fragment>
-      <SEO title='Hồ Sơ Của Tôi' />
-
       {/* TITLE HEADER AREA */}
       {!!toggleEditing && (
         <UserDashboardHeader

@@ -8,6 +8,7 @@ export const SIGN_IN_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/sign-in`;
 
 export const NOT_FOUND_ROUTE = `${BASE_ROUTE}/404`;
 export const VERIFICATION_RESULT_ROUTE = `${BASE_ROUTE}/verification-result`;
+export const VERIFICATION_RESULT_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/verification-result`;
 export const FORGOT_PASSWORD_ROUTE = `${BASE_ROUTE}/forgot-password`;
 export const RESET_PASSWORD_ROUTE = `${BASE_ROUTE}/reset-password`;
 export const PRODUCT_DETAIL_ROUTE = `${BASE_ROUTE}/products/:slug`;
@@ -22,6 +23,7 @@ export const PublicRoutes = [
   SIGN_IN_STAFF_ROUTE,
   NOT_FOUND_ROUTE,
   VERIFICATION_RESULT_ROUTE,
+  VERIFICATION_RESULT_STAFF_ROUTE,
   FORGOT_PASSWORD_ROUTE,
   RESET_PASSWORD_ROUTE,
   PRODUCT_DETAIL_ROUTE,

@@ -21,7 +21,7 @@ Order.getLayout = getCustomerDashboardLayout;
 
 function Order(): ReactElement {
   const { data: session } = useSession();
-  const sessionUserId = session?.account.customer.id;
+  const sessionUserId = session?.account?.customer.id;
 
   const {
     isLoading,

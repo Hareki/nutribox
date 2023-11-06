@@ -26,7 +26,7 @@ const useCart = (productId?: string) => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useCustomTranslation(['cartItem']);
 
-  const customerId = session?.account.customer.id;
+  const customerId = session?.account?.customer.id;
 
   const { data: cartItems, isLoading } = useQuery({
     queryKey: ['cart', customerId],

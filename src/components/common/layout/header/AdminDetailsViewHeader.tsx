@@ -14,8 +14,8 @@ const AdminDetailsViewHeader = ({
 }: AdminDetailsViewHeaderProps) => {
   const router = useRouter();
   return (
-    <FlexBox justifyContent='space-between' mb={4}>
-      <H3 mb={2}>{label}</H3>
+    <FlexBox alignItems='center' justifyContent='space-between' mb={3}>
+      <H3>{label}</H3>
       <Button
         onClick={() => router.push(hrefBack)}
         variant='text'

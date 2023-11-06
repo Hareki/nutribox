@@ -12,6 +12,7 @@ import type { SignUpDto } from 'backend/dtos/signUp.dto';
 import { AccountEntity } from 'backend/entities/account.entity';
 import { CustomerEntity } from 'backend/entities/customer.entity';
 import { EmployeeEntity } from 'backend/entities/employee.entity';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import { hashPassword } from 'backend/helpers/auth.helper';
 import { getRepo } from 'backend/helpers/database.helper';
 import {
@@ -67,6 +68,13 @@ export class AccountService {
 
       const isCustomer = userSide === 'customer' && (account as any)?.customer;
       const isEmployee = userSide === 'employee' && (account as any)?.employee;
+      const isWarehouseStaff =
+        (account as FullyPopulatedAccountModel)?.employee?.role ===
+        EmployeeRole.WAREHOUSE_STAFF;
+
+      if (isEmployee && isWarehouseStaff) {
+        return null;
+      }
 
       if (isCustomer || isEmployee) {
         return account;
@@ -121,32 +129,26 @@ export class AccountService {
     const accountRepo = await getRepo(AccountEntity);
     const employeeRepo = await getRepo(EmployeeEntity);
 
-    try {
-      const employee = (await employeeRepo.save(dto)) as EmployeeModel;
+    const employee = (await employeeRepo.save(dto)) as EmployeeModel;
 
-      const account = await accountRepo.save({
-        email: dto.email,
-        // random, temporary password
-        password: hashPassword(generateToken()),
-        customer: {
-          id: employee.id,
-        },
-      });
+    const account = await accountRepo.save({
+      email: dto.email,
+      disabled: dto.disabled,
+      // random, temporary password
+      password: hashPassword(generateToken()),
+      employee: {
+        id: employee.id,
+      },
+    });
 
-      const populatedAccount = await this.getAccount(
-        {
-          id: account.id,
-        },
-        'employee',
-      );
+    const populatedAccount = await this.getAccount(
+      {
+        id: account.id,
+      },
+      'employee',
+    );
 
-      return { ...populatedAccount!, password: '' };
-    } catch (error) {
-      if (isDuplicateError(error)) {
-        throw new DuplicationError('email', 'Account.Email.Duplicate');
-      }
-      throw error;
-    }
+    return { ...populatedAccount!, password: '' };
   }
 
   public static async verifyEmail(
@@ -182,6 +184,30 @@ export class AccountService {
         ...account,
         password: '',
       } as FullyPopulatedAccountModel;
+    } catch (error) {
+      console.log('failed:', error);
+      if (isEntityNotFoundError(error)) {
+        throw new BadRequestError(
+          'verificationToken',
+          'Account.VerificationToken.Invalid',
+        );
+      }
+      throw error;
+    }
+  }
+
+  public static async checkVerificationToken(token: string) {
+    try {
+      const account = await CommonService.getRecord({
+        entity: AccountEntity,
+        filter: {
+          verificationToken: token,
+          verificationTokenExpiry: MoreThan(new Date()),
+        },
+        relations: ['customer', 'employee'],
+      });
+
+      return !!account;
     } catch (error) {
       console.log('failed:', error);
       if (isEntityNotFoundError(error)) {

@@ -6,6 +6,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 import profileCaller from 'api-callers/profile';
+import SEO from 'components/abstract/SEO';
 import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import { getCustomerDashboardLayout } from 'components/layouts/customer-dashboard';
 import ProfileEditor from 'pages-sections/profile/ProfileEditor';
@@ -31,6 +32,7 @@ function Profile(): ReactElement {
 
   return (
     <>
+      <SEO title='Hồ Sơ Của Tôi' />
       {!isEditing ? (
         <ProfileViewer
           customer={customerWithDashboardInfo!}

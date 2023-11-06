@@ -7,6 +7,8 @@ import { NewEmployeeDtoSchema } from 'backend/dtos/employees/NewEmployee.dto';
 import type { VerifyEmployeeEmailDto } from 'backend/dtos/verifyEmployeeEmail.dto';
 import { VerifyEmployeeEmailDtoSchema } from 'backend/dtos/verifyEmployeeEmail.dto';
 import { EmployeeEntity } from 'backend/entities/employee.entity';
+import { EmployeeRole } from 'backend/enums/entities.enum';
+import { getRepo } from 'backend/helpers/database.helper';
 import {
   getPaginationParams,
   setPaginationHeader,
@@ -17,14 +19,15 @@ import { AccountService } from 'backend/services/account/account.service';
 import { createValidationGuard } from 'backend/services/common/common.guard';
 import { CommonService } from 'backend/services/common/common.service';
 import type { CommonArgs } from 'backend/services/common/helper';
+import type { CommonEmployeeModel } from 'backend/services/employee/helper';
 import { MailerService } from 'backend/services/mailer/mailer.service';
 import type { AccountWithPopulatedSide } from 'backend/types/auth';
 import { DuplicationError } from 'backend/types/errors/common';
 import type { JSSuccess } from 'backend/types/jsend';
-import type { EmployeeModel } from 'models/employee.model';
+import { DEFAULT_DOCS_PER_PAGE } from 'constants/pagination.constant';
 
 type SuccessResponse = JSSuccess<
-  EmployeeModel[] | AccountWithPopulatedSide<'employee'>
+  CommonEmployeeModel[] | AccountWithPopulatedSide<'employee'>
 >;
 
 const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
@@ -38,24 +41,33 @@ handler
 
     const commonArgs: CommonArgs<EmployeeEntity> = {
       entity: EmployeeEntity,
+      relations: ['account'],
     };
 
     if (keyword) {
-      const data = (await CommonService.getRecordsByKeyword({
-        ...commonArgs,
-        searchParams: {
-          keyword,
-          fieldName: 'name',
-          limit: paginationParams.limit,
-        },
-      })) as EmployeeModel[];
+      const employeeRepository = await getRepo(EmployeeEntity);
+      const queryBuilder = employeeRepository.createQueryBuilder('employee');
+      const nameParts = keyword.trim().split(/\s+/);
+      nameParts.forEach((part, index) => {
+        queryBuilder.orWhere(`employee.firstName ILIKE :part${index}`, {
+          [`part${index}`]: `%${part}%`,
+        });
+        queryBuilder.orWhere(`employee.lastName ILIKE :part${index}`, {
+          [`part${index}`]: `%${part}%`,
+        });
+      });
+
+      queryBuilder.leftJoinAndSelect('employee.account', 'account');
+      const employees = (await queryBuilder
+        .take(DEFAULT_DOCS_PER_PAGE)
+        .getMany()) as CommonEmployeeModel[];
 
       res.status(StatusCodes.OK).json({
         status: 'success',
-        data,
+        data: employees,
       });
     } else {
-      const [data, totalRecords] = await CommonService.getRecords({
+      const [employees, totalRecords] = await CommonService.getRecords({
         ...commonArgs,
         paginationParams,
       });
@@ -67,16 +79,17 @@ handler
 
       res.status(StatusCodes.OK).json({
         status: 'success',
-        data: data as EmployeeModel[],
+        data: employees as CommonEmployeeModel[],
       });
     }
   })
   .post(createValidationGuard(NewEmployeeDtoSchema), async (req, res) => {
     try {
-      const data = await AccountService.createEmployeeAccount(
-        req.body as NewEmployeeDto,
-      );
-      await MailerService.sendVerificationEmail(data.email);
+      const body = req.body as NewEmployeeDto;
+      const data = await AccountService.createEmployeeAccount(body);
+      if (body.role !== EmployeeRole.WAREHOUSE_STAFF) {
+        await MailerService.sendVerificationEmail(data.email);
+      }
 
       res.status(StatusCodes.CREATED).json({
         status: 'success',

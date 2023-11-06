@@ -14,9 +14,9 @@ const employeeSeeds: Omit<
     firstName: 'Tú',
     lastName: 'Nguyễn Ngọc Minh',
     email: 'admin@gmail.com',
-    phone: '034238790',
+    phone: '0342387906',
     birthday: new Date('2000-09-13'),
-    personalId: '0338758008',
+    personalId: '079200011633',
     role: EmployeeRole.MANAGER,
   },
 ];

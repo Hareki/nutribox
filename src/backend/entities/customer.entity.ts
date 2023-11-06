@@ -1,12 +1,5 @@
 import type { Relation } from 'typeorm';
-import {
-  Column,
-  Entity,
-  OneToMany,
-  OneToOne,
-  JoinColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, Unique } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { AccountEntity } from './account.entity';
@@ -23,7 +16,7 @@ import {
 @Unique('UQ_CUSTOMER_EMAIL', ['email'])
 export class CustomerEntity extends AbstractEntity {
   @OneToOne(() => AccountEntity, (account) => account.customer)
-  @JoinColumn()
+  // @JoinColumn()
   account: Relation<AccountEntity> | string;
 
   @OneToMany(

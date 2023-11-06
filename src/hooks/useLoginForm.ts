@@ -30,11 +30,16 @@ export const useLoginForm = (userType: UserType) => {
       if (!result?.ok) {
         const notVerified = result?.error?.includes('Account.Verified.False');
         const notFound = result?.error?.includes('CredentialsSignin');
+        const notActive = result?.error?.includes('Account.Disabled.True');
+
         if (notVerified) {
           setErrorMessage('Account.Verified.False');
         }
         if (notFound) {
           setErrorMessage('Account.Credentials.Invalid');
+        }
+        if (notActive) {
+          setErrorMessage('Account.Disabled.True');
         }
 
         return;

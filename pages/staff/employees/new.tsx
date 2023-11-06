@@ -8,88 +8,80 @@ import type { ReactElement } from 'react';
 import { useReducer } from 'react';
 import { useState } from 'react';
 
-import staffSupplierCaller from 'api-callers/staff/suppliers';
+import staffEmployeeCaller from 'api-callers/staff/employees';
 import type {
-  NewSupplierDto,
-  SupplierFormValues,
-} from 'backend/dtos/suppliers/newSupplier.dto';
+  NewEmployeeDto,
+  NewEmployeeFormValues,
+} from 'backend/dtos/employees/NewEmployee.dto';
+import type { CommonEmployeeModel } from 'backend/services/employee/helper';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import {
   infoDialogReducer,
   initInfoDialogState,
 } from 'components/dialog/info-dialog/reducer';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
-import { SUPPLIERS_STAFF_ROUTE } from 'constants/routes.ui.constant';
-import { transformFormikValueToIAddress } from 'helpers/address.helper';
+import { EMPLOYEES_STAFF_ROUTE } from 'constants/routes.ui.constant';
 import { useCustomTranslation } from 'hooks/useCustomTranslation';
 import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
-import type { SupplierModel } from 'models/supplier.model';
-import SupplierForm from 'pages-sections/staff/supplier/SupplierForm';
+import EmployeeForm from 'pages-sections/staff/employee/EmployeeForm';
 
-AdminSupplierCreate.getLayout = function getLayout(page: ReactElement) {
+AdminEmployeeCreate.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
-export default function AdminSupplierCreate() {
+export default function AdminEmployeeCreate() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [infoState, dispatchInfo] = useReducer(
     infoDialogReducer,
     initInfoDialogState,
   );
 
-  const { t } = useCustomTranslation([
-    'supplier',
-    'customerAddress',
-    'customerOrder',
-  ]);
+  const { t } = useCustomTranslation(['employee', 'account']);
   const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
     t,
-    operationName: 'Thêm nhà cung cấp',
+    operationName: 'Thêm nhân viên',
   });
 
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const { mutate: createSupplier, isLoading } = useMutation<
-    SupplierModel,
+  const { mutate: createEmployee, isLoading } = useMutation<
+    CommonEmployeeModel,
     unknown,
-    NewSupplierDto
+    NewEmployeeDto
   >({
     mutationFn: async (requestBody) =>
-      staffSupplierCaller.createSupplier(requestBody),
+      staffEmployeeCaller.createEmployee(requestBody),
     onSuccess: () => {
-      enqueueSnackbar(t('Supplier.AddInfo.Success'), {
+      enqueueSnackbar(t('Employee.AddInfo.Success'), {
         variant: 'success',
       });
 
       setIsRedirecting(true);
-      router.push(SUPPLIERS_STAFF_ROUTE);
+      router.push(EMPLOYEES_STAFF_ROUTE);
     },
     onError: dispatchErrorDialog,
   });
 
-  const handleFormSubmit = (values: SupplierFormValues) => {
-    const addressRb = transformFormikValueToIAddress(values);
-    const requestBody: NewSupplierDto = {
-      name: values.name,
-      phone: values.phone,
-      email: values.email,
-      ...addressRb!,
+  const handleFormSubmit = (values: NewEmployeeFormValues) => {
+    const requestBody: NewEmployeeDto = {
+      ...values,
+      role: values.role.value,
     };
 
-    createSupplier(requestBody);
+    createEmployee(requestBody);
   };
 
   return (
     <Box py={4}>
       <AdminDetailsViewHeader
-        hrefBack={SUPPLIERS_STAFF_ROUTE}
-        label='Thêm nhà cung cấp'
+        hrefBack={EMPLOYEES_STAFF_ROUTE}
+        label='Thêm nhân viên'
       />
 
       <Card sx={{ p: 6 }}>
-        <SupplierForm
+        <EmployeeForm
           isEditing
           isLoading={isLoading || isRedirecting}
           handleFormSubmit={handleFormSubmit}
@@ -104,9 +96,8 @@ export default function AdminSupplierCreate() {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const locales = await serverSideTranslations(locale ?? 'vn', [
-    'supplier',
-    'customerAddress',
-    'customerOrder',
+    'employee',
+    'account',
     'common',
   ]);
 

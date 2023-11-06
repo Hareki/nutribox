@@ -12,9 +12,9 @@ import { getAvatarUrl } from 'helpers/account.helper';
 import { formatDate } from 'lib';
 import { insertId } from 'utils/middleware.helper';
 
-type AccountRowProps = { account: FilteredAccount };
+type CustomerRowProps = { account: FilteredAccount };
 
-const CustomerRow: FC<AccountRowProps> = ({ account }) => {
+const CustomerRow: FC<CustomerRowProps> = ({ account }) => {
   const { email, fullName, phone, totalOrders, birthday } = account;
   const avatarUrl = getAvatarUrl(account);
   const router = useRouter();

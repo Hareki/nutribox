@@ -1,4 +1,5 @@
 import { OrderStatus } from 'backend/enums/entities.enum';
+import type { PopulateEmployeeFields } from 'models/employee.model';
 
 export const EmployeeCancellableOrderStatuses = [
   OrderStatus.PENDING,
@@ -11,3 +12,5 @@ export const EmployeeUpgradeableOrderStatuses = [
   OrderStatus.PROCESSING,
   OrderStatus.SHIPPING,
 ];
+
+export type CommonEmployeeModel = PopulateEmployeeFields<'account'>;

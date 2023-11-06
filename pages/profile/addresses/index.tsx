@@ -15,7 +15,7 @@ import AddressViewer from 'pages-sections/profile/address/AddressViewer';
 
 function Address(): ReactElement {
   const { data: session } = useSession();
-  const sessionUserId = session?.account.customer.id;
+  const sessionUserId = session?.account?.customer.id;
 
   const [editingAddress, setEditingAddress] = useState<CustomerAddressModel>();
   const [isAddMode, setIsAddMode] = useState(false);

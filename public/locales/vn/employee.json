@@ -18,5 +18,10 @@
   "Employee.Birthday.InvalidFormat": "Định dạng ngày không hợp lệ.",
   "Employee.PersonalId.Duplicate": "Số CCCD nhân viên đã tồn tại.",
   "Employee.Email.Duplicate": "Email nhân viên đã tồn tại.",
-  "Employee.Phone.Duplicate": "Số điện thoại nhân viên đã tồn tại."
+  "Employee.Phone.Duplicate": "Số điện thoại nhân viên đã tồn tại.",
+  "Employee.Birthday.Max": "Ngày sinh không thể vượt quá hôm qua.",
+  "Employee.Birthday.Min": "Ngày sinh không thể sớm hơn 200 năm.",
+  "Employee.UpdateInfo.Success": "Cập nhật nhân viên thành công",
+  "Employee.AddInfo.Success": "Thêm nhân viên thành công",
+  "Employee.Disabled.Required": "Vui lòng nhập trạng thái hoạt động."
 }

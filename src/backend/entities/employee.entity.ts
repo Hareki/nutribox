@@ -1,12 +1,5 @@
 import type { Relation } from 'typeorm';
-import {
-  Column,
-  Entity,
-  OneToOne,
-  JoinColumn,
-  OneToMany,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, OneToOne, OneToMany, Unique } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { AccountEntity } from './account.entity';
@@ -40,7 +33,7 @@ export class EmployeeEntity extends AbstractEntity {
   @OneToOne(() => AccountEntity, (account) => account.employee, {
     nullable: true,
   })
-  @JoinColumn()
+  // @JoinColumn()
   account?: Relation<AccountEntity> | string;
 
   @Column()

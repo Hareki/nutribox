@@ -186,5 +186,5 @@ export const themeColors = {
   info: blue,
   divider: grey[200],
   background: { default: grey[100] },
-  text: { primary: grey[900], secondary: grey[800], disabled: grey[400] },
+  text: { primary: grey[900], secondary: grey[800], disabled: grey[500] },
 };
