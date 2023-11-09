@@ -1,6 +1,5 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { Skeleton } from '@mui/material';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useSession } from 'next-auth/react';
 import type { ReactElement } from 'react';
 import { Fragment } from 'react';
@@ -38,7 +37,7 @@ function Order(): ReactElement {
     return (
       <>
         <CircularProgressBlock />
-        <ReactQueryDevtools />
+        {/* <ReactQueryDevtools /> */}
       </>
     );
 
@@ -104,7 +103,7 @@ function Order(): ReactElement {
       <FlexBox justifyContent='center' mt={5}>
         {paginationComponent}
       </FlexBox>
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
     </Fragment>
   );
 }

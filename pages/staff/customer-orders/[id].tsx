@@ -5,7 +5,6 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
@@ -154,7 +153,7 @@ function AdminOrderDetails() {
           dispatchConfirm({ type: 'confirm_dialog' });
         }}
       />
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
       <CancelOrderDialog
         open={cancelOrderDialogVisible}
         handleSubmitForm={handleSubmitForm}

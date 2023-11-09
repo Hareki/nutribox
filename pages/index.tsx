@@ -6,7 +6,6 @@ import {
   useQueries,
   useQuery,
 } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -270,7 +269,7 @@ function HomePage(props: HomePageProps) {
       </MobileNavigationBar>
       <SignInDialog />
       <Footer initialStoreInfo={props.initialStoreInfo} />
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
     </Fragment>
   );
 }
