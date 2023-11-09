@@ -1,6 +1,6 @@
 import { Box, Card } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { GetServerSideProps } from 'next';
+import { useMutation } from '@tanstack/react-query';
+import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSnackbar } from 'notistack';
@@ -9,8 +9,7 @@ import { useReducer } from 'react';
 import { useState } from 'react';
 
 import staffCategoryCaller from 'api-callers/staff/categories';
-import type { UpdateProductCategoryDto } from 'backend/dtos/categories/updateProductCategory.dto';
-import CircularProgressBlock from 'components/common/CircularProgressBlock';
+import type { NewProductCategoryDto } from 'backend/dtos/categories/newProductCategory.dto';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
 import {
   infoDialogReducer,
@@ -23,86 +22,75 @@ import { useServerSideErrorDialog } from 'hooks/useServerErrorDialog';
 import type { ProductCategoryModel } from 'models/productCategory.model';
 import CategoryForm from 'pages-sections/staff/category/CategoryForm';
 
-AdminCategoryDetails.getLayout = function getLayout(page: ReactElement) {
+AdminEmployeeCreate.getLayout = function getLayout(page: ReactElement) {
   return <AdminDashboardLayout>{page}</AdminDashboardLayout>;
 };
 
-export default function AdminCategoryDetails() {
-  const router = useRouter();
-  const id = router.query.id as string;
-  const queryClient = useQueryClient();
-  const { data: category, isLoading: isLoadingCategory } = useQuery({
-    queryKey: ['staff', 'categories', id],
-    queryFn: () => staffCategoryCaller.getCategory(id),
-  });
-  const { t } = useCustomTranslation(['productCategory', 'account']);
-
-  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
-    t,
-    operationName: 'Cập nhật thông tin',
-  });
-
+export default function AdminEmployeeCreate() {
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [infoState, dispatchInfo] = useReducer(
     infoDialogReducer,
     initInfoDialogState,
   );
 
-  const [isEditingForm, setIsEditingForm] = useState(false);
+  const { t } = useCustomTranslation(['productCategory', 'account']);
+  const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
+    t,
+    operationName: 'Thêm nhân viên',
+  });
+
+  const router = useRouter();
+
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate: updateCategory, isLoading: isUpdatingCategory } = useMutation<
+
+  const { mutate: createCategory, isLoading } = useMutation<
     ProductCategoryModel,
     unknown,
-    UpdateProductCategoryDto
+    NewProductCategoryDto
   >({
-    mutationFn: (requestBody) =>
-      staffCategoryCaller.updateCategory(id, requestBody),
+    mutationFn: async (requestBody) =>
+      staffCategoryCaller.createCategory(requestBody),
     onSuccess: () => {
-      setIsEditingForm(false);
-      enqueueSnackbar(t('ProductCategory.UpdateInfo.Success'), {
+      enqueueSnackbar(t('ProductCategory.AddInfo.Success'), {
         variant: 'success',
       });
-      queryClient.invalidateQueries(['staff', 'categories', id]);
+
+      setIsRedirecting(true);
+      router.push(CATEGORIES_STAFF_ROUTE);
     },
     onError: dispatchErrorDialog,
   });
 
-  const handleFormSubmit = (values: UpdateProductCategoryDto) => {
-    const requestBody: UpdateProductCategoryDto = {
+  const handleFormSubmit = (values: NewProductCategoryDto) => {
+    const requestBody: NewProductCategoryDto = {
       ...values,
     };
 
-    updateCategory(requestBody);
+    createCategory(requestBody);
   };
-
-  if (isLoadingCategory) {
-    return <CircularProgressBlock />;
-  }
 
   return (
     <Box py={4}>
       <AdminDetailsViewHeader
         hrefBack={CATEGORIES_STAFF_ROUTE}
-        label='Chi tiết danh mục'
+        label='Thêm nhân viên'
       />
 
       <Card sx={{ p: 6 }}>
         <CategoryForm
-          category={category}
-          setIsEditing={setIsEditingForm}
-          isEditing={isEditingForm}
-          isLoading={isUpdatingCategory}
+          isEditing
+          isLoading={isLoading || isRedirecting}
           handleFormSubmit={handleFormSubmit}
           infoState={infoState}
           dispatchInfo={dispatchInfo}
         />
       </Card>
-
       <ErrorDialog />
     </Box>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const locales = await serverSideTranslations(locale ?? 'vn', [
     'productCategory',
     'common',

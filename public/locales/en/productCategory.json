@@ -5,5 +5,8 @@
   "ProductCategory.Name.Required": "Please enter the product category name.",
   "ProductCategory.Name.Min": "Product category name should be at least 3 characters.",
   "ProductCategory.Name.Max": "Product category name should not exceed 50 characters.",
-  "ProductCategory.Available.Required": "Please indicate if the product category is available."
+  "ProductCategory.Available.Required": "Please indicate if the product category is available.",
+  "ProductCategory.Name.Duplicate": "Product category name already exists.",
+  "ProductCategory.UpdateInfo.Success": "Product category information updated successfully.",
+  "ProductCategory.AddInfo.Success": "Product category information added successfully."
 }

@@ -2,7 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Card, Container, TextField, styled } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
-import type { GetServerSideProps, GetStaticProps } from 'next';
+import type { GetServerSideProps,  } from 'next';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Fragment, useCallback, useReducer, useState } from 'react';

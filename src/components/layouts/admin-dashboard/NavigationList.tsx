@@ -10,6 +10,7 @@ import {
   PRODUCTS_STAFF_ROUTE,
   STORE_DETAIL_STAFF_ROUTE,
   SUPPLIERS_STAFF_ROUTE,
+  CATEGORIES_STAFF_ROUTE,
 } from 'constants/routes.ui.constant';
 import { STORE_ID } from 'constants/temp.constant';
 import { insertId } from 'utils/middleware.helper';
@@ -25,8 +26,13 @@ export type SideBarRole = keyof typeof EmployeeRole;
 
 export const navigations: Record<SideBarRole, NavigationItem[]> = {
   MANAGER: [
-    { type: 'label', name: 'Bảng điều khiển' },
+    { type: 'label', name: '' },
     { name: 'Thống kê', icon: duotone.Dashboard, path: DASHBOARD_STAFF_ROUTE },
+    {
+      name: 'Danh mục',
+      icon: duotone.TableList,
+      path: CATEGORIES_STAFF_ROUTE,
+    },
     {
       name: 'Sản phẩm',
       icon: duotone.Products,
