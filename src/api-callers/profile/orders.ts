@@ -5,7 +5,6 @@ import {
   ORDERS_API_ROUTE,
   ORDER_DETAIL_API_ROUTE,
 } from 'constants/routes.api.constant';
-import { CUSTOMER_ORDER_DETAIL_STAFF_ROUTE } from 'constants/routes.ui.constant';
 import type {
   CustomerOrderModel,
   PopulateCustomerOrderFields,

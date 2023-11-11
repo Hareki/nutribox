@@ -3,7 +3,6 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import PersonOutline from '@mui/icons-material/PersonOutline';
 import {
   Avatar,
-  CircularProgress,
   Divider,
   IconButton,
   ListItemIcon,

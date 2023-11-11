@@ -17,7 +17,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { IKUpload } from 'imagekitio-react';
 import { useSnackbar } from 'notistack';
-import { useState, useRef, Fragment, useMemo, useEffect } from 'react';
+import { useState, useRef, Fragment, useMemo } from 'react';
 
 import profileCaller from 'api-callers/profile';
 import type {

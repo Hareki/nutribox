@@ -1,10 +1,7 @@
 import type { AxiosError } from 'axios';
-import { enqueueSnackbar } from 'notistack';
-import type { Dispatch } from 'react';
 
 import type { JSFail } from 'backend/types/jsend';
-import type { InfoDialogAction } from 'components/dialog/info-dialog/reducer';
-import { formatCurrency, formatNumber } from 'lib';
+import { formatNumber } from 'lib';
 
 export type AxiosErrorWithMessages = AxiosError<JSFail<any>>;
 

@@ -9,8 +9,8 @@ interface StyledChipProps {
 
 const StyledChip = styled(Chip)<StyledChipProps>(({ top, left }) => ({
   zIndex: 1,
-  top: top,
-  left: left,
+  top,
+  left,
   paddingLeft: 3,
   paddingRight: 3,
   fontWeight: 600,
@@ -28,8 +28,8 @@ const OutOfStockChip: FC<OutOfStockChipProps> = ({ top, left }) => {
       label='Hết hàng'
       color='secondary'
       size='small'
-      top={top}
-      left={left}
+      top={top || '0'}
+      left={left || '0'}
     />
   );
 };

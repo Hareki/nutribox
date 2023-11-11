@@ -7,7 +7,6 @@ import Toolbar from '@mui/material/Toolbar';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 
-import CustomerUserMenu from 'components/CustomerUserMenu';
 import { FlexBox, FlexRowCenter } from 'components/flex-box';
 import Globe from 'components/icons/Globe';
 import Toggle from 'components/icons/Toggle';

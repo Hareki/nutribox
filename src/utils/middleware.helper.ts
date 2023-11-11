@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 
 import type { EmployeeRole } from 'backend/enums/entities.enum';
 import type { MethodRoutePair, RequestMethod } from 'backend/types/utils';

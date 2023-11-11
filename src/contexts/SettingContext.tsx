@@ -31,7 +31,7 @@ const SettingsProvider = ({ children }: settingsProviderProps) => {
   };
 
   useEffect(() => {
-    if (!window) return null;
+    if (!window) return;
 
     const getItem = window.localStorage.getItem('bazaar_settings');
 

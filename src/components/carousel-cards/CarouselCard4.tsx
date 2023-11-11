@@ -56,7 +56,7 @@ const CarouselCard4: FC<CarouselCard4Props> = ({
   const { push } = useRouter();
 
   return (
-    <CardWrapper img={bgImage} mode={mode}>
+    <CardWrapper img={bgImage || ''} mode={mode}>
       <Box pl={{ md: 10 }}>
         <H4
           mb={1}
@@ -93,7 +93,7 @@ const CarouselCard4: FC<CarouselCard4Props> = ({
           variant='contained'
           size='large'
           color='dark'
-          onClick={() => push(buttonLink)}
+          onClick={() => push(buttonLink || '')}
         >
           {buttonText}
         </Button>

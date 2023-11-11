@@ -93,7 +93,8 @@ const OrderDetailsViewer = ({
     CUSTOMER_ORDER_DETAIL_STAFF_ROUTE,
     true,
   );
-  const isAuthorizedToUpgrade = isStaff && role !== EmployeeRole.MANAGER;
+  const isAuthorizedToUpgrade =
+    (isStaff && role === EmployeeRole.CASHIER) || role === EmployeeRole.SHIPPER;
 
   const cancelIndex = CustomerOrderStatusOrders.length - 1;
   const cancelableIndexThreshHold = isStaff ? 2 : 1;

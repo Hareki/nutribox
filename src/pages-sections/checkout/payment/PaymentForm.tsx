@@ -12,10 +12,7 @@ import Card1 from 'components/common/Card1';
 import CardCvcInput from 'components/common/input/CardCvcInput';
 import CardExpDateInput from 'components/common/input/CardExpirationDateInput';
 import CardNumberInput from 'components/common/input/CardNumberInput';
-import MuiImage from 'components/common/input/MuiImage';
-import { FlexBox } from 'components/flex-box';
 import { NAME_REGEX } from 'constants/regex.constant';
-import type { CommonCustomerAccountModel } from 'models/account.model';
 
 const initialValues = {
   card_no: '',

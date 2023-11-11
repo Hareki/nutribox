@@ -49,7 +49,7 @@ const NumberSpinner = forwardRef<HTMLInputElement, NumberSpinnerProps>(
       });
     };
 
-    const handleButtonChange = (direction: MouseDirection) => {
+    const handleButtonChange = (direction: MouseDirection | undefined) => {
       setInternalValue((current) => {
         let next: number;
 
@@ -79,8 +79,8 @@ const NumberSpinner = forwardRef<HTMLInputElement, NumberSpinnerProps>(
           color='primary'
           onClick={() => handleButtonChange('down')}
           onMouseDown={() => setMouseDirection('down')}
-          onMouseOut={() => setMouseDirection(null)}
-          onMouseUp={() => setMouseDirection(null)}
+          onMouseOut={() => setMouseDirection(undefined)}
+          onMouseUp={() => setMouseDirection(undefined)}
         >
           <RemoveRoundedIcon />
         </IconButton>
@@ -97,8 +97,8 @@ const NumberSpinner = forwardRef<HTMLInputElement, NumberSpinnerProps>(
           color='primary'
           onClick={() => handleButtonChange('up')}
           onMouseDown={() => setMouseDirection('up')}
-          onMouseUp={() => setMouseDirection(null)}
-          onMouseOut={() => setMouseDirection(null)}
+          onMouseUp={() => setMouseDirection(undefined)}
+          onMouseOut={() => setMouseDirection(undefined)}
         >
           <AddRoundedIcon />
         </IconButton>

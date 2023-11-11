@@ -1,4 +1,4 @@
-import { Container, styled, Tabs } from '@mui/material';
+import { Container } from '@mui/material';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Fragment } from 'react';
@@ -20,17 +20,17 @@ import SignInDialog from 'pages-sections/auth/SignInDialog';
 import { serialize } from 'utils/string.helper';
 
 // styled component
-const StyledTabs = styled(Tabs)(({ theme }) => ({
-  minHeight: 0,
-  marginTop: 80,
-  marginBottom: 24,
-  borderBottom: `1px solid ${theme.palette.text.disabled}`,
-  '& .inner-tab': {
-    minHeight: 40,
-    fontWeight: 600,
-    textTransform: 'capitalize',
-  },
-}));
+// const StyledTabs = styled(Tabs)(({ theme }) => ({
+//   minHeight: 0,
+//   marginTop: 80,
+//   marginBottom: 24,
+//   borderBottom: `1px solid ${theme.palette.text.disabled}`,
+//   '& .inner-tab': {
+//     minHeight: 40,
+//     fontWeight: 600,
+//     textTransform: 'capitalize',
+//   },
+// }));
 
 type ProductDetailsProps = {
   product: CommonProductModel;

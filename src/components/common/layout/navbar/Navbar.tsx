@@ -5,15 +5,8 @@ import {
   KeyboardArrowDown,
 } from '@mui/icons-material';
 import ArrowRight from '@mui/icons-material/ArrowRight';
-import type {
-  SvgIconProps } from '@mui/material';
-import {
-  Box,
-  Button,
-  Container,
-  MenuItem,
-  styled,
-} from '@mui/material';
+import type { SvgIconProps } from '@mui/material';
+import { Box, Button, Container, MenuItem, styled } from '@mui/material';
 import type { FC } from 'react';
 
 import MegaMenu from './MegaMenu';
@@ -220,7 +213,11 @@ const Navbar: FC<NavbarProps> = ({
   };
 
   return (
-    <NavBarWrapper hoverEffect={false} elevation={elevation} border={border}>
+    <NavBarWrapper
+      hoverEffect={false}
+      elevation={elevation}
+      border={border || 0}
+    >
       {!hideCategories ? (
         <InnerContainer>
           {/* Category megamenu */}

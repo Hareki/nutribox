@@ -1,5 +1,4 @@
 import type { UpdateStoreInfoDto } from 'backend/dtos/store/updateStoreInfo.dto';
-import { UpdateStoreInfoDtoSchema } from 'backend/dtos/store/updateStoreInfo.dto';
 import type { UpdateStoreWorkTimesDto } from 'backend/dtos/store/updateStoreWorkTimes.dto';
 import type { JSSuccess } from 'backend/types/jsend';
 import axiosInstance from 'constants/axiosFe.constant';

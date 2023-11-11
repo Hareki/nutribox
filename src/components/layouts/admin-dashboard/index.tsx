@@ -1,7 +1,7 @@
 import type { Theme } from '@mui/material';
 import { Box, styled, useMediaQuery } from '@mui/material';
 import type { FC, ReactNode } from 'react';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 
 import SideBar from './SideBar';
 

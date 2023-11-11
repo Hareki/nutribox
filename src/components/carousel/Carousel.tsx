@@ -155,13 +155,13 @@ const renderDots = ({
   visibleSlides,
   carouselStore,
 }: any) => {
-  const dots = [];
+  const dots = [] as any[];
   const total = totalSlides - visibleSlides + 1;
   // handle dot button
   const handleClick = (currentSlide: any, autoplay: boolean) => {
     carouselStore.setStoreState({
       autoPlay: autoplay,
-      currentSlide: currentSlide,
+      currentSlide,
     });
   };
 

@@ -35,7 +35,6 @@ import type {
   PopulateCustomerOrderFields,
 } from 'models/customerOrder.model';
 import type {
-  FullyPopulatedCustomerOrderItemModel,
   PopulateCustomerOrderItemIdFields,
 } from 'models/customerOrderItem.model';
 import type { ExportOrderModel } from 'models/exportOrder.model';

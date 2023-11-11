@@ -33,7 +33,7 @@ export const confirmDialogReducer = (
       return {
         ...state,
         open: true,
-        title: action.payload?.title,
+        title: action.payload?.title || '',
         content: action.payload?.content,
       };
     case 'cancel_dialog':

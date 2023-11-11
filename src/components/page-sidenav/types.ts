@@ -1,9 +1,9 @@
-import type { IProduct } from 'api/models/Product.model/types';
+import type { ProductModel } from 'models/product.model';
 
 export type ListItem = {
   name: string;
   slug: string;
-  products: IProduct[];
+  products: ProductModel[];
 };
 
 export interface CategoryNavList {

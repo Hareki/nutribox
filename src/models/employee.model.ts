@@ -7,7 +7,6 @@ import type { ReviewResponseModel } from './reviewResponse.model';
 
 import { EmployeeRole } from 'backend/enums/entities.enum';
 import { NAME_REGEX, PID_REGEX } from 'constants/regex.constant';
-import { getUtcDate } from 'utils/date.helper';
 
 const EmployeeSchema = z.object({
   id: zodUuid('Employee.Id'),

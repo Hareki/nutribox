@@ -2,11 +2,11 @@ import { Box, styled, useTheme } from '@mui/material';
 import type { FC } from 'react';
 import { useState } from 'react';
 
-import type { IProductCategory } from 'api/models/ProductCategory.model/types';
 import { H5, Span } from 'components/abstract/Typography';
 import BazaarCard from 'components/common/BazaarCard';
 import { FlexBetween, FlexBox } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
+import type { ProductCategoryModel } from 'models/productCategory.model';
 
 const NavbarRoot = styled(BazaarCard)<{
   isfixed: boolean;
@@ -64,7 +64,7 @@ const Circle = styled('span')({
 // ==================================================================
 type CategoryNavbarProps = {
   isFixed?: boolean;
-  navList: IProductCategory[];
+  navList: ProductCategoryModel[];
   lineStyle?: 'dash' | 'solid';
   sidebarHeight?: string | number;
   sidebarStyle?: 'style1' | 'style2';
@@ -91,12 +91,15 @@ const CategoryNavbar: FC<CategoryNavbarProps> = (props) => {
 
   return (
     <Scrollbar autoHide={false} sx={{ maxHeight: sidebarHeight }}>
-      <NavbarRoot isfixed={isFixed} sidebarstyle={sidebarStyle}>
+      <NavbarRoot
+        isfixed={isFixed || false}
+        sidebarstyle={sidebarStyle || 'style1'}
+      >
         <Box>
           <Box padding='16px 20px 5px 20px'>
             <H5>Danh mục món ăn</H5>
 
-            <BorderBox linestyle={lineStyle}>
+            <BorderBox linestyle={lineStyle || 'solid'}>
               <ColorBorder width='140% !important' />
               <ColorBorder grey={1} />
             </BorderBox>

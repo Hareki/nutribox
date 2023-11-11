@@ -73,7 +73,7 @@ const MegaMenu2: FC<MegaMenuProps> = ({ title, menuList }) => {
 
           <Scrollbar autoHide={false} sx={{ width: '100%' }}>
             <Box px={6} py={2} height='100%'>
-              {subMenus.child.map((item, key) => {
+              {subMenus?.child.map((item, key) => {
                 return (
                   <Box key={key}>
                     <H6 fontWeight={700} my={3}>

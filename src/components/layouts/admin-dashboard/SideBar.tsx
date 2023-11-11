@@ -28,8 +28,7 @@ import SidebarAccordion from './SidebarAccordion';
 import EmployeeMenu from './UserMenu';
 
 import type { EmployeeRole } from 'backend/enums/entities.enum';
-import CircularProgressBlock from 'components/common/CircularProgressBlock';
-import { FlexBetween, FlexBox, FlexRowCenter } from 'components/flex-box';
+import { FlexBetween, FlexRowCenter } from 'components/flex-box';
 import Scrollbar from 'components/Scrollbar';
 import useSignOutDialog from 'hooks/useSignOutDialog';
 import { shortenUrl } from 'utils/middleware.helper';

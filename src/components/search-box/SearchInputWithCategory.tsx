@@ -50,11 +50,10 @@ const SearchInputWithCategory: FC = () => {
     });
   };
 
-  const handleDocumentClick = () => setResultList([]);
-
   useEffect(() => {
+    const handleDocumentClick = () => setResultList([]);
     window.addEventListener('click', handleDocumentClick);
-    return () => window.removeEventListener('click', null);
+    return () => window.removeEventListener('click', handleDocumentClick);
   }, []);
 
   // CATEGORY MENU DROPDOWN
