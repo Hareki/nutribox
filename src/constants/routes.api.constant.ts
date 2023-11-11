@@ -232,10 +232,10 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     route: PRODUCT_DETAIL_API_STAFF_ROUTE,
   },
-  {
-    methods: ['POST'],
-    route: IMPORT_PRODUCT_API_STAFF_ROUTE,
-  },
+  // {
+  //   methods: ['POST'],
+  //   route: IMPORT_PRODUCT_API_STAFF_ROUTE,
+  // },
   // {
   //   methods: ['GET'],
   //   route: IMPORT_ORDERS_API_STAFF_ROUTE,
@@ -266,6 +266,10 @@ export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
     route: DASHBOARD_API_STAFF_ROUTE,
   },
   {
+    methods: ['GET'],
+    route: MONTHLY_PROFITS_API_STAFF_ROUTE,
+  },
+  {
     methods: ['GET', 'PUT', 'PATCH'],
     route: PROFILE_API_STAFF_ROUTE,
   },
@@ -286,8 +290,12 @@ export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
     route: PRODUCTS_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET', 'PATCH'],
+    methods: ['GET', 'POST', 'PATCH'],
     route: PRODUCT_DETAIL_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['POST'],
+    route: IMPORT_PRODUCT_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],

@@ -80,16 +80,15 @@ export const navigations: Record<SideBarRole, NavigationItem[]> = {
     { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
   ],
   SHIPPER: [
-    { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
     {
       name: 'Đơn hàng',
       icon: duotone.Order,
       path: CUSTOMER_ORDERS_STAFF_ROUTE,
     },
+    { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
   ],
   WAREHOUSE_MANAGER: [
     { name: 'Thống kê', icon: duotone.Dashboard, path: DASHBOARD_STAFF_ROUTE },
-    { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
     {
       name: 'Sản phẩm',
       icon: duotone.Products,
@@ -105,6 +104,7 @@ export const navigations: Record<SideBarRole, NavigationItem[]> = {
       icon: duotone.Order,
       path: CUSTOMER_ORDERS_STAFF_ROUTE,
     },
+    { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
   ],
   WAREHOUSE_STAFF: [],
 };

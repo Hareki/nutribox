@@ -89,7 +89,7 @@ export const getDefaultStaffRoute = (employeeRole: EmployeeRole) => {
   const defaultStaffRoute: Record<Exclude<Role, 'CUSTOMER'>, string> = {
     ['MANAGER']: DASHBOARD_STAFF_ROUTE,
     ['CASHIER']: DASHBOARD_STAFF_ROUTE,
-    ['WAREHOUSE_MANAGER']: CUSTOMER_ORDERS_STAFF_ROUTE,
+    ['WAREHOUSE_MANAGER']: DASHBOARD_STAFF_ROUTE,
     ['SHIPPER']: CUSTOMER_ORDERS_STAFF_ROUTE,
   };
   const defaultRoute = defaultStaffRoute[employeeRole.toString()];

@@ -20,6 +20,7 @@ import { ProductImageEntity } from 'backend/entities/productImage.entity';
 import { OrderStatus } from 'backend/enums/entities.enum';
 import { getRepo } from 'backend/helpers/database.helper';
 import type { ImportOrderModel } from 'models/importOder.model';
+import { getSlug } from 'utils/string.helper';
 
 export class ProductService {
   private static getMergedRelations = (
@@ -247,7 +248,7 @@ export class ProductService {
       select: ['id', 'name'],
     });
 
-    return simplifiedProducts.map((p) => `${p.name}-${p.id}`);
+    return simplifiedProducts.map((p) => getSlug(p));
   };
 
   public static pushImages = async (

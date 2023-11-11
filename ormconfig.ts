@@ -23,7 +23,10 @@ const config: ConnectionOptions = {
   name: 'default',
   type: 'postgres',
   host: process.env.DB_HOST,
-  ssl: process.env.NODE_ENV === 'production' ? true : false,
+  ssl:
+    process.env.NEXT_PUBLIC_DOMAIN_URL !== 'http://localhost:3000'
+      ? true
+      : false,
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
