@@ -32,7 +32,7 @@ export const routeToRegexPattern = (route: string): RegExp => {
   let pattern = route
     .replace(/https?:\/\/[^/]+/, '') // strip out the domain
     .replace(/\//g, '\\/') // escape slashes
-    .replace(/:\w+/g, '[^/]+'); // replace placeholders like :slug with a regex pattern
+    .replace(/:\w+/g, '(?!new\\b)[^/]+'); // replace placeholders and exclude 'new' keyword as a separate segment
 
   // Create a regex group for optional language prefixes
   const langPrefixPattern =

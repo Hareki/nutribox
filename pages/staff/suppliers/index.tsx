@@ -8,9 +8,11 @@ import {
   TableContainer,
 } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import type { ReactElement } from 'react';
 
 import staffSupplierCaller from 'api-callers/staff/suppliers';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
@@ -44,6 +46,9 @@ const mapSupplierToRow = (item: SupplierModel) => ({
 export type FilteredSupplier = ReturnType<typeof mapSupplierToRow>;
 function SupplierList() {
   const router = useRouter();
+  const { data: session } = useSession();
+  const role = session?.employeeAccount.employee.role;
+  const isAuthorizedToAdd = role !== EmployeeRole.MANAGER;
 
   const {
     isLoading,
@@ -77,7 +82,7 @@ function SupplierList() {
       <SearchArea
         handleSearch={handleSearch}
         searchPlaceholder='Tìm theo tên nhà CC'
-        haveButton
+        haveButton={isAuthorizedToAdd}
         handleBtnClick={() => router.push(NEW_SUPPLIER_ROUTE)}
         buttonText='Thêm nhà CC'
       />

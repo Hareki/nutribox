@@ -9,12 +9,14 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
+import { useSession } from 'next-auth/react';
 import { Fragment, useState } from 'react';
 
 import ExpirationOrderModal from './ExpirationOrderModal';
 import ExpirationOrderRow from './ExpirationOrderRow';
 
 import apiCaller from 'api-callers/staff/products';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import type { ExtendedCommonProductModel } from 'backend/services/product/helper';
 import TableHeader from 'components/data-table/TableHeader';
 import { FlexBox } from 'components/flex-box';
@@ -52,6 +54,10 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
     // defaultSort: 'id',
     // defaultOrder: 'desc',
   });
+
+  const { data: session } = useSession();
+  const isAuthorizedToImport =
+    session?.employeeAccount.employee.role === EmployeeRole.WAREHOUSE_MANAGER;
   return (
     <Fragment>
       <Box sx={{ mt: 4 }}>
@@ -90,26 +96,28 @@ const ProductExpiration = ({ product }: ProductExpirationProps) => {
             <Stack alignItems='center' my={4}>
               {paginationComponent}
             </Stack>
-            <FlexBox
-              gap={2}
-              justifyContent='flex-end'
-              mb={4}
-              mr={6}
-              onClick={() => setModalOpen(true)}
-            >
-              <Button
-                variant='contained'
-                color='primary'
-                startIcon={<ImportExportRoundedIcon />}
-                sx={{
-                  '& .MuiButton-startIcon > svg': {
-                    fontSize: '25px',
-                  },
-                }}
+            {isAuthorizedToImport && (
+              <FlexBox
+                gap={2}
+                justifyContent='flex-end'
+                mb={4}
+                mr={6}
+                onClick={() => setModalOpen(true)}
               >
-                Nhập sản phẩm
-              </Button>
-            </FlexBox>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  startIcon={<ImportExportRoundedIcon />}
+                  sx={{
+                    '& .MuiButton-startIcon > svg': {
+                      fontSize: '25px',
+                    },
+                  }}
+                >
+                  Nhập sản phẩm
+                </Button>
+              </FlexBox>
+            )}
           </Card>
         )}
       </Box>

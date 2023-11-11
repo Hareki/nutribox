@@ -2,11 +2,13 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { LoadingButton } from '@mui/lab';
 import { Button, Grid, TextField } from '@mui/material';
 import { useFormik } from 'formik';
+import { useSession } from 'next-auth/react';
 import type { Dispatch, FC } from 'react';
 import { Fragment } from 'react';
 
 import type { SupplierFormValues } from 'backend/dtos/suppliers/newSupplier.dto';
 import { SupplierFormSchema } from 'backend/dtos/suppliers/newSupplier.dto';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import AddressForm from 'components/AddressForm';
 import PhoneInput from 'components/common/input/PhoneInput';
 import InfoDialog from 'components/dialog/info-dialog';
@@ -58,6 +60,10 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
   } = props;
 
   const { t } = useCustomTranslation(['supplier']);
+
+  const { data: session } = useSession();
+  const isAuthorizedToMutate =
+    session?.employeeAccount.employee.role !== EmployeeRole.MANAGER;
 
   const isAdding = !props.supplier;
 
@@ -146,47 +152,49 @@ const SupplierForm: FC<SupplierFormProps> = (props) => {
             isEditing={isEditing}
           />
 
-          <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
-            {isEditing ? (
-              <Fragment>
-                <LoadingButton
-                  loading={isLoading}
+          {isAuthorizedToMutate && (
+            <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
+              {isEditing ? (
+                <Fragment>
+                  <LoadingButton
+                    loading={isLoading}
+                    variant='contained'
+                    color='primary'
+                    type='submit'
+                  >
+                    {isAdding ? 'Thêm nhà CC' : 'Lưu thay đổi'}
+                  </LoadingButton>
+                  {!isAdding && (
+                    <Button
+                      variant='outlined'
+                      color='primary'
+                      onClick={() => {
+                        setIsEditing?.(false);
+                        resetForm({
+                          values: getInitialValues(props.supplier),
+                        });
+                      }}
+                      sx={{
+                        px: 3,
+                      }}
+                    >
+                      Hủy
+                    </Button>
+                  )}
+                </Fragment>
+              ) : (
+                <Button
+                  startIcon={<EditRoundedIcon />}
                   variant='contained'
                   color='primary'
                   type='submit'
+                  onClick={() => setIsEditing?.(true)}
                 >
-                  {isAdding ? 'Thêm nhà CC' : 'Lưu thay đổi'}
-                </LoadingButton>
-                {!isAdding && (
-                  <Button
-                    variant='outlined'
-                    color='primary'
-                    onClick={() => {
-                      setIsEditing?.(false);
-                      resetForm({
-                        values: getInitialValues(props.supplier),
-                      });
-                    }}
-                    sx={{
-                      px: 3,
-                    }}
-                  >
-                    Hủy
-                  </Button>
-                )}
-              </Fragment>
-            ) : (
-              <Button
-                startIcon={<EditRoundedIcon />}
-                variant='contained'
-                color='primary'
-                type='submit'
-                onClick={() => setIsEditing?.(true)}
-              >
-                Chỉnh sửa
-              </Button>
-            )}
-          </Grid>
+                  Chỉnh sửa
+                </Button>
+              )}
+            </Grid>
+          )}
         </Grid>
       </form>
 

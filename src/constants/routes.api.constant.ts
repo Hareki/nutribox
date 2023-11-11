@@ -205,7 +205,7 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
   },
   {
     // FIXME Manager should be allowed to use PATCH method, just for development
-    methods: ['GET', 'PATCH'],
+    methods: ['GET'],
     route: CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE,
   },
   {
@@ -236,18 +236,18 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
     methods: ['POST'],
     route: IMPORT_PRODUCT_API_STAFF_ROUTE,
   },
-  {
-    methods: ['GET'],
-    route: IMPORT_ORDERS_API_STAFF_ROUTE,
-  },
+  // {
+  //   methods: ['GET'],
+  //   route: IMPORT_ORDERS_API_STAFF_ROUTE,
+  // },
   // FIXME Manager should be allowed to use  POST method, just for development
   {
-    methods: ['GET', 'POST'],
+    methods: ['GET'],
     route: SUPPLIERS_API_STAFF_ROUTE,
   },
   // FIXME Manager should be allowed to use PUT method, just for development
   {
-    methods: ['GET', 'PUT'],
+    methods: ['GET'],
     route: SUPPLIER_DETAIL_API_STAFF_ROUTE,
   },
   {
@@ -308,6 +308,14 @@ export const WarehouseManagerApiRoutes: MethodRoutePair[] = [
 ];
 
 export const CashierApiRoutes: MethodRoutePair[] = [
+  {
+    methods: ['GET'],
+    route: DASHBOARD_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: MONTHLY_PROFITS_API_STAFF_ROUTE,
+  },
   {
     methods: ['GET', 'PUT', 'PATCH'],
     route: PROFILE_API_STAFF_ROUTE,

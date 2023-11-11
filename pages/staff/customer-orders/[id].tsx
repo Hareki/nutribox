@@ -6,6 +6,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 import { useReducer, useState } from 'react';
@@ -34,6 +35,9 @@ AdminOrderDetails.getLayout = function getLayout(page: ReactElement) {
 };
 
 function AdminOrderDetails() {
+  const { data: session } = useSession();
+  const role = session?.employeeAccount.employee.role;
+
   const queryClient = useQueryClient();
   const id = useRouter().query.id as string;
   const { enqueueSnackbar } = useSnackbar();
@@ -120,6 +124,7 @@ function AdminOrderDetails() {
       />
 
       <OrderDetailsViewer
+        role={role}
         exportOrderDetails={exportOrderDetails!}
         order={order!}
         productsOfOrders={productsOfOrders}

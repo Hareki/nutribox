@@ -65,10 +65,46 @@ export const navigations: Record<SideBarRole, NavigationItem[]> = {
     },
     { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
   ],
-  CASHIER: [{ type: 'signOut', name: 'Đăng xuất', icon: duotone.Session }],
-  SHIPPER: [{ type: 'signOut', name: 'Đăng xuất', icon: duotone.Session }],
-  WAREHOUSE_MANAGER: [
+  CASHIER: [
+    { name: 'Thống kê', icon: duotone.Dashboard, path: DASHBOARD_STAFF_ROUTE },
+    {
+      name: 'Đơn hàng',
+      icon: duotone.Order,
+      path: CUSTOMER_ORDERS_STAFF_ROUTE,
+    },
+    {
+      name: 'Khách hàng',
+      icon: duotone.Customers,
+      path: CUSTOMERS_STAFF_ROUTE,
+    },
     { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
+  ],
+  SHIPPER: [
+    { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
+    {
+      name: 'Đơn hàng',
+      icon: duotone.Order,
+      path: CUSTOMER_ORDERS_STAFF_ROUTE,
+    },
+  ],
+  WAREHOUSE_MANAGER: [
+    { name: 'Thống kê', icon: duotone.Dashboard, path: DASHBOARD_STAFF_ROUTE },
+    { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
+    {
+      name: 'Sản phẩm',
+      icon: duotone.Products,
+      path: PRODUCTS_STAFF_ROUTE,
+    },
+    {
+      name: 'Nhà cung cấp',
+      icon: duotone.Seller,
+      path: SUPPLIERS_STAFF_ROUTE,
+    },
+    {
+      name: 'Đơn hàng',
+      icon: duotone.Order,
+      path: CUSTOMER_ORDERS_STAFF_ROUTE,
+    },
   ],
   WAREHOUSE_STAFF: [],
 };

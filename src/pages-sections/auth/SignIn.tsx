@@ -58,7 +58,6 @@ const SignIn: FC<SignInProps> = ({
   errorMessage,
   userType,
 }) => {
-  console.log('file: SignIn.tsx:61 - errorMessage:', errorMessage);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const { t } = useCustomTranslation(['account']);
   const togglePasswordVisibility = useCallback(() => {

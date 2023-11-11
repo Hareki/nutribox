@@ -10,12 +10,14 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
+import { useSession } from 'next-auth/react';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 
 import apiCaller from 'api-callers/staff/products';
 import type { ProductFormValues } from 'backend/dtos/product/newProduct.dto';
 import { ProductFormSchema } from 'backend/dtos/product/newProduct.dto';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import type { ExtendedCommonProductModel } from 'backend/services/product/helper';
 import CurrencyInput from 'components/common/input/CurrencyInput';
 import CustomSwitch from 'components/common/input/CustomSwitch';
@@ -90,6 +92,10 @@ const ProductForm: FC<ProductFormProps> = (props) => {
     validationSchema: toFormikValidationSchema(ProductFormSchema),
     onSubmit: handleFormSubmit,
   });
+
+  const { data: session } = useSession();
+  const isAuthorizedToMutate =
+    session?.employeeAccount.employee.role === EmployeeRole.MANAGER;
 
   return (
     <Fragment>
@@ -254,47 +260,49 @@ const ProductForm: FC<ProductFormProps> = (props) => {
             />
           </Grid>
 
-          <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
-            {isEditing ? (
-              <Fragment>
-                <LoadingButton
-                  loading={isLoading}
+          {isAuthorizedToMutate && (
+            <Grid item xs={12} display='flex' justifyContent='flex-end' gap={2}>
+              {isEditing ? (
+                <Fragment>
+                  <LoadingButton
+                    loading={isLoading}
+                    variant='contained'
+                    color='primary'
+                    type='submit'
+                    onClick={() => setSubmissionClicked?.(true)}
+                  >
+                    {isAdding ? 'Thêm sản phẩm' : 'Lưu thay đổi'}
+                  </LoadingButton>
+                  <Button
+                    disabled={isLoading}
+                    variant='outlined'
+                    color='primary'
+                    onClick={() => {
+                      setIsEditing?.(false);
+                      resetForm({
+                        values: getInitialValues(product),
+                      });
+                    }}
+                    sx={{
+                      px: 3,
+                    }}
+                  >
+                    Huỷ
+                  </Button>
+                </Fragment>
+              ) : (
+                <Button
+                  startIcon={<EditRoundedIcon />}
                   variant='contained'
                   color='primary'
                   type='submit'
-                  onClick={() => setSubmissionClicked?.(true)}
+                  onClick={() => setIsEditing?.(true)}
                 >
-                  {isAdding ? 'Thêm sản phẩm' : 'Lưu thay đổi'}
-                </LoadingButton>
-                <Button
-                  disabled={isLoading}
-                  variant='outlined'
-                  color='primary'
-                  onClick={() => {
-                    setIsEditing?.(false);
-                    resetForm({
-                      values: getInitialValues(product),
-                    });
-                  }}
-                  sx={{
-                    px: 3,
-                  }}
-                >
-                  Huỷ
+                  Chỉnh sửa
                 </Button>
-              </Fragment>
-            ) : (
-              <Button
-                startIcon={<EditRoundedIcon />}
-                variant='contained'
-                color='primary'
-                type='submit'
-                onClick={() => setIsEditing?.(true)}
-              >
-                Chỉnh sửa
-              </Button>
-            )}
-          </Grid>
+              )}
+            </Grid>
+          )}
         </Grid>
       </form>
     </Fragment>

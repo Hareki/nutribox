@@ -21,6 +21,7 @@ import { Fragment, useMemo, useState } from 'react';
 import ExportOrderDetailTable from './ExportOrderDetailTable';
 import OrderPaymentChip from './OrderPaymentChip';
 
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import { PaymentMethod } from 'backend/enums/entities.enum';
 import type { ExportOrderDetails } from 'backend/services/customerOrder/helper';
 import { CustomerOrderStatusOrders } from 'backend/services/customerOrder/helper';
@@ -71,6 +72,7 @@ interface OrderDetailsViewerProps {
   isUpdating?: boolean;
   upgradeOrderStatusCallBack?: () => void;
   exportOrderDetails?: ExportOrderDetails[];
+  role?: EmployeeRole;
 }
 const OrderDetailsViewer = ({
   order,
@@ -79,6 +81,7 @@ const OrderDetailsViewer = ({
   cancelOrderCallback,
   upgradeOrderStatusCallBack,
   exportOrderDetails,
+  role,
 }: OrderDetailsViewerProps) => {
   const { transitions } = useTheme();
   const router = useRouter();
@@ -90,6 +93,7 @@ const OrderDetailsViewer = ({
     CUSTOMER_ORDER_DETAIL_STAFF_ROUTE,
     true,
   );
+  const isAuthorizedToUpgrade = isStaff && role !== EmployeeRole.MANAGER;
 
   const cancelIndex = CustomerOrderStatusOrders.length - 1;
   const cancelableIndexThreshHold = isStaff ? 2 : 1;
@@ -179,7 +183,7 @@ const OrderDetailsViewer = ({
             </Typography>
           </Grid>
 
-          {isStaff && (
+          {isAuthorizedToUpgrade && (
             <Grid
               item
               lg='auto'

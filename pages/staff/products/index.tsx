@@ -8,16 +8,18 @@ import {
   TableContainer,
 } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import type { ReactElement } from 'react';
 
 import apiCaller from 'api-callers/staff/products';
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import type { ExtendedCommonProductModel } from 'backend/services/product/helper';
 import { H3 } from 'components/abstract/Typography';
 import SearchArea from 'components/dashboard/SearchArea';
 import TableHeader from 'components/data-table/TableHeader';
 import AdminDashboardLayout from 'components/layouts/admin-dashboard';
 import Scrollbar from 'components/Scrollbar';
-import { NEW_PRODUCT_ROUTE } from 'constants/routes.ui.constant';
+import { NEW_PRODUCT_DETAIL_ROUTE } from 'constants/routes.ui.constant';
 import useMuiTable from 'hooks/useMuiTable';
 import usePaginationQuery from 'hooks/usePaginationQuery';
 import { useTableSearch } from 'hooks/useTableSearch';
@@ -76,6 +78,9 @@ function ProductList() {
     // defaultOrder: 'desc',
   });
 
+  const { data: session } = useSession();
+  const isAuthorizedToAdd =
+    session?.employeeAccount.employee.role === EmployeeRole.MANAGER;
   return (
     <Box py={4}>
       <H3 mb={2}>Sản phẩm</H3>
@@ -83,8 +88,8 @@ function ProductList() {
       <SearchArea
         handleSearch={handleSearch}
         searchPlaceholder='Tìm theo tên sản phẩm'
-        haveButton
-        handleBtnClick={() => router.push(NEW_PRODUCT_ROUTE)}
+        haveButton={isAuthorizedToAdd}
+        handleBtnClick={() => router.push(NEW_PRODUCT_DETAIL_ROUTE)}
         buttonText='Thêm sản phẩm'
       />
 
