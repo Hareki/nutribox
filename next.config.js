@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { i18n } = require('./next-i18next.config');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const withPlugins = require('next-compose-plugins');
 
-module.exports = {
+module.exports = withPlugins([], {
   i18n,
   devIndicators: {},
   publicRuntimeConfig: {
@@ -38,7 +39,7 @@ module.exports = {
    * @param {import('webpack').Configuration} config
    * @returns {import('webpack').Configuration}
    */
-  webpack: (config) => {
+  webpack: (config, options) => {
     const originalEntry = config.entry;
     config.entry = async () => {
       const entries = await originalEntry();
@@ -60,6 +61,13 @@ module.exports = {
       config.resolve.plugins = [new TsconfigPathsPlugin()];
     }
 
+    // if (options.isServer) {
+    //   config.resolve.plugins = [
+    //     ...(config.resolve.plugins || []),
+    //     new TsconfigPathsPlugin({ configFile: './tsconfig.json' }),
+    //   ];
+    // }
+
     return config;
   },
-};
+});
