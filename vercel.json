@@ -2,7 +2,7 @@
   "framework": "nextjs",
   "functions": {
     "pages/**/*.{ts,tsx}": {
-      "maxDuration": 60
+      "maxDuration": 10
     }
   }
 }
