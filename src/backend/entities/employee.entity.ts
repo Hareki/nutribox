@@ -1,9 +1,8 @@
 import type { Relation } from 'typeorm';
-import { Column, Entity, OneToOne, OneToMany, Unique } from 'typeorm';
+import { Column, Entity, OneToOne, Unique } from 'typeorm';
 
 import { AbstractEntity } from './abstract.entity';
 import { AccountEntity } from './account.entity';
-import { ReviewResponseEntity } from './reviewResponse.entity';
 
 import { EmployeeRole } from 'backend/enums/entities.enum';
 import {
@@ -16,12 +15,6 @@ import {
 @Unique('UQ_EMPLOYEE_EMAIL', ['email'])
 @Unique('UQ_EMPLOYEE_PHONE', ['phone'])
 export class EmployeeEntity extends AbstractEntity {
-  @OneToMany(
-    () => ReviewResponseEntity,
-    (reviewResponse) => reviewResponse.employee,
-  )
-  reviewResponses: Relation<ReviewResponseEntity>[] | string[];
-
   @Column({
     transformer: new StringEncryptionTransformer(),
   })

@@ -12,8 +12,6 @@ import { ImportOrderEntity } from 'backend/entities/importOrder.entity';
 import { ProductEntity } from 'backend/entities/product.entity';
 import { ProductCategoryEntity } from 'backend/entities/productCategory.entity';
 import { ProductImageEntity } from 'backend/entities/productImage.entity';
-import { ReviewEntity } from 'backend/entities/review.entity';
-import { ReviewResponseEntity } from 'backend/entities/reviewResponse.entity';
 import { StoreEntity } from 'backend/entities/store.entity';
 import { StoreWorkTimeEntity } from 'backend/entities/storeWorkTime.entity';
 import { SupplierEntity } from 'backend/entities/supplier.entity';
@@ -47,8 +45,6 @@ const config: ConnectionOptions = {
     ExportOrderEntity,
     ImportOrderEntity,
     ProductCategoryEntity,
-    ReviewEntity,
-    ReviewResponseEntity,
     StoreEntity,
     StoreWorkTimeEntity,
     SupplierEntity,

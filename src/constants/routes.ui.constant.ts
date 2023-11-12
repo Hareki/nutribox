@@ -82,7 +82,6 @@ export const SUPPLIER_DETAIL_STAFF_ROUTE = `${SUPPLIERS_STAFF_ROUTE}/:id`;
 export const NEW_SUPPLIER_ROUTE = `${SUPPLIERS_STAFF_ROUTE}/new`;
 
 export const STORE_DETAIL_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/stores/:id`;
-export const COUNTER_STAFF_ROUTE = `${BASE_STAFF_ROUTE}/counter`;
 
 export const NoStaffRoutes = [HOME_PAGE_ROUTE, PRODUCT_DETAIL_ROUTE];
 
@@ -139,8 +138,6 @@ export const CashierRoutes = [
 
   PRODUCTS_STAFF_ROUTE,
   PRODUCT_DETAIL_STAFF_ROUTE,
-
-  COUNTER_STAFF_ROUTE,
 ];
 
 export const ShipperRoutes = [
