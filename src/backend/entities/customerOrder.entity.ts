@@ -69,4 +69,9 @@ export class CustomerOrderEntity extends AddressAbstractEntity {
     nullable: true,
   })
   cancellationReason?: string;
+
+  @Column({
+    nullable: true,
+  })
+  onlineTransactionId?: string;
 }

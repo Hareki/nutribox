@@ -21,7 +21,7 @@ import { ExportOrderEntity } from 'backend/entities/exportOrder.entity';
 import { ImportOrderEntity } from 'backend/entities/importOrder.entity';
 import { ProductEntity } from 'backend/entities/product.entity';
 import { StoreEntity } from 'backend/entities/store.entity';
-import { OrderStatus } from 'backend/enums/entities.enum';
+import { OrderStatus, PaymentMethod } from 'backend/enums/entities.enum';
 import { getRepo } from 'backend/helpers/database.helper';
 import {
   MAX_DELIVERY_DURATION,
@@ -34,9 +34,7 @@ import type {
   CustomerOrderModel,
   PopulateCustomerOrderFields,
 } from 'models/customerOrder.model';
-import type {
-  PopulateCustomerOrderItemIdFields,
-} from 'models/customerOrderItem.model';
+import type { PopulateCustomerOrderItemIdFields } from 'models/customerOrderItem.model';
 import type { ExportOrderModel } from 'models/exportOrder.model';
 import type { PopulateStoreFields } from 'models/store.model';
 import type { StoreWorkTimeModel } from 'models/storeWorkTime.model';
@@ -490,5 +488,21 @@ export class CustomerOrderService {
     }
 
     return exportOrderDetails;
+  }
+
+  public static async updatePaidOnlineOrder(
+    orderId: string,
+    onlineTransactionId: string,
+  ): Promise<CustomerOrderModel> {
+    const updatedCustomerOrder = (await CommonService.updateRecord(
+      CustomerOrderEntity,
+      orderId,
+      {
+        paidOnlineVia: PaymentMethod.PayPal,
+        onlineTransactionId,
+      },
+    )) as CustomerOrderModel;
+
+    return updatedCustomerOrder;
   }
 }

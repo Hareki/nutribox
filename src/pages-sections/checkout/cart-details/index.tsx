@@ -19,7 +19,7 @@ import {
 import SelectAddressDialog from './SelectAddressDialog';
 import { getInitialValues } from './yup';
 
-import apiCaller from 'api-callers/checkout';
+import checkoutApiCaller from 'api-callers/checkout';
 import storeApiCaller from 'api-callers/stores';
 import {
   CheckoutFormSchema,
@@ -158,7 +158,7 @@ function CartDetails({ account, nextStep }: CartDetailsProps): ReactElement {
     // if (isLoadingStoreInfo || !currentFullAddress) return;
 
     setIsEstimating(true);
-    apiCaller
+    checkoutApiCaller
       .getCheckoutValidation(currentFullAddress)
       .then((checkoutValidationResponse) => {
         setIsEstimating(false);

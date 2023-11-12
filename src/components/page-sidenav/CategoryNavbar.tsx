@@ -1,4 +1,4 @@
-import { Box, styled, useTheme } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import type { FC } from 'react';
 import { useState } from 'react';
 
@@ -63,7 +63,7 @@ const Circle = styled('span')({
 
 // ==================================================================
 type CategoryNavbarProps = {
-  isFixed?: boolean;
+  isfixed?: boolean;
   navList: ProductCategoryModel[];
   lineStyle?: 'dash' | 'solid';
   sidebarHeight?: string | number;
@@ -74,7 +74,7 @@ type CategoryNavbarProps = {
 
 const CategoryNavbar: FC<CategoryNavbarProps> = (props) => {
   const {
-    isFixed,
+    isfixed,
     navList,
     lineStyle,
     sidebarStyle,
@@ -82,7 +82,6 @@ const CategoryNavbar: FC<CategoryNavbarProps> = (props) => {
     handleSelect = () => undefined,
   } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { palette } = useTheme();
 
   const selectHandler = (index: number, id: string, name: string) => {
     setSelectedIndex(index);
@@ -92,7 +91,7 @@ const CategoryNavbar: FC<CategoryNavbarProps> = (props) => {
   return (
     <Scrollbar autoHide={false} sx={{ maxHeight: sidebarHeight }}>
       <NavbarRoot
-        isfixed={isFixed || false}
+        isfixed={isfixed || false}
         sidebarstyle={sidebarStyle || 'style1'}
       >
         <Box>

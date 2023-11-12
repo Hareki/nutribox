@@ -30,6 +30,9 @@ declare global {
 
       NEXT_PUBLIC_PAYPAL_CLIENT_ID: string;
       PAYPAL_SECRET: string;
+
+      EXCHANGE_RATE_API_URL: string;
+      EXCHANGE_RATE_API_KEY: string;
     }
   }
 }

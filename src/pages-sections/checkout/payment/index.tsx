@@ -2,14 +2,16 @@ import { Grid } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
+import { useState } from 'react';
 
-import type { Step1Data } from '../../../../pages/checkout';
+import type { Step1Data, Step2Data } from '../../../../pages/checkout';
 
 import PaymentForm from './PaymentForm';
 import PaymentSummary from './PaymentSummary';
 
-import apiCaller from 'api-callers/checkout';
+import checkoutApiCaller from 'api-callers/checkout';
 import type { CheckoutDto } from 'backend/dtos/checkout.dto';
+import { PaymentMethod } from 'backend/enums/entities.enum';
 import type { CommonCartItem } from 'backend/services/product/helper';
 import PageLayout from 'components/layouts/PageLayout';
 import { HOME_PAGE_ROUTE } from 'constants/routes.ui.constant';
@@ -26,7 +28,7 @@ Payment.getLayout = function getLayout(page: ReactElement) {
 interface PaymentProps {
   step1Data: Step1Data;
   prevStep: (currentStep: number) => void;
-  nextStep: (data: undefined, currentStep: number) => void;
+  nextStep: (data: Step2Data, currentStep: number) => void;
   account: CommonCustomerAccountModel;
 }
 
@@ -38,6 +40,7 @@ function Payment({
 }: PaymentProps): ReactElement {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.COD);
 
   const { t } = useCustomTranslation(['customerOrder']);
   const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
@@ -72,19 +75,29 @@ function Payment({
         ...address,
       };
 
-      return apiCaller.checkout(dto);
+      return checkoutApiCaller.checkout(dto);
     },
-    onSuccess: () => {
+    onSuccess: (customerOrder) => {
       queryClient.refetchQueries(['cart', account.customer.id]);
-      nextStep(undefined, 2);
+      nextStep(
+        {
+          orderId: customerOrder.id,
+          orderPrice: customerOrder.total,
+          payWithPayPal: paymentMethod === PaymentMethod.PayPal,
+        },
+        2,
+      );
     },
     onError: dispatchErrorDialog,
   });
+
   return (
     <>
       <Grid container flexWrap='wrap-reverse' spacing={4}>
         <Grid item lg={7.5} md={7.5} xs={12}>
           <PaymentForm
+            paymentMethod={paymentMethod}
+            setPaymentMethod={setPaymentMethod}
             prevStep={prevStep}
             completeOrder={completeOrder}
             isLoading={isLoading}

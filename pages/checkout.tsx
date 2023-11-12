@@ -29,7 +29,13 @@ export interface Step1Data {
   distance: number;
 }
 
-type StepData = Step1Data;
+export interface Step2Data {
+  orderId: string;
+  orderPrice: number;
+  payWithPayPal: boolean;
+}
+
+type StepData = Step1Data | Step2Data;
 
 function Checkout(): ReactElement {
   const { data: session } = useSession();
@@ -37,6 +43,7 @@ function Checkout(): ReactElement {
 
   const [selectedStep, setSelectedStep] = useState(1);
   const [step1Data, setStep1Data] = useState<Step1Data>();
+  const [step2Data, setStep2Data] = useState<Step2Data>();
 
   const nextStep = (data: StepData | undefined, currentStep: number) => {
     if (currentStep === 1) {
@@ -45,6 +52,7 @@ function Checkout(): ReactElement {
       return;
     }
     if (currentStep === 2) {
+      setStep2Data(data as Step2Data);
       setSelectedStep(currentStep + 1);
     }
   };
@@ -75,7 +83,9 @@ function Checkout(): ReactElement {
             account={account}
           />
         )}
-        {account && selectedStep === 3 && <OrderCompleted />}
+        {account && selectedStep === 3 && (
+          <OrderCompleted step2Data={step2Data!} />
+        )}
       </Container>
     </Fragment>
   );

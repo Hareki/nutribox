@@ -96,8 +96,10 @@ export const ORDERS_API_ROUTE = `${PROFILE_API_ROUTE}/orders`;
 export const ORDER_DETAIL_API_ROUTE = `${ORDERS_API_ROUTE}/:id`;
 
 export const CART_ITEMS_API_ROUTE = `${API_BASE_ROUTE}/cart-items`;
-export const CHECKOUT_VALIDATION_API_ROUTE = `${API_BASE_ROUTE}/checkout/validate`;
 export const CHECKOUT_API_ROUTE = `${API_BASE_ROUTE}/checkout`;
+export const CHECKOUT_VALIDATION_API_ROUTE = `${CHECKOUT_API_ROUTE}/validate`;
+export const CHECKOUT_ONLINE_PAYMENT_API_ROUTE = `${CHECKOUT_API_ROUTE}/online-payment`;
+export const CHECKOUT_CURRENCY_EXCHANGE_API_ROUTE = `${CHECKOUT_API_ROUTE}/currency-exchange`;
 
 export const CustomerApiRoutes: MethodRoutePair[] = [
   {
@@ -139,6 +141,14 @@ export const CustomerApiRoutes: MethodRoutePair[] = [
   {
     methods: ['POST'],
     route: CHECKOUT_API_ROUTE,
+  },
+  {
+    methods: ['PATCH'],
+    route: CHECKOUT_ONLINE_PAYMENT_API_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: CHECKOUT_CURRENCY_EXCHANGE_API_ROUTE,
   },
 ];
 

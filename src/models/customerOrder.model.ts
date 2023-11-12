@@ -55,6 +55,12 @@ const CustomerOrderSchema = z.object({
   updatedAt: zodDate('CustomerOrder.UpdatedAt'),
 
   cancellationReason: zodString('CustomerOrder.CancellationReason', 1, 500),
+
+  onlineTransactionId: zodString(
+    'CustomerOrder.OnlineTransactionId',
+    1,
+    100,
+  ).optional(),
 });
 
 type CustomerOrderModel = z.infer<typeof CustomerOrderSchema>;
