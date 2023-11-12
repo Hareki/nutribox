@@ -27,6 +27,9 @@ declare global {
 
       GOOGLE_API_KEY: string;
       NEXT_PUBLIC_PROVINCE_API_URL: string;
+
+      NEXT_PUBLIC_PAYPAL_CLIENT_ID: string;
+      PAYPAL_SECRET: string;
     }
   }
 }

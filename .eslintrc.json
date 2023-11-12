@@ -26,14 +26,13 @@
     "object-shorthand": "error",
     "unused-imports/no-unused-imports": "error",
     "import/no-anonymous-default-export": "off",
-    // "import/order": [
-    //   "error",
-    //   {
-    //     "alphabetize": { "order": "asc", "caseInsensitive": true }
-    //     "newlines-between": "always"
-    //   }
-    // ]
-    "import/order": "off"
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "newlines-between": "always"
+      }
+    ]
   },
   // "plugins": ["@typescript-eslint", "import", "unused-imports", "prettier"],
   "plugins": ["@typescript-eslint", "import", "unused-imports"],
