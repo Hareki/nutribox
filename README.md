@@ -1,6 +1,30 @@
 # Xây dựng hệ thống quản lý mua bán thực phẩm tươi sống và nhu yếu phẩm
 
 ## Overview
+Deployment:
+https://nutribox.vercel.app/
+
+### Customer sign in route
+https://nutribox.vercel.app/sign-in
+
+### Staff sign in route
+https://nutribox.vercel.app/staff/sign-in
+
+### Accounts
+#### Staff
+- admin@gmail.com
+- warehouse_manager@gmail.com
+- cashier@gmail.com
+- shipper@gmail.com
+
+#### Customer
+customer@gmail.com
+
+#### Password for all accounts: 
+Admin@123
+
+
+## Overview
 
 The Fresh Food and Essentials Retail Management System (FFERMS) bridges the gap between online sales and offline inventory, focusing on delivering fresh food items and daily essentials to customers. It provides a comprehensive suite of tools to manage product availability, facilitate online shopping, and ensure that inventory matches sales demands.
 
