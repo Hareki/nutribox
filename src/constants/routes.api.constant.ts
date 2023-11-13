@@ -246,10 +246,10 @@ export const ManagerApiRoutes: MethodRoutePair[] = [
   //   methods: ['POST'],
   //   route: IMPORT_PRODUCT_API_STAFF_ROUTE,
   // },
-  // {
-  //   methods: ['GET'],
-  //   route: IMPORT_ORDERS_API_STAFF_ROUTE,
-  // },
+  {
+    methods: ['GET'],
+    route: IMPORT_ORDERS_API_STAFF_ROUTE,
+  },
   // FIXME Manager should be allowed to use  POST method, just for development
   {
     methods: ['GET'],
