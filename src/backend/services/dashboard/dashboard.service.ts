@@ -87,18 +87,65 @@ export class DashboardService {
     return { profit, orderNumber };
   }
 
+  // public static async getStatisticProducts(
+  //   type: 'leastSold' | 'mostSold',
+  // ): Promise<StatisticProduct[]> {
+  //   const customerOrderItemRepository = await getRepo(CustomerOrderItemEntity);
+
+  //   // Get the sum of quantity for each product
+  //   const results = await customerOrderItemRepository
+  //     .createQueryBuilder('orderItem')
+  //     .select('orderItem.product', 'productId')
+  //     .addSelect('SUM(orderItem.quantity)', 'totalSold')
+  //     .groupBy('orderItem.product')
+  //     .orderBy('SUM(orderItem.quantity)', type === 'mostSold' ? 'DESC' : 'ASC')
+  //     .getRawMany();
+
+  //   // Get the total sold of all products
+  //   const totalSoldOfAllProducts = results.reduce(
+  //     (acc, curr) => acc + Number(curr.totalSold),
+  //     0,
+  //   );
+
+  //   // Map results to StatisticProduct format
+  //   const statistics = results.map(async (result) => {
+  //     const product = (await CommonService.getRecord({
+  //       entity: ProductEntity,
+  //       filter: { id: result.productId },
+  //     })) as ProductModel;
+  //     return {
+  //       product,
+  //       totalSold: Number(result.totalSold),
+  //       totalSoldOfAllProducts,
+  //     };
+  //   });
+
+  //   return Promise.all(statistics);
+  // }
+
   public static async getStatisticProducts(
     type: 'leastSold' | 'mostSold',
   ): Promise<StatisticProduct[]> {
     const customerOrderItemRepository = await getRepo(CustomerOrderItemEntity);
 
-    // Get the sum of quantity for each product
+    // Determine the target totalSold value (either mostSold or leastSold)
+    const targetTotalSoldValue = await customerOrderItemRepository
+      .createQueryBuilder('orderItem')
+      .select('SUM(orderItem.quantity)', 'totalSold')
+      .groupBy('orderItem.product')
+      .orderBy('SUM(orderItem.quantity)', type === 'mostSold' ? 'DESC' : 'ASC')
+      .limit(1)
+      .getRawOne();
+
+    // Get products with the same totalSold as the target value
     const results = await customerOrderItemRepository
       .createQueryBuilder('orderItem')
       .select('orderItem.product', 'productId')
       .addSelect('SUM(orderItem.quantity)', 'totalSold')
       .groupBy('orderItem.product')
-      .orderBy('SUM(orderItem.quantity)', type === 'mostSold' ? 'DESC' : 'ASC')
+      .having('SUM(orderItem.quantity) = :targetTotalSold', {
+        targetTotalSold: targetTotalSoldValue.totalSold,
+      })
       .getRawMany();
 
     // Get the total sold of all products
@@ -114,7 +161,7 @@ export class DashboardService {
         filter: { id: result.productId },
       })) as ProductModel;
       return {
-        product, // Adjust this to fetch actual product entity if required
+        product,
         totalSold: Number(result.totalSold),
         totalSoldOfAllProducts,
       };

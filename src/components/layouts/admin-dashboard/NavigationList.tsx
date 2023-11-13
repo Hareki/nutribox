@@ -73,9 +73,9 @@ export const navigations: Record<SideBarRole, NavigationItem[]> = {
       path: CUSTOMER_ORDERS_STAFF_ROUTE,
     },
     {
-      name: 'Khách hàng',
-      icon: duotone.Customers,
-      path: CUSTOMERS_STAFF_ROUTE,
+      name: 'Sản phẩm',
+      icon: duotone.Products,
+      path: PRODUCTS_STAFF_ROUTE,
     },
     { type: 'signOut', name: 'Đăng xuất', icon: duotone.Session },
   ],

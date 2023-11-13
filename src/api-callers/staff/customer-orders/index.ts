@@ -47,7 +47,7 @@ const getExportOrderDetails = async (
 const upgradeOrderStatus = async (
   orderId: string,
 ): Promise<PopulateCustomerOrderFields<'customerOrderItems'>> => {
-  const response = await axiosInstance.patch(
+  const response = await axiosInstance.put(
     insertId(CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE, orderId),
   );
   return response.data.data;

@@ -19,6 +19,14 @@ export const useCartSpinner = (product: CommonProductModel) => {
 
   const handleCartAmountChange = useCallback(
     (amount: number, type: CartItemActionType) => {
+      console.log(
+        'file: useCartSpinner.tsx:22 - useCartSpinner - amount:',
+        amount,
+      );
+      console.log(
+        'file: useCartSpinner.tsx:24 - useCartSpinner - maxQuantity:',
+        maxQuantity,
+      );
       if (amount >= maxQuantity) return;
       updateCartAmount(
         {

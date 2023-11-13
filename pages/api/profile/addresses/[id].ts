@@ -47,6 +47,7 @@ handler
           data,
         });
       } catch (error) {
+        console.log('file: [id].ts:50 - error:', error);
         if (isDuplicateError(error)) {
           throw new DuplicationError(
             'title',

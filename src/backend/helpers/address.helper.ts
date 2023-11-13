@@ -167,7 +167,7 @@ export async function getEstimatedDeliveryInfo(
       );
 
       return {
-        distance,
+        distance: parseFloat(distance.toFixed(2)),
         durationInTraffic,
         deliveryTime,
         heavyTraffic: false,

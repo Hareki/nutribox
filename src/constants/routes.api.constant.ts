@@ -347,12 +347,16 @@ export const CashierApiRoutes: MethodRoutePair[] = [
     route: CUSTOMER_ORDERS_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET', 'PATCH'],
+    methods: ['GET', 'PATCH', 'PUT'],
     route: CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
     route: PRODUCTS_API_STAFF_ROUTE,
+  },
+  {
+    methods: ['GET'],
+    route: IMPORT_ORDERS_API_STAFF_ROUTE,
   },
   {
     methods: ['GET'],
@@ -382,7 +386,7 @@ export const ShipperApiRoutes: MethodRoutePair[] = [
     route: CUSTOMER_ORDERS_API_STAFF_ROUTE,
   },
   {
-    methods: ['GET', 'PATCH'],
+    methods: ['GET', 'PATCH', 'PUT'],
     route: CUSTOMER_ORDER_DETAIL_API_STAFF_ROUTE,
   },
   {

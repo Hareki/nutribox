@@ -49,15 +49,23 @@ handler
   .put(createValidationGuard(UpdateProductDtoSchema), async (req, res) => {
     try {
       const id = req.query.id as string;
-      const updatedProduct = (await CommonService.updateRecord(
+      (await CommonService.updateRecord(
         ProductEntity,
         id,
         req.body,
       )) as ProductModel;
 
+      const data =
+        (await ProductService.getCommonProduct<ExtendedCommonProductModel>({
+          filter: {
+            id,
+          },
+          extended: true,
+        })) as ExtendedCommonProductModel;
+
       res.status(StatusCodes.OK).json({
         status: 'success',
-        data: updatedProduct,
+        data,
       });
     } catch (error) {
       if (isDuplicateError(error)) {

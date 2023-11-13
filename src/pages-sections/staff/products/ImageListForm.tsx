@@ -4,10 +4,12 @@ import { LoadingButton } from '@mui/lab';
 import { Box, ImageListItemBar, useTheme } from '@mui/material';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import { useSession } from 'next-auth/react';
 import type { Dispatch } from 'react';
 import { Fragment, useRef, useState } from 'react';
 import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery';
 
+import { EmployeeRole } from 'backend/enums/entities.enum';
 import { Paragraph } from 'components/abstract/Typography';
 import UploadFileInput from 'components/common/input/UploadFileInput';
 import ConfirmDialog from 'components/dialog/confirm-dialog';
@@ -45,6 +47,11 @@ const ImageListForm = ({
   const [selectedUrl, setSelectedUrl] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const uploadRef = useRef<HTMLInputElement>();
+
+  const { data: session } = useSession();
+  const role = session?.employeeAccount.employee.role;
+  const isAuthorizedToMutate =
+    role === EmployeeRole.MANAGER || role === EmployeeRole.WAREHOUSE_MANAGER;
 
   const isEmpty = imageUrls.length === 0;
   return (
@@ -86,53 +93,55 @@ const ImageListForm = ({
                         ref={ref as React.MutableRefObject<HTMLImageElement>}
                         onClick={open}
                       />
-                      <ImageListItemBar
-                        sx={{
-                          background: 'transparent',
-                        }}
-                        position='top'
-                        actionIcon={
-                          <LoadingButton
-                            loading={isDeletingImageUrl}
-                            onClick={() => {
-                              setSelectedUrl(item);
-                              setSelectedIndex(index);
+                      {isAuthorizedToMutate && (
+                        <ImageListItemBar
+                          sx={{
+                            background: 'transparent',
+                          }}
+                          position='top'
+                          actionIcon={
+                            <LoadingButton
+                              loading={isDeletingImageUrl}
+                              onClick={() => {
+                                setSelectedUrl(item);
+                                setSelectedIndex(index);
 
-                              dispatchConfirm({
-                                type: 'open_dialog',
-                                payload: {
-                                  title: 'Xác nhận',
-                                  content: (
-                                    <Box>
-                                      <Paragraph>
-                                        Bạn có chắc chắn muốn xoá ảnh này?
-                                      </Paragraph>
-                                      <FlexBox justifyContent='flex-start'>
-                                        <img
-                                          src={item}
-                                          alt={`Image ${index}`}
-                                          style={{
-                                            objectFit: 'contain',
-                                            width: '100%',
-                                            maxWidth: '300px',
-                                          }}
-                                        />
-                                      </FlexBox>
-                                    </Box>
-                                  ),
-                                  isLoading: isDeletingImageUrl,
-                                },
-                              });
-                            }}
-                            variant='text'
-                            color='error'
-                            startIcon={<DeleteOutlineOutlinedIcon />}
-                          >
-                            Xóa ảnh
-                          </LoadingButton>
-                        }
-                        actionPosition='left'
-                      />
+                                dispatchConfirm({
+                                  type: 'open_dialog',
+                                  payload: {
+                                    title: 'Xác nhận',
+                                    content: (
+                                      <Box>
+                                        <Paragraph>
+                                          Bạn có chắc chắn muốn xoá ảnh này?
+                                        </Paragraph>
+                                        <FlexBox justifyContent='flex-start'>
+                                          <img
+                                            src={item}
+                                            alt={`Image ${index}`}
+                                            style={{
+                                              objectFit: 'contain',
+                                              width: '100%',
+                                              maxWidth: '300px',
+                                            }}
+                                          />
+                                        </FlexBox>
+                                      </Box>
+                                    ),
+                                    isLoading: isDeletingImageUrl,
+                                  },
+                                });
+                              }}
+                              variant='text'
+                              color='error'
+                              startIcon={<DeleteOutlineOutlinedIcon />}
+                            >
+                              Xóa ảnh
+                            </LoadingButton>
+                          }
+                          actionPosition='left'
+                        />
+                      )}
                     </Fragment>
                   )}
                 </GalleryItem>
@@ -142,21 +151,23 @@ const ImageListForm = ({
         </ImageList>
       )}
 
-      <FlexBox mt={4} flexDirection='row-reverse'>
-        <LoadingButton
-          loading={isAddingImageUrls}
-          variant='contained'
-          color='primary'
-          startIcon={<Add />}
-          onClick={() => {
-            if (uploadRef && uploadRef.current) {
-              uploadRef.current.click();
-            }
-          }}
-        >
-          Thêm ảnh
-        </LoadingButton>
-      </FlexBox>
+      {isAuthorizedToMutate && (
+        <FlexBox mt={4} flexDirection='row-reverse'>
+          <LoadingButton
+            loading={isAddingImageUrls}
+            variant='contained'
+            color='primary'
+            startIcon={<Add />}
+            onClick={() => {
+              if (uploadRef && uploadRef.current) {
+                uploadRef.current.click();
+              }
+            }}
+          >
+            Thêm ảnh
+          </LoadingButton>
+        </FlexBox>
+      )}
 
       <Box display='none'>
         <UploadFileInput

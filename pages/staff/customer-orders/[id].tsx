@@ -5,8 +5,10 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSnackbar } from 'notistack';
 import type { ReactElement } from 'react';
 import { useReducer, useState } from 'react';
@@ -14,6 +16,7 @@ import { useReducer, useState } from 'react';
 import productApiCaller from 'api-callers/product/[slug]';
 import staffCustomerOrderCaller from 'api-callers/staff/customer-orders';
 import type { CustomerCancelOrderDto } from 'backend/dtos/profile/orders/cancelOrder.dto';
+import { OrderStatus } from 'backend/enums/entities.enum';
 import { Paragraph, Span } from 'components/abstract/Typography';
 import CircularProgressBlock from 'components/common/CircularProgressBlock';
 import AdminDetailsViewHeader from 'components/common/layout/header/AdminDetailsViewHeader';
@@ -47,10 +50,14 @@ function AdminOrderDetails() {
     queryFn: () => staffCustomerOrderCaller.getOrder(id),
   });
 
+  const shouldLoadExportOrderDetails =
+    !!order && order.status !== OrderStatus.CANCELLED;
+
   const { data: exportOrderDetails, isLoading: isLoadingExportOrderDetails } =
     useQuery({
       queryKey: ['staff', 'customer-orders', 'export-order-details', id],
       queryFn: () => staffCustomerOrderCaller.getExportOrderDetails(id),
+      enabled: shouldLoadExportOrderDetails,
     });
 
   const [confirmState, dispatchConfirm] = useReducer(
@@ -75,6 +82,7 @@ function AdminOrderDetails() {
         enqueueSnackbar(t('CustomerOrder.UpgradeStatus.Success'), {
           variant: 'success',
         });
+        queryClient.invalidateQueries(['staff', 'customer-orders', id]);
       },
       onError: (err) => {
         enqueueSnackbar(t('Internet.Error'), {
@@ -110,7 +118,10 @@ function AdminOrderDetails() {
       })) || [],
   });
 
-  if (isLoadingOrder || isLoadingExportOrderDetails) {
+  if (
+    isLoadingOrder ||
+    (isLoadingExportOrderDetails && shouldLoadExportOrderDetails)
+  ) {
     return <CircularProgressBlock />;
   }
 
@@ -125,7 +136,7 @@ function AdminOrderDetails() {
 
       <OrderDetailsViewer
         role={role}
-        exportOrderDetails={exportOrderDetails!}
+        exportOrderDetails={exportOrderDetails}
         order={order!}
         productsOfOrders={productsOfOrders}
         isUpdating={isUpgradingOrder}
@@ -169,6 +180,15 @@ function AdminOrderDetails() {
     </Box>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'customerOrder',
+    'common',
+  ]);
+
+  return { props: { ...locales } };
+};
 
 // export default memo(AdminOrderDetails);
 export default AdminOrderDetails;

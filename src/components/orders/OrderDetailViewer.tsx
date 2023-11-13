@@ -21,7 +21,7 @@ import { Fragment, useMemo, useState } from 'react';
 import ExportOrderDetailTable from './ExportOrderDetailTable';
 import OrderPaymentChip from './OrderPaymentChip';
 
-import { EmployeeRole } from 'backend/enums/entities.enum';
+import { EmployeeRole, OrderStatus } from 'backend/enums/entities.enum';
 import { PaymentMethod } from 'backend/enums/entities.enum';
 import type { ExportOrderDetails } from 'backend/services/customerOrder/helper';
 import { CustomerOrderStatusOrders } from 'backend/services/customerOrder/helper';
@@ -359,7 +359,7 @@ const OrderDetailsViewer = ({
 
       {/* SHIPPING AND ORDER SUMMERY */}
       <Grid container spacing={3}>
-        {exportOrderDetails && (
+        {exportOrderDetails && order.status !== OrderStatus.CANCELLED && (
           <Grid item xs={12}>
             <ExportOrderDetailTable exportOrderDetails={exportOrderDetails} />
           </Grid>
@@ -415,17 +415,19 @@ const OrderDetailsViewer = ({
           </Card>
         </Grid>
 
-        {!isOrderCancelled && canCancel && (
-          <LoadingButton
-            onClick={() => cancelOrderCallback?.()}
-            loadingPosition='center'
-            color='error'
-            variant='contained'
-            sx={{ height: 44, ml: 'auto', mt: 3 }}
-          >
-            Hủy đơn hàng
-          </LoadingButton>
-        )}
+        {!isOrderCancelled &&
+          canCancel &&
+          (isAuthorizedToUpgrade || !isStaff) && (
+            <LoadingButton
+              onClick={() => cancelOrderCallback?.()}
+              loadingPosition='center'
+              color='error'
+              variant='contained'
+              sx={{ height: 44, ml: 'auto', mt: 3 }}
+            >
+              Hủy đơn hàng
+            </LoadingButton>
+          )}
       </Grid>
     </Fragment>
   );

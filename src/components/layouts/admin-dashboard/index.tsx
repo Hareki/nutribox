@@ -29,6 +29,8 @@ const InnerWrapper = styled(Box)(({ theme }) => ({
 
 const ToggleWrapper = styled(FlexRowCenter)(({ theme }) => ({
   zIndex: theme.zIndex.drawer - 1,
+  alignItems: 'center',
+  justifyContent: 'center',
   position: 'fixed',
   top: '30px',
   left: '30px',
@@ -39,7 +41,7 @@ const ToggleWrapper = styled(FlexRowCenter)(({ theme }) => ({
   borderRadius: '8px',
   backgroundColor: theme.palette.grey[100],
   display: 'none',
-  [theme.breakpoints.down('lg')]: { display: 'block' },
+  [theme.breakpoints.down('lg')]: { display: 'flex' },
 }));
 
 // ======================================================

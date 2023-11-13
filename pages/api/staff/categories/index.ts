@@ -30,6 +30,9 @@ handler
 
     const commonArgs: CommonArgs<ProductCategoryEntity> = {
       entity: ProductCategoryEntity,
+      filter: {
+        available: true,
+      },
     };
 
     if (keyword) {
