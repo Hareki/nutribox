@@ -38,7 +38,7 @@ function VerificationResult({ verified }: VerificationProps) {
       <SEO title={verified ? 'Xác thực thành công' : 'Xác thực thất bại'} />
 
       <Container sx={{ mt: 6, mb: 20 }}>
-        <VerificationResultComp verified={verified} />
+        <VerificationResultComp verified={verified} isEmployee={false} />
       </Container>
     </Fragment>
   );

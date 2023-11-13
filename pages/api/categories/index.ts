@@ -17,6 +17,9 @@ const handler = nc<NextApiRequest, NextApiResponse<SuccessResponse>>(
 handler.get(async (req, res) => {
   const [data] = await CommonService.getRecords({
     entity: ProductCategoryEntity,
+    filter: {
+      available: true,
+    },
   });
 
   res.status(StatusCodes.OK).json({

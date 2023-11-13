@@ -177,10 +177,10 @@ function VerificationResult({ isValidToken }: VerificationProps) {
               </FlexBox>
             </Wrapper>
           ) : (
-            <VerificationResultComp verified />
+            <VerificationResultComp verified isEmployee />
           )
         ) : (
-          <VerificationResultComp verified={false} />
+          <VerificationResultComp verified={false} isEmployee />
         )}
       </Container>
       <InfoDialog

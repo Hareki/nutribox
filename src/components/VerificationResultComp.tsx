@@ -46,12 +46,15 @@ const initialValues: ResendVerificationEmailDto = {
 
 type VerificationResultProps = {
   verified: boolean;
+  isEmployee: boolean;
 };
 
-const VerificationResultComp: FC<VerificationResultProps> = ({ verified }) => {
+const VerificationResultComp: FC<VerificationResultProps> = ({
+  verified,
+  isEmployee,
+}) => {
   const router = useRouter();
   const { data: session } = useSession();
-  const isEmployee = !!session?.employeeAccount;
   const [buttonContent, setButtonContent] = useState('Tới trang đăng nhập');
   const [isRedirecting, setRedirecting] = useState(false);
   const [state, dispatch] = useReducer(infoDialogReducer, initInfoDialogState);
