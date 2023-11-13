@@ -42,7 +42,7 @@ export default function AdminProductDetails() {
   const [, setIsUploadError] = useState(false);
   const [isEditingForm, setIsEditingForm] = useState(false);
 
-  const { t } = useCustomTranslation(['product']);
+  const { t } = useCustomTranslation(['product', 'importOrder']);
   const { ErrorDialog, dispatchErrorDialog } = useServerSideErrorDialog({
     t,
     operationName: 'Cập nhật thông tin',
@@ -204,6 +204,10 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
     'importOrder',
     'common',
   ]);
+  console.log(
+    'file: [id].tsx:207 - constgetServerSideProps:GetServerSideProps= - locales:',
+    locales,
+  );
 
   return { props: { ...locales } };
 };

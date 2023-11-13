@@ -7,8 +7,10 @@ import {
   TableBody,
   TableContainer,
 } from '@mui/material';
+import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { ReactElement } from 'react';
 
 import apiCaller from 'api-callers/staff/products';
@@ -135,5 +137,15 @@ function ProductList() {
     </Box>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const locales = await serverSideTranslations(locale ?? 'vn', [
+    'product',
+    'importOrder',
+    'common',
+  ]);
+
+  return { props: { ...locales } };
+};
 
 export default ProductList;
